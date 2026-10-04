@@ -56,3 +56,4 @@ Ten deep-dive dossiers that go beyond the distilled summaries, built from the ac
 | [tangleml](deep-dives/tangleml.md) — Shopify's open-source experimentation platform + self-improving loops | https://tangleml.com |
 | [show-me-skill](deep-dives/show-me-skill.md) — visual-explanation skill (humanlayer/skills) | https://github.com/humanlayer/skills |
 | [jev-model-router](deep-dives/jev-model-router.md) — routing Claude Code turns with Jev | https://github.com/satviksinha/jev-model-router |
+| [dashboards-are-dead](deep-dives/dashboards-are-dead.md) — Sarah Simionescu (Composio): why MCP alone fails agents + the agent-designed interface | https://www.youtube.com/watch?v=YiFqcu9YA38 |
