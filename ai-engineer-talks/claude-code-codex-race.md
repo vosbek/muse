@@ -51,6 +51,26 @@ flowchart LR
 - **Six-day follow-up run** (Codex, Claude, Kimi, GLM — GLM still running): Kimi was surprisingly competitive with a breakthrough on day 4 beating Codex; Claude improved progressively, Kimi in step functions. Replotted **per output token**, the story changes: Claude (max mode) is the most token-hungry, Kimi the most token-efficient. Claude did the most paper searching and found a paper no other model found — which led to the best record.
 - **Key limitation:** **no novel optimizers emerged** — models combined papers into clever "+1 improvements" but produced no genuinely new optimizer or mechanism, which he finds telling for a problem accessible to human researchers spending days/weeks.
 - **Future direction:** an AlphaEvolve-inspired multi-agent discovery loop — generators (closed models plus cost-effective open-source ones) propose ideas → speedrun gives reward → a judge with "taste" gives quality feedback → winners get scaled to more parameters/tokens; humans stay in the loop as judges; varying objectives/constraints across speedruns creates diversity. Prime Intellect is building GPU sandboxing, its own efficient agents (RLM framework: filesystem + programmatic tool use), training on open-source bases, and has released "Environments" plus verifier/RL-training products (can train models as large as GLM-class).
+- **The follow-up benchmark (repo: PrimeIntellect-ai/frontier-automated-speedrun, Aug 2026):** 18 frontier models, each given one 8xH200 GPU node, the training repo, a rulebook (`program.md`), and one goal message, running unattended for days (up to 8 days). Task: train a 124M-parameter GPT to validation loss 3.28 in as few steps as possible; baseline recipe (Muon + tuned auxiliary AdamW) passes at 3,290 steps. A record claim requires training 8 times on fixed seeds the agent cannot touch and beating a mean val loss of 3.27859 — a margin priced at ~1-in-1000 for a lucky pass; a frozen `verify.py` checks every claim. No internet access. An LLM monitor audited every run hourly and reported no cheating or sandbox escapes. Everything published: rulebook, baseline script, per-model record PRs with exact diffs, sanitized traces.
+- **Leaderboard (Aug 2026):** Fable 5 — 2,726 steps; Opus 5 — 2,920; Kimi K3 — 2,968; Opus 4.8 — 3,018; GPT-5.6 Sol — 3,042; Sonnet 5 — 3,105; Grok 4.6 — 3,220; human reference record — 2,600 steps. Fable 5's run: 8.7 agent days, 800M tokens, 811 experiments — and it closed 81.7% of the gap from the 3,290 baseline to the 2,600 human record. The median of the 18 models closed under 30%; **no run produced a fundamentally new method.**
+- **Traces as artifacts:** the repo publishes full sanitized trajectories per run — events (text, thinking, tool calls, results), subagent transcripts, scratchpad (decision logs, saved variants), and a manifest with per-run metadata. The harness files (`AGENTS.md` rules/autonomy constraints, `goal.md` mission context, `plan.md` mutable attempt state, `scratchpad/THREAD.md` durable mission logging) are themselves a published pattern: durable file-based working memory matters as much as the optimizer or model code. Interactive results at primeintellect.ai/research/nanogpt-speedrun.
+
+## By the numbers
+
+- **124M** — parameters of the GPT each model must train; **3.28** — target validation loss; **3,290** — steps of the tuned Muon + aux-AdamW baseline.
+- **2,726** — Fable 5's validated record (best of 18 models), after 8.7 agent days, 800M tokens, 811 experiments; **2,920** — Opus 5; **2,968** — Kimi K3; **2,600** — the human reference record.
+- **81.7%** — of the baseline-to-human-record gap closed by Fable 5; **<30%** — the median model's gap closure. Seventeen of eighteen models never got close.
+- **8** — fixed seeds per record claim, mean val loss must beat **3.27859** (~1-in-1000 lucky-pass margin); **2,990** — the community human record at talk time, beaten by ~50–60 steps (Claude) and ~20 steps (Codex).
+- **~1B** — tokens burned by Codex (mostly cached input); **9–10h** — Claude's give-up cycle, idle ~1/3 of the time; **20x/hr vs 1x/hr** — compaction rates (Codex vs Claude, 250k context); **15–20 min** — per speedrun attempt; **5–6 days** — the follow-up run.
+- **$0 of novelty** — no model invented a new optimizer or mechanism; all gains were "+1 improvements" combining existing papers.
+
+## Decision framework
+
+- **Use speedrun-style evals when:** the task is verifiable (a frozen checker can score it), fast (minutes, not hours), and has clear rules — that combination makes it usable as *both* an eval and an RL training environment.
+- **Don't confuse beating a record with doing research:** every model improved on known methods; none invented a mechanism. If your goal is discovery rather than optimization, constrain for novelty explicitly (the novelty track) and add a judge with taste — the reward alone won't produce it.
+- **Design the benchmark before trusting it:** multiple seeds, identical conditions for all models, fixed seeds the agent can't touch, a frozen verifier, and a statistical bar for "record" (the talk's ad-hoc V1–V3 restarts and record-fetching are exactly what the formal 3-track benchmark was built to replace). Watch for leakage: agents that can fetch the latest human records will "improve" by starting from them.
+- **Measure on two axes:** wall-clock progress and cost per output token — the rankings flip (Claude max-mode looks strongest on progress, Kimi wins on token efficiency). Report both or the comparison is meaningless.
+- **Traps:** unmonitored agents idle (Claude sat idle a third of the time with no monitoring in place); generous context windows hide compaction costs (20 compactions/hour is a real tax); scratchpad discipline is a behavioral signal worth logging, not a curiosity.
 
 ## Notable quotes & data
 
@@ -73,16 +93,18 @@ flowchart LR
 
 ## How to apply it
 
-1. Build one 15-20 minute verifiable eval environment (goal.md + verifier + statistical threshold) for your most important agent task this month.
-2. Track every agent comparison on cost per output token as well as wall-clock progress — the rankings flip.
-3. Use cheap or open models as idea generators; spend frontier budget only on judged winners.
-4. Require statistical thresholds for any claimed record so seed luck never counts.
-5. Monitor behavioral telemetry (scratchpad volume, idle time, compaction rate) alongside results — behavior drives cost.
-6. Keep humans as judges with taste on novelty-constrained tracks; agents combine papers but do not invent mechanisms.
+1. Build one 15-20 minute verifiable eval environment (goal.md + rulebook + frozen verifier + statistical threshold, e.g. 8 fixed seeds with a lucky-pass margin priced ~1-in-1000) for your most important agent task this month.
+2. Publish the harness files as artifacts: AGENTS.md (rules/autonomy constraints), goal.md (mission), plan.md (mutable attempt state), scratchpad/THREAD.md (durable mission log) — file-based working memory is part of the product.
+3. Track every agent comparison on cost per output token as well as wall-clock progress — the rankings flip.
+4. Use cheap or open models as idea generators; spend frontier budget only on judged winners.
+5. Require statistical thresholds for any claimed record so seed luck never counts; audit for leakage (agents fetching the latest records).
+6. Monitor behavioral telemetry (scratchpad volume, idle time, compaction rate) alongside results — behavior drives cost; unmonitored agents idle.
+7. Keep humans as judges with taste on novelty-constrained tracks; agents combine papers but do not invent mechanisms.
 
 ## Sources
 
 - Video page: https://www.youtube.com/watch?v=oVsEddfhdxc
 - Full transcript: https://www.usetranscribe.io/yt/oVsEddfhdxc/automated-eye-research
-- Prime Intellect blog "Measuring Autonomous AI Research" (primeintellect.ai — secondary source)
-- ai.engineer speaker page (secondary source)
+- Frontier automated speedrun repo — 18-model benchmark artifacts, rulebook, traces, leaderboard: https://github.com/PrimeIntellect-ai/frontier-automated-speedrun
+- Interactive results: https://www.primeintellect.ai/research/nanogpt-speedrun
+- (Note: the Prime Intellect blog write-up URL from the repo README returned 404 when checked Oct 2026; the repo itself is the primary artifact.)
