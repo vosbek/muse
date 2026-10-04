@@ -5,8 +5,24 @@
 <nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-the-loop-is-the-product-roland-gavrilescu-introspection">Talk Notes: "The Loop Is the Product" — Roland Gavrilescu, Introspection</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=7taOQBfjDyE">The Loop Is the Product — Roland Gavrilescu, Introspection</a> · AI Engineer channel · Sep 26, 2026 · 18:43 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
+<p><img alt="Visual one-pager" src="onepager-loop-is-the-product.jpg" /></p>
 <h2 id="thesis">Thesis</h2>
 <p>A blueprint for autoresearch in 2026+: three ideas — (1) <strong>the loop is the product</strong> (the progression went RL-for-models → harnesses with commodity models → loops you build instead of code you touch); (2) <strong>system distillation is the moat</strong> (distill each loop's learnings — failure patterns→judges/evals, repeated behaviors→skills/prompts, frustrations→harness extensions — into versioned, portable, provider-agnostic "agent recipes" in git that encode the maker's taste); (3) <strong>valued work per watt is the score</strong> (measure value per unit of compute; the Cursor/Cognition playbook of product→evals→models applies to every vertical).</p>
+<h2 id="the-mental-model">The mental model</h2>
+<pre class="mermaid">flowchart LR
+    A[RL for models] --> B[Harnesses with commodity models] --> C[Loops you build instead of code]</pre>
+<pre class="mermaid">flowchart TD
+    LP[Loop artifacts] --> FJ[Failure patterns become judges and evals]
+    LP --> RB[Repeated behavior becomes skills and prompts]
+    LP --> UF[User frustration becomes harness extensions and memories]
+    FJ --> GR[Versioned agent recipe in git]
+    RB --> GR
+    UF --> GR</pre>
+<pre class="mermaid">flowchart LR
+    S[Mine traces for signals] --> J[Agents draft evals, human calibrates]
+    J --> AB[Validate taste in prod with bandit tests]
+    AB --> PR[Promote next recipe version]
+    PR --> S</pre>
 <h2 id="key-points">Key points</h2>
 <ul>
 <li><strong>From xAI to Introspection:</strong> he and his co-founder left xAI's agent-infra team a few months prior to work standalone on always-on, long-horizon tasks; the talk is about productizing autoresearch at customer scale.</li>
@@ -24,6 +40,29 @@
 <li><strong>Step 2 — calibrate judges/evals:</strong> agents can build the evals (e.g., a trajectory judge: "did the agent contact Google employees instead of finding hidden gems on GitHub?"); the human's job is only to calibrate — "do you agree we should prefer hidden gems?" "You don't need the human to actually build the evals. You need them to calibrate the evals."</li>
 <li><strong>Step 3 — recipe candidates + prod validation:</strong> offline evals are the easy part; the test is production — do end users agree with your taste? Validate with A/B tests (multi-armed bandit); when users confirm your taste, promote to the next recipe version. Repeat forever: continuously codify taste into an agent that reproduces your service, with users agreeing you have great taste and execution.</li>
 <li><strong>Takeaways:</strong> (1) the loop is the product — automate yourself as the higher-level judge; second-loop agents apply the same judgment to prod agents; (2) system distillation is the moat — continuously inject taste into workers; the fastest to do it builds a defensible vertical AI company; (3) valued work per watt — is the work valuable, and do the economics make sense (the price delta vs Claude Code is what makes people switch).</li>
+<li><strong>The Devin thought experiment</strong> (Latent Space interview): imagine getting the Devin codebase tomorrow — the code alone wouldn't help much without seeing the failures, mistakes, and decisions that produced the current version. A recipe captures that process: baseline → each signal → new judge / embedded expertise / different model.</li>
+<li><strong>Inner vs outer loop, precisely</strong> (interview): the inner loop is the primary system interacting with users and doing the work; autoresearch is the <em>outer</em> loop — a second system that studies and maintains the primary one. The central design question for the outer loop: "how to make progress on the right problems <strong>without consuming an unreasonable number of tokens</strong> while deciding what to do."</li>
+<li><strong>The human as a tool</strong> (interview): agents can be trained to ask people questions through an "ask a human" tool — the human is a signal source. Like an employee joining a company: heavy questions early, then accumulating preferences enable increasing autonomy. Early loops should be question-heavy by design; autonomy is earned, not assumed.</li>
+<li><strong>Pi = Linux; Introspection = Red Hat</strong> (interview): Pi separates the agent loop from extensions/configuration (like Linux vs distros) — "never intended to be run as an unchanged, vanilla product"; load different files into the runtime, get different agents. Introspection's bet: combine that extensibility with recipes and open-source building blocks that evolve per customer while staying portable.</li>
+<li><strong>Factory vs orchestra is an autonomy decision</strong> (interview): an orchestra keeps a human conductor controlling the loops; a factory implies full autonomy. "Build toward the factory rather than assume you can create a completely autonomous factory on the first day" — models lack org context and tacit knowledge, which "you cannot simply capture in a Markdown file." Design the human as a core component; extract tacit knowledge over time.</li>
+<li><strong>Three recommendations for experimenters</strong> (interview): (1) <strong>Invest in signals first</strong> — decide what agents should respond to; not all feedback is equal, build filtering mechanisms. (2) <strong>Control cost from day one</strong> — "you don't want to wake up to an unexpected thousand-dollar bill because an agent has been running an inefficient loop." (3) <strong>Follow the research</strong> — study the harnesses models are actually trained on; study data recipes; the goal is "to turn your product organization into a miniature research lab, with agents acting as miniature researchers."</li>
+<li><strong>Who this is for</strong> (interview): vertical SaaS companies that want to own the deployment and their data, with no lock-in to OpenAI/Anthropic. Git is the audit log — "the actual work and its history live in Git."</li>
+</ul>
+<h2 id="by-the-numbers">By the numbers</h2>
+<ul>
+<li><strong>3</strong> — the ideas in the blueprint (loop is the product; system distillation is the moat; valued work per watt is the score) and, separately, the three experimenter recommendations (signals, cost control, follow research).</li>
+<li><strong>4</strong> — the steps in the first viral loop, AJ's Clawbot car-haggling loop: scrape Reddit for prices/inventory → talk to dealers → pit dealers head-to-head → verifiable "price is right" check, then lock in.</li>
+<li><strong>1970s</strong> — origin of OODA loops (US Air Force fast decision cycles), the mental ancestor of today's tool-calling agent loops.</li>
+<li><strong>"A thousand-dollar bill"</strong> — the interview's cost-control anecdote: the surprise overnight bill from an inefficient loop is the failure mode to design against from day one.</li>
+<li>(This talk is framework-heavy rather than number-heavy; the measurable quantities it names are the <em>design targets</em> — signal quality determining loop success rate, verifier quality calibrating success, and value per watt.)</li>
+</ul>
+<h2 id="decision-framework">Decision framework</h2>
+<ul>
+<li><strong>Use agent recipes when:</strong> the work is a repeat loop with traceable signals (support, recruiting, triage); taste/judgment is the differentiator; you need provider portability and to own the deployment and data.</li>
+<li><strong>Don't start with:</strong> a fully autonomous factory on day one — models lack org context and tacit knowledge, which can't be captured in a Markdown file. Start orchestra-style (human conductor), extract knowledge over time, earn autonomy.</li>
+<li><strong>Measure first, in this order:</strong> (1) signal quality — it determines the loop's success rate; (2) verifier quality — it calibrates whether "success" is real; (3) valued work per watt — only then optimize the economics.</li>
+<li><strong>Traps the speaker names:</strong> the outer loop burning tokens just deciding what to do (budget it explicitly); treating offline evals as the finish line (prod validation is the real test — end users must agree with your taste); borrowing someone else's recipe without realizing you're borrowing their taste (taste mismatch = silent misjudgment).</li>
+<li><strong>The factory/orchestra slider:</strong> choose the autonomy level deliberately per deployment; the slider moves toward factory as signals, verifiers, and cost controls mature — not before.</li>
 </ul>
 <h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
 <ul>
@@ -44,10 +83,24 @@
 <li>"Valued work per watt" is a directly usable metric: for every agent deployment, measure value per unit of compute and cap spend at a fraction of value — this is the cost-control discipline for an enterprise tokenomics remit.</li>
 <li>Let agents build the evals and keep humans as calibrators ("do you agree we should prefer hidden gems?") — calibration is cheap; hand-authoring evals is the expensive part to eliminate.</li>
 </ul>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li><strong>Invest in signals first</strong>: decide what your agents should respond to and build filtering — not all feedback is equal; the outer loop needs a mechanism for deciding which signals merit action (and a token budget for deciding).</li>
+<li><strong>Mine one agent's traces this week</strong>: pull the last month of runs for your most-used internal agent and cluster the patterns — repeated behaviors, user frustrations, failure modes.</li>
+<li><strong>Let agents draft the evals</strong>: have the agent write trajectory judges from the mined patterns (e.g. "did the agent do the thing users actually wanted"). Your job is calibration only — agree or disagree with the judgment, don't author the test.</li>
+<li><strong>Add an "ask a human" escape hatch</strong>: for early loops, give agents a tool to ask people questions — autonomy ramps like a new employee (question-heavy at first, then independent).</li>
+<li><strong>Distill into a recipe repo</strong>: failure patterns become judges and evals, repeated behaviors become skills and prompts, frustrations become harness extensions. Commit it all to git — git is the audit log — versioned and provider-agnostic.</li>
+<li><strong>Put cost controls in before the loop runs</strong>: caps and alerts from day one — design against the thousand-dollar-overnight-bill failure mode, and track valued work per watt (value per unit of compute; cap spend at a fraction of value).</li>
+<li><strong>Validate taste in production</strong>: run multi-armed-bandit A/B tests — do end users agree with your taste? Promote only confirmed recipe versions, then repeat forever.</li>
+<li><strong>Follow the research</strong>: study the harnesses frontier models are actually trained on and the data-recipe literature — the goal is a product org that runs like a miniature research lab.</li>
+</ol>
 <h2 id="sources">Sources</h2>
 <ul>
 <li>Video page: https://www.youtube.com/watch?v=7taOQBfjDyE</li>
 <li>Full transcript: https://www.usetranscribe.io/yt/7taOQBfjDyE/ai-loops-and-feedback</li>
+<li>Latent Space interview "Autoresearch: The feedback loop behind self-improving agents" (inner/outer loop, Pi=Linux analogy, factory-vs-orchestra, the three recommendations): https://www.latent.space/p/autoresearch-introspection</li>
 </ul></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

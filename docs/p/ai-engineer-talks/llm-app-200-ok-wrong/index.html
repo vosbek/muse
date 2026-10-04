@@ -7,6 +7,30 @@
 <p><strong>Note:</strong> transcript unavailable; distilled from chapter list, description, and tagline. Kept shorter; no specifics invented beyond what's given.</p>
 <h2 id="thesis-from-titletaglinechapters">Thesis (from title/tagline/chapters)</h2>
 <p>Classic "golden signals" (latency, errors, traffic, saturation) tell you your app is up — they don't tell you if it's right. GenAI apps need additional monitoring pillars: cost, safety, and quality.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<pre class="mermaid">flowchart TD
+    R[HTTP 200 OK] --> G[Golden signals]
+    G --> L[Latency]
+    G --> E[Errors]
+    G --> T[Traffic]
+    G --> S[Saturation]
+    L --> UP[App is up]
+    E --> UP
+    T --> UP
+    S --> UP
+    UP --> Q{Is it right}
+    Q -->|Unanswered| C[Cost pillar]
+    Q -->|Unanswered| SF[Safety pillar]
+    Q -->|Unanswered| QL[Quality pillar]
+    C --> C1[Token creep]
+    C --> C2[Model drift]
+    C --> C3[Uncached calls]
+    C --> C4[Tag everything]
+    SF --> S1[Prompt injection]
+    SF --> S2[PII]
+    SF --> S3[Toxicity]
+    SF --> S4[Jailbreaks]
+    QL --> QL1[Five quality metrics]</pre>
 <h2 id="key-points-from-chapter-list">Key points (from chapter list)</h2>
 <ul>
 <li><strong>Golden signals aren't enough anymore</strong> (0:12) — latency/errors/traffic/saturation tell you the app is up, not that it's right.</li>
@@ -32,6 +56,17 @@
 <h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
 <ul>
 <li><strong>Tag everything for cost attribution</strong>: even in a local-first stack, tag every request by use case/team/model so token creep and uncached calls are attributable — you can't control what you can't attribute.</li>
-</ul></article></div>
+</ul>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li><strong>Audit your dashboards this week</strong>: list every GenAI dashboard and mark which ones measure only latency, errors, traffic, and saturation. Everything unmarked is a blind spot.</li>
+<li><strong>Tag every request</strong>: add team, use case, and model tags to all agent and Copilot traffic so token creep and uncached calls are attributable by owner.</li>
+<li><strong>Add the cost pillar</strong>: alert on token creep (rising tokens per task), model drift (same prompt, different cost), and uncached calls.</li>
+<li><strong>Add the safety pillar</strong>: gate inputs and outputs for prompt injection, PII leakage, toxicity, and jailbreak attempts before they reach production users.</li>
+<li><strong>Add the quality pillar</strong>: define five quality metrics per use case and score them with LLM judges (see the Chiang and Lee 2023 paper referenced in the talk).</li>
+<li><strong>Change the ship gate</strong>: no GenAI feature ships on 200 OK plus golden signals alone — cost, safety, and quality must all be green.</li>
+</ol></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

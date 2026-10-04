@@ -7,6 +7,24 @@
 <p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
 <h2 id="thesis">Thesis</h2>
 <p>The standard "software factory" (sandbox + agent + prompt → PR) isn't a real factory, because it optimizes code output instead of product outcomes. WorkOS's factory encodes engineering processes into automation — TARS (agent interaction embedded in Slack/Linear/GitHub, driven by webhooks), Horizon (infrastructure orchestration), and an MCP gateway "context engine" — and measures outcomes (features shipped faster), not PR counts.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<pre class="mermaid">flowchart TD
+    HD[Hilltop document] --> T[TARS agent]
+    T --> SL[Slack]
+    T --> LI[Linear]
+    T --> GH[GitHub]
+    LI --> WH[Webhooks]
+    WH --> T
+    T --> H[Horizon infra layer]
+    H --> MG[MCP gateway context engine]
+    MG --> SF[Snowflake semantic tables]</pre>
+<pre class="mermaid">flowchart LR
+    B[Brief spec] --> PA[PM agent drafts hilltop] --> HR[Human review in Linear] --> AU[Auto start implementation] --> NT[Auto pick up next ticket]</pre>
+<pre class="mermaid">flowchart TD
+    OM[Output metrics lie] --> OP[PR counts and AI code percent]
+    RM[Outcome metrics win] --> SH[Features shipped faster]
+    RM --> DR[Defect rate]
+    RM --> TTR[Time to recovery]</pre>
 <h2 id="key-points">Key points</h2>
 <ul>
 <li><strong>The standard setup doesn't beat the baseline.</strong> Sandbox on Cloudflare + "open code model router" + prompts → PR produced results "pretty indistinguishable" from engineers running Claude Code on laptops — no incremental or exponential outcome gain.</li>
@@ -36,9 +54,20 @@
 <li><strong>The MCP gateway as a shared context engine reused across internal tools</strong> — build the context plumbing once, reuse everywhere, instead of per-tool reinvention.</li>
 <li><strong>Owning the infrastructure enables session observation</strong> to identify skill gaps and obsolete skills — an eval/iteration loop for self-improvement of the factory itself, so the spend on context goes where it demonstrably pays off.</li>
 </ul>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li><strong>Canonicalize your PRD ritual</strong>: write the "hilltop" template for your org — purpose, customer evidence, competitive analysis, early design screens, milestones — so an agent can break it into units of work.</li>
+<li><strong>Add a PM agent</strong>: draft the hilltop from a brief spec, have humans comment and refine the generated tickets in Linear, then auto-start implementation on approval.</li>
+<li><strong>Wire webhooks to the agent</strong>: Linear ticket dependencies auto-trigger the next ticket on completion; between tickets the agent asks whether the plan needs fresh tickets.</li>
+<li><strong>Build one context engine</strong>: stand up an MCP gateway over your internal systems (data lake, ticket system, docs) that builds system prompts and tool guidance — one shared context layer every tool reuses instead of per-tool reinvention.</li>
+<li><strong>Switch the dashboards</strong>: replace PR counts and AI-code percentages with outcome metrics — shipping speed, customer impact, defect rate, time-to-recovery.</li>
+<li><strong>Observe sessions to self-improve</strong>: log where agents struggle, build skills for the gaps, retire obsolete ones. Own the loop, not just the output.</li>
+</ol>
 <h2 id="sources">Sources</h2>
 <ul>
 <li>Video: https://www.youtube.com/watch?v=HvboD89DyQ8</li>
 </ul></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

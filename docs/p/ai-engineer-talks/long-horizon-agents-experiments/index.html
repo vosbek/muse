@@ -7,6 +7,33 @@
 <p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
 <h2 id="thesis">Thesis</h2>
 <p>Agents that carry state over long horizons can't be fixed with prompt tuning or a good demo — they need <strong>controlled experiments</strong>: define scenario suites, run simulations, collect structured traces, score behavior with a balanced scorecard, and let an autoresearch meta-loop search a small frozen "policy surface," keeping only changes that survive measurement (a ratchet). Memory (RAG) alone is insufficient; what matters is the <strong>agent protocol</strong> — how memories get written, uncertainty communicated, trust updated, sources attributed, and replanning triggered.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<pre class="mermaid">flowchart LR
+    A[Define scenario suite] --> B[Simulate agents]
+    B --> C[Collect structured traces]
+    C --> D[Score with balanced scorecard]
+    D --> E[Propose small policy change]
+    E --> F[Rerun scenario]
+    F --> G{Score better and guardrails hold}
+    G -->|Yes| H[Keep the change]
+    G -->|No| I[Revert]
+    H --> E
+    I --> E</pre>
+<pre class="mermaid">flowchart TD
+    SC[Balanced scorecard] --> D1[Diffusion - reach]
+    SC --> P1[Provenance - source retention]
+    SC --> R1[Rumors - uncertainty preservation]
+    SC --> R2[Rumors - false assertion rate]
+    SC --> PL[Planning - action consistency]
+    SC --> PL2[Planning - time to replan]
+    SC --> PR[Privacy - containment]</pre>
+<pre class="mermaid">flowchart TD
+    M[Mango rumor spreads agent to agent] --> F1[Source gets lost]
+    M --> F2[Rumor hardens into fact]
+    M --> F3[Facts known but unused in plans]
+    F1 --> X1[Preserve sources in memory writes]
+    F2 --> X2[Store confidence, mark firsthand vs secondhand]
+    F3 --> X3[Classify public facts, proactively share evidence]</pre>
 <h2 id="key-points">Key points</h2>
 <ul>
 <li><strong>Project Paradox:</strong> a modular framework from Supercell's AI innovation lab (Karati, ex-Microsoft, ex-Supercell; teammate Arunachalam Manikandan) letting developers plug intelligent autonomous agents into video games as dynamic companions that interact, compete, or cooperate with players and each other.</li>
@@ -44,10 +71,22 @@
 <li>For any stateful assistant (personal assistant, coding agent): add <strong>provenance to every memory</strong> (firsthand/secondhand/verified/uncertain) and keep raw episodic memories separate from current beliefs — this is a data-model change, not a model upgrade.</li>
 <li>Use a balanced scorecard, not a single quality metric — it prevents the agent from gaming optimization (oversharing, noisy recall) and wasting iteration on regressions.</li>
 </ul>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li><strong>Pick one stateful workflow</strong>: choose a long-running agent your team actually depends on (coding agent across issues, support triage) — not a demo.</li>
+<li><strong>Freeze the harness</strong>: lock scenarios, metrics, and infrastructure. Expose only a small editable policy surface: memory-writing policy, retrieval policy, communication prompt, belief and trust rules, source attribution, replanning triggers.</li>
+<li><strong>Write three scenarios</strong>: public-fact diffusion (who learns it, do they remember who said it, do plans change), rumor uncertainty (does uncertainty survive retelling), and replanning (blocked path — do agents update and tell each other).</li>
+<li><strong>Add provenance to every memory write</strong>: tag each memory firsthand, secondhand, verified, or uncertain, and keep raw episodic memories separate from current beliefs.</li>
+<li><strong>Build the balanced scorecard</strong>: diffusion reach, provenance retention, uncertainty preservation plus false-assertion rate, action consistency plus time-to-replan, privacy containment. Never optimize a single metric.</li>
+<li><strong>Run the loop as a ratchet</strong>: simulate, trace, score, change one policy, rerun — keep only what improves the scorecard with guardrails holding, revert everything else.</li>
+<li><strong>Re-run scenarios on every protocol change</strong>: claims stay modest without repeated controlled-loop results.</li>
+</ol>
 <h2 id="sources">Sources</h2>
 <ul>
 <li>Video page: https://www.youtube.com/watch?v=x4e5O9zN0TE</li>
 <li>Full transcript: https://www.usetranscribe.io/yt/x4e5O9zN0TE/long-horizon-agents</li>
 </ul></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>
