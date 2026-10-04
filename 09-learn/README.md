@@ -46,3 +46,33 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** None linked in post text.
 - **Extractable skill:** Validate system designs by simulating target load, not just whiteboarding the architecture.
 - **Source:** https://x.com/uthman_dev/status/2098799345373954060
+
+### Second batch (Aug 24 – Sep 12)
+
+### Kiro's manifesto: frontier engineering for AI-tool developers
+- **Creator:** @clare_liguori · **Date:** 2026-09-09
+- **What it suggests:** "I just published a manifesto for all the developers out there who use an AI coding tool, but feel li[ke something is off, truncated]" — kiro.dev ("Frontier engineering"). 52 replies, 282 reposts, 1,893 likes. A manifesto aimed at developers who use AI coding tools but feel uneasy — presumably arguing for a more engineering-disciplined approach to AI-assisted development (spec-driven, verified, systematic) over vibes. Manifestos matter less for their arguments than as coordination points: this is where the "frontier engineering" school is naming itself. Read the full piece at the permalink; file its principles next to the factory posts.
+- **Repos/tools:** kiro.dev
+- **Extractable skill:** Name your engineering discipline for AI-assisted work; vague unease becomes improvable practice once it's specified.
+- **Source:** https://x.com/clare_liguori/status/2097836812958097915
+
+### Uber published what its agents actually cost
+- **Creator:** @Saboo_Shubham_ · **Date:** 2026-08-30
+- **What it suggests:** "Uber published what its agents actually cost. 70%+ of pull requests now come from agents. 3,600 age[nts, truncated]." Real numbers from real scale: the majority of PRs at Uber are agent-authored, across thousands of agents — and they published the cost. This is the tokenomics benchmark this whole batch points at: when a company operating at Uber's scale puts real cost figures next to real throughput figures, every enterprise tokenomics program gets a reference point. The 70% figure also marks the phase change: agents aren't assisting engineers anymore, they're the primary producers with humans reviewing. Full numbers at the permalink; pair with the Uber factory article below.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Benchmark your agent program against published at-scale numbers (Uber: 70%+ agent PRs); cost-per-PR is the metric.
+- **Source:** https://x.com/Saboo_Shubham_/status/2093944679104659608
+
+### "Software Factories" — the emerging-architecture article
+- **Creator:** @JoshARosen · **Date:** 2026-08-30
+- **What it suggests:** "Article 'Software Factories: Emerging Architectures and Why Frontier Labs Should Care' — Software factories are suddenly everywhere. Factory.ai (which is called Factory throughout) has made [truncated]." The concept piece for this batch's factory theme: software factories as an emerging architecture category, with Factory.ai as the reference implementation and frontier labs as the audience that should care. Read alongside the Zach Lloyd factory talk and the Uber/LimestoneHQ factory posts — the category is consolidating from scattered experiments into named architecture.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Track the software-factory category as it consolidates; reference architectures are emerging now.
+- **Source:** https://x.com/JoshARosen/status/2094075909242294713
+
+### Running a Software Factory Efficiently at Uber Scale
+- **Creator:** @UberEng · **Date:** 2026-08-28
+- **What it suggests:** "Article 'Running a Software Factory Efficiently at Uber Scale' — Post author: @udaykiran. Introduction: AI tools are now embedded in every phase of software developm[ent, truncated]." 63 replies, 951 reposts, 4,810 likes — the most-shared factory piece in the batch. Uber Engineering describing AI tooling embedded in every phase of development at their scale, with efficiency as the explicit topic. This is the enterprise end-state document: not a pilot, not a lab result — every phase, at scale, with efficiency engineering. For a tokenomics and context-management remit, this is the closest thing to a peer playbook in the public domain; read the full article via the permalink and map its phases to your own rollout.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Map Uber's factory phases to your rollout; treat their efficiency work as the peer benchmark.
+- **Source:** https://x.com/UberEng/status/2093444169037762840

@@ -60,3 +60,19 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** None linked in post text (repo link not in visible text — see permalink).
 - **Extractable skill:** Study production-hardened open-source reviewers before building your own review automation.
 - **Source:** https://x.com/agenticgirl/status/2099087022900367845
+
+### Second batch (Aug 24 – Sep 12)
+
+### Every PR ships with an interactive walkthrough — open-sourced
+- **Creator:** @OhansEmmanuel · **Date:** 2026-09-07
+- **What it suggests:** "Mermaid diagrams are the floor. Every PR at @ColdteaAI ships with an interactive walkthrough. Open source: github.com/coldteadotai/pr-walkthrough." The bar-raising claim: static diagrams are the minimum; the standard is an interactive walkthrough of what the PR does — and the tooling is open source. This connects to the /show-me PR-description skill and the PR-review-agent cluster: the PR is becoming the richest agent artifact — described, walked through, and reviewed by machines. For teams: adopt the walkthrough as the PR standard and let agents generate it.
+- **Repos/tools:** github.com/coldteadotai/pr-walkthrough
+- **Extractable skill:** Make interactive PR walkthroughs the team standard; generate them with agents.
+- **Source:** https://x.com/OhansEmmanuel/status/2096996689680978148
+
+### The agentic setup that ships faster than 99% of devs (brief)
+- **Creator:** @DavidOndrej1 · **Date:** 2026-09-02
+- **What it suggests:** "I ship faster than 99% of devs. not because I'm smarter — my agentic setup does the heavy lifting. j[ust, truncated]." The claim is setup-over-talent: velocity comes from the harness, not the human. Filed as a pointer; the setup details are at the permalink.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Invest in the setup; velocity compounds from the harness.
+- **Source:** https://x.com/DavidOndrej1/status/2095101217764507813

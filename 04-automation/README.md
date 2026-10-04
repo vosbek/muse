@@ -36,3 +36,15 @@
 - **Repos/tools:** Google AI agent builder (Gmail), Zapier (zapier.com)
 - **Extractable skill:** Breadth-first platform evaluation — score automation tools on integration coverage and escape hatches before committing workflows to them.
 - **Source:** https://www.instagram.com/reel/DR3pQ5OETRH/
+
+## From X bookmarks (Sep 2026)
+Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
+
+### Second batch (Aug 24 – Sep 12)
+
+### A PR review agent that survived production at a PE-backed client
+- **Creator:** @mardehaym · **Date:** 2026-08-27
+- **What it suggests:** "A PR review agent we deployed for a PE-backed financial services client still reviews every pull req[uest, truncated]." The key word is "still" — this agent survived contact with production: it reviews every PR at a financial services client, which means it passed security review, reliability bars, and sustained usefulness. PR review is the ideal first production agent (bounded scope, clear verification, high volume), and financial services is the hardest enterprise environment. The deployment pattern to extract: narrow scope, every-PR coverage, human merge authority retained.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Ship PR review as the first production agent: bounded, high-volume, human keeps merge authority.
+- **Source:** https://x.com/mardehaym/status/2092930766644617569

@@ -74,3 +74,12 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** transitions.dev
 - **Extractable skill:** Give your UI agents a transitions library so generated interfaces ship with polish, not just function.
 - **Source:** https://x.com/jonathan_wilke/status/2098801944756154391
+
+### Second batch (Aug 24 – Sep 12)
+
+### Generative UI goes 3D: Blender MCP + Astra + Tripo
+- **Creator:** @luccacerf · **Date:** 2026-09-07
+- **What it suggests:** "First time building a gUI with Blender MCP +Astra +Tripo. This is insane. Html preview for AI is dead." The claim: generative UI is moving past flat HTML previews into real 3D — Blender (via MCP) as the renderer, Astra and Tripo as the 3D generation models. 37 replies, 65 reposts, 1,332 likes. Whether "HTML preview is dead" is hyperbole, the direction is real: as agents gain tool access to professional 3D software through MCP, the output ceiling for generative interfaces jumps from web pages to scenes. For design workflows: watch MCP servers for pro tools (Blender, Figma, CAD) — they're the new leverage point.
+- **Repos/tools:** Blender MCP, Astra, Tripo (3D generation)
+- **Extractable skill:** Route generative UI through professional tools via MCP; the output ceiling follows the tool, not the model.
+- **Source:** https://x.com/luccacerf/status/2097047098281672782

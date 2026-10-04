@@ -53,3 +53,47 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** None (news). Blog — claude.com/blog/agentic-c… (display truncated in source)
 - **Extractable skill:** Measure your own agent-written code share and throughput; don't manage by vendor benchmarks alone.
 - **Source:** https://x.com/addyosmani/status/2099577600159158765
+
+### Second batch (Aug 24 – Sep 12)
+
+### GitHub's HydraFusion: frontier-level coding from the orchestrator
+- **Creator:** @pierceboggan · **Date:** 2026-09-10
+- **What it suggests:** "The best model may not be a model after all. @Jujujuliakasper walks us through our early learnings with Project Hydrafusion and how we're delivering frontier-leve[l results, truncated]" — linking gh.io/githubcopilotd. GitHub's thesis: the orchestrator — the system that routes, decomposes, and verifies — matters more than any single model. "Frontier-level" results from orchestration rather than weights is the decision-model economics argument wearing an enterprise product hat. For buyers: evaluate the harness, not the model card.
+- **Repos/tools:** gh.io/githubcopilotd (Project HydraFusion)
+- **Extractable skill:** Evaluate coding assistants on orchestration quality; the router is the product.
+- **Source:** https://x.com/pierceboggan/status/2098080315562733795
+
+### Hands-on with HydraFusion: "exactly how you'd want a teammate to work"
+- **Creator:** @OrenMe · **Date:** 2026-09-10
+- **What it suggests:** "I recently got to play with HydraFusion. It's exactly how you would want your employee or team mate t[o work, truncated]" (gh.io/GitHubCopilotD). An independent hands-on corroborating GitHub's claims: the experience feels like working with a competent teammate, not an autocomplete tool. The bar being set is behavioral — does it work like a colleague? — a harder eval than benchmark scores and a more useful one for adoption decisions.
+- **Repos/tools:** gh.io/GitHubCopilotD
+- **Extractable skill:** Eval agent tools on teammate-behavior, not just benchmarks.
+- **Source:** https://x.com/OrenMe/status/2097920445081165850
+
+### HydraFusion in plain English
+- **Creator:** @acolombiadev · **Date:** 2026-09-08
+- **What it suggests:** "Learn about @github HydraFusion in plain English." A pointer post — the accessible explainer for this HydraFusion cluster. When a product generates its own plain-English explainers within days of launch, it's a signal the category is moving fast enough to need translation layers.
+- **Repos/tools:** None.
+- **Extractable skill:** When a launch spawns instant explainers, treat the category as fast-moving and track it closely.
+- **Source:** https://x.com/acolombiadev/status/2097455710023876655
+
+### Lerna: use HydraFusion in the Copilot CLI, watch subagents live
+- **Creator:** @unixterminal (Hayden Barnes) · **Date:** 2026-09-07
+- **What it suggests:** "Lerna - Use GitHub's new AI orchestrator, HydraFusion, in GitHub Copilot CLI - Monitor subagent acti[vity, truncated]" — github.com/sirredbeard/Lerna. A third-party tool that puts HydraFusion orchestration in the terminal and, crucially, lets you watch subagent activity. Observability is the missing piece in most agent setups: when the orchestrator fans out to subagents, you need to see what each one is doing. Lerna's angle — monitoring as the feature — is the right instinct for anyone operating multi-agent systems.
+- **Repos/tools:** github.com/sirredbeard/Lerna
+- **Extractable skill:** Demand subagent observability in any orchestrator; fan-out without visibility is undebuggable.
+- **Source:** https://x.com/unixterminal/status/2097033608481082663
+
+### "Hydrafusion is here!" (brief)
+- **Creator:** @burkeholland · **Date:** 2026-09-04
+- **What it suggests:** Launch-day pointer for HydraFusion. Filed with the cluster above; details at the permalink.
+- **Repos/tools:** None.
+- **Extractable skill:** None — pointer.
+- **Source:** https://x.com/burkeholland/status/2095965855297220835
+
+### "I've got some bad news…" (brief)
+- **Creator:** @burkeholland · **Date:** 2026-09-12
+- **What it suggests:** Text is just "I've got some bad news…" (4 replies, 53 likes) — the substance is presumably in attached media or replies. Filed as a stub; the take is at the permalink.
+- **Repos/tools:** None.
+- **Extractable skill:** None — stub.
+- **Source:** https://x.com/burkeholland/status/2098622630425416023

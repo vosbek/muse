@@ -53,3 +53,75 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** None linked in post text (LangGraph mentioned).
 - **Extractable skill:** Model agent memory as a graph and put cheap decision models at the routing nodes.
 - **Source:** https://x.com/sydneyrunkle/status/2101128449033416825
+
+### Second batch (Aug 24 – Sep 12)
+
+### The clearest agent-harness explainer, turned into a guide
+- **Creator:** @free_ai_guides · **Date:** 2026-09-09 (amplifying @mardehaym)
+- **What it suggests:** "Mark's breakdown of the AI agent harness is the clearest explanation of the topic I've read, so I tu[rned it into a guide, truncated]." Filed with the harness cluster below: the through-line is that the harness — the loop, tools, state, and verification around the model — is where agent quality lives, not the model weights. When multiple independent readers call one breakdown "the clearest," treat it as canonical onboarding material for anyone building agents.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Onboard agent builders with harness-first mental models before model specifics.
+- **Source:** https://x.com/free_ai_guides/status/2097756980408623376
+
+### Production AI agents inside a PE portco's prior-auth pipeline
+- **Creator:** @mardehaym · **Date:** 2026-09-10
+- **What it suggests:** A PE operating partner asked them to put production AI agents inside a portfolio company's prior-authorization pl[an, truncated] — agents doing real, regulated, high-stakes workflow work (healthcare prior authorization), not demos. This is the enterprise deployment pattern the factory talk describes: agents embedded in an existing business process with human gates, audit trails, and measurable throughput. The sector matters — prior auth is paperwork-heavy, rules-bound, and expensive, which is exactly where agent economics work. Full case details at the permalink.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Deploy agents inside existing regulated workflows with human gates; paperwork-heavy processes are the best first targets.
+- **Source:** https://x.com/mardehaym/status/2097979140884570267
+
+### The harness deep-dive: it's not the model
+- **Creator:** @mardehaym · **Date:** 2026-09-09
+- **What it suggests:** "To truly understand AI agents, you need to understand the harness. And it's not the model. I went d[eep, truncated]." The central claim of this batch's biggest theme: agent capability = harness quality. The model is interchangeable; the loop (plan, act, verify, recover), the tools, the state management, and the evals are what separate a demo from a production system. This is the thesis behind the factory talk's inner loop and the COMBINED.md patterns. Treat harness engineering as the discipline; model selection as a configuration choice.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** When an agent fails, debug the harness (loop, tools, state, evals) before blaming the model.
+- **Source:** https://x.com/mardehaym/status/2097736766245499226
+
+### Endorsement of the harness breakdown
+- **Creator:** @alex_prompter · **Date:** 2026-09-09
+- **What it suggests:** "the best breakdown of agent harnesses I've seen on this app:" — a pointer amplifying @mardehaym's harness thread. Filed as a corroborating signal: when practitioners independently converge on one explainer, it belongs in the canonical reading list.
+- **Repos/tools:** None.
+- **Extractable skill:** Weight explainers by independent practitioner convergence, not by like counts alone.
+- **Source:** https://x.com/alex_prompter/status/2097737171218075771
+
+### Agent primitives should graduate from Slack markdown files
+- **Creator:** @OrenMe · **Date:** 2026-09-08
+- **What it suggests:** "Managing agent primitives should graduate from sending markdown files in Slack between team members." The primitives — skills, prompts, evals, configs — are currently passed around like folklore: paste this markdown, trust me it works. The point is that this doesn't scale: primitives need versioning, ownership, distribution, and deprecation — treated as software artifacts with a supply chain, not chat attachments. This is the governance half of skill-driven development: the skill library is the asset, and assets need infrastructure.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Give agent primitives a real supply chain — versioned, owned, distributed, deprecable — not Slack folklore.
+- **Source:** https://x.com/OrenMe/status/2097419890755813854
+
+### Agent customization converges on Skills, not prompt files
+- **Creator:** @OrenMe · **Date:** 2026-09-08
+- **What it suggests:** "Agent customization is converging. I'm happy to see @GitHubCopilot new harness engine (AHP) no longer supports prompt files. It asks you to migrate them to Skills. I [truncated]." GitHub Copilot's new harness engine dropping prompt-file support in favor of Skills is the industry converging on one customization primitive. Prompts were the wild west — freeform text with no structure; Skills are packaged, versioned, evaluable units. When the biggest coding assistant migrates users off prompt files, the debate is over: build on Skills.
+- **Repos/tools:** GitHub Copilot (AHP harness engine)
+- **Extractable skill:** Build all agent customization as Skills; prompt files are the legacy format.
+- **Source:** https://x.com/OrenMe/status/2097407731452059914
+
+### Inside a real AI Factory at LimestoneHQ
+- **Creator:** @mardehaym · **Date:** 2026-09-02
+- **What it suggests:** "We run an AI Factory at @LimestoneHQ. Here's what actually happens between a ticket and a merged pull request. Most teams already tried [truncated]." A field report from a production AI factory: the full path from ticket to merged PR, including what most teams tried and where it breaks. This is the factory-engineering thesis with real scars — the value is in the failure modes and the fixes, not the architecture diagram. Pairs with the explainer endorsement below and the Uber factory posts in 09-learn.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Study production factory postmortems for the ticket-to-merge failure modes; that's where the real design constraints live.
+- **Source:** https://x.com/mardehaym/status/2095095728565588436
+
+### The enterprise AI factory explainer, endorsed
+- **Creator:** @alex_prompter · **Date:** 2026-09-02
+- **What it suggests:** "the best breakdown of what an enterprise AI factory is:" — amplifying the LimestoneHQ factory thread. Another convergence signal: practitioners independently naming the same factory explainer as canonical.
+- **Repos/tools:** None.
+- **Extractable skill:** Same as above — treat practitioner-converged explainers as canonical.
+- **Source:** https://x.com/alex_prompter/status/2095096200693186859
+
+### Tobi open-sources self-improving-loop infra (tangleml)
+- **Creator:** @tobi (Tobi Lütke) · **Date:** 2026-09-01
+- **What it suggests:** "Btw we open sourced the core infra piece that makes these self improving loops possible." — tangleml.com. 98 replies, 250 reposts, 4,148 likes. This is the outer loop from the factory talk (the loop that improves the system itself) as open infrastructure: the mechanism by which agent systems get better from their own operation, released for anyone to use. Self-improving loops are the difference between a system that decays and one that compounds; open-sourcing the infra makes the pattern adoptable instead of tribal knowledge. If your agents don't get better with use, you're paying the same learning tax forever.
+- **Repos/tools:** tangleml.com
+- **Extractable skill:** Adopt self-improving-loop infrastructure; systems that don't learn from operation pay a permanent tax.
+- **Source:** https://x.com/tobi/status/2094904650709234015
+
+### The 1% of AI engineers build self-improving systems (×2)
+- **Creators:** @res1dualedge · **Date:** 2026-09-01; @callanxai · **Date:** 2026-08-30
+- **What it suggests:** Two posts quoting an Anthropic engineer: "If you want to be in the 1% of AI engineers, you need to build a system that i[s self-improving, truncated]." The 1% framing is hype, but the substance matches the tangleml post: the differentiator isn't prompt skill, it's building systems with feedback loops — evals, memory, and improvement mechanisms. Two independent posts surfacing the same quote in two days signals the idea has crossed into consensus.
+- **Repos/tools:** None.
+- **Extractable skill:** Build the feedback loop, not just the agent; self-improvement is the senior skill.
+- **Source:** https://x.com/res1dualedge/status/2094925075606610048 · https://x.com/callanxai/status/2094065331576688985
