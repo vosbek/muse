@@ -36,3 +36,20 @@
 - **Repos/tools:** None (markdown file + discipline)
 - **Extractable skill:** lessons.md loop — capture corrections immediately, re-read at session start, apply before acting. Start here before building anything fancier.
 - **Source:** https://www.instagram.com/reel/DV4a43ZjkMa/
+
+## From X bookmarks (Sep 2026)
+Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
+
+### Unreal Agent: an open-source harness claiming state-of-the-art cost efficiency
+- **Creator:** @unreallabsai · **Date:** 2026-09-22
+- **What it suggests:** Introduces Unreal Agent, an open-source harness claiming state-of-the-art cost efficiency — 39% cheaper than its baseline (text truncates), with an image presumably showing the comparison. Verifiable: this is a harness-level cost play — not a cheaper model, but cheaper orchestration of models — and it's open source, so the techniques are inspectable. The 39% figure needs its baseline from the permalink. For the memory angle: harness efficiency gains increasingly come from memory design — what context you keep, compact, and re-fetch — so an open harness with measured cost wins is exactly where to look for transferable memory techniques.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Optimize the harness itself (orchestration, memory, retries), not just the model, for the next cost multiple.
+- **Source:** https://x.com/unreallabsai/status/2102435462065385775
+
+### Graph engineering for agents: Jev fits the LangGraph memory model
+- **Creator:** @sydneyrunkle · **Date:** 2026-09-18
+- **What it suggests:** Notes that months after writing about graph engineering for agents with LangGraph, Jev fits nicely into that picture (text truncates) — quoting the author's own article on three years of graph engineering with LangGraph. Verifiable: the claim is architectural fit — decision models slot naturally into graph-based agent orchestration, where nodes make routing decisions and edges carry state. For agent memory, this is the key intersection: graphs are the memory and state substrate, and Jev-class models are the decision function at each node. The full argument is at the permalink.
+- **Repos/tools:** None linked in post text (LangGraph mentioned).
+- **Extractable skill:** Model agent memory as a graph and put cheap decision models at the routing nodes.
+- **Source:** https://x.com/sydneyrunkle/status/2101128449033416825

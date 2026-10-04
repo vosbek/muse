@@ -57,3 +57,62 @@
 - **Repos/tools:** Claude Code (subagents)
 - **Extractable skill:** Context-labor division — push discovery, parallel research, and checkpointing into subagents; keep the main thread for judgment and edits only.
 - **Source:** https://www.instagram.com/reel/DPxE0FDAe71/
+
+## From X bookmarks (Sep 2026)
+Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
+
+### AI Engineer Paris talk: /retro, /pr, and getting more from agents
+- **Creator:** @mattpocockuk · **Date:** 2026-09-25
+- **What it suggests:** Shares the talk given at AI Engineer Paris 2026, announcing /retro and /pr commands and covering how to get more from coding agents (text truncates). Verifiable: /retro and /pr are new workflow commands — a retrospective command and a PR-focused command — presented on a main-stage talk with a YouTube card. The pattern is agent workflow commands as the unit of leverage: named, repeatable loops (review your own work, prepare a PR) that compound agent output quality. The talk's full content is at the permalink and the linked video.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Encode repeatable agent workflows (retrospectives, PR prep) as named commands, not ad-hoc prompts.
+- **Source:** https://x.com/mattpocockuk/status/2103501498361798983
+
+### Getting the most out of Opus 5.5: hand over whole tasks, define "done"
+- **Creator:** @ClaudeDevs · **Date:** 2026-09-22
+- **What it suggests:** Tips for a first Opus 5.5 session: hand over a whole task, define what "done" means, and decide when to check in (text truncates), linking the official blog post on getting the most out of Opus 5.5 in Claude and Claude Code. Verifiable: the advice pushes toward larger delegation units — whole tasks with explicit completion criteria and check-in points — rather than step-by-step micromanagement. This matches the delegation theme across the collection: agent output quality scales with how completely you specify the goal and the verification step. Full tips at the permalink and the linked blog.
+- **Repos/tools:** claude.dev (blog link card in post)
+- **Extractable skill:** Delegate whole tasks with an explicit definition of done and scheduled check-ins instead of micromanaging steps.
+- **Source:** https://x.com/ClaudeDevs/status/2102491840612380934
+
+### A real-world Opus 5.5 benchmark on actual knowledge-work tasks
+- **Creator:** @danshipper · **Date:** 2026-09-22
+- **What it suggests:** Points to a personal benchmark of Opus 5.5 on real-world knowledge-work tasks, reporting it performs at Fable level on many actual work tasks — though on a few it ran into trouble (text truncates, with an image showing more). The benchmark lives at the linked checks page. Verifiable: this is an eval grounded in one person's real work rather than synthetic benchmarks, which makes it more predictive of day-to-day usefulness. The caveat suggests failure modes on some tasks; the full results and methodology are at the permalink.
+- **Repos/tools:** Mike's Checks benchmark — checks.every.to/p/mikes-checks
+- **Extractable skill:** Evaluate models on your own real work tasks, not just synthetic benchmarks, before committing workflows to them.
+- **Source:** https://x.com/danshipper/status/2102438173599297643
+
+### A Jev plugin for Claude that audits tool calls and compacts context in 1 second
+- **Creator:** @altryne · **Date:** 2026-09-17
+- **What it suggests:** Highlights a Claude plugin using TypeSafe AI's Jev model to review unnecessary tool calls, running in about 1 second — quoting a post that found the ideal Jev use case: instant compaction. The text truncates, so install details are at the permalink; a short demo video and two images show it working. Verifiable: this is the decision-model pattern applied inside the agent loop itself — a cheap model auditing and compressing the expensive model's tool-call trace in real time. Compaction is one of the highest-leverage cost controls in long agent sessions.
+- **Repos/tools:** None linked in post text (Jev plugin for Claude; @typesafeai mentioned).
+- **Extractable skill:** Audit and compact your agent's tool-call trace with a cheap model in real time to control long-session costs.
+- **Source:** https://x.com/altryne/status/2100739055923425589
+
+### shadcn/lint: a linter for Tailwind design systems built for agents
+- **Creator:** @ctatedev · **Date:** 2026-09-14
+- **What it suggests:** Reacts with enthusiasm to the announcement of shadcn/lint, a linter for Tailwind design systems designed with agents as the primary user. The post is short and complete; the substance is the quoted announcement at the permalink. Verifiable: this is tooling built for agents as the operator — a linter that keeps AI-generated Tailwind consistent with a design system, which only matters once agents are writing most of the UI. The direction is clear: developer tools are being rebuilt around the agent, and linting is where design-system compliance gets enforced on machine-written code.
+- **Repos/tools:** shadcn/lint (announced by @shadcn; no URL in post text)
+- **Extractable skill:** Adopt agent-first tooling (like design-system linters) that enforces consistency on machine-written code.
+- **Source:** https://x.com/ctatedev/status/2099536434285666550
+
+### Skill-driven development: a full CRM dashboard in two days with Claude
+- **Creator:** @rauchg · **Date:** 2026-09-14
+- **What it suggests:** Names the pattern "skill-driven development," quoting a build where a complete Next.js CRM dashboard was assembled in roughly two days using Claude Fable 5.1, powered by published skills and deployed to a live URL, with a demo video. The quoted post names two skills on skills.sh and the deployed app. Verifiable: the claim is that reusable skills — not prompts — were the leverage that made a two-day full-app build possible. This reframes agent productivity: the asset is the skill library, and skill-driven development is the proposed methodology — compose skills, let the model execute.
+- **Repos/tools:** Skills — skills.sh/jakubkrehel/sk; skills.sh/emilkowalski/s… (display truncated in source). Demo app — sales-crm-kargulstudio.vercel.app
+- **Extractable skill:** Build a reusable skill library and compose skills to drive full-app builds instead of writing one-off prompts.
+- **Source:** https://x.com/rauchg/status/2099500509451502043
+
+### Put HTML-explainer instructions in your CLAUDE.md / AGENTS.md
+- **Creator:** @nityeshaga · **Date:** 2026-09-14
+- **What it suggests:** Advises that anyone making HTML explainers with an agent should add specific instructions to their CLAUDE.md / AGENTS.md files, quoting an article on the unreasonable effectiveness of HTML with Claude Code. The text truncates, so the actual instruction text is at the permalink. Verifiable: the pattern is persistent agent configuration — project-level instruction files that steer output format (here: HTML explainers) across sessions. The meta-point: the highest-leverage prompt engineering is the kind you write once into AGENTS.md and every future session inherits.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Write output-format instructions once into CLAUDE.md/AGENTS.md so every future session inherits them.
+- **Source:** https://x.com/nityeshaga/status/2099394418877125035
+
+### 24 reusable agent skills distilled from 14 years at Google
+- **Creator:** @0xCodila · **Date:** 2026-09-13
+- **What it suggests:** Quotes an Anthropic engineer and ex-Googler describing 14 years at Google distilled into 24 reusable skills for agents, linking the author's own article on graph engineering for building 1000+ agent loops from one prompt, with a 40-minute video. The post text is a quote and complete; the substance is the linked article at the permalink. Verifiable: the through-line with the skill-driven development post is that senior practitioners are converging on skills — not prompts, not single agents — as the durable unit of agent engineering. Fourteen years of platform experience compressed into 24 reusable skills is the model for how teams should accumulate agent leverage.
+- **Repos/tools:** None linked in post text.
+- **Extractable skill:** Accumulate agent leverage as a library of reusable skills, not as one-off prompts or single agents.
+- **Source:** https://x.com/0xCodila/status/2099177605484179532

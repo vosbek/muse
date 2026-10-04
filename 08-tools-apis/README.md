@@ -36,3 +36,27 @@
 - **Repos/tools:** Hugging Face Spaces (huggingface.co/spaces)
 - **Extractable skill:** Demo-driven distribution — publish an interactive Space with every significant AI project, not just the code.
 - **Source:** https://www.instagram.com/reel/DJPz_Ulya7Q/
+
+## From X bookmarks (Sep 2026)
+Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
+
+### Debug Visualizer: see your data structures inside VS Code
+- **Creator:** @code · **Date:** 2026-09-23
+- **What it suggests:** Recommends the Debug Visualizer extension for VS Code for anyone working with data structures — it renders them visually during debugging (text truncates), with a demo video. Verifiable: this is a visualization tool that renders data structures instead of making you read raw object dumps. For agent-assisted development it matters twice: humans reviewing agent-written data-structure code comprehend it faster visually, and it's the kind of comprehension tooling that keeps human review effective as machine-written code volume grows.
+- **Repos/tools:** Debug Visualizer (VS Code extension; no URL in post text)
+- **Extractable skill:** Visualize data structures during debugging instead of reading raw dumps, especially when reviewing agent-written code.
+- **Source:** https://x.com/code/status/2102760396490719499
+
+### Link collection: skill evaluation and agent infrastructure
+- **Creator:** @OrenMe · **Date:** 2026-09-20
+- **What it suggests:** This post has no body text — it is a pure link collection, listed here as shown. The theme is evaluation and agent infrastructure: NVIDIA's SkillEvaluator (link card describes it as a multi-tier framework for evaluating AI agent skills), Microsoft's Waza site, a Harbor framework repo, Microsoft's APM site, and a GitHub Marketplace link. With no commentary from the poster, treat this as a reading list: the SkillEvaluator repo is the standout for anyone building the skill libraries discussed elsewhere in this collection, since skills need evals to stay trustworthy as they accumulate.
+- **Repos/tools:** NVIDIA SkillEvaluator — github.com/NVIDIA/skillev… (display truncated in source); microsoft.github.io/waza/; Harbor framework — github.com/harbor-framewo… (display truncated in source); microsoft.github.io/apm/; github.com/marketplace/re… (display truncated in source)
+- **Extractable skill:** Pair every skill library with an evaluation framework so skills stay trustworthy as they accumulate.
+- **Source:** https://x.com/OrenMe/status/2101685294961422461
+
+### Alibaba open-sourced its production code reviewer
+- **Creator:** @agenticgirl · **Date:** 2026-09-13
+- **What it suggests:** Reports that Alibaba open-sourced the code reviewer it claims has served tens of thousands of developers and found significant issues (text truncates), with an image. Verifiable: this is a production-hardened review tool — battle-tested at massive developer scale — now available as open source. That provenance matters: unlike demo-ware, its rules and workflows survived real enterprise use. The detailed findings are at the permalink. For teams building review automation, this is a reference implementation worth studying before building your own.
+- **Repos/tools:** None linked in post text (repo link not in visible text — see permalink).
+- **Extractable skill:** Study production-hardened open-source reviewers before building your own review automation.
+- **Source:** https://x.com/agenticgirl/status/2099087022900367845

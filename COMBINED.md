@@ -41,3 +41,19 @@ If you own token cost and context layers, these are the patterns to deploy first
 4. **Rule ROI on prompts.** Every instruction you add to a system prompt is paid on every call and can degrade output. Test additions like @camillaintech does; delete rules that don't measure better.
 5. **Local-first for the long tail.** Classification, routing, transcription, simple agents — the SLM economics argument says this work migrates local. Reserve metered frontier calls for where they measurably win.
 6. **Invest in the harness, not just the model.** When agents fail, check the edit/verify loop before blaming the model. Whole-line matches, diffs after every edit, reject-bad-edits-upfront — these are cheap, model-agnostic, and compound.
+
+## New patterns from the X bookmarks (Sep 2026)
+
+The 55 X posts (Sep 12–28, 2026) add four patterns the original 39 reels didn't have — all of them about speed of commoditization:
+
+**10. Decision models commoditize in days, not years.**
+Jev launched; three days later CUA-S1 open-sourced a competing System One family, and within two weeks there were open clones claiming superiority (Laya), a fully open 9B model with open data and recipe (Bespoke Nimble), a 2.8MB edge model, an open-weights classifier toolkit (SimpleJev), a PostgreSQL extension (jev()), a research CLI (jevgrep), and a provider-swap adapter. The moat evaporated before most teams finished evaluating the original. The playbook consequence: never build on a single decision-model vendor — build on the pattern (cheap classification/routing/gating), keep the provider swappable, and track open clones because the best local-first option may already beat the API.
+
+**11. The economics are now quoted in multiples, and they're extreme.**
+$0.042 per million input tokens for the decision layer. PR review at ~200x cheaper than Claude, answering in half a second. Agent bills cut 400x. jevgrep at 40% lower cost on SWE-bench. Unreal Agent 39% cheaper at the harness level. Even discounting vendor-amplified claims, the direction is unambiguous: decision-shaped work is becoming effectively free. That changes what's worth automating — when review costs 1/200th, you run it on every PR, every push, every ticket. The tokenomics move is to re-audit which workflows become viable at each new cost multiple.
+
+**12. Skill-driven development is the emerging practice.**
+@rauchg named it: a full CRM dashboard in two days, driven by composed skills from skills.sh. An ex-Google Anthropic engineer distilled 14 years into 24 reusable skills. shadcn shipped a linter whose primary user is an agent. NVIDIA shipped a multi-tier framework for evaluating agent skills. The unit of agent engineering is converging on the skill — versioned, reusable, evaluable — not the prompt, not the single agent. For the playbook: the skill library is the asset; evals (SkillEvaluator) are what keep it trustworthy as it grows.
+
+**13. Model deprecation is now routine operations.**
+GitHub Copilot deprecating selected models on Oct 19, 2026 is the forcing function: prompts, skills, evals, and workflows hard-tied to one model break on someone else's schedule. The X bookmarks' answer is the same abstraction stack the reels described — routers, provider-swap adapters, portable skills — now justified as operational resilience, not just cost control. Design every layer for model turnover.

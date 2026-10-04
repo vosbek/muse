@@ -50,3 +50,27 @@
 - **Repos/tools:** Manus AI (manus.ai)
 - **Extractable skill:** Named-style vocabulary — encode design languages as named tokens in your design skill; one word replaces pages of prompt.
 - **Source:** https://www.instagram.com/reel/DbKrDR1IQ2v/
+
+## From X bookmarks (Sep 2026)
+Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
+
+### Your project architecture on an interactive canvas
+- **Creator:** @openshipio · **Date:** 2026-09-27
+- **What it suggests:** Announces OpenShip's next step: project architecture rendered on an interactive canvas — see how services connect, click a node for detail (text truncates), quoting the project's own post with an image. Verifiable: this is architecture visualization as a product surface — services and their connections explorable visually rather than read from config. For vibe-coded projects where agents generate sprawling service topologies, a live architecture canvas is the comprehension layer that keeps humans in the loop. Details of the interaction are at the permalink.
+- **Repos/tools:** None linked in post text (OpenShip).
+- **Extractable skill:** Give every generated architecture an interactive visual map so humans can comprehend what agents built.
+- **Source:** https://x.com/openshipio/status/2104187404533838043
+
+### Why builders are endorsing OpenShip
+- **Creator:** @ParthJadhav8 · **Date:** 2026-09-27
+- **What it suggests:** An endorsement post calling OpenShip one of the best open-source projects of the year, quoting the architecture-canvas announcement. The post is short and complete; it carries no technical detail itself. Verifiable: the signal is social-proof velocity — the announcement is pulling strong endorsements from the builder community within the same day. For the playbook, the takeaway is to put OpenShip on the evaluation shortlist for architecture visualization, with the actual product details in the quoted post at the permalink.
+- **Repos/tools:** None (opinion/endorsement).
+- **Extractable skill:** Track which open-source dev tools earn same-day builder endorsements; that's your evaluation shortlist.
+- **Source:** https://x.com/ParthJadhav8/status/2104224156191715473
+
+### A transitions library built for agent-generated UIs
+- **Creator:** @jonathan_wilke · **Date:** 2026-09-12
+- **What it suggests:** Discovers transitions.dev — a catalog of small animations that make UIs feel better — with the site positioned for AI agents to use (text truncates). Verifiable: this is a transitions and animation library explicitly aimed at agents — the missing polish layer in vibe-coded UIs. Agent-generated interfaces tend to be functional but lifeless; a transitions library the agent can reach for closes the gap between shipped and feels-good. The catalog is at transitions.dev.
+- **Repos/tools:** transitions.dev
+- **Extractable skill:** Give your UI agents a transitions library so generated interfaces ship with polish, not just function.
+- **Source:** https://x.com/jonathan_wilke/status/2098801944756154391
