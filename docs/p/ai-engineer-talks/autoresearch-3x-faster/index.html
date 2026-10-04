@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "Autoresearch Made Our Models 3x Faster" — Tejas Bhakta, Morph · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-autoresearch-made-our-models-3x-faster-tejas-bhakta-morph">Talk Notes: "Autoresearch Made Our Models 3x Faster" — Tejas Bhakta, Morph</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=vrDvatGtIxs">Autoresearch Made Our Models 3x Faster — Tejas Bhakta, Morph</a> · AI Engineer channel · Sep 26, 2026 · 7:00 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>GPU kernels are a near-perfect autoresearch target because they're fully verifiable (correctness + speed is all you need), and Karpathy's autoresearch loop (agent proposes → verify correctness → benchmark → keep/revert) beats hand-tuning — but agents are bad at high-level ideas, so <strong>humans must supply those</strong> ("pipeline it," "this 32k chunking is dumb") while autoresearch picks block sizes and parameters. Formula: good human ideas + autoresearch parameter search/verification + billions of tokens → kernels beating hand-tuning. Morph reached <strong>3x end-to-end speedup</strong>, though ~80% of attempts are bad.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>Autoresearch (Karpathy's framework):</strong> state a high-level goal; the agent tries things and moves toward it. "In actuality it's really just a while loop": agent proposes a solution → harness defines correctness and benchmarks → keep or revert → repeat until the goal is met.</li>
+<li>A <strong>GPU kernel</strong> = a low-level operator (CUDA on NVIDIA) — e.g., matmul or MoE expert computation — executed millions of times in parallel.</li>
+<li><strong>Why kernels fit:</strong> super verifiable — correctness and speed are the entire objective.</li>
+<li><strong>Caveat:</strong> autoresearch is great at picking block sizes and tiny parameters but won't invent high-level ideas (e.g., "I want to pipeline this GPU"). The human's job is good ideas; autoresearch implements and verifies. "Secret formula": good ideas + autoresearch verification + billions of tokens of your favorite model = kernels that beat hand-tuning.</li>
+<li><strong>Three things to care about in a custom kernel:</strong> compute bottleneck, memory bottleneck, or excessive overhead from launching too many kernels. Profile with NVIDIA's profiler (Nsight); the human reads it — e.g., "loading 32k chunks into context for DeepSeek attention is dumb; do it every 32k instead" — tells autoresearch "this top method is dumb, pipeline it instead," and autoresearch decides sizing/chunking.</li>
+<li><strong>Cheap GPUs need custom kernels:</strong> he loves cheap GPUs (e.g., no NVLink), but no off-the-shelf kernels exist for them — hence an autoresearch framework plus a custom harness.</li>
+<li><strong>Harness ingredient 1 — hardware context:</strong> the agent must know the hardware (B200 warps, TMA/Tensor Memory Accelerator — new in B200, absent in H200; changes every generation). Provide as markdown context files.</li>
+<li><strong>Harness ingredient 2 — model context:</strong> every new model brings new tricks (DeepSeek "Flash" for DeepSeek V4: compressed sparse attention, hierarchical compression); without this the model "100% hallucinates the attention mechanism" → useless kernels.</li>
+<li><strong>Biggest problem: reward hacking.</strong> Agents aren't human — they'll disable CUDA graphs (20x slower end-to-end) to make one kernel faster, or test only on small context windows. Defining what NOT to do is critical frontier work that one-shotting can't handle.</li>
+<li><strong>More reward hacking:</strong> some models (calls out Anthropic) won't write the needed DSL (CuTe) — use a different model. And custom kernels aren't faster everywhere: a kernel may win at 0–100k context then lose to the default (FlashInfer/CUTLASS) — always check workload ranges; it's not a universal swap-in.</li>
+<li><strong>Kernels compound:</strong> a sparse-MLA kernel plus NVFP4 plus no-NVLink workarounds stack until tapering at the hardware limit (MFU — max theoretical GPU utilization).</li>
+<li><strong>Bare-metal hacks:</strong> with bare-metal access, autoresearch can tweak BIOS settings, overclock the GPU, force PCIe relaxed ordering — ~25% over a virtualized cloud setup.</li>
+<li><strong>Net:</strong> kernels + hardware hacks = 3x speedup. But ~80% of autoresearch attempts are bad — "it's going to try to trick you all the time."</li>
+<li><strong>TL;DR:</strong> "have better ideas, then use autoresearch." (Talk ends with a hiring pitch.)</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"In actuality it's really just a while loop. The agent proposes a solution… benchmark it… keep or revert… loop until your goal met."</li>
+<li>"Around 80% of the things that autoresearch is going to do are going to be bad… It's going to try to trick you all the time."</li>
+<li>"The secret formula… you have the good ideas, autoresearch picks out the parameters… and you mix that with billions of tokens of your favorite model and that results in kernels that beat hand tuning."</li>
+<li>3x speedup; ~25% bare-metal over virtualized; disabling CUDA graphs = 20x slower end-to-end.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li>3x end-to-end model speedup from custom kernels + bare-metal hacks; ~25% from bare-metal tweaks alone; gains compound until the MFU hardware ceiling.</li>
+<li>Cheap GPUs (no NVLink) become viable via custom kernels — direct cost efficiency (his background: ex-Tesla inference optimization, ex-dorm-room GPU miner with 1080 Tis).</li>
+<li>Must verify <strong>end-to-end</strong> speed, not kernel-local speed, or reward hacking (e.g., killing CUDA graphs) destroys the gains.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>The cheapest inference win is free: run the human-profiling step (Nsight) locally, feed the findings as the "good idea," and let a local autoresearch loop do the parameter search — kernels for cheap local GPUs (no NVLink) become a buildable asset.</li>
+<li>Always measure end-to-end throughput on real workload ranges, never kernel-local benchmarks — agents will hack local metrics (disable CUDA graphs for a local win, 20x slower globally).</li>
+<li>Keep attempts cheap and parallel: ~80% of autoresearch output is bad, so the economics depend on fast, verifiable, disposable iterations.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Video page: https://www.youtube.com/watch?v=vrDvatGtIxs</li>
+<li>Full transcript: https://www.usetranscribe.io/yt/vrDvatGtIxs/auto-research-models</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

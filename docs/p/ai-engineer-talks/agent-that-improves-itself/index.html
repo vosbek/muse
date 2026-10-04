@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "How We Built an Agent That Improves Itself" — Zubin Aysola, Weights & Biases · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-how-we-built-an-agent-that-improves-itself-zubin-aysola-weights-biases">Talk Notes: "How We Built an Agent That Improves Itself" — Zubin Aysola, Weights &amp; Biases</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=XyV6bSMyq-I">How We Built an Agent That Improves Itself — Zubin Aysola, Weights &amp; Biases</a> · AI Engineer channel · Sep 26, 2026 · 17:05 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>W&amp;B's ARIA agent improves itself through a <strong>production↔offline eval flywheel</strong> built on Weave: production traces are logged in the exact same format as offline traces, so every production miss (or win) becomes an offline eval task (886 YAML tasks); a bit-wise identical agent runs in production and in a simulation environment; nightly CI compares prod vs candidate variants; and ARIA itself reviews traces, authors tasks, and proposes prompt/skill variants — "replication from production to simulation to agent-defined improvement." The governing worry: benchmarks, evals, agents, and configs are all covariant, so measurement must be identical across prod and offline.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>ARIA:</strong> W&amp;B's agent harness for doing research inside the W&amp;B platform; went GA the Monday before the talk (~Sep 21, 2026). Companion talk by peer Tim Sweeney (see ai-research-agent-experiments.md).</li>
+<li><strong>Core problem</strong> ("what I go to bed thinking about"): benchmarks, evaluations, agents, and configs are all covariant — principled evaluation of a changing system demands identical measurement in production and offline (the sim-to-real gap).</li>
+<li><strong>W&amp;B Weave:</strong> observability for production AND offline agent tracing. Half the team works production (deploy, log traces in the exact same format); half works offline (simulation envs, run ARIA, track metrics in Weave).</li>
+<li><strong>The flywheel:</strong> rip production traces → convert to offline eval tasks → hill-climb on them (fix errors or reinforce wins) → deploy new agent versions.</li>
+<li><strong>Live demo "ARIA researches ARIA":</strong> asked ARIA to do autoresearch on itself — it took the codebase (a W&amp;B artifact), launched jobs against the offline eval framework, reviewed production traces, added hill-climb tasks, and wrote a new variant of itself.</li>
+<li><strong>Production trace → eval task, done live:</strong> took a real Weave production trace, had ARIA log it into offline evals, ran candidate vs production agent on it with evals streaming into Weave. Nightly CI jobs (~7 weeks of traces) evaluate the prod-format agent plus candidate variants — ~66% on some tasks; "for a while the CI broke, we had ARIA fix itself last night."</li>
+<li><strong>Mostly prompt engineering + skills, not RL:</strong> current models are good enough at W&amp;B tasks; the work is building agent skills — but with RL-grade simulation rigor.</li>
+<li><strong>Bit-wise identical agent</strong> in production and simulation; research and production code are exactly the same; a 4-hour prod→research sync job prevents drift as researchers cut new variants/skills.</li>
+<li><strong>Generate a TON of traces, then decide what to do with them:</strong> measure emergent properties, align the agent. Improvement comes from manual task review or asking ARIA to review its own rollouts and reinforce behavior via prompting.</li>
+<li><strong>Model-agnostic harness:</strong> tests many models (CoreWeave inference, foundation-model providers); agnostic stack for compaction, context prep, UI payloads; YAML-defined configs produce many parallel variants — "better to run more experiments than fewer."</li>
+<li><strong>Unconstrained sandbox:</strong> the agent can do anything — ARIA built itself a sandbox to run parallel executions of its own research loop; unconstrained environments enable emergent behavior.</li>
+<li><strong>Simulation-env pattern (agnostic DAG):</strong> YAML config → hydrate (load live data) → set up env (expensive: full ML training logs, possibly simulated GPU execution → parallelize) → rehydrate (hot-patch runtime configs not expressible in YAML) → run agent (bit-wise identical to prod) → score → tear down (don't clobber teammates).</li>
+<li><strong>Scoring is two-mode:</strong> normative (pass/fail per task) and relative (e.g., variant that asks the user questions vs one that doesn't — which behaves better), a traditional RL formulation.</li>
+<li><strong>886 tasks as YAML</strong> (start state + user configs + end state), leveled and exposed to the product team for validation; three simulation styles: plain text instruction, simulated user persona (an LLM role-plays a user asking questions in order for multi-turn), and production-trace-derived tasks.</li>
+<li><strong>Demo payoff:</strong> ARIA turned a real agent trace into a WBAF (W&amp;B Agent Factory) regression task, diagnosed the root cause — <code>weave.log</code> SDK call not invoked properly in the sandbox — replicated the trace, ran agent variants, and the winning candidate got a tight prompt injected into the system prompt/skills fixing that exact SDK error. Prod vs candidate compared in Weave.</li>
+<li><strong>Human stays in the loop:</strong> "I haven't written a line of code in maybe eight months because I just tell Claude to write all my code" — but that doesn't remove the thinking about how to improve; time goes to guardrails and making the system reinforce itself better. Also demoed: ARIA training ML models on H200s on CoreWeave infra and autoresearch on Karpathy's nanochat.</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"Benchmarks, evaluations, the agents, and how you configure them are all covariant."</li>
+<li>"For a while the CI broke, we had ARIA fix itself last night."</li>
+<li>"I haven't written a line of code in maybe eight months because I just tell Claude to write all my code for me."</li>
+<li>886 tasks; ~66% on some tasks; 7 weeks of nightly CI traces; 4-hour prod→research sync.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li>Offline sim envs are "relatively expensive" (full training logs, simulated GPU execution), so they're parallelized and torn down after scoring.</li>
+<li>YAML-defined configs make it cheap to spin up many parallel agent variants — "better to run more experiments than fewer."</li>
+<li>The automated trace→task→hill-climb flywheel replaces manual offline-benchmark authoring.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>The core pattern — production traces → YAML eval tasks → nightly candidate comparison — is implementable locally: tasks are just files (start state + user config + end state), and the "CI" is a script.</li>
+<li>Keep research and production agent code identical with a sync step; otherwise your offline improvements silently diverge from what's deployed.</li>
+<li>Generating a large volume of traces and deciding what to do with them later (emergent-property measurement, self-review) is cheap relative to hand-authoring evals — volume is the strategy.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Video page: https://www.youtube.com/watch?v=XyV6bSMyq-I</li>
+<li>Full transcript: https://www.usetranscribe.io/yt/XyV6bSMyq-I/arya-agent-self</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

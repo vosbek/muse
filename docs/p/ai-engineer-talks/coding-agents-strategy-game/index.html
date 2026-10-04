@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "I Turned Coding Agents Into a Strategy Game" — Ido Salomon, AgentCraft · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-i-turned-coding-agents-into-a-strategy-game-ido-salomon-agentcraft">Talk Notes: "I Turned Coding Agents Into a Strategy Game" — Ido Salomon, AgentCraft</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=YIVkERhy8xo">I Turned Coding Agents Into a Strategy Game — Ido Salomon, AgentCraft</a> · AI Engineer channel · Sep 27, 2026 · 14:49 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>Humans are the bottleneck in agent utilization — steering, directing, and reviewing agents at scale is exhausting — but the supervisory skills we need already exist from video games (Warcraft, Sims, RTS). AgentCraft is a game-inspired orchestrator that raises the ceiling (visibility → autonomy → collaboration) and lowers the floor so the ~90% of non-power-users can orchestrate agents without burning out.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>The bottleneck.</strong> "Spin up 25 Claude Code agents and you're done" doesn't work — each agent needs steering, directing, reviewing; at scale it's exhausting. "We are the bottleneck" — but the skills (supervising many units, as in Warcraft/Sims) "are with us all along."</li>
+<li><strong>AgentCraft.</strong> A game-inspired orchestrator. Each agent is a visual unit on a map (represents a Claude Code/OpenClaw/Codex/OpenCode agent); detected on device or spawned from Craft. Prompting via a side panel with voice (multimodal).</li>
+<li><strong>The map is spatial.</strong> Buildings = functionalities (plugins/skills management, integrated terminal, integrated git — "do all of your work from within this space"); the file system projected onto the map; files represented as runes — see which agent works on which directory/file and when; build heat maps and linkages.</li>
+<li><strong>Visibility.</strong> Side panel shows each agent's task, last action, current activity — "who needs my attention and who doesn't."</li>
+<li><strong>RTS-style reaction.</strong> Like pressing spacebar in Civilization to jump to whatever needs attention — answer questions, approve plans, jump between items.</li>
+<li><strong>Cognitive overload.</strong> Can't hold 20 things in your head — so agents scan the codebase and propose next tasks; "accept the quest" and an agent does it. Babysitting 20 parallel tasks is still exhausting → <strong>autonomy</strong>: give a general goal, an orchestrator spawns, breaks it down, runs everything in isolated local containers, no babysitting. Loops: e.g., "scan Twitter for cool stuff to build" or "scan your GitHub" → features built in the background.</li>
+<li><strong>The review kit.</strong> For 5–20 parallel reviews: full diffs, file-by-file, or visual evidence (videos/photos of what changed); run multiple instances in parallel and "pick the best implementation."</li>
+<li><strong>Collaboration.</strong> "War rooms"/"war halls" — locally hosted, joinable via tunnels. Teammates join (his wife, a product designer, designs; he follows off her work and implements while she keeps working); shared workspace beyond Git; a notice board of what each person and agent is doing; chat between people and between agents. Works from mobile/Telegram too.</li>
+<li><strong>Raise the ceiling AND lower the floor.</strong> Power users do more, but the surprise was non-technical adoption — kids orchestrating agents, "someone that flunked out of college because he played Starcraft" now doing productive work. Goal: bring ~90% of people into the agentic future "without having them burn out."</li>
+<li><strong>"Loopers" (experimental, "TBD").</strong> A mobile-game-level simpler mode — prompt → result, projects you keep returning to, loops + autonomous agents, customizable visualization for different people.</li>
+<li><strong>Availability.</strong> AgentCraft installable via npx as a website; Loopers is experimental — he's collecting interest/feedback. (Ido also created MCPUI, which became MCP apps / MCP steering committee.)</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"We are the bottleneck, but we don't have to be."</li>
+<li>"Someone that flunked out of college because he played Starcraft and now you can suddenly do really productive stuff with it."</li>
+<li>"We need to raise the ceiling but we also need to lower the floor... take probably around 90% of the people in the world and bring them into this agentic future without having them burn out."</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li><strong>The review kit attacks the review bottleneck.</strong> Visual evidence (videos/photos of changes) plus running multiple instances in parallel and picking the best implementation — eval-driven, best-of-N review at scale. Best-of-N is a deliberate spend: more generation cost, less wasted review time.</li>
+<li><strong>Autonomy via orchestrator + isolated containers + background loops</strong> removes the per-agent babysitting cost — the human-attention side of the efficiency equation.</li>
+<li><strong>No explicit token/cost figures in the talk.</strong> The efficiency argument is entirely about human supervisory bandwidth, not inference spend.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>War rooms are locally hosted with tunnel-based joining — the collaboration layer is self-hostable, not tied to a vendor cloud.</li>
+<li>Agents run in isolated local containers; orchestration is on-device — consistent with a local-first multi-agent setup.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Video: https://www.youtube.com/watch?v=YIVkERhy8xo</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
