@@ -8,6 +8,30 @@
 
 W&B's ARIA agent improves itself through a **production↔offline eval flywheel** built on Weave: production traces are logged in the exact same format as offline traces, so every production miss (or win) becomes an offline eval task (886 YAML tasks); a bit-wise identical agent runs in production and in a simulation environment; nightly CI compares prod vs candidate variants; and ARIA itself reviews traces, authors tasks, and proposes prompt/skill variants — "replication from production to simulation to agent-defined improvement." The governing worry: benchmarks, evals, agents, and configs are all covariant, so measurement must be identical across prod and offline.
 
+## The mental model
+
+A production-to-offline flywheel where every production trace becomes an eval task, and a simulation pipeline that keeps research and production agents bit-wise identical.
+
+```mermaid
+flowchart TD
+    P[Production traces in Weave] --> T[Convert to offline eval tasks]
+    T --> H[Hill climb on misses and wins]
+    H --> C[Candidate agent variants]
+    C --> N[Nightly CI prod versus candidates]
+    N --> D[Deploy the winner]
+    D --> P
+```
+
+```mermaid
+flowchart LR
+    A[YAML config] --> B[Hydrate live data]
+    B --> C[Set up expensive env]
+    C --> D[Rehydrate hot patch configs]
+    D --> E[Run bitwise identical agent]
+    E --> F[Score normative and relative]
+    F --> G[Tear down]
+```
+
 ## Key points
 
 - **ARIA:** W&B's agent harness for doing research inside the W&B platform; went GA the Monday before the talk (~Sep 21, 2026). Companion talk by peer Tim Sweeney (see ai-research-agent-experiments.md).
@@ -45,6 +69,14 @@ W&B's ARIA agent improves itself through a **production↔offline eval flywheel*
 - The core pattern — production traces → YAML eval tasks → nightly candidate comparison — is implementable locally: tasks are just files (start state + user config + end state), and the "CI" is a script.
 - Keep research and production agent code identical with a sync step; otherwise your offline improvements silently diverge from what's deployed.
 - Generating a large volume of traces and deciding what to do with them later (emergent-property measurement, self-review) is cheap relative to hand-authoring evals — volume is the strategy.
+
+## How to apply it
+
+1. Pick one Copilot or agent workflow and start logging its traces in a fixed schema — every production miss becomes an eval task next week.
+2. Author 10-20 YAML eval tasks (start state + user config + end state) from recent traces, and run them as a nightly script comparing the current agent against one candidate variant.
+3. Keep research and production agent code identical; add a sync job so offline improvements cannot silently diverge from what is deployed.
+4. Put the agent on self-review duty: have it review its own rollouts, propose prompt or skill fixes, and let humans approve before they ship.
+5. Parallelize expensive simulation setups and tear them down after scoring — pay for the run, not the idle environment.
 
 ## Sources
 

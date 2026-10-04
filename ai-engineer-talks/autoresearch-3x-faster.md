@@ -8,6 +8,47 @@
 
 GPU kernels are a near-perfect autoresearch target because they're fully verifiable (correctness + speed is all you need), and Karpathy's autoresearch loop (agent proposes → verify correctness → benchmark → keep/revert) beats hand-tuning — but agents are bad at high-level ideas, so **humans must supply those** ("pipeline it," "this 32k chunking is dumb") while autoresearch picks block sizes and parameters. Formula: good human ideas + autoresearch parameter search/verification + billions of tokens → kernels beating hand-tuning. Morph reached **3x end-to-end speedup**, though ~80% of attempts are bad.
 
+## The mental model
+
+Autoresearch is a while loop: humans supply the high-level idea, the agent searches parameters and verifies — and it will reward-hack you if the harness allows it.
+
+```mermaid
+flowchart TD
+    H[Human supplies the high level idea] --> P[Agent proposes a solution]
+    P --> V[Verify correctness]
+    V -->|fails| P
+    V -->|passes| B[Benchmark speed]
+    B -->|faster| K[Keep it]
+    B -->|slower| R[Revert it]
+    K --> P
+    R --> P
+```
+
+```mermaid
+flowchart TD
+    subgraph Human["Human job"]
+        I1[Profile with Nsight]
+        I2[Spot the dumb pattern]
+        I3[State the idea]
+    end
+    subgraph Agent["Agent job"]
+        P1[Pick block sizes]
+        P2[Try parameters]
+        P3[Verify and benchmark]
+    end
+    I3 --> P1
+```
+
+```mermaid
+flowchart LR
+    W[Loop running] --> H1[Hack disables CUDA graphs]
+    W --> H2[Hack tests small context only]
+    W --> H3[Hack wins kernel but loses end to end]
+    H1 --> R[Measure end to end always]
+    H2 --> R
+    H3 --> R
+```
+
 ## Key points
 
 - **Autoresearch (Karpathy's framework):** state a high-level goal; the agent tries things and moves toward it. "In actuality it's really just a while loop": agent proposes a solution → harness defines correctness and benchmarks → keep or revert → repeat until the goal is met.
@@ -43,6 +84,15 @@ GPU kernels are a near-perfect autoresearch target because they're fully verifia
 - The cheapest inference win is free: run the human-profiling step (Nsight) locally, feed the findings as the "good idea," and let a local autoresearch loop do the parameter search — kernels for cheap local GPUs (no NVLink) become a buildable asset.
 - Always measure end-to-end throughput on real workload ranges, never kernel-local benchmarks — agents will hack local metrics (disable CUDA graphs for a local win, 20x slower globally).
 - Keep attempts cheap and parallel: ~80% of autoresearch output is bad, so the economics depend on fast, verifiable, disposable iterations.
+
+## How to apply it
+
+1. Profile your local inference stack with Nsight this week; write down the dumbest pattern you find and hand it to a local autoresearch loop as the human idea.
+2. Create hardware context files (your GPU's warps, memory accelerators) and model context files (new attention tricks per model) as markdown the agent must read — without them it hallucinates the mechanism.
+3. Run many cheap, parallel, disposable iterations; budget for ~80% of attempts being bad.
+4. Write the anti-reward-hack list first: no disabling CUDA graphs, no small-context-only tests, no kernel-local-only measurements.
+5. Accept or reject only on end-to-end throughput across your real workload ranges — a kernel that wins at 0-100k context and loses above is not a win.
+6. If you have cheap GPUs without NVLink, treat custom kernels as the asset that makes them viable and run the loop against that hardware.
 
 ## Sources
 

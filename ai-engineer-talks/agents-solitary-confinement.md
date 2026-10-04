@@ -8,6 +8,46 @@
 
 Agents live in "digital solitary confinement" — developers running parallel Claude/Codex sessions act as human routers between stateful processes that cannot talk to each other. MCP (stateless), A2A (client-server), chained calls, and messaging-platform integrations all fail to fix this because connecting agent processes is a **distributed-systems problem** (transport, persistence, identity mapping, governance) with non-deterministic microservices at every node. The fix is raising the abstraction to conversation-level primitives — rooms, channels, participants, deterministic routing — which is what Band pitches itself as: a global collaboration layer, with **Gem** as the desktop app giving developers and managers visibility into cost, attribution, and work state.
 
+## The mental model
+
+Today the developer is the router between isolated agents; the prescription is to raise the abstraction to conversation-level primitives, backed by a distributed-systems layer cake.
+
+```mermaid
+flowchart TD
+    subgraph Today["Today"]
+        H[Human acts as router]
+        A1[Claude session working]
+        A2[Codex session reviewing]
+    end
+    subgraph Target["Conversation layer"]
+        R[Rooms]
+        CH[Channels]
+        PA[Participants]
+        DR[Deterministic routing]
+    end
+    H --> A1
+    H --> A2
+    R --> CH
+    CH --> PA
+    PA --> DR
+    H -.->|raise the abstraction| R
+```
+
+```mermaid
+flowchart TD
+    T[Transport ordered delivery and retries] --> C[Continuity persistence and hydration]
+    C --> FB[Framework binding ID mapping]
+    FB --> AB[Abstraction above IP URL PubSub]
+    AB --> G[Governance identity and audit]
+```
+
+```mermaid
+flowchart LR
+    MCP[MCP is stateless] --> NO1[No sticky sessions]
+    A2A[A2A is client server] --> NO2[Both sides must be client and server]
+    CHAIN[Chained calls] --> NO3[REST timeouts need queues]
+```
+
 ## Key points
 
 - Opens with audience trivia — "Orc or C?" — resolving into a joke with two correct answers (LOTR vs Warhammer 40k), then a four-part agenda: Thesis's company beliefs, the evolution from adversarial agents to loop engineering, tomorrow's technical challenges, and Band.
@@ -44,6 +84,14 @@ Agents live in "digital solitary confinement" — developers running parallel Cl
 
 - **Instrument per-agent token attribution before scaling agent counts** — the $2,000/$600 split between roles shows different agent personas burn very different budgets; ticket-to-token attribution is the visibility layer that makes multi-agent spend governable.
 - **Prefer conversation-level primitives over hand-coded orchestration glue:** if models natively coordinate through messaging patterns, skip the Python/TypeScript orchestration layer and treat coordination capability as free — orchestration code is a tax, not an asset.
+
+## How to apply it
+
+1. Instrument per-agent token attribution this week — by role, developer, and ticket — before adding any more agents; the $2,000 vs $600 split shows personas burn very differently.
+2. Kill one hand-coded orchestration script and replace it with a messaging-pattern handoff; treat the model's native coordination fluency as free.
+3. Design your next multi-agent workflow as rooms, channels, and participants with deterministic routing instead of direct REST calls between agents.
+4. Require lateral consent for cross-boundary agent reach: an agent must get human approval before contacting another team's agent.
+5. Add a live view of which component each agent is touching in real time, plus per-PR attribution of human vs AI involvement.
 
 ## Sources
 

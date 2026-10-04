@@ -8,6 +8,38 @@
 
 W&B's ARIA ("AI research and iteration agent") is a research agent that runs your experiments for you: on stage it autonomously ran 200+ experiment batches in a Karpathy autoresearch loop (downloading code, provisioning GPUs via W&B Launch on CoreWeave, iterating on code and hyperparameters), while also serving as a data-science companion (summarizing runs, finding patterns, writing W&B reports/workspaces) — and the same Weave-based loop the team uses to build ARIA itself (production traces → tasks-as-unit-tests → nightly evals → improvement loop → registry promotion) is the blueprint it offers agent builders.
 
+## The mental model
+
+The Weave improvement loop turns production traffic into tasks-as-unit-tests, with a nightly go/no-go; the backend is an archetypal agent stack.
+
+```mermaid
+flowchart TD
+    A[Collect all production traffic] --> B[Generate insights with humans and judges]
+    B --> C[Enrich tasks]
+    C --> D[Implement candidates]
+    D --> E[Evaluate on shared dashboard]
+    E --> F[Promote best with confidence]
+    F --> A
+```
+
+```mermaid
+flowchart LR
+    C1[Web and iOS clients] --> API[API server]
+    API --> T[Trace DB]
+    T --> W[Worker harness]
+    W --> S[Sandbox for shell and Python]
+    W --> L[LLM provider]
+    W --> G[Launch long jobs on GPUs]
+```
+
+```mermaid
+flowchart TD
+    P[Example prompt] --> MD[Metadata]
+    MD --> J1[LLM judge scores correctness]
+    J1 --> J2[LLM judge scores interestingness]
+    J2 --> RB[Rule judge enforces tool call budget]
+```
+
 ## Key points
 
 - **Three-part agenda** for three personas (ML researchers, applied engineers, AI managers): (1) ARIA itself + live autoresearch demo; (2) how W&B + CoreWeave built ARIA; (3) tips for productionizing agents.
@@ -45,6 +77,14 @@ W&B's ARIA ("AI research and iteration agent") is a research agent that runs you
 - Make token usage and tool-call counts first-class dashboard metrics and eval criteria — an expediency judge ("solved within N tool calls") forces the agent to stay cheap, not just correct.
 - The tasks-as-YAML pattern needs no Weave: prompt + metadata + judge + tool-call budget is a local nightly eval suite.
 - Biggest local leverage: don't overengineer the harness with memory tricks — give the agent domain context, primitives, and data instead.
+
+## How to apply it
+
+1. Add token usage and tool-call counts as first-class metrics on your agent dashboard, and add an expediency judge ("solved within N tool calls") to every eval.
+2. Write 20 YAML tasks (prompt + metadata + correctness judge + interestingness judge + tool-call budget) and run them nightly against prod and one candidate variant.
+3. Put LLM judges on live traffic (frustration, low-quality, ask-user signals) and cluster what they flag each week.
+4. Hold a weekly human review of the best and worst traces — LLMs miss behavioral nuances; humans catch them.
+5. Resist memory-trick overengineering; spend the effort on domain context, tool primitives, and data for the agent instead.
 
 ## Sources
 

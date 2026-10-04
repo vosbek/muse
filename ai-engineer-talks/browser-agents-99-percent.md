@@ -8,6 +8,34 @@
 
 Per-step accuracy compounds multiplicatively (99%/step over 100 steps ≈ 36% overall) — but the fix is not a smarter model, it is re-architecture: strip deterministic work out of the model's responsibility via encapsulated tools, deterministic verification, and written "skills" (SOPs for agents); measure success per transaction with retries; and evaluate the agent as a P&L line item — profit = revenue − costs, performance first, then cost, then maintainability.
 
+## The mental model
+
+Per-step accuracy compounds multiplicatively, retries convert per-run luck into per-transaction reliability, and the final architecture strips deterministic work out of the model.
+
+```mermaid
+flowchart LR
+    S1[Step 1 at 99 percent] --> S2[Step 2 at 99 percent]
+    S2 --> S3[Repeat for 100 steps]
+    S3 --> R[Overall about 36 percent]
+```
+
+```mermaid
+flowchart TD
+    A[Per run success 50 percent] --> B[Allow up to 4 retries]
+    B --> C[Per transaction success 94 percent]
+    C --> N[Customer sees a completed workflow]
+```
+
+```mermaid
+flowchart LR
+    A[Request] --> B[Serverless auth function]
+    B --> C[Browser handed to agent]
+    C --> D[Agent follows the skill]
+    D --> E[Deterministic download]
+    E --> F[OCR verify tool]
+    F --> G[Authoritative success or failure]
+```
+
 ## Key points
 
 - **Core economics:** cost accumulates continuously while value is realized only at the terminal step — "no partial credit."
@@ -39,6 +67,14 @@ Per-step accuracy compounds multiplicatively (99%/step over 100 steps ≈ 36% ov
 
 - The architecture pattern is the local lesson: encapsulate deterministic steps (downloads, verification, auth) as tools/functions outside the model — every step the model doesn't take is tokens never spent, and a written skill (SOP) keeps the agent on the critical path instead of wandering.
 - "No partial credit" reframes agent budgeting: fund transactions with concrete success artifacts, not agent runs.
+
+## How to apply it
+
+1. Define each agent workflow's success artifact (order ID, confirmation email, queryable record) — fund transactions, not runs; no partial credit.
+2. Set a retry budget per transaction (e.g., up to 4) and report success per transaction; stop judging agents on per-run accuracy.
+3. Pull auth into a serverless function, downloads into an encapsulated tool, and verification into a deterministic check — every step the model does not take is tokens never spent.
+4. Write a skill (SOP) for each recurring agent path so the model stays on the critical path instead of wandering.
+5. Evaluate each agent as a P&L line item in this order: performance first, then cost, then maintainability.
 
 ## Sources
 

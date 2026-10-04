@@ -8,6 +8,36 @@
 
 Fully autonomous coding agents crossed the enterprise-usability threshold around **December 2025**. Greptile — reviewing **1M+ PRs/month** for NVIDIA, Coinbase, Scale, Datadog, American Express — finds roughly **a quarter of reviewed PRs are now completely or largely AI-generated** (up from <1% in early 2025), and on three independent quality tests (revert rates, P0/P1/P2 bug severity, review iterations to merge) agent-authored PRs perform roughly on par with human-authored ones. Since validation can't scale with agent output, Greptile reframed validation around three questions answered by sandboxed browser agents rather than human review.
 
+## The mental model
+
+Detection combines three weak signals; validation shifts from automating QA to a three-question merge framework executed by sandboxed agents.
+
+```mermaid
+flowchart LR
+    A[GitHub author field] --> D[Combined detection]
+    B[Co authored by footers] --> D
+    C[Branch name prefixes] --> D
+    D --> R[25 percent AI generated PRs]
+```
+
+```mermaid
+flowchart TD
+    Q1[Q1 violates user contract] -->|yes| B[Block merge]
+    Q1 -->|no| Q2[Q2 raises future violation risk]
+    Q2 -->|yes| B
+    Q2 -->|no| Q3[Q3 fulfills stated intent]
+    Q3 -->|high confidence| M[Merge]
+    Q3 -->|low confidence| RV[Human review]
+```
+
+```mermaid
+flowchart LR
+    S[Spin up sandbox] --> I[Install deps and mock inputs]
+    I --> BA[Browser agents click and break things]
+    BA --> IN[Inspect changed and related files]
+    IN --> V[Merge decision]
+```
+
 ## Key points
 
 - **The arc:** 2022–23 tab-completion era (Copilot, Cursor TabComplete); 2024 multi-file editing (Cursor first mover); 2025 autonomous agents producing whole PRs. **December 2025 is the watershed** — "coding agents became literally completely autonomous" (100-PRs-a-day developers, polyphasic-sleep anecdotes). Gupta moved to SF ~2023 specifically for AI coding after GPT-3.5.
@@ -40,6 +70,15 @@ Fully autonomous coding agents crossed the enterprise-usability threshold around
 
 - **Tune review tooling per agent's failure signature, not one generic bar** — distinct agents produce distinct error classes (SQL injection vs off-by-one); error-class-specific review configs get more signal per review-token spent.
 - **Shift review from "automate QA" to the three-question framework** (violates user contract? increases future-violation propensity? fulfills stated intent?) — executed by sandboxed agents that exercise the code, which scales where human review queues can't.
+
+## How to apply it
+
+1. Instrument PR detection now: combine the GitHub author field, co-author footers, and branch-name prefixes to measure your own AI-generated PR share.
+2. Adopt the three-question merge framework as the team's written merge-gate definition: violates contract, raises future risk, fulfills intent.
+3. Stand up sandboxed browser-agent validation: spin up the code, install deps, exercise it with agents trying to break things, inspect changed plus related files.
+4. Tune review configs per agent failure signature (error-class-specific), not one generic bar — SQL injection and off-by-one need different detectors.
+5. Track revert rates, bug severity, and review-iterations-to-merge split by agent vs human — the three quality tests from the talk.
+6. Pilot zero-human-review merges inside guardrails for the highest-confidence Q3 passers, and measure whether quality holds.
 
 ## Sources
 

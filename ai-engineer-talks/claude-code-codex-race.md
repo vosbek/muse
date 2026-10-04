@@ -8,6 +8,35 @@
 
 Big labs claim recursive self-improvement — models training models without human intervention — is imminent, but no independent, third-party benchmark exists to verify it. So Prime Intellect is building open "speedrun" environments that measure whether AI agents can actually do ML research, arguing this work must happen in the open rather than locked inside big labs.
 
+## The mental model
+
+A speedrun is a verifiable game for ML research; the proposed future is an AlphaEvolve-style multi-agent discovery loop with cheap generators and a judge with taste.
+
+```mermaid
+flowchart TD
+    G[goal md defines the rules] --> P[Agent proposes ideas]
+    P --> J[Submit jobs with sbatch]
+    J --> V[Check record past threshold]
+    V -->|record| W[Count it]
+    V -->|miss| P
+    W --> P
+```
+
+```mermaid
+flowchart TD
+    G1[Generators cheap open models] --> S[Speedrun gives reward]
+    S --> J[Judge with taste gives feedback]
+    J -->|winners| SC[Scale to more params and tokens]
+    J -->|losers| G1
+```
+
+```mermaid
+flowchart LR
+    A[Ranked by wall clock progress] --> C1[Claude max looks best]
+    B[Ranked by cost per output token] --> C2[Kimi most efficient]
+    B --> C3[Claude max most hungry]
+```
+
 ## Key points
 
 - **Origin:** Andrej Karpathy's video training GPT-2 from scratch in ~90 minutes → the community repo **modded-nanogpt** (led by Keller Jordan) drove it 90 min → 45 min → under 2 minutes over ~2 years.
@@ -41,6 +70,15 @@ Big labs claim recursive self-improvement — models training models without hum
 - When comparing agents, track cost **per output token**, not wall-clock progress — the winner flips (Claude max mode looks strong on progress, Kimi wins on token efficiency).
 - Use cheap/open models as idea generators and reserve frontier spend for judged winners — the AlphaEvolve-style loop is designed around exactly that cost structure.
 - 15–20 minute verifiable environments (speedruns) are a practical local RL/eval substrate: fast, cheap, and falsifiable, unlike long-horizon subjective tasks.
+
+## How to apply it
+
+1. Build one 15-20 minute verifiable eval environment (goal.md + verifier + statistical threshold) for your most important agent task this month.
+2. Track every agent comparison on cost per output token as well as wall-clock progress — the rankings flip.
+3. Use cheap or open models as idea generators; spend frontier budget only on judged winners.
+4. Require statistical thresholds for any claimed record so seed luck never counts.
+5. Monitor behavioral telemetry (scratchpad volume, idle time, compaction rate) alongside results — behavior drives cost.
+6. Keep humans as judges with taste on novelty-constrained tracks; agents combine papers but do not invent mechanisms.
 
 ## Sources
 

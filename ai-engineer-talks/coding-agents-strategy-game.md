@@ -8,6 +8,25 @@
 
 Humans are the bottleneck in agent utilization — steering, directing, and reviewing agents at scale is exhausting — but the supervisory skills we need already exist from video games (Warcraft, Sims, RTS). AgentCraft is a game-inspired orchestrator that raises the ceiling (visibility → autonomy → collaboration) and lowers the floor so the ~90% of non-power-users can orchestrate agents without burning out.
 
+## The mental model
+
+```mermaid
+flowchart TD
+  Map[Map of agent units] --> Panel[Side panel per agent]
+  Panel --> R{RTS jump to attention}
+  R --> Q[Answer approve redirect]
+  R --> P[Agents propose next tasks]
+  P --> A[Accept the quest]
+  A --> Iso[Agent runs in isolated container]
+```
+
+```mermaid
+flowchart LR
+  V[Visibility who needs help] --> U[Autonomy general goal]
+  U --> C[Collaboration war rooms]
+  C --> G[Raise ceiling lower floor]
+```
+
 ## Key points
 
 - **The bottleneck.** "Spin up 25 Claude Code agents and you're done" doesn't work — each agent needs steering, directing, reviewing; at scale it's exhausting. "We are the bottleneck" — but the skills (supervising many units, as in Warcraft/Sims) "are with us all along."
@@ -38,6 +57,15 @@ Humans are the bottleneck in agent utilization — steering, directing, and revi
 
 - War rooms are locally hosted with tunnel-based joining — the collaboration layer is self-hostable, not tied to a vendor cloud.
 - Agents run in isolated local containers; orchestration is on-device — consistent with a local-first multi-agent setup.
+
+## How to apply it
+
+1. Build the "who needs attention" panel first: a single dashboard per team showing each running agent's task, last action, and current status — visibility before autonomy, exactly the talk's ladder.
+2. Add the RTS-style triage ritual: a keyboard-first review queue where the platform team jumps between agents to answer questions, approve plans, or redirect — measure time-to-attention, not just token spend.
+3. Stand up the task-proposal loop: have agents scan the codebase weekly and propose next tasks for humans to accept or reject ("accept the quest") instead of hand-writing every work item.
+4. Graduate to background autonomy: define general goals with a supervising orchestrator that breaks work down and runs it in isolated local containers with no babysitting — start with one loop (e.g., scan internal repos for dependency drift).
+5. Adopt the review-kit pattern for parallel agent outputs: collect full diffs plus visual evidence (screenshots, short recordings of behavior change) and run best-of-N, keeping the winner.
+6. Pilot locally-hosted collaboration: war-room style shared sessions for pair work between humans and agents, joinable over your own network, nothing in a vendor cloud.
 
 ## Sources
 

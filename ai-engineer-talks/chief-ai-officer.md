@@ -8,6 +8,30 @@
 
 The CAIO role barely existed five years ago and is proliferating faster than anyone can define it (IBM: **11%** of orgs in 2024 → **26%** in 2025 → **76%**); it isn't one job but a spectrum — **Scientist** (explore/experiment/build), **Architect** (strategy/product/budget/board), **Coach** (evangelize/educate) — whose mix is set by company type, workforce technicality, and AI maturity. Because "there's AI in everything," the role is structurally prone to overload; discipline in focus areas and refusing gameable metrics (she refused to track tokens: "it's so easily hackable") separate a functioning AI function from an overwhelmed one.
 
+## The mental model
+
+The CAIO role is three sliders set by company context, and measurement must track outcomes — never hackable proxies like token counts.
+
+```mermaid
+flowchart LR
+    C1[Company type] --> MIX[Role mix]
+    C2[AI maturity] --> MIX
+    C3[Workforce skill] --> MIX
+    MIX --> S1[Scientist explore to invent]
+    MIX --> S2[Architect steward to strategist]
+    MIX --> S3[Coach enable to advise]
+```
+
+```mermaid
+flowchart TD
+    M[What to measure] --> A[Adoption depth]
+    M --> F[Fluency spread]
+    M --> G[GEO visibility]
+    M --> AR[ARR from AI products]
+    M --> DF[Dogfooding feedback loop]
+    X[Token counts] -.->|refused as hackable| M
+```
+
 ## Key points
 
 - The title "means drastically different things based on two criteria": **company type and AI maturity** — plus a third, **the skill set of the person in the seat**. Recruiters show unusual open-mindedness, shaping the mandate around whoever they find; the role sometimes splits in two.
@@ -49,6 +73,15 @@ The CAIO role barely existed five years ago and is proliferating faster than any
 
 - **Never let raw token counts be the scoreboard** — Khalaf refused the metric because it's hackable; measure outcomes (adoption depth, fluency spread, review quality) instead, or teams will optimize the counter, not the value.
 - **Design pricing and budgets for agent-driven consumption**, not seats: per-seat plans break when agents multiply usage; consumption-based budgets with explicit guardrails are the durable model.
+
+## How to apply it
+
+1. Write down your AI function's Scientist/Architect/Coach mix for this year based on company type, AI maturity, and workforce technicality — and schedule a yearly re-mix.
+2. Remove raw token counts from any scoreboard; replace with adoption depth, fluency spread, GEO visibility, and AI-product ARR.
+3. Move internal AI budgets toward consumption-based models with explicit guardrails; stop planning on per-seat assumptions that agents will break.
+4. Make every internal product agent-consumable: ship an MCP server, a skills file, and a CLI for it.
+5. Run a dogfooding loop with a closed feedback channel from engineers back to the platform team.
+6. Coach by experience: let teams discover failure modes like hallucination hands-on instead of lecturing about them.
 
 ## Sources
 

@@ -8,6 +8,28 @@
 
 Synthetic data is now load-bearing for frontier pre-training — scaling laws demand exponentially more data for linear gains while the usable public web tops out around 30T tokens. The hard part is not the data recipe but the data-engineering plumbing: DatologyAI's ~12T-token run (~7T web + ~5T math/code) was enabled by consolidating a Slurm research silo onto unified Kubernetes and fixing four concrete bottlenecks (metadata, GPU failures, cross-cluster scheduling, inference tuning).
 
+## The mental model
+
+Two architectures — the old research silo and the new unified pipeline — plus four bottlenecks, each with a concrete fix.
+
+```mermaid
+flowchart TD
+    A[Highest quality customer docs] --> B[Rephrase and restructure pipeline]
+    B --> C[Curation Spark jobs]
+    C --> D[Generation on vLLM core]
+    D --> E[Training on H100 fleet]
+    E --> F[Evals]
+    F -->|wins improve the recipe| B
+```
+
+```mermaid
+flowchart TD
+    B1[Slow metadata listing] --> F1[Batch S3 list API calls]
+    B2[GPU partition dies near the end] --> F2[Checkpoint to S3 and resume]
+    B3[CPU free while GPU full] --> F3[Dedicated pools and atomic scheduling]
+    B4[Bad inference flags] --> F4[Grid search batch size and speculative decode]
+```
+
 ## Key points
 
 - **BeyondWeb recipe:** rephrasing/restructuring pipeline seeded from the highest-quality documents in a customer's corpus — unseeded prompting just reproduces modes of the original training distribution.
@@ -38,6 +60,14 @@ Synthetic data is now load-bearing for frontier pre-training — scaling laws de
 - The vLLM lesson ports directly to local inference: build a small benchmarking harness and grid-search batch size / speculative decoding before buying hardware — ~40% gains can come from flags alone.
 - S3-compatible APIs (MinIO locally) mean the same curation pipelines run on-prem without cloud lock-in — matches the local-first posture.
 - Seed synthetic data from your own best documents, not unseeded prompts — unseeded generation just replays the base model's distribution, which is wasted compute.
+
+## How to apply it
+
+1. Build a small vLLM benchmarking harness on your local inference box this week and grid-search batch size and speculative decoding flags before spending on hardware — the talk got ~40% throughput from flags alone.
+2. Stand up MinIO (S3-compatible) locally and port one curation pipeline to it, proving the same jobs run on-prem without cloud lock-in.
+3. For your next data-generation or fine-tuning job, seed generation from your own highest-quality internal docs — skip unseeded prompting, which just replays the base distribution.
+4. Add checkpointing with resumable, idempotent overwrites to any job longer than an hour so a dead partition costs minutes, not the full run.
+5. Audit your data catalog's metadata access path: replace per-object metadata calls with batched list-API requests at the service page limit.
 
 ## Sources
 

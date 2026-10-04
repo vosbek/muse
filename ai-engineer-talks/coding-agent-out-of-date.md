@@ -8,6 +8,24 @@
 
 Every LLM has a ~6-month lag between training cutoff and release, leaving a review blind spot — the model cannot even judge code it could not have written. Bolting on web search is insufficient: the agent must be instructed WHEN to search (rules — e.g., dependency-bump diffs trigger upstream lookup), and search must return distilled highlights (~500 chars computed at runtime with no LLM, zero added latency) instead of full pages. Exa's provider-agnostic, fully traceable API — plus the new Exa Agent with third-party data partners — is the pitch.
 
+## The mental model
+
+```mermaid
+flowchart TD
+  D[Agent reads PR diff] --> R{Dependency bump?}
+  R -->|Yes| Q[Run upstream lookup]
+  R -->|No| N[No search needed]
+  Q --> H[Extract highlights at runtime]
+  H --> M[Feed 500 chars to model]
+```
+
+```mermaid
+flowchart LR
+  B[Full page about 100K chars] --> X[Two hundred x token cut]
+  H2[Highlights about 500 chars] --> X
+  X --> F[Zero added latency]
+```
+
 ## Key points
 
 - **Cutoff gap:** ~6 months between cutoff and release; example PR to the Kuder vector store fell after GPT-5.5's cutoff — invisible to the model.
@@ -39,6 +57,14 @@ Every LLM has a ~6-month lag between training cutoff and release, leaving a revi
 
 - The two-step pattern is the portable lesson: a search tool in the harness is inert unless the agent is instructed *when* to invoke it (e.g., dependency-bump diffs trigger upstream lookup) — encode the trigger rules, not just the tool.
 - Distill-then-feed (highlights, not pages; ~500 chars) is the local RAG discipline: computational extraction beats LLM summarization on both cost and latency.
+
+## How to apply it
+
+1. Write the trigger rules first, before buying any search API: list 3-5 diff patterns in your repos that require fresh external knowledge (dependency bumps, API migrations, changelog reads) and add them to the team's agent instructions as "when you see X, search upstream first."
+2. Build the distill-then-feed layer locally: for web-fetch tool output, run a runtime line-extraction step that returns only the matching spans (~500 chars) instead of dumping full pages into context — computational extraction, no LLM summarizer.
+3. Instrument the trace: log every lookup with the query, source, and returned span so the search path is auditable in your existing telemetry tree.
+4. Re-audit any LLM-based summarization steps in the pipeline and replace them with the computational extraction — zero added latency, ~200x fewer tokens per lookup.
+5. Prefer a provider-neutral search API surface so the lookup layer survives model swaps (GLM, new Anthropic/OpenAI releases) without rewrites.
 
 ## Sources
 
