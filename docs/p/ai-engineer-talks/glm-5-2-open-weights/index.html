@@ -7,6 +7,15 @@
 <p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
 <h2 id="thesis">Thesis</h2>
 <p>Open-weights models can now reach near-frontier intelligence — GLM-5.2 sits between Claude Opus 4.7 and 4.8 on the hardest long-horizon coding/agentic benchmarks — and "intelligence" means more than IQ-style math/physics tests. Z.ai open-sources the weights because users need security and control, domains need fine-tuning, and co-design requires visibility into the architecture and training recipe. The talk closes with "one more thing": Z Code, Z.ai's own coding harness.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<pre class="mermaid">flowchart TD
+  W[Open weights on Hugging Face] --> S1[Security control trust]
+  W --> S2[Fine tuning for law finance security]
+  W --> S3[Co design with customers]</pre>
+<pre class="mermaid">flowchart LR
+  T[Task arrives] --> E{Routine task?}
+  E -->|Yes| N[Non thinking pass cheaper]
+  E -->|No| H[High thinking budget]</pre>
 <h2 id="key-points">Key points</h2>
 <ul>
 <li><strong>The name.</strong> The company is Zhipu ("GLM" is not a brand name but a generic term: "general language model pre-training with auto-regressive blank filling," from a 2021 paper). Zhipu was among the first LLM labs, alongside OpenAI, Anthropic, and DeepMind. The original architecture is no longer used, but the name stuck (GLM-4.x → 5.1 → 5.2).</li>
@@ -42,10 +51,20 @@
 <li>The thinking-budget dial maps to local inference planning: lighter non-thinking passes for routine tasks, full thinking only for hard ones.</li>
 <li>Fine-tuning story (Harvey, domain-specific firms) suggests the weights are a viable base for domain-specialized local models in regulated verticals.</li>
 </ul>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li>Pilot GLM-5.2 under vLLM or SGLang on one dedicated box: MIT license, near-frontier long-horizon coding quality, zero per-token API spend — the local-first fit this talk makes the case for.</li>
+<li>Benchmark it against your current Copilot model mix on your own tasks: DeepSWE/Terminal-Bench style long-horizon work first, then routine generation — confirm the "between Opus 4.7 and 4.8" claim on your workload, not theirs.</li>
+<li>Implement the thinking-budget dial in routing: non-thinking passes for routine tasks (completions, scaffolds), high thinking budget only for hard multi-step work — pay for reasoning depth only where needed.</li>
+<li>Measure the non-thinking-vs-thinking delta locally: the talk's claim that non-thinking 5.2 beats thinking 5.1 means free quality gains at lower inference cost — verify on your eval set and lock in the cheaper default.</li>
+<li>Scope one fine-tuning candidate: pick a regulated or domain-specific vertical (legal, finance, security) where data can't leave the building and the Harvey-style fine-tune story justifies the effort.</li>
+</ol>
 <h2 id="sources">Sources</h2>
 <ul>
 <li>Video: https://www.youtube.com/watch?v=9JFGohx4E7U</li>
 <li>Z.ai blog: z.ai/blog/glm-5.2</li>
 </ul></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>
