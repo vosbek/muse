@@ -125,3 +125,5 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** None.
 - **Extractable skill:** Build the feedback loop, not just the agent; self-improvement is the senior skill.
 - **Source:** https://x.com/res1dualedge/status/2094925075606610048 · https://x.com/callanxai/status/2094065331576688985
+
+**Deep dives:** [unreal-agent](../deep-dives/unreal-agent.md) (async-first harness) · [tangleml](../deep-dives/tangleml.md) (self-improving loop substrate).
