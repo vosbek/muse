@@ -4,44 +4,208 @@
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
 <nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-how-vs-code-went-from-monthly-to-weekly-releases-with-ai-harald-kirschner">Talk Notes: "How VS Code Went from Monthly to Weekly Releases with AI" — Harald Kirschner</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=I2LL_wd89-A">How VS Code Went from Monthly to Weekly Releases with AI — Harald Kirschner</a> · AI Engineer channel · Oct 3, 2026 · 19:34 · Recorded at AI Engineer World's Fair 2026</p>
+<p><img alt="Visual one-pager" src="onepager-vscode-weekly-releases.jpg" /></p>
 <h2 id="thesis">Thesis</h2>
 <p>After 10 years of monthly releases, VS Code moved to weekly releases not from "more AI" but by evolving the whole system — codebase agent-readiness, quality loops, triage, staged rollouts, and learning loops — so higher velocity ships at quality and the team learns faster.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<p>The whole-system evolution loop that took releases from monthly to weekly:</p>
+<pre class="mermaid">flowchart LR
+    A[Agent ready codebase] --> B[Faster builds]
+    B --> C[Self correcting loop]
+    C --> D[Mandatory AI review]
+    D --> E[AI issue triage]
+    E --> F[Error stacks to auto fix PRs]
+    F --> G[Staged rollouts]
+    G --> H[Bench evals hill climbing]
+    H --> A</pre>
+<p>The telemetry-to-fix pipeline:</p>
+<pre class="mermaid">flowchart LR
+    A[51B telemetry events per day] --> B[Filter to error stacks]
+    B --> C[Fingerprint and bucket]
+    C --> D[Assign area owners]
+    D --> E[Auto create PR with diagnosis]</pre>
+<p>The token-efficiency insight — identical eval, wildly different cost:</p>
+<pre class="mermaid">flowchart TB
+    A[Same 5 char file eval] --> B[Cheapest model]
+    A --> C[Most expensive model]
+    C --> D[70x more tokens]
+    D --> E[Select models by cost per completed task]</pre>
 <h2 id="key-points">Key points</h2>
+<h3 id="the-arc-three-evolutions-in-order">The arc: three evolutions, in order</h3>
+<ol>
+<li><strong>Ship faster</strong> — agent-ready codebase, 10× faster builds, prototypes and daily feedback.</li>
+<li><strong>Hold quality at speed</strong> — mandatory AI review with an effort dial, AI issue triage, telemetry-to-PR pipeline, staged rollouts.</li>
+<li><strong>Learn faster</strong> — VSC-Bench hill-climbing, prototyping, daily sprints, smaller squads, durable ownership. ("A lot of people are missing out ... applying that product taste and applying that learning" as they write more code.)</li>
+</ol>
+<h3 id="code-survival-the-headline-metric">Code survival — the headline metric</h3>
 <ul>
-<li><strong>Code survival metric</strong> (% of agent-written code actually committed): 55% → 86%, tracked over a year.</li>
-<li><strong>Success created problems</strong>: massive increase in issues (AI helps file issues — more quality issues but also automated low-quality ones), more open PRs from team velocity and community.</li>
-<li><strong>The litmus test</strong>: "Can a PM vibe code here?" — Harald himself vibe codes in the VS Code repo; accepted by engineering.</li>
-<li><strong>Agent-ready codebase</strong>: AGENTS.md files (a slash command generates a good draft), a map of the codebase for agents.</li>
-<li><strong>Skills</strong>: expert knowledge encoded as skills — e.g., an accessibility best-practices skill, reviewed and maintained by the area owner.</li>
-<li><strong>TypeScript Go</strong>: 10x faster builds — critical because slow CI/CD compounds when 10–20 agents are running.</li>
-<li><strong>Let agents use your app</strong>: component browser — automated builds screenshot every component, diffs point out unexpected changes; faster PR review (attach video/screenshots).</li>
-<li><strong>Self-correcting loop with Playwright</strong>: the /launch skill launches a browser and the agent verifies the fix actually works.</li>
-<li><strong>Mandatory AI code review</strong>: low/medium/high effort dial for cost-benefit; humans don't even look at a PR until all review comments are resolved.</li>
-<li><strong>Holding quality</strong>: AI issue triage — filters spam, enriches, translates, assigns area owners; agent mistakes feed back into agent work up front.</li>
-<li><strong>Error stacks → auto-fix PRs</strong>: 51 billion telemetry events per day filtered down to error stacks; fingerprinting/bucketing; assigned to area owners; a PR is auto-created with an initial diagnosis (example: a cancellation request missing from the RPC protocol).</li>
-<li><strong>Staged rollouts</strong>: previously YOLO releases to 100%; now staged with monitoring, because rollbacks on installed apps are expensive.</li>
-<li><strong>VSC-Bench</strong>: their own evals of their agentic product — issues filed to add new scenarios, picked up by an agent from a template; hill climbing against scenarios; offline + online experimentation.</li>
-<li><strong>70x tokens for a 5-character file</strong>: a simple eval (write a hello-world file) — the most expensive model took 70x more tokens than the cheapest; insight into how you evaluate models.</li>
-<li><strong>Daily sprints, smaller squads, durable ownership</strong>; 50M+ users on a very small team.</li>
-<li><strong>Blogs</strong>: "What 50,000 Runs of a 5-Line Eval Taught Us" and "Improving token efficiency in GitHub Copilot."</li>
+<li><strong>Code survival</strong> (% of agent-written code actually committed): <strong>55% → 86%</strong>, tracked over the past year. Started with GPT-4.1 (transcription of the talk's "GBD 4.1"; inferred), now Claude Opus 4.6 — the gain came from <strong>improving the harness <em>and</em> new models</strong>.</li>
+<li>The increase is the trust signal: developers ship AI code faster and in higher volume because more of it survives.</li>
+</ul>
+<h3 id="success-created-problems">Success created problems</h3>
+<ul>
+<li><strong>Issue flood</strong>: AI helps people file issues → more <em>quality</em> issues from people in more language backgrounds, but also more automated low-quality ones.</li>
+<li><strong>More open PRs</strong> from team velocity plus community contributions — and counter-intuitively, the number of <strong>community merged PRs is going up too</strong>, not just garbage PRs.</li>
+<li>Context: VS Code shipped <strong>monthly for 10 years</strong> since 1.0 (moved to weekly "several months ago"). Fun fact: the January release ships in February — iteration naming lag, not lateness.</li>
+</ul>
+<h3 id="agent-ready-codebase">Agent-ready codebase</h3>
+<ul>
+<li><strong>AGENTS.md as living docs</strong>: every agent in VS Code now has a slash command that generates a good AGENTS.md draft. They must be <strong>lightweight</strong> — a map of the codebase pointing at where to look — and <strong>living</strong>: they evolve as the agent makes mistakes and works.</li>
+<li><strong>DevEx compounds</strong>: teams that invested in good documentation and onboarding win twice, because agents read the same docs humans do.</li>
+<li><strong>Skills</strong>: encode expert knowledge that always gets bottlenecked on one person. Example: VS Code's long accessibility investment became an <strong>accessibility best-practices skill</strong>, reviewed and maintained by the accessibility <strong>area owner</strong> — short work previously requiring a human pull-in now ships everywhere.</li>
+<li><strong>The litmus test</strong>: "Can a PM vibe code here?" — Kirschner vibe codes in the VS Code repo himself and measures acceptance by engineering: how much work does it cost, does it work out of the box locally, does it break when shipped.</li>
+</ul>
+<h3 id="faster-builds-because-agents-compound-slowness">Faster builds — because agents compound slowness</h3>
+<ul>
+<li><strong>TypeScript Go: 10× build improvement.</strong> A slow build is merely annoying for a human (context-switch while CI runs); with <strong>10–20 agents</strong> hitting the same bottleneck, every slow part of CI/CD <strong>compounds</strong>. Automatic PRs + agents fixing code need the CI/CD loop as their feedback channel, so build speed is a velocity ceiling.</li>
+<li><strong>Prototype before PR</strong>: his scrappy "ask questions tool" PR at the start of the year unblocked the conversation; within weeks the team had a polished, designed experience. Prototypes unlock participation and deeper design discussion instead of landing most of his work directly as VS Code PRs.</li>
+</ul>
+<h3 id="let-agents-use-your-app-ui-feedback-loops">Let agents use your app — UI feedback loops</h3>
+<ul>
+<li><strong>Component browser</strong>: an automated build runs on every VS Code change, screenshots <strong>every component</strong>, and diffs them — catching ripple effects (example: adding a back button to the customization screen shifting something else). Doubles as fast PR review.</li>
+<li>Every developer is asked to attach a video or screenshot of their implementation so nobody re-runs everything from scratch — now automated by the component explorer.</li>
+<li><strong>Self-correcting loop with the /launch skill</strong>: VS Code is an Electron app (all HTML), so Playwright can launch it, click through a specific scenario, collect logs, and <strong>verify a fix before and after</strong> — the agent reports back once it verified it worked. "Hit launch, move on to the next task."</li>
+<li>His rule: <strong>"If your agent cannot use your application, your product directly to get this feedback loop of is it all working, then that's a really big investment that pays off every time you work on UI."</strong> Alternatives: Xcode MCP for iOS apps ("magical"), Android tooling exists.</li>
+</ul>
+<h3 id="mandatory-ai-code-review">Mandatory AI code review</h3>
+<ul>
+<li>GitHub Copilot automated review started unimpressive ("we're not convinced yet") but <strong>massively improved over weeks/months</strong> — now a <strong>mandatory review on every PR</strong>.</li>
+<li><strong>Effort dial (low/medium/high)</strong>: dial review effort by repo risk — explicit cost-benefit, not one-size-fits-all.</li>
+<li>The gate: <strong>humans don't even look at a PR until all review comments are resolved and addressed.</strong></li>
+</ul>
+<h3 id="ai-issue-triage">AI issue triage</h3>
+<ul>
+<li>AI filters spam, enriches, translates, and <strong>assigns area owners</strong> — raising signal-to-noise on the flood.</li>
+<li><strong>Human feedback loop on the automation</strong>: agents make mistakes, so they built a Chrome extension letting humans fix duplicated issues; corrections feed back into the agent's upstream work. "That's a really important thing to think about as you have agents doing the work — that you get the human feedback as well."</li>
+</ul>
+<h3 id="telemetry-auto-fix-prs">Telemetry → auto-fix PRs</h3>
+<ul>
+<li><strong>All own data, own tooling — no external tool.</strong> They'd had ML doing error sorting before; it's now a mix of criteria.</li>
+<li>Pipeline: <strong>51B raw telemetry events/day</strong> → filter to error stacks with the full stack → fingerprint/group/bucket → <strong>10 issues filed, assigned to specific area owners</strong> → an agent auto-creates a <strong>PR with an initial diagnosis</strong>.</li>
+<li>An error dashboard shows every stack with hit counts and affected-user counts so they can react fast.</li>
+<li>Example: the agent traced an error to a <strong>missing cancellation request in the RPC protocol</strong> (introduced by a change connected to find-symbols) — PR opened, ready to merge. "You don't care about errors, you just want a more stable codebase."</li>
+</ul>
+<h3 id="staged-rollouts">Staged rollouts</h3>
+<ul>
+<li>From YOLO releases (release day → open the floodgates to 100%) to <strong>staged rollouts with monitoring</strong> of error logs and issues — web-app practice applied to a desktop app, because <strong>rollbacks on an installed app are expensive</strong>. "We should have probably done it earlier."</li>
+</ul>
+<h3 id="vsc-bench-learning-faster-on-their-own-product">VSC-Bench — learning faster, on their own product</h3>
+<ul>
+<li><strong>Own evals of their agentic product</strong>, always at hand and easy to extend — <strong>all in GitHub issues</strong>.</li>
+<li>Low friction by design: file an issue to add a scenario → <strong>an agent picks it up from a template and bootstraps the scenario for you</strong> — pulling developer scenarios from issues and customer conversations into evals cheaply.</li>
+<li>Then <strong>hill-climb against the scenarios</strong>, confirm improvement <strong>offline</strong>, then <strong>online experimentation</strong> — "classic product lifecycle."</li>
+<li>What VSC-Bench covers (per the team's harness blog): custom agent modes, extension workflows, MCP and tool use, terminal and browser interaction, multi-turn conversations, multi-language tasks (TypeScript, Python, C++, …). Each task runs in a <strong>reproducible, containerized workspace</strong>; the harness launches VS Code, sends prompts, and evaluates the full agent loop — not just final code but whether the agent used editor, terminal, language services, browser, and tools the VS Code way.</li>
+<li>Measures <strong>solution correctness, agent effort, token efficiency, and latency</strong> — and the effort finding matters: scatter data showed an <strong>xhigh reasoning setting using more tokens while resolving slightly fewer tasks</strong> — past the useful effort sweet spot where extra thinking stops converting into better outcomes.</li>
+<li><strong>PR-gated evals</strong>: any PR touching a core tool, system prompt, or loop behavior gets a <code>~requires-eval-assessment</code> label → Azure DevOps build of the merge ref → published as a versioned eval agent (<code>0.0.0-dev.&lt;sha&gt;</code>) to the <code>vscode-evals</code> npm feed (dev tag) → evald opens a pinned evaluation issue → analysis link posted back on the PR. Harness changes ship with benchmark numbers before merging.</li>
+</ul>
+<h3 id="the-70-token-spread-what-50000-runs-of-a-5-line-eval-taught-us">The 70× token spread — "What 50,000 Runs of a 5-Line Eval Taught Us"</h3>
+<ul>
+<li>The <code>say_hello</code> eval: <strong>"Add HELLO to HELLO.txt"</strong> with two assertions (file exists, file contains "HELLO"). Same empty workspace, same tools, same fixed prompt, VS Code agent harness — a smoke test run <strong>before every benchmark suite</strong>, which quietly accumulated <strong>50,974 runs across 30 models over six months</strong>.</li>
+<li>Realistic floor: <strong>~50 output tokens</strong> for the one-tool-call direct path (<code>create_file</code>); the most disciplined model (Model-L) hit 55.</li>
+<li><strong>Direct-path rates</strong>: one model (Model-A) takes the direct path in <strong>100% of passing runs</strong>; most models take it only occasionally; <strong>five models never do</strong> — they always plan, explore, search, or narrate first, even for a five-character file.</li>
+<li>Overhead patterns: planning before acting (52–99% of runs across 16 models); exploring an empty workspace (56–96%); narrating reasoning (1,441–3,676 tokens — <strong>29–74× the floor</strong>); wrong tool for the job (one model uses a patch tool 95% of the time); terminal commands when a file API exists.</li>
+<li><strong>Leanest vs. heaviest ≈ 70× for identical output</strong> — and the most expensive model "was not the high reasoning model" (models anonymized in the blog, so no names).</li>
+<li><strong>Model size does not predict overhead</strong>: a larger model used 160 tokens vs. a smaller sibling at 485; a "mini" model was the single highest-overhead at 3,676 tokens. Newer generations trend more disciplined — <strong>training maturity, not parameter count</strong>, predicts effort calibration.</li>
+<li>Caveat (theirs): don't overfit the smoke test — keep the full benchmark alongside it. And the goal isn't to eliminate planning; it's to know <strong>"whether a model can tell the difference between a one-step task and a 30-step task."</strong></li>
+</ul>
+<h3 id="harness-level-token-efficiency-copilot-blog-same-team">Harness-level token efficiency (Copilot blog, same team)</h3>
+<ul>
+<li><strong>Cached input tokens up to 10× cheaper</strong> than uncached — prompt-prefix stability is direct cost reduction. Extended prompt caching (<code>prompt_cache_retention: "24h"</code>, cache moved to roomier GPU-local storage) raised cache hit rates <strong>+919% relative</strong> for GPT-5.4 at 40–60 min request gaps — picking up a session after a long break stays cheap.</li>
+<li><strong>Tool search (<code>defer_loading</code>)</strong>: only tool metadata up front; parameter schemas load on demand, and deferred tools sit <em>outside</em> the cached prefix so cache gains keep working. Results: <strong>−8.97%/−10.92% session tokens</strong> for the median Copilot user (GPT-5.4/5.5); Anthropic variant <strong>−18.03% session tokens, −11.09% per-turn tokens</strong>, plus <strong>−4.01% user error rate</strong> after moving to client-side embedding-guided tool search with a curated always-loaded core toolset.</li>
+<li>Anthropic prompt caching: <strong>4 deliberate breakpoints</strong> (end of tool defs, end of system prompt, two rolling anchors) → ~<strong>94% cache hit rate</strong> on agentic workloads.</li>
+<li><strong>WebSockets</strong> became the default OpenAI transport (GPT-5.2+): TTFT p50 <strong>−19.46%</strong> (GPT-5.3-Codex).</li>
+<li>The trend driving it all: <strong>each new model generation consumes more tokens per task</strong> — harness efficiency is the counter-trend. Next: specialized subagents on the smallest, cheapest models for search/commands/summarization, and transparency UI for cache cold starts.</li>
+</ul>
+<h2 id="by-the-numbers">By the numbers</h2>
+<ul>
+<li><strong>55% → 86%</strong> — code survival rate (agent-written code actually committed) over the past year; the trust signal behind shipping more AI code.</li>
+<li><strong>10 years</strong> — monthly release cadence since VS Code 1.0 (the January release ships in February); weekly for "several months."</li>
+<li><strong>50M+</strong> — users shipped to by a very small team.</li>
+<li><strong>51B/day</strong> — raw telemetry events per day, filtered down to full error stacks before fingerprinting.</li>
+<li><strong>10</strong> — issues filed to specific area owners after bucketing (each with an auto-created fix PR).</li>
+<li><strong>70×</strong> — output-token spread between leanest and heaviest model on the identical 5-character <code>say_hello</code> eval.</li>
+<li><strong>50,974</strong> — runs across 30 models over 6 months behind that finding; ~50 tokens is the realistic floor (best model: 55).</li>
+<li><strong>100% / 0%</strong> — direct-path rates: the most disciplined model vs. five models that never take the direct path.</li>
+<li><strong>29–74×</strong> — overhead of the extreme band (Model-AB 3,676 avg tokens) vs. the realistic floor.</li>
+<li><strong>10×</strong> — TypeScript Go build improvement; also the cost ratio of uncached vs. cached input tokens (OpenAI cached pricing).</li>
+<li><strong>10–20</strong> — concurrent agents at which a slow CI/CD bottleneck compounds.</li>
+<li><strong>5–10 min</strong> — default OpenAI prompt-cache lifetime (up to ~1 hr); extended retention keeps it warm for 24h.</li>
+<li><strong>+919%</strong> — relative cache-hit-rate increase for GPT-5.4 at 40–60 min request gaps (extended prompt caching).</li>
+<li><strong>94%</strong> — Anthropic prompt-cache hit rate on agentic workloads after reworking breakpoint placement.</li>
+<li><strong>−18%</strong> — median-user session token cut from Anthropic tool search (−9 to −11% from the OpenAI variant).</li>
+<li><strong>−19%</strong> — WebSocket TTFT p50 reduction (GPT-5.3-Codex); WebSockets now default for OpenAI GPT-5.2+ across Copilot products.</li>
+<li><strong>4</strong> — deliberate cache breakpoints (Anthropic): end of tool definitions, end of system prompt, two rolling message anchors.</li>
+<li>(No public figures were given for effort-dial distribution — the only stated dial stat is qualitative: low/medium/high effort set by repo risk.)</li>
 </ul>
 <h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
 <ul>
 <li>Code survival 55% → 86%.</li>
 <li>51 billion telemetry events per day → error stacks → auto-fix PRs.</li>
 <li>Most expensive model took 70x more tokens for the same 5-character file.</li>
+<li>"It's not about using more AI as you work day-to-day... You're not token maxing. It's about evolving the whole system, how you're shipping software, to actually make better use of AI along the whole process."</li>
+<li>"If your agent cannot use your application, your product directly to get this feedback loop of is it all working, then that's a really big investment that pays off every time you work on UI."</li>
+<li>"Don't just tune how you work with agents, but tune where they get feedback. How do you build these loops?" (closing: "find out where your bottlenecks are... and figure out... what's blocking you to move even faster — it's a constant iterative cycle.")</li>
+<li>"The model is the engine, the harness is the car." (VS Code harness blog — why they spend most engineering time on context assembly, tools, loops, and evaluation, not model choice.)</li>
+<li>"The goal is not to eliminate planning. It is to understand whether a model can tell the difference between a one-step task and a 30-step task." (50,000-runs blog)</li>
 </ul>
 <h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
 <ul>
 <li>Token efficiency: 70x token spread across models for an identical eval — token efficiency is a first-class model criterion.</li>
 <li>TypeScript Go: 10x faster builds unblock agent CI/CD loops.</li>
 <li>AI code-review effort dial (low/medium/high) for explicit cost-benefit.</li>
+<li><strong>Price-per-token tells you nothing; cost-per-completed-task is the metric.</strong> The 70× eval ran anonymized models (Model-A…AC) — selection must come from your own benchmark on your own harness, because overhead comes from <em>behavior</em> (planning, exploring, wrong tools, narrating), not size: a mini model was the worst offender; a larger model beat its smaller sibling. Newer generations trend more disciplined.</li>
+<li><strong>Model selection shouldn't be the developer's burden</strong>: route on effort calibration, token efficiency, and tool discipline automatically — that's what VS Code's auto model selection invests in.</li>
+<li><strong>Cache is money</strong>: cached input up to 10× cheaper; prefix stability (breakpoints, stable tool-def boundaries, 24h retention) is a direct cost lever. Flag cache cold starts (session resume after a long pause) as cost events.</li>
+<li><strong>Tool search is proven, A/B-tested savings</strong>: −9% to −18% session tokens with success rate held — load schemas on demand, keep deferred tools outside the cached prefix.</li>
+<li><strong>Effort has a sweet spot</strong>: VSC-Bench showed xhigh effort costing more tokens while resolving <em>fewer</em> tasks. Dial effort by risk — low/medium/high — and verify, don't assume more thinking = better.</li>
+<li><strong>Counter-trend awareness</strong>: each new model generation consumes more tokens per task; harness-level wins (caching, deferral, subagents on the cheapest models) are what keep cost per task flat. Measure tokens per <em>passing</em> task, not per run.</li>
+<li><strong>Log tool sequences, not just counts</strong>: <code>{tool_sequence, output_tokens, pass}</code> tells you where overhead came from — the only way to attribute and cut it.</li>
 </ul>
 <h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
 <ul>
 <li><strong>Make token efficiency a model-selection criterion</strong>: the 70x spread on an identical eval proves price-per-token tells you almost nothing — benchmark cost-per-completed-task per model before putting it behind the enterprise router.</li>
 <li><strong>Code survival rate (agent-written code actually committed) is the deployable metric</strong> for agent quality — track it per model/skill combo; it directly measures wasted generation tokens vs. kept output.</li>
 <li><strong>Review-effort dials are the cost-control pattern</strong>: low/medium/high effort settings with explicit cost-benefit tradeoffs — apply the same dial to retrieval depth, planning effort, and verification loops.</li>
+<li><strong>The telemetry-to-PR pipeline runs on their own data with their own tooling — no external service.</strong> That's the local-first pattern: fingerprint error stacks, route to owners, auto-open diagnosed PRs, all inside your stack.</li>
+<li><strong>PR-gated evals for harness changes</strong>: any PR touching prompts, tools, or loop behavior ships with benchmark numbers before merging (<code>~requires-eval-assessment</code> pattern: build → versioned eval agent → evald issue → report link on the PR).</li>
+<li><strong>Stand up a smoke eval first</strong> (<code>say_hello</code> pattern): smallest unambiguous task, run constantly as preflight before nightly evals, model onboarding, and infra changes; log tool sequences + output tokens so harness regressions show up before they get expensive across long sessions.</li>
+</ul>
+<h2 id="decision-framework">Decision framework</h2>
+<p>Kirschner never hands you a checklist — he gives an order of operations and a method for finding the next bottleneck:</p>
+<ol>
+<li><strong>Fix in this order</strong>: (1) <em>ship faster</em> — agent-ready codebase (AGENTS.md, codebase maps, skills) plus fast builds, because 10–20 agents compound every bottleneck; (2) <em>hold quality at speed</em> — mandatory review with effort dials, AI triage with human feedback loops; (3) <em>learn faster</em> — own evals, hill-climbing, online experimentation. Skip a stage and the previous one strands you: speed without quality gates → issue/PR floods; quality gates without evals → shipping fast but not the right thing.</li>
+<li><strong>Measure first, then evolve</strong>: code survival rate before adding more agents; tokens per completed task before routing models; find the bottleneck, fix it, then find the next one — "a constant iterative cycle."</li>
+<li><strong>Traps he named</strong>:</li>
+<li>"More AI" alone doesn't do it — "you're not token maxing." Velocity is a system property, not an adoption percentage.</li>
+<li>Don't tune agent craft before feedback loops: "don't just tune how you work with agents, but tune <strong>where they get feedback</strong>. How do you build these loops?"</li>
+<li>Every automated loop needs a human correction path that feeds mistakes <strong>back upstream</strong> (triage extension → agent prompts/skills; review gate → PRs) — don't let automation drift.</li>
+<li>Don't overfit one eval: keep the broad suite alongside the smoke test.</li>
+<li>Staged rollouts for anything installed: rollbacks are expensive; "we should have probably done it earlier."</li>
+<li>Prefer prototypes to big PRs when unblocking discussion — a scrappy PR that gets the idea visible beats a perfect one that never starts the conversation.</li>
+</ol>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li>Baseline code survival rate (agent-written code actually committed) per model and skill combo; re-measure quarterly. The VS Code arc was 55% to 86%.</li>
+<li>Add AGENTS.md and a generated codebase map to every active repo — keep them lightweight and treat them as living docs that evolve as the agent makes mistakes; encode area expertise as skills reviewed and maintained by the area owner. Run the PM litmus test: can a non-engineer vibe code in this repo without breaking things?</li>
+<li>Attack build/CI speed before scaling agents: any step 10–20 concurrent agents will hit becomes a compounded bottleneck. Target 10× on the worst offender (VS Code's was the TypeScript build).</li>
+<li>Stand up a self-correcting UI loop: automated component screenshots on every build with diffing, plus a <code>/launch</code>-style skill so the agent can click through your app, collect logs, and verify fixes before/after — never accept "it looks perfect" without the agent driving the app.</li>
+<li>Turn on mandatory AI code review with a low/medium/high effort dial keyed to repo risk; block human review until AI review comments are resolved.</li>
+<li>Stand up AI issue triage — spam filter, enrich, translate, assign area owners — and build a human correction path (e.g., a fix-duplicates tool) whose corrections feed back into prompts and skills up front.</li>
+<li>Pipe telemetry into error-stack fingerprinting on your own data; auto-open PRs with an initial diagnosis routed to area owners; ship via staged rollouts with monitoring (rollbacks on installed apps are expensive).</li>
+<li>Build an internal agentic bench in the VSC-Bench pattern: template-generated scenarios seeded from GitHub issues (an agent bootstraps each scenario from a template to keep authoring cheap), hill-climb against them, offline then online runs; rank models by tokens per completed task and expect large spreads. Gate harness PRs on bench numbers before merge.</li>
+<li>Add a smoke eval (<code>say_hello</code> pattern) as preflight before nightly evals, model onboarding, and infra changes; log <code>tool_sequence</code> + <code>output_tokens</code>, not just pass/fail.</li>
+<li>Apply harness-level token levers before buying more model: keep prompt prefixes stable and caches warm (cached input up to 10× cheaper), defer tool schemas until searched, and push narrow work (search, command-running, summarization) to subagents on the smallest/cheapest models.</li>
+</ol>
+<h2 id="sources">Sources</h2>
+<ul>
+<li><strong>Full spoken transcript</strong> (worked): https://www.usetranscribe.io/yt/I2LL_wd89-A/</li>
+<li><strong>Video</strong>: https://www.youtube.com/watch?v=I2LL_wd89-A</li>
+<li><strong>"What 50,000 Runs of a 5-Line Eval Taught Us"</strong> — VS Code Eval Team, Jun 19 2026 (the 70× eval, overhead patterns, model-size finding): https://code.visualstudio.com/blogs/2026/06/19/what-50000-runs-taught-us</li>
+<li><strong>"Improving token efficiency for GitHub Copilot in VS Code"</strong> — Ryan Caldwell &amp; Bhavya U, Jun 17 2026 (prompt caching, tool search, WebSockets, subagent direction): https://code.visualstudio.com/blogs/2026/06/17/improving-token-efficiency-in-github-copilot</li>
+<li><strong>"The Coding Harness Behind GitHub Copilot in VS Code"</strong> — Julia Kasper, Megan Rogge &amp; Aaron Munger, May 15 2026 (VSC-Bench design, PR-gated eval assessment, "the model is the engine, the harness is the car"): https://code.visualstudio.com/blogs/2026/05/15/agent-harnesses-github-copilot-vscode</li>
+<li>Note: the three blogs are VS Code <em>team</em> posts Kirschner referenced in the talk (the 70× eval and token-efficiency blogs by name); none is bylined to him personally.</li>
 </ul></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>
