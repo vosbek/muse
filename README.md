@@ -61,3 +61,7 @@ Ten deep-dive dossiers that go beyond the distilled summaries, built from the ac
 ## AI Engineer talks
 
 37 talks from the AI Engineer channel's World's Fair 2026 run (Sep 25 – Oct 3), each distilled into thesis, key points, quotes/data, and a tokenomics angle with local-deploy takeaways. Start with the [index](ai-engineer-talks/README.md) — highlights: GEPA's 3-examples-beat-25k-rollouts reflection loop, Kimchi's cost-per-task model routing (2.5x savings), Factory's deferred context engine (50%+ token savings), Qdrant's fully-offline memory demo, and the DX data showing median +7.7% PR throughput with nobody near 2x.
+
+## The learning site
+
+This repo publishes as a static learning site via GitHub Pages (served from `docs/`, built by `site/build.py` — run it after adding new entries, then push `docs/`). Start with the [Tokenomics Playbook](tokenomics-playbook.md) if you care about what AI-assisted engineering actually costs.
