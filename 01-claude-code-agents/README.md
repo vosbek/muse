@@ -116,3 +116,68 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** None linked in post text.
 - **Extractable skill:** Accumulate agent leverage as a library of reusable skills, not as one-off prompts or single agents.
 - **Source:** https://x.com/0xCodila/status/2099177605484179532
+
+### Second batch (Aug 24 – Sep 12)
+
+### claude plugin eval — measure what your plugin actually adds
+- **Creator:** @ClaudeDevs · **Date:** 2026-09-11
+- **What it suggests:** Claude Code gained a plugin eval command: run it against your plugin to see what value the plugin adds versus the baseline, or whether it needs more work (text truncates). This is evals discipline applied to the customization layer itself — most teams pile skills, hooks, and instructions into their setup and never measure whether any of it helps. The eval turns plugin development into an empirical loop: ship a plugin, measure the delta, keep what moves the needle, cut what doesn't. For anyone maintaining a shared Claude Code setup — and the Spotify and hackathon posts in this batch show those setups are getting large — this is the missing feedback mechanism that keeps a 286-skill setup from rotting into superstition.
+- **Repos/tools:** Claude Code (claude plugin eval)
+- **Extractable skill:** Eval every customization — measure plugin/skill delta against baseline before and after changes.
+- **Source:** https://x.com/ClaudeDevs/status/2098500999656923145
+
+### Spotify's internal Claude Code setup that cut token spend
+- **Creator:** @undefinedKi · **Date:** 2026-09-04
+- **What it suggests:** Spotify published the internal Claude Code setup its engineers use — the one that cut tok[en spend, truncated]. The post doesn't spell out the full mechanism in the visible text, but the shape is familiar from this batch's tokenomics theme: a large org standardizing the harness (shared skills, constrained tool use, routing) so the savings compound across every engineer. The verifiable core is a real company, a real internal setup, and real published numbers on token reduction. The pattern to steal is standardization itself — one good harness rolled out to everyone beats a hundred artisanal setups. Full details at the permalink.
+- **Repos/tools:** None linked in visible text.
+- **Extractable skill:** Standardize the winning harness org-wide; token savings multiply by headcount.
+- **Source:** https://x.com/undefinedKi/status/2095942506433089832
+
+### /show-me — a skill that makes PR descriptions readable
+- **Creator:** @mattpocockuk · **Date:** 2026-09-03
+- **What it suggests:** /show-me is called out as a phenomenal skill that makes PR descriptions extremely easy to read — "basically a toolbox of" [truncated]. It lives at github.com/humanlayer/skills under skills/plugins/show-me. The pattern is skills as composable tools for specific jobs: instead of prompting the model to "write a good PR description," you install a skill that encodes what a good one looks like and the steps to produce it. 7,611 likes and 559 reposts suggest this resonated as the canonical example of skill-driven development in practice.
+- **Repos/tools:** github.com/humanlayer/skills (skills/plugins/show-me)
+- **Extractable skill:** Package recurring jobs (PR descriptions, reviews) as installable skills, not prompts.
+- **Source:** https://x.com/mattpocockuk/status/2095460192871698728
+
+### Claude Commerce Agents — open-source blueprint for shopping agents
+- **Creator:** @ClaudeDevs · **Date:** 2026-09-02
+- **What it suggests:** Anthropic open-sourced Claude Commerce Agents: a blueprint for building shopping and merchant [agents, truncated]. 11,802 likes, 1,270 reposts — one of the biggest posts in the batch. The significance is the form factor: not a model release, a reference architecture. Blueprints like this do for agent builders what starter templates did for web apps — they encode the harness decisions (tool design, state management, checkout flows, trust boundaries) so teams don't rediscover them. For the playbook: treat reference architectures as the fastest way to absorb a domain's harness lessons.
+- **Repos/tools:** Claude Commerce Agents (open source; link at permalink)
+- **Extractable skill:** Start new agent domains from reference architectures, not blank prompts.
+- **Source:** https://x.com/ClaudeDevs/status/2095233745167282602
+
+### Audit your skills with /claude-api prompt-audit
+- **Creator:** @petergyang · **Date:** 2026-09-01
+- **What it suggests:** If you're trying Fable 5.1, run /claude-api prompt-audit on your skills. The recommendation pairs a model upgrade with a skill hygiene step — new models change what good instructions look like, so skills tuned for the old model deserve re-examination. The extractable practice: prompt-audit is a command that reviews your skills against the current model, catching stale instructions, redundant rules, and "claudese" the new model doesn't need. This is the skill-improvement loop made concrete: the outer loop from the factory talk, as a runnable command.
+- **Repos/tools:** Claude Code (/claude-api prompt-audit)
+- **Extractable skill:** Re-audit skills on every model upgrade; instructions tuned for the old model are technical debt.
+- **Source:** https://x.com/petergyang/status/2094987791566622971
+
+### Anthropic's prompt that eliminates "claudese"
+- **Creator:** @ethanCaballero · **Date:** 2026-09-01
+- **What it suggests:** Anthropic released a new prompt that eliminates "claudese" — the stilted, over-formatted output style models default to — with the canonical version at platform.claude.com under "Prompting Claude Fable 5.1." The interesting bit isn't the prompt itself; it's that output style is now treated as a configurable, versioned artifact from the model vendor rather than something every user hand-tunes. For skill authors: pin style guidance to the vendor's current recommendation and re-check it per model version, because the vendor keeps moving the target.
+- **Repos/tools:** platform.claude.com (Prompting Claude Fable 5.1)
+- **Extractable skill:** Treat output-style guidance as a versioned dependency; refresh it from vendor docs per model.
+- **Source:** https://x.com/ethanCaballero/status/2094988944425267411
+
+### Two account recommendations for learning Claude (brief)
+- **Creators:** @Zephyr_hg · **Dates:** 2026-09-01, 2026-08-31
+- **What it suggests:** Two short posts recommending accounts to follow for learning Claude (one names "Quo" [truncated]). Filed here as pointers rather than teachings — the full recommendations are at the permalinks.
+- **Repos/tools:** None.
+- **Extractable skill:** Curate a learning feed of practitioner accounts; the field moves too fast for static docs alone.
+- **Source:** https://x.com/Zephyr_hg/status/2094822320107876544 · https://x.com/Zephyr_hg/status/2094385653945401366
+
+### Hackathon winner's full Claude Code setup: 68 subagents, 286 skills
+- **Creator:** @undefinedKi · **Date:** 2026-08-30
+- **What it suggests:** The winner of an Anthropic hackathon open-sourced his entire Claude Code setup: 68 subagents and 286 sk[ills, truncated]. The numbers are the story — a competitive agent setup is no longer a prompt and a prayer; it's a small software system with 68 specialized subagents and nearly 300 skills. The open-sourcing matters because setups at this scale are otherwise invisible — everyone builds their own in private. For the playbook: study this as a reference architecture for large-scale personal agent systems — how subagents are divided, how skills are organized, what the top-level routing looks like.
+- **Repos/tools:** Full setup open-sourced (link at permalink)
+- **Extractable skill:** At scale, the agent setup is a system — study large open setups for subagent/skill organization patterns.
+- **Source:** https://x.com/undefinedKi/status/2094088284443992514
+
+### VS Code Learn: Java, idea to agent-ready (brief)
+- **Creator:** @code · **Date:** 2026-08-28
+- **What it suggests:** A VS Code Learn series episode on going from idea to agent-ready with Java (aka.ms/VSCode/Learn-Java). Filed as a learning pointer; the series format itself is the pattern — vendors now teach their tools through the agent workflow, not the GUI workflow.
+- **Repos/tools:** aka.ms/VSCode/Learn-Java
+- **Extractable skill:** Learn tools through their agent workflows; that's where vendors now put the leverage.
+- **Source:** https://x.com/code/status/2093449548437786828

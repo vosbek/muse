@@ -57,3 +57,19 @@ $0.042 per million input tokens for the decision layer. PR review at ~200x cheap
 
 **13. Model deprecation is now routine operations.**
 GitHub Copilot deprecating selected models on Oct 19, 2026 is the forcing function: prompts, skills, evals, and workflows hard-tied to one model break on someone else's schedule. The X bookmarks' answer is the same abstraction stack the reels described — routers, provider-swap adapters, portable skills — now justified as operational resilience, not just cost control. Design every layer for model turnover.
+
+## New patterns from X bookmarks batch 2 (Aug 24 – Sep 12)
+
+The 37 posts in the second batch (Aug 24 – Sep 12, 2026) add four patterns — all of them about the enterprise conversation catching up to the practitioner one:
+
+**14. Tokenomics goes mainstream: real companies publish real numbers.**
+GitHub published how it makes AI coding cost-efficient without sacrificing quality. Anthropic published the Claude Platform cost playbook (prompt caching, instruction hygiene, effort routing). Spotify published the internal Claude Code setup that cut token spend. Uber published what its agents actually cost — 70%+ of PRs agent-authored across 3,600 agents. Token cost stopped being a practitioner complaint and became a vendor-published discipline with named levers. For the enterprise program: cite these as the reference set, and note the convergence — everyone independently landed on caching, routing, and instruction hygiene.
+
+**15. The harness, not the model, is the thesis now.**
+@mardehaym's harness deep-dives (endorsed independently by multiple practitioners as "the clearest explanation"), the LimestoneHQ AI Factory field report, the PE-portco prior-auth deployment, and GitHub's HydraFusion pitch ("the best model may not be a model after all") all say the same thing: capability lives in the loop, tools, state, and evals around the model. The model is interchangeable config. This is the factory talk's inner loop restated as industry consensus — invest in harness engineering first.
+
+**16. Skills replace prompts as the customization primitive.**
+GitHub Copilot's new harness engine drops prompt-file support and migrates users to Skills. @OrenMe's take: agent primitives need to graduate from markdown files passed around in Slack to versioned, owned, distributable artifacts. The /show-me skill, the 24-skills distillation, the 286-skill hackathon setup, and the plugin-eval command all point the same way: the skill is the unit of agent engineering, and it now needs a supply chain — versioning, evals, deprecation — like any software artifact.
+
+**17. The enterprise AI factory is a named architecture.**
+Uber Engineering ("Running a Software Factory Efficiently at Uber Scale," 4,810 likes), the "Software Factories: Emerging Architectures" article, the LimestoneHQ factory field report, and Kiro's "frontier engineering" manifesto: the factory concept consolidated from scattered experiments into a named category in about a month. The Uber piece is the peer playbook — AI tooling embedded in every phase of development at scale, with efficiency as the explicit engineering topic. Map its phases to your own rollout.

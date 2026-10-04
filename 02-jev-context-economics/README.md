@@ -242,3 +242,21 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** None linked in post text.
 - **Extractable skill:** Question whether you're climbing the right ladder: generation scale vs. decision quality are different games.
 - **Source:** https://x.com/CompleteSkeptic/status/2099925682726002904
+
+### Second batch (Aug 24 – Sep 12)
+
+> **Tokenomics callout — the two most cost-relevant posts in this batch.** GitHub and Anthropic both published their cost-efficiency playbooks within days of each other. If you read nothing else here, read these two.
+
+### GitHub: "Using more tokens doesn't always mean better results"
+- **Creator:** @github · **Date:** 2026-09-08
+- **What it suggests:** GitHub's own post reframes the efficiency metric: the real measure of AI coding efficiency is whether an agent has the context it needs to move work f[orward, truncated] — not token volume. It links the github.blog piece "How we make AI coding more cost efficient without sacrificing task quality." This is the tokenomics thesis stated by the largest code host on earth: context sufficiency per dollar, not tokens per task. The blog presumably details their techniques (the visible text cuts off), but the framing alone is the takeaway for a tokenomics remit — it legitimizes measuring efficiency as outcome-per-token-spend and gives the enterprise program a vendor-published reference point. Read the full blog via the permalink.
+- **Repos/tools:** github.blog (How we make AI coding more cost efficient without sacrificing task quality)
+- **Extractable skill:** Define efficiency as context-sufficiency per dollar; use GitHub's published framing to anchor the enterprise tokenomics program.
+- **Source:** https://x.com/github/status/2097388268237045883
+
+### Claude Platform: cutting cost without cutting quality
+- **Creator:** @ClaudeDevs · **Date:** 2026-09-08
+- **What it suggests:** Anthropic's article "Reducing cost and improving performance with Claude Platform" — tuning prompt caching, instructions, and effort can reduce Claude's cost without sacrificing applica[tion quality, truncated]. 168 replies, 377 reposts, 4,026 likes — practitioners care about this enormously. The three levers named are the whole enterprise tokenomics playbook in one line: prompt caching (don't pay twice for the same prefix), instructions (shorter, sharper system prompts cost less on every call), and effort (match reasoning effort to task difficulty — the routing thesis). Vendor-published, so it's citable in enterprise docs; the full techniques are at the permalink.
+- **Repos/tools:** Claude Platform docs (article link at permalink)
+- **Extractable skill:** The big three cost levers — prompt caching, instruction hygiene, effort routing — applied systematically.
+- **Source:** https://x.com/ClaudeDevs/status/2097369738968195513
