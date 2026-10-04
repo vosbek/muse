@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "Orchestras, Not Factories: How the Fastest Builders Work" — Charlie Holtz, Conductor · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-orchestras-not-factories-how-the-fastest-builders-work-charlie-holtz-conductor">Talk Notes: "Orchestras, Not Factories: How the Fastest Builders Work" — Charlie Holtz, Conductor</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=TRfzFJCJ7ZE">Orchestras, Not Factories: How the Fastest Builders Work — Charlie Holtz, Conductor</a> · AI Engineer channel · Sep 27, 2026 · 17:44 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>The fastest builders follow six principles (his acronym "Stickfo"): stay near the frontier, don't beat the market, create slop-free zones, feed the beast, free-range agents — and frame the work as conducting an orchestra, not managing a factory: a human in flow, crafting with a team of agents, not a line manager pushing buttons to pump out features.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>Conductor.</strong> A desktop app for managing a team of coding agents in one interface (vs. many terminal windows for Claude Code/Codex). Born as an internal tool: the team were Claude Code power users (from Feb of last year), cloned their repo 5×, discovered worktrees, and "bit by bit" built Conductor. They were previously building a different app called Chorus.</li>
+<li><strong>1 — Stay near the frontier.</strong> Try new things the day they ship (he cites "ultra code," "/go"). The social-graph trickle-down leaves you 3–6 months behind because everything moves too fast.</li>
+<li><strong>2 — Don't beat the market.</strong> Heuristic: "why isn't this workflow the default?" Don't over-optimize for Ralph loops — if it works for everyone, wait for Anthropic/OpenAI to build it into the default harness. Efficient-market analogy: only invest where you have "real alpha" — information about your users/codebase the models lack (their chat app must render very long chats fast, so they optimize React queries and sacrifice elsewhere).</li>
+<li><strong>"Mid-wit memeing."</strong> Spending all your time on workflow instead of actual work. "Don't be the person who has an amazing Emacs setup but doesn't actually get stuff done."</li>
+<li><strong>3 — Slop-free zones.</strong> Parts of the codebase requiring strict human review — careful in some areas, loose in others. Concretely: the migrations file (CI requires human review of any change); Slack assumed human-written ("slop free"); docs/CLAUDE.md/skills get heavy upfront investment. They had to rewrite their whole app "a couple of times" from neglecting this. CLAUDE.md/AGENTS.md = "whispering in the ear" of a new intern every session — context loaded into the agent each time it starts.</li>
+<li><strong>4 — Feed the beast.</strong> The Conductor Internal Agent ("the CIA") — a centralized database of everything in the org: every Slack message → Postgres table, Discord bug reports, recorded meetings. "Put everything in a database and give your agent a SQL tool and let it handle the rest."</li>
+<li><strong>5 — Free-range agents.</strong> Sandboxes that don't die when you close your laptop; agents can spawn more of themselves; agents collaborate with agents and humans. Conductor moved from git worktrees to cloud sandboxes (each workspace has a cloud icon). Real-time collaboration: see teammates' (Caden, Lewis, Tywan, Jackson) workspaces live, review diffs, comment in-workspace ("tabs, not spaces"), teammate replies in real time. "Collaboration is one of the most important new interface changes this year."</li>
+<li><strong>Demo.</strong> His OpenClaw agent "Lord Crandon" with Conductor API access — from phone/Telegram/Slack he texts "create a workspace that makes all the buttons blue" → workspace created, agent works while he's away.</li>
+<li><strong>6 — Orchestras, not factories.</strong> "I honestly kind of hate the term." Factory = automation and line managers; "we tried this 10 years ago with 'feature factories' and it just doesn't work." He wants to "feel like Steve Jobs designing the Mac with a team of amazing humans and AI agents," zooming in and out. Builders have a responsibility to make tools great for humans and to "use the words that make us feel excited... capable... in the flow."</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"I honestly kind of hate the term [software factory]."</li>
+<li>"Don't be the person who has an amazing Emacs setup but doesn't actually get stuff done."</li>
+<li>"I want my software to feel human and crafted. I want to feel like a human at the center of it all."</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li><strong>"Don't beat the market" is a capital-efficiency rule:</strong> don't spend engineering time optimizing workflows vendors will commoditize — invest only where you hold proprietary "alpha." Same logic applies to token spend: don't build bespoke routing/context machinery for commodity tasks.</li>
+<li><strong>Slop-free zones = targeted allocation of expensive human review attention.</strong> Strict where it matters, loose elsewhere — review effort is a scarce resource to budget like tokens.</li>
+<li><strong>Feed the beast.</strong> One centralized context store plus a SQL tool is cheap, reusable context retrieval for all agents — a single shared memory surface instead of per-agent re-gathering.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Video: https://www.youtube.com/watch?v=TRfzFJCJ7ZE</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "Lessons from Generating 12 Trillion Synthetic Tokens" — Bogdan Gaza, DatologyAI · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-lessons-from-generating-12-trillion-synthetic-tokens-bogdan-gaza-datologyai">Talk Notes: "Lessons from Generating 12 Trillion Synthetic Tokens" — Bogdan Gaza, DatologyAI</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=FQwTqUmcbRg">Lessons from Generating 12 Trillion Synthetic Tokens — Bogdan Gaza, DatologyAI</a> · AI Engineer channel · Oct 2, 2026 · 20:31 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript.</p>
+<h2 id="thesis">Thesis</h2>
+<p>Synthetic data is now load-bearing for frontier pre-training — scaling laws demand exponentially more data for linear gains while the usable public web tops out around 30T tokens. The hard part is not the data recipe but the data-engineering plumbing: DatologyAI's ~12T-token run (~7T web + ~5T math/code) was enabled by consolidating a Slurm research silo onto unified Kubernetes and fixing four concrete bottlenecks (metadata, GPU failures, cross-cluster scheduling, inference tuning).</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>BeyondWeb recipe:</strong> rephrasing/restructuring pipeline seeded from the highest-quality documents in a customer's corpus — unseeded prompting just reproduces modes of the original training distribution.</li>
+<li><strong>Quality claims (DatologyAI's own, dated "late summer '25," now "much, much better"):</strong> a 3B model on BeyondWeb matches 8B Nemotron Synth accuracy; same performance with ~2.7x fewer tokens than Nemotron Synth and ~5.3x fewer than Cosmopedia. Tested at 1B/3B/8B vs Nemotron Synth, Cosmopedia, QARap, RedPajama.</li>
+<li><strong>Before:</strong> synthetic data as research-only Slurm workload, two-track codebase, manual backfill into the Asset Tracker catalog — "slow, error-prone, low velocity, under-utilized GPUs."</li>
+<li><strong>After:</strong> control cluster (orchestration + Asset Tracker), Spark on its own K8s cluster, Ray + KubeRay + vLLM as the synthetic-data core, H100 fleet on AWS HyperPod via EKS, all data on S3 (S3-compatible APIs so pipelines deploy to AWS/GCP/on-prem); internal job scheduler; one chained workflow: curation Spark jobs → generation → training → evals.</li>
+<li><strong>Bottleneck 1 — metadata:</strong> per-object S3 metadata ~10ms × millions of Parquet partitions + throttling → 9–11 days just to populate state. Fix: batched S3 list-API requests at ~1,000/page service limit → ~2 hours.</li>
+<li><strong>Bottleneck 2 — GPU instability:</strong> an 8-hour partition dying in the last 5 minutes loses everything. Fix: right-sized partitions + periodic S3 checkpointing with resumable execution, idempotent overwrites, seamless recovery.</li>
+<li><strong>Bottleneck 3 — cross-cluster scheduling:</strong> CPU schedulable while GPU pool is full and vice versa (asymmetric availability). Fix: dedicated resource pools per cluster (CPU pool for Spark, Ray-head pools) + atomic CPU/GPU scheduling — "a bin-packing problem at the end of the day."</li>
+<li><strong>Bottleneck 4 — inference config:</strong> a dedicated vLLM benchmarking harness, grid-searching flags (batch size, speculative decoding) → ~40% throughput gains with no other change. Batch-inference workload (≠ online serving); also testing SGLang.</li>
+<li><strong>Scale:</strong> ~30B tokens in limited runs (end 2024) → ~7T web + ~5T math/code across customers (end 2025) — roughly 400x output in ~12 months.</li>
+<li><strong>Paper:</strong> arxiv.org/abs/2505.15743. Open areas: domain coverage (web, multilingual, math, code, legal). Hiring across data infra, cloud infra, PM.</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"So 11 days to two hours, that's the first one."</li>
+<li>"You can get a lot of gains — in this case, about 40% throughput gains — just by tweaking the flags."</li>
+<li>"On the web, we can find about 30 trillion tokens, give or take."</li>
+<li><strong>Stat:</strong> 400x output in ~12 months (30B → 12T tokens).</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li>2.7–5.3x token efficiency vs public synthetic datasets = proportionally less training compute per capability point.</li>
+<li>Metadata 11 days → 2 hours avoids millions in idle GPU spend; 40% vLLM throughput gain from flags alone; atomic scheduling raises fleet utilization.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>The vLLM lesson ports directly to local inference: build a small benchmarking harness and grid-search batch size / speculative decoding before buying hardware — ~40% gains can come from flags alone.</li>
+<li>S3-compatible APIs (MinIO locally) mean the same curation pipelines run on-prem without cloud lock-in — matches the local-first posture.</li>
+<li>Seed synthetic data from your own best documents, not unseeded prompts — unseeded generation just replays the base model's distribution, which is wasted compute.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>biggo AI summary: https://finance.biggo.com/podcast/3c9006f63582ab1f</li>
+<li>Video description: https://www.youtube.com/watch?v=FQwTqUmcbRg</li>
+<li>Paper: https://arxiv.org/abs/2505.15743</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

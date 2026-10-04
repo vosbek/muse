@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "An AI Research Agent That Runs Your Experiments" — Tim Sweeney, Weights & Biases · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-an-ai-research-agent-that-runs-your-experiments-tim-sweeney-weights-biases">Talk Notes: "An AI Research Agent That Runs Your Experiments" — Tim Sweeney, Weights &amp; Biases</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=hd7TOvmyAxU">An AI Research Agent That Runs Your Experiments — Tim Sweeney, Weights &amp; Biases</a> · AI Engineer channel · Sep 26, 2026 · 21:15 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>W&amp;B's ARIA ("AI research and iteration agent") is a research agent that runs your experiments for you: on stage it autonomously ran 200+ experiment batches in a Karpathy autoresearch loop (downloading code, provisioning GPUs via W&amp;B Launch on CoreWeave, iterating on code and hyperparameters), while also serving as a data-science companion (summarizing runs, finding patterns, writing W&amp;B reports/workspaces) — and the same Weave-based loop the team uses to build ARIA itself (production traces → tasks-as-unit-tests → nightly evals → improvement loop → registry promotion) is the blueprint it offers agent builders.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>Three-part agenda</strong> for three personas (ML researchers, applied engineers, AI managers): (1) ARIA itself + live autoresearch demo; (2) how W&amp;B + CoreWeave built ARIA; (3) tips for productionizing agents.</li>
+<li><strong>W&amp;B context:</strong> 9 years in business, joined the CoreWeave family ~a year ago; known for the models/training/inference + Weave stack — collecting data about AI/ML workflows and making it actionable.</li>
+<li><strong>Demo setup:</strong> a W&amp;B workspace with 200+ training jobs and a scatter plot of declining loss; grounded on Karpathy's autoresearch project (a simple LLM-training codebase ideal for iterative improvement).</li>
+<li><strong>Live on stage:</strong> "please conduct another batch of experiments… we're hoping to find the best model live." ARIA reasoned "I don't want to make a big architecture swing, that feels too risky," chose hyperparameter modifications, and kicked off shell calls running the experimentation loop — with a live Kubernetes terminal showing real GPU execution ("this is not a fake demo"), then polling for completion.</li>
+<li><strong>ARIA as data-science companion:</strong> "summarize the highest-performing runs" (onboarding/PTO catch-up); "find patterns in this research" — it identified a newly emerged model family, batch size as a high-leverage parameter, and a promising architectural recipe ("insights that would have taken me hours or days"); emits W&amp;B reports ("markdown on steroids" with embedded plots — it chose the esoteric parameter-importance chart) and builds workspaces/plots with W&amp;B's proprietary charts.</li>
+<li><strong>Launch announcements:</strong> ARIA went GA the Monday before the talk and shipped in the <strong>W&amp;B iOS app</strong> — steer hyperparameter tuning from your phone ("go touch grass at Yerba Buena gardens").</li>
+<li><strong>Vision:</strong> a fully automated end-to-end research platform that complements rather than replaces researchers — ARIA orchestrates jobs, understands GPU workloads, responds to W&amp;B-ecosystem events, looks up arXiv papers, and collaborates on hypotheses. "Let ARIA drive the mechanics you don't want to deal with while you focus on new ideas."</li>
+<li><strong>Backend (archetypal agent stack):</strong> web + iOS clients → API server → trace DB → worker harness ("magic box") wired to: (a) sandbox for arbitrary shell/Python (recommends the CoreWeave×W&amp;B sandbox); (b) an LLM provider (e.g., GLM 5.2 or fine-tuned models via W&amp;B Inference); (c) W&amp;B Launch for long-running workloads (days-long training) on CoreWeave GPUs; (d) Weave observability — 100% of traces logged.</li>
+<li><strong>Building ARIA itself:</strong> Weave traces → insights → "tasks" (unit tests for models) → nightly eval loops; model registry via W&amp;B artifacts; eval results in Weave on a shared dashboard for go/no-go on prompt/architecture changes → the <strong>"improvement loop"</strong> (hypothesize → implement candidates → analyze evals). Two complementary-yet-adversarial offline research loops feed Weave data until the best model is promoted to production — closing the data flywheel.</li>
+<li><strong>Weave agent dashboard:</strong> span volume, conversation volume, token tracking (bird's-eye view); live conversations feed (filtered to internal employees in the demo); spans view showing trace topology (tool calls, LLM calls, thinking blocks as colors/shapes); per-conversation detail (system prompt, user message, shell calls, reasoning blocks) where the research lead, PM, and Tim annotate with notes/feedback/emojis to discover behavioral nuances → new tasks.</li>
+<li><strong>ARIA analyzing ARIA:</strong> "summarize" buttons throughout the W&amp;B app open contextual chats — ARIA analyzes ARIA's own conversations to recommend ARIA improvements, all in-UI.</li>
+<li><strong>Weave "signals":</strong> integrated LLM judges on live traffic — user-frustration, low-quality-response, ask-user signals — clustering behaviors to fix next iteration, with the judge's live reasoning visible (e.g., "I'm not satisfied with the loss curve, it looks bad" → frustration flag).</li>
+<li><strong>Tasks = YAML files = unit tests for models:</strong> example prompt ("check this run and that run… what's the difference?") + metadata + an LLM judge defining correctness + a second LLM judge scoring "are the insights actually interesting" + a rule-based judge (result within 6 tool calls — expediency). ~200 tasks in a nightly suite tracked in Weave; two nights before the talk the candidate scored <strong>73% vs prod 72%</strong> → "definitely going to push that forward this Friday."</li>
+<li><strong>Weave workflow recap:</strong> (a) collect ALL production traffic; (b) generate insights (humans + ARIA + LLM judges); (c) enrich tasks; implement; evaluate on the shared dashboard; promote the best model with confidence.</li>
+<li><strong>Tips for managers:</strong> (1) invest in agent-oriented observability — log sessions, turns, tools, feedback — to catch "behavioral bugs" (not exceptions or perf, but behavioral); (2) tasks and evals are the new CI — researchers on the same scrum team writing tasks, metrics as go/no-go — BUT keep humans as necessary judges (LLMs miss behavioral nuances; the team reviews best/worst traces weekly); (3) add value through context and tools — don't overengineer the harness with memory tricks; low-hanging fruit is giving the agent business-domain context, primitives, and data.</li>
+<li><strong>Live result:</strong> previous best loss 5.831 (lunchtime) vs 5.833 from the on-stage batch — "right on the edge of having a live improvement, pretty darn close"; 12 experiments ran in that batch, "more all night."</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"Tasks and evals are the new world of CI."</li>
+<li>"Behavioral bugs — not exceptions, not performance, but behavioral bugs."</li>
+<li>"Let ARIA drive the mechanics that you don't want to deal with while you focus on new ideas."</li>
+<li>Candidate 73% vs prod 72% on nightly evals → ship Friday; 200+ training jobs; 12 experiments in the live batch.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li>Token tracking is a first-class dashboard metric (span volume, conversation volume, token tracking).</li>
+<li>Expediency is an eval criterion: a rule-based judge requires results within 6 tool calls.</li>
+<li>W&amp;B Launch + CoreWeave GPUs back long-running workloads; the efficiency story overall is eval-driven iteration (nightly evals, 200 tasks, go/no-go promotion).</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>Make token usage and tool-call counts first-class dashboard metrics and eval criteria — an expediency judge ("solved within N tool calls") forces the agent to stay cheap, not just correct.</li>
+<li>The tasks-as-YAML pattern needs no Weave: prompt + metadata + judge + tool-call budget is a local nightly eval suite.</li>
+<li>Biggest local leverage: don't overengineer the harness with memory tricks — give the agent domain context, primitives, and data instead.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Video page: https://www.youtube.com/watch?v=hd7TOvmyAxU</li>
+<li>Full transcript: https://www.usetranscribe.io/yt/hd7TOvmyAxU/arya-ai-research-agent</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

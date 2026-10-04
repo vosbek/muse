@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "What Makes Open Models Fast in Production" — Sujee Maniyam, Nebius · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-what-makes-open-models-fast-in-production-sujee-maniyam-nebius">Talk Notes: "What Makes Open Models Fast in Production" — Sujee Maniyam, Nebius</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=TRe1u7dHYiA">What Makes Open Models Fast in Production — Sujee Maniyam, Nebius</a> · AI Engineer channel · Oct 3, 2026 · 20:31 · Recorded at AI Engineer World's Fair 2026</p>
+<h2 id="thesis">Thesis</h2>
+<p>Open models are now competitive with proprietary models on quality, and Nebius makes them fast and cost-efficient in production via a full-stack "Token Factory" — selection, deployment, post-training, and a serving stack with per-model engine selection, cache-aware routing, speculative decoding with custom-trained draft models, KV-cache optimization, and disaggregated prefill/decode.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>Token Factory</strong>: full loop — inference → data lab → post-training → deployment; 60+ models in production.</li>
+<li><strong>Inference drives quality data</strong>: better than generic open datasets because real production requests are more representative.</li>
+<li><strong>Selection benchmark</strong>: Artificial Analysis benchmark — open models now competitive with proprietary models.</li>
+<li><strong>NVFP4 quantization</strong> on latest Nvidia chips (Blackwell Ultra AGXP300, GB300); Nvidia made a $2B investment in Nebius.</li>
+<li><strong>Serving-engine selection</strong>: not one engine per model — the best serving engine is chosen for each model individually.</li>
+<li><strong>Cache-aware routing</strong>: LLM inference has three memory layers — HBM cache (limited space), CPU memory, disk storage; an HBM cache hit = fastest response.</li>
+<li><strong>Draft models for speculative decoding</strong>: small models generate drafts, the large model approves — up to 30% improvement even with generic data, better with custom data trained on production traffic.</li>
+<li><strong>Request-aware + cache-aware routing</strong> (new for speculative decoding): route to the machine that already has your prefix cached.</li>
+<li><strong>KV-cache optimization</strong>: reuse prefixes — up to 10x speedup; offload cache out of GPU memory to CPU, with an eviction policy deciding what to keep/swap.</li>
+<li><strong>Quantization sweet spot</strong>: experiment to find the sweet spot per model — some models are fine at low quantization, others degrade.</li>
+<li><strong>Disaggregated prefill vs. decode</strong>: prefill is compute-bound (GPUs great at it); decode is memory-bound and sequential, one token at a time — optimize each independently.</li>
+<li><strong>1 trillion-parameter models</strong>: the stack must handle them — per-layer disaggregation (prefill/decode split per layer), KV caching, parallelism.</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>Custom-trained draft models: "up to 30% improvement" even on generic data; better when trained on production data.</li>
+<li>KV-cache reuse gives "up to 10x" speedup.</li>
+<li>Nvidia's $2B investment in Nebius.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li>KV-cache reuse = up to 10x speedup; cache-aware routing maximizes HBM hits.</li>
+<li>Speculative decoding with draft models trained on production data → 30%+ improvement.</li>
+<li>Per-model quantization sweet spots; disaggregated prefill/decode optimizes compute-bound vs. memory-bound phases separately.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li><strong>The prefix-cache idea applies locally</strong>: wherever Matt serves local models (Ollama/vLLM), prefix caching and prompt-prefix reuse across repeated tasks (system prompts, tool schemas, session preambles) cut decode cost — same mechanics, smaller hardware.</li>
+<li><strong>Per-model quantization discipline</strong>: benchmark quality degradation per model at each quantization level rather than applying one default — directly relevant to picking local model sizes for the enterprise router.</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

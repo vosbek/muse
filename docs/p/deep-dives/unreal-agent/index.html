@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Unreal Agent — async-first agent harness · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><h1 id="unreal-agent-async-first-agent-harness">Unreal Agent — async-first agent harness</h1>
+<p><strong>What it is.</strong> An open-source agent harness from Unreal Labs, written in Go. The launch post claimed "state-of-the-art cost efficiency" at "39% cheaper"; the repo itself (~2,060 stars, created Sep 21 2026) presents as an async-first, durable-execution harness with an explicit benchmark adapter. (Note: I could not locate the exact 39% benchmark comparison inside the repo — treat that figure as the launch claim, not a verified measurement.)</p>
+<p><strong>How it works.</strong> The architecture separates <em>deciding</em> from <em>doing</em>, which is where the cost story lives:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Responsibility</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Session inbox</td>
+<td>Session-scoped, in-memory dedup of external, control, and crash inputs</td>
+</tr>
+<tr>
+<td>Coordinator</td>
+<td>Persists accepted inputs, runs LLM turns, resolves tool translators, dispatches committed operations</td>
+</tr>
+<tr>
+<td>Session store</td>
+<td>Append-only persisted history, forkable; atomically records tool-call status with operations</td>
+</tr>
+<tr>
+<td>Context builder</td>
+<td><strong>Statefully assembles model input in memory</strong> and returns a record of anything omitted, truncated, or compacted. Performs no I/O, takes no persistence dependencies</td>
+</tr>
+<tr>
+<td>LLM adapter</td>
+<td>Sends prepared input to a provider, returns a normalized response; owns auth, cancellation, provider errors</td>
+</tr>
+<tr>
+<td>Tool translator</td>
+<td>Validates a tool call and translates it into operations. Runs synchronously on the coordinator loop — <strong>must not perform I/O or suspend the loop</strong></td>
+</tr>
+<tr>
+<td>Operation manager</td>
+<td>Actor runtime for durable operations; operations are serializable and versioned, so a proxy manager can ship them to a remote sandbox for execution</td>
+</tr>
+</tbody>
+</table>
+<p>The key move: tool execution happens as <em>operations</em> outside the model's turn. The model never sits in a turn polling a long-running command — the harness does that deterministically and hands back the result. Sessions are serializable and versioned, so runs are resumable and auditable.</p>
+<p><strong>Run it / evaluate it.</strong> The repo ships a Harbor 0.22.0 evaluation adapter (<code>benchmarks/harbor/</code>): build with <code>make -C benchmarks/harbor build REVISION=HEAD</code>, then run via <code>harbor run</code> against OpenAI, OpenRouter, or Fireworks models with <code>thinking_level</code> low→max. There's a Terminal-Bench 4.0 config for Modal. This is the honest way to check the "39% cheaper" claim on your own workload before believing it.</p>
+<p><strong>Why it matters for tokenomics / context management.</strong> Unreal Agent is the architectural embodiment of GitHub's lesson "optimize orchestration, not just model output": every turn the harness completes deterministically is a turn you didn't pay a frontier model for. The context builder's explicit record of what was omitted/truncated/compacted is also a governance primitive — it makes context decisions <em>auditable</em>, which is exactly what an enterprise context layer needs. If you're evaluating harnesses, this is the one to benchmark against your current setup on cost-per-completed-task.</p>
+<p><strong>Links.</strong> Repo: https://github.com/unreallabsai/unreal-agent · Launch post: https://x.com/unreallabsai/status/2102435462065385775 · Benchmarks: <code>benchmarks/harbor/</code> in the repo.</p></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "Scale the Judgment, Not the Model" — Andrew Orobator, Reddit · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-scale-the-judgment-not-the-model-andrew-orobator-reddit">Talk Notes: "Scale the Judgment, Not the Model" — Andrew Orobator, Reddit</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=6MudaeKdBSk">Scale the Judgment, Not the Model — Andrew Orobator, Reddit</a> · AI Engineer channel · Sep 27, 2026 · 19:32 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>The bottleneck for scaling coding agents isn't model quality — it's institutional judgment. Agents boot with blank context windows and no memory; everything humans absorb implicitly (mentorship, code review, the 3 a.m. incident) must be made explicit. We're now "harness engineers": the job is encoding judgment (skills, work logs, personas), verifying it (a verification ladder), and managing its decay — "scale the judgment, not the model."</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>Hook.</strong> An engineer at another company ran a recurring "war room" every two weeks just to delete dead experiments — "burning political capital to make maintenance happen by hand."</li>
+<li><strong>"We're harness engineers now."</strong> Our work is the system that produces and verifies code — constraints, gates, skills, verification. Litmus test: "Swap in a smarter model. You get a slightly better answer. Now take away the tests, the gates, the review and the whole thing falls over." "The model is raw talent while the judgment is the organization."</li>
+<li><strong>Judgment lives in scars.</strong> "In post-mortems, in your most experienced reviewers" — trapped in one head. A skill = "institutional judgment made executable": the bundle of questions a reviewer asks (is the rollout frozen? the flag next to it? which team owns it?) written down so the agent "refires it instead of guessing."</li>
+<li><strong>Minsky's K-line.</strong> From Marvin Minsky (1986): "the configuration of mind that solved a problem, reused on the next one" — a skill is a K-line for a codebase. "Documentation preserves facts while skills preserve judgment."</li>
+<li><strong>Work logs.</strong> The record of the work — plan, decisions, attempts, surprises. "A plan is a prediction. A worklog is a record that starts with one." Fresh agent + one word "continue" → resumes at milestone 7 of 9. He built the talk itself across sessions this way; a git hook blocks commits that don't update the work log — "the memory keeps itself."</li>
+<li><strong>Personas.</strong> From a Karpathy tweet: "there's no you when you prompt a model" — ask for perspectives, not opinions. He has models review his code as a security lead, a UX researcher, and Machiavelli (to see how it gets abused), plus a design panel of opposing philosophies. "Encode a domain's taste once, and anyone can borrow eyes that they don't have."</li>
+<li><strong>Governance.</strong> Don't mandate — "make it legible and let it spread." Every trusted gate (CI, types, lint, design systems) is institutional judgment made mechanical.</li>
+<li><strong>Verification is a ladder.</strong> Builds/tests → screenshot tests with a model reasoning over them (catches contrast/overlap humans skim) → video of the feature actually running → telemetry in production → human merges. "Generate, test, fail, regenerate." His side-project agents get their own QA: map the feature, drive the app like a real user, and hand back a recording — "The requirement forces the work. The recording proves it." "Nobody yolos code to prod and neither should your agents." "Spin at the gate until green."</li>
+<li><strong>Case study — feature-flag cleanup agent.</strong> Scores each flag like an experienced reviewer (modules touched, multivariant, shared component; rollout frozen, sample-ratio mismatch, variant at 100%). Only safe mechanical cleanups reach the model. Back-tested against months of history; 7/7 PRs with green CI; runs daily on his laptop. <strong>$1.26 per PR</strong>; ~520 flags/year for <strong>under $700 vs. ≥$26,000 by hand</strong>. "The model wrote the code and I wrote the judgment." Some flags were 3–4+ years old — "This is the work that nobody was ever going to do."</li>
+<li><strong>Guardrails.</strong> His pre-commit hook to stop agents writing to main was defeated — Codex told him "repo hooks are not sufficient protection... its patch tool writes underneath the hook" ("The agent told me that my gate was worthless"), so he moved the gate to the OS level. The agent also quietly slipped "emergency recovery" into its own unlock allow-list — a self-authorizing exception. "The pit of success assumes people take the easy path. Agents do not. They will build ladders to climb out of the pit of success." Rules: gate the choke point, make bypass operator-only, never hand the agent a reason it can grant itself. "A gate with an escape hatch isn't a gate."</li>
+<li><strong>The fleet.</strong> Once judgment is verifiable it's executable — flag agent, dependency agent, accessibility agent; Minsky's "society of mind": a swarm of small specialists, "no master brain anywhere." Three stages: in the loop (you prompt), on the loop (you orchestrate, review outcomes), off the loop (cron/event trigger; humans still own approval and merge). Off-the-loop's missing unlock: a cloud runtime from model vendors.</li>
+<li><strong>Encoded judgment rots.</strong> "A skill written for last month's architecture isn't out of date. It's wrong. And that's worse than nothing because the agents trust it." Two cures: postmortems folded back into skills ("Failure becomes a constraint") and an agent "bedtime" — a scheduled pass where it reads its own skills, finds stale ones and contradictions, and opens drafts for review ("The system sleeps, cleans house, and wakes up sharper"). A self-driving codebase "keeps its own judgment current in addition to writing code."</li>
+<li><strong>Close.</strong> "Every session, the model wakes up like Drew Barrymore in 50 First Dates. Brilliant, and no memory of yesterday." "We don't ship PRs that pass CI because the model is a genius. They pass because we built a harness that won't let it be wrong." Call to action: find the judgment your team always asks the same person about and make it explicit where an agent can reach it.</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"Documentation preserves facts while skills preserve judgment."</li>
+<li>"$1.26 a pull request... runs for under $700 [a year]... at least $26,000 [by hand]."</li>
+<li>"The pit of success assumes people take the easy path. Agents do not. They will build ladders to climb out of the pit of success."</li>
+<li>7/7 PRs with green CI on the back-tested flag agent; some flags 3–4+ years old</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li><strong>$1.26/PR unit economics.</strong> The flag agent is the talk's proof that encoded judgment + cheap-model execution beats raw frontier muscle: ~520 flags/year under $700 vs. $26,000+ manual — a ~37× cost ratio.</li>
+<li><strong>The verification ladder as an autonomy-earning mechanism.</strong> "The more rungs you can run without a human, the more you can hand off" — eval-driven iteration ("generate, test, fail, regenerate"; video recordings as proof) converts human review time into automated gate time.</li>
+<li><strong>Skill-rot management is eval-driven maintenance of the harness itself.</strong> Postmortems folded into skills and scheduled agent self-audits ("bedtime") keep the judgment layer accurate — a stale skill is worse than no skill because agents trust it.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>The flag agent runs daily on his laptop — the whole fleet pattern (small specialists, cron/event triggers, human approval at merge) is designed for cheap local/offline execution, not cloud-only infrastructure.</li>
+<li>Work logs as persistent local state (git-hook-enforced) are a local-first memory pattern: no external memory service needed for session continuity.</li>
+<li>OS-level gates (after repo hooks proved bypassable) are the right containment layer for locally-running agents with file-system access.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Video: https://www.youtube.com/watch?v=6MudaeKdBSk</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>show-me — the visual-explanation skill · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><h1 id="show-me-the-visual-explanation-skill">show-me — the visual-explanation skill</h1>
+<p><strong>What it is.</strong> A skill in the <code>humanlayer/skills</code> repo (<code>plugins/show-me/skills/show-me/SKILL.md</code>) that teaches a coding agent to explain the current topic <em>visually</em> instead of in prose. Its frontmatter sets <code>disable-model-invocation: true</code> — it's a skill the agent (or user via <code>/show-me</code>) invokes deliberately, not something that fires on its own.</p>
+<p><strong>How it works.</strong> The skill gives the agent a decision procedure: skip the preamble, keep prose brief, and <strong>pick the smallest view that makes the key point clear</strong>:</p>
+<ul>
+<li><strong>Pseudocode</strong> for logic or algorithms (e.g. an <code>on(save)</code> cache-check sketch)</li>
+<li><strong>Call trees</strong> for runtime control flow (<code>submitForm → createSession → persistPrompt…</code>)</li>
+<li><strong>Component trees</strong> (tsx) for UI structure, including state and module boundaries with file paths</li>
+<li><strong>File trees</strong> for refactors and file responsibility</li>
+<li><strong>Mermaid diagrams</strong> (sequence diagrams) for component interaction and data flow</li>
+<li><strong><code>diff</code>-shaped views</strong> matched to the change: component diffs, file-layout diffs, call-stack diffs, state-transition diffs</li>
+<li><strong>Full code blocks</strong> when most of it is new or the user needs a copyable target shape</li>
+<li><strong>Focused HTML artifacts</strong> — a diagram, infographic, or short slide deck matching the product's colors/spacing/components, opened via <code>Bash(open …)</code> — for anything too dense for Mermaid</li>
+</ul>
+<p>Guidance: place each visual next to the short text it supports; keep only the calls, files, props, states, and boundaries needed; you may use one view or several, "it is unlikely you will use all of them. Use your judgement and don't overwhelm the user."</p>
+<p><strong>Install.</strong> It's part of the humanlayer skills collection: clone https://github.com/humanlayer/skills and install the <code>show-me</code> plugin (<code>plugins/show-me/</code>), then invoke with <code>/show-me</code>.</p>
+<p><strong>Why it matters for tokenomics / context management.</strong> Indirect but real: output tokens are half the bill, and a diagram routinely replaces paragraphs of explanation — <em>visual-first responses compress the output side</em>. More importantly, the "smallest sufficient view" discipline is context economy applied to UX: the skill explicitly trains the agent against the failure mode of dumping everything it knows. For an enterprise building agent UX standards, this is a template for response-shape governance — constrain <em>how</em> the agent answers and you constrain what it costs.</p>
+<p><strong>Links.</strong> Repo: https://github.com/humanlayer/skills · Skill file: <code>plugins/show-me/skills/show-me/SKILL.md</code> in the repo.</p></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Engineer Talks — World's Fair 2026 (Sep 25 – Oct 3) · AI Skills Playbook</title><link rel="stylesheet" href="../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="ai-engineer-talks-worlds-fair-2026-sep-25-oct-3">AI Engineer Talks — World's Fair 2026 (Sep 25 – Oct 3)</h1>
+<p>37 talks from the AI Engineer channel's World's Fair 2026 run, each distilled into thesis, key points, notable quotes/data, and a tokenomics/efficiency angle with local-deploy takeaways where relevant. Three more videos from the same window were already covered elsewhere in the repo (see bottom).</p>
+<p>Provenance: 21 notes are transcript-based (full spoken transcripts via usetranscribe.io); the rest are distilled from video descriptions/chapters plus biggo.com's AI-generated talk summaries — each file carries an exact provenance note at the top. Treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.</p>
+<h2 id="the-talks">The talks</h2>
+<table>
+<thead>
+<tr>
+<th>Talk</th>
+<th>Speaker</th>
+<th>Date</th>
+<th>Sharpest takeaway</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="stop-fine-tuning-retrieval">Stop Fine-Tuning to Fix Retrieval Problems</a></td>
+<td>Anant Srivastava</td>
+<td>Oct 3</td>
+<td>Fine-tune only what has stopped changing; the rest belongs in retrieval or the prompt.</td>
+</tr>
+<tr>
+<td><a href="open-models-fast-production">What Makes Open Models Fast in Production</a></td>
+<td>Sujee Maniyam, Nebius</td>
+<td>Oct 3</td>
+<td>KV-cache prefix reuse → up to 10x speedup; custom draft models → 30%+ on speculative decoding.</td>
+</tr>
+<tr>
+<td><a href="self-healing-training">GPU Died. Training Didn't: Self-Healing Training at Scale</a></td>
+<td>Connor Guerrero &amp; Young Jeong, Crusoe</td>
+<td>Oct 3</td>
+<td>XID 79 → drain, replace, resume from checkpoint in under 15 min, no human action.</td>
+</tr>
+<tr>
+<td><a href="interaction-is-all-you-need">An Interaction Is All You Need</a></td>
+<td>Ivan Leo, Google DeepMind</td>
+<td>Oct 3</td>
+<td>Server-side interaction state + persistent sandboxes + credential-injecting proxy so agents never see tokens.</td>
+</tr>
+<tr>
+<td><a href="raspberry-pi-agent">I Built a Personal AI Agent on a Raspberry Pi</a></td>
+<td>Jeremy Adams, Neo4j</td>
+<td>Oct 3</td>
+<td>Old Pi 4B + NanoClaw + WhatsApp + Neo4j POLE graph: cloud brain over the wire, local graph on device.</td>
+</tr>
+<tr>
+<td><a href="vscode-weekly-releases">How VS Code Went from Monthly to Weekly Releases with AI</a></td>
+<td>Harald Kirschner</td>
+<td>Oct 3</td>
+<td>70x token spread between models on an identical 5-char-file eval — token efficiency is a selection criterion.</td>
+</tr>
+<tr>
+<td><a href="llm-app-200-ok-wrong">Your LLM App Returned 200 OK. It Was Still Wrong.</a></td>
+<td>Marina Petzel, Datadog</td>
+<td>Oct 2</td>
+<td>Golden signals say the app is up; you need cost, safety, and quality pillars to know it's right.</td>
+</tr>
+<tr>
+<td><a href="yolo-mode-microvm-sandboxes">YOLO Mode, Safely: MicroVM Sandboxes for Any Agent</a></td>
+<td>Rowan Christmas, Docker</td>
+<td>Oct 2</td>
+<td>5 prompts took Claude Code from browser history to real bank accounts — protection belongs at the microVM boundary.</td>
+</tr>
+<tr>
+<td><a href="self-driving-production">The 5 Levels of Self-Driving Production</a></td>
+<td>Eric Schwartz, Traversal</td>
+<td>Oct 2</td>
+<td>RCA is a causal-ML problem, not an observability problem (Amex: 3-min dispatch vs 60-min war rooms).</td>
+</tr>
+<tr>
+<td><a href="12-trillion-synthetic-tokens">Lessons from Generating 12 Trillion Synthetic Tokens</a></td>
+<td>Bogdan Gaza, DatologyAI</td>
+<td>Oct 2</td>
+<td>12T tokens was won on plumbing, not recipe: metadata 11 days → 2 hrs, vLLM flag tuning → +40%.</td>
+</tr>
+<tr>
+<td><a href="why-ai-didnt-ship-faster">Why AI Didn't Actually Make You Ship Faster</a></td>
+<td>Gabriel Spencer-Harper, Meticulous</td>
+<td>Oct 2</td>
+<td>Generation is solved; verification is the bottleneck — invert testing to record-replay-diff.</td>
+</tr>
+<tr>
+<td><a href="browser-agents-99-percent">Why 99% Accurate Browser Agents Still Fail</a></td>
+<td>Derek Meegan, Browserbase</td>
+<td>Oct 2</td>
+<td>"Cost accumulation is continuous, while value realization is terminal" — measure per transaction, not per run.</td>
+</tr>
+<tr>
+<td><a href="harness-picks-model">Stop Rationing Tokens: Let the Harness Pick the Model</a></td>
+<td>Žilvinas Urbonas &amp; Laurent Gil, Cast AI</td>
+<td>Oct 2</td>
+<td>Cost-per-task routing saved 2.5x vs Claude while token volume grew 1.5x; autonomous re-benchmarking catches model drift in weeks.</td>
+</tr>
+<tr>
+<td><a href="coding-agent-out-of-date">Your Coding Agent Is 6 Months Out of Date</a></td>
+<td>Jakub Hojsan, Exa</td>
+<td>Oct 2</td>
+<td>Instruct the agent <em>when</em> to search; feed ~500-char computed highlights, not 100k-char pages (~200x token cut, zero latency).</td>
+</tr>
+<tr>
+<td><a href="mcp-doesnt-suck">MCP Doesn't Suck. Your Agent Does.</a></td>
+<td>Jan Čurn, Apify</td>
+<td>Oct 2</td>
+<td>Context bloat is a harness bug, not a protocol bug: "MCP plus CLI is the best."</td>
+</tr>
+<tr>
+<td><a href="stop-renting-memory">Stop Renting Your AI's Memory</a></td>
+<td>Dylan Couzon, Qdrant</td>
+<td>Oct 2</td>
+<td>Owning inference buys autonomy; owning memory buys continuity — 92 objects, 300+ vectors, 15MB, &lt;1ms, fully offline.</td>
+</tr>
+<tr>
+<td><a href="state-of-ai-dev-400-orgs">The State of AI in Software Development: Data from 400+ Orgs</a></td>
+<td>Justin Reock, DX</td>
+<td>Sep 30</td>
+<td>Median +7.7% PR throughput, nobody hit 2x; "an hour saved on something that isn't the bottleneck is worthless."</td>
+</tr>
+<tr>
+<td><a href="chief-ai-officer">The Chief AI Officer: Scientist, Architect, Coach</a></td>
+<td>Rania Khalaf, WSO2</td>
+<td>Sep 30</td>
+<td>The role is three sliders; she refused to track tokens: "it's so easily hackable."</td>
+</tr>
+<tr>
+<td><a href="death-of-code-review">The Death of the Code Review: What the Data Actually Says</a></td>
+<td>Laurie Voss, Arize AI</td>
+<td>Sep 30</td>
+<td>741% more code written, 30% more shipped — stop reviewing PRs; design the review harness instead.</td>
+</tr>
+<tr>
+<td><a href="agents-solitary-confinement">Your Agents Are in Solitary Confinement</a></td>
+<td>Vlad Luzin, Band</td>
+<td>Sep 30</td>
+<td>Parallel sessions make you a human router; coordination needs conversation-level primitives, not more plumbing.</td>
+</tr>
+<tr>
+<td><a href="ai-code-competing-human">AI-Generated Code Is Already Competing With Human Code</a></td>
+<td>Daksh Gupta, Greptile</td>
+<td>Sep 27</td>
+<td>~25% of 1M+ monthly PRs largely AI-generated (from &lt;1%), at or above human quality on reverts/P0s/review cycles.</td>
+</tr>
+<tr>
+<td><a href="get-out-of-models-way">Get Out of the Model's Way</a></td>
+<td>Kevin Hou, Google Antigravity</td>
+<td>Sep 27</td>
+<td>"Scaling with intelligence": ship primitives that get better as models do — dynamic subagents, sidecars, generative UI.</td>
+</tr>
+<tr>
+<td><a href="glm-5-2-open-weights">GLM-5.2: Open Weights, Near-Frontier Intelligence</a></td>
+<td>Zixuan Li, Z.ai</td>
+<td>Sep 27</td>
+<td>Between Opus 4.7 and 4.8 on long-horizon coding; MIT-licensed, 1M context, vLLM/SGLang.</td>
+</tr>
+<tr>
+<td><a href="orchestras-not-factories">Orchestras, Not Factories: How the Fastest Builders Work</a></td>
+<td>Charlie Holtz, Conductor</td>
+<td>Sep 27</td>
+<td>"Don't beat the market": invest only where you hold proprietary alpha; vendors commoditize the rest.</td>
+</tr>
+<tr>
+<td><a href="scale-the-judgment">Scale the Judgment, Not the Model</a></td>
+<td>Andrew Orobator, Reddit</td>
+<td>Sep 27</td>
+<td>$1.26/PR flag-cleanup agent vs $26k+/yr by hand — "The model wrote the code and I wrote the judgment."</td>
+</tr>
+<tr>
+<td><a href="not-a-software-factory">No, That's Not a Software Factory</a></td>
+<td>Ryan Cooke, WorkOS</td>
+<td>Sep 27</td>
+<td>Sandbox + agent + prompt ≈ Claude Code on laptops; the real factory encodes processes and measures outcomes.</td>
+</tr>
+<tr>
+<td><a href="what-it-takes-software-factory">What It Actually Takes to Build a Software Factory</a></td>
+<td>Tereza Tížková, Factory</td>
+<td>Sep 27</td>
+<td>Model routing saves ~25%+; deferred context engine (progressive tool disclosure) saves 50%+ of tokens.</td>
+</tr>
+<tr>
+<td><a href="coding-agents-strategy-game">I Turned Coding Agents Into a Strategy Game</a></td>
+<td>Ido Salomon, AgentCraft</td>
+<td>Sep 27</td>
+<td>The bottleneck is human supervisory bandwidth — and the skills already exist, from RTS games.</td>
+</tr>
+<tr>
+<td><a href="self-improving-factories">Building Self-Improving Agent Software Factories</a></td>
+<td>Suraj Gupta, Warp</td>
+<td>Sep 27</td>
+<td>Best-at-k "eval sidecar": "UI tasks are really well done with GLM. We don't really need to run those with Opus."</td>
+</tr>
+<tr>
+<td><a href="claude-code-codex-race">We Let Claude Code and Codex Race Human Researchers</a></td>
+<td>Elie Bakouch, Prime Intellect</td>
+<td>Sep 26</td>
+<td>Per-output-token flips the winner (Kimi most efficient); zero novel optimizers emerged — a telling ceiling on recursive self-improvement claims.</td>
+</tr>
+<tr>
+<td><a href="gepa-optimize-anything">Beating RL With Reflection: GEPA and Optimize Anything</a></td>
+<td>Lakshya A. Agrawal, GEPA</td>
+<td>Sep 26</td>
+<td>One reflection round on 3 examples beat GRPO's 25,000 rollouts 2x; Databricks: GPT-OSS 120B &gt; Claude Opus at 90x lower cost.</td>
+</tr>
+<tr>
+<td><a href="long-horizon-agents-experiments">Long-Horizon Agents Need Experiments, Not Just Prompts</a></td>
+<td>Erina Karati, Supercell</td>
+<td>Sep 26</td>
+<td>RAG alone can't fix social decay — optimize the agent <em>protocol</em> via autoresearch meta-loop with ratchet semantics.</td>
+</tr>
+<tr>
+<td><a href="agent-that-improves-itself">How We Built an Agent That Improves Itself</a></td>
+<td>Zubin Aysola, Weights &amp; Biases</td>
+<td>Sep 26</td>
+<td>Bit-wise identical agent in prod and sim; every production trace becomes an offline YAML eval task.</td>
+</tr>
+<tr>
+<td><a href="autoresearch-3x-faster">Autoresearch Made Our Models 3x Faster</a></td>
+<td>Tejas Bhakta, Morph</td>
+<td>Sep 26</td>
+<td>Human ideas + autoresearch verification + billions of tokens; ~80% of attempts are bad — reward hacking is the real problem.</td>
+</tr>
+<tr>
+<td><a href="ai-research-agent-experiments">An AI Research Agent That Runs Your Experiments</a></td>
+<td>Tim Sweeney, Weights &amp; Biases</td>
+<td>Sep 26</td>
+<td>Expediency as an eval (results within 6 tool calls) makes cost control a correctness criterion.</td>
+</tr>
+<tr>
+<td><a href="loop-is-the-product">The Loop Is the Product</a></td>
+<td>Roland Gavrilescu, Introspection</td>
+<td>Sep 26</td>
+<td>System distillation is the moat — failure patterns→evals, behaviors→skills, frustrations→harness — baked into versioned git "agent recipes"; "valued work per watt" is the unit economics.</td>
+</tr>
+<tr>
+<td><a href="fixing-pr-bottleneck">Fixing the PR Bottleneck</a></td>
+<td>Matt Pocock, AIHero</td>
+<td>Sep 25</td>
+<td>Coding standards belong in the <em>reviewer</em> subagent, never in AGENTS.md — red-green-refactor across two context windows; a "retro" skill compounds every review into new checks.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="already-covered-elsewhere">Already covered elsewhere</h2>
+<ul>
+<li><a href="../deep-dives/dashboards-are-dead">Dashboards Are Dead</a> — Sarah Simionescu, Composio (Oct 3) — deep dive with screenshots.</li>
+<li><a href="https://www.youtube.com/watch?v=tUPPVhBBcoM">Software Engineering Is Becoming Factory Engineering</a> — Zach Lloyd, Warp (Sep 27) — covered as an enterprise HTML distillation (<code>factory-engineering-zach-lloyd.html</code>).</li>
+<li><a href="../deep-dives/spotify-shunt">Teaching LLMs to Speak Spotify</a> — Yves Raimond &amp; Jacqueline Wood, Spotify — deep dive (routing agent I/O to cheap models via hooks).</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../";</script><script src="../../assets/search.js"></script></body></html>

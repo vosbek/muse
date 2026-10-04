@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "Get Out of the Model's Way" — Kevin Hou, Google Antigravity · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-get-out-of-the-models-way-kevin-hou-google-antigravity">Talk Notes: "Get Out of the Model's Way" — Kevin Hou, Google Antigravity</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=buHC7bQE1X4">Get Out of the Model's Way — Kevin Hou, Google Antigravity</a> · AI Engineer channel · Sep 27, 2026 · 19:00 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary — treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.</p>
+<h2 id="thesis">Thesis</h2>
+<p>"Scaling with intelligence" — product architecture should be a <strong>function of model capability</strong>, not a fixed design. Builders should remove beloved-but-obsolete primitives (chat sidebars, fixed IDEs, hand-written UIs) and ship primitives that get better as models do: <strong>dynamic subagents, sidecar triggers, and generative UI.</strong> Evidence: <strong>93 subagents built a from-scratch OS kernel running Doom in 12 hours for under $1,000 (2B tokens)</strong>, and DeepMind researchers automated <strong>90% of side-by-side eval analysis</strong> with agent teams — while the "human-written specialized UI" is declared "kind of dead."</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>Framing:</strong> coaching Argentina in the 89th minute with Messi on the pitch — "give Messi the ball and get the heck out of the way." LLMs are no longer role players; they can be the star if the product is built so the model can "cook." This is Hou's <strong>fifth AI Eng talk</strong>; he's built dev tools since 2022.</li>
+<li><strong>Primitive timeline</strong> (one era per year, each constrained by what contemporary models could handle):</li>
+<li><strong>2022</strong> — deterministic autocomplete/chat sidebars (embeddings, rules files, AST parsing; "basically everything inside of that app is deterministic because that's all that the model could really handle");</li>
+<li><strong>2024</strong> — agents arrive (MCPs, custom tools, permission systems);</li>
+<li><strong>2025</strong> — Antigravity's Agent Manager + parallel agents (skills, hooks, artifacts);</li>
+<li><strong>2026</strong> — the agent-teams era (dynamic subagents, sidecar triggers, generative UI).</li>
+<li><strong>Battle scars</strong> (the doctrine has costs; "not right 100% of the time"): giving AI a terminal — "Son of Anton" fears of codebase deletion → models improved, permission-system primitives matured, users built faster and shipped safely; removing chat from Windsurf — users "yelling" about the lost sidebar → multi-step agentic research/execution became the norm.</li>
+<li><strong>Antigravity 2.0:</strong> the agent manager decoupled from the IDE into separate apps (IDE is to agent manager what the debugger was to the IDE — optional, one layer down). Antigravity launched <strong>Nov 2025</strong>; CLI extracted since; 2.0 launched at Google I/O. The bet: agent orchestration ("agent teams, swarms, software factories") is the next form factor, not the IDE.</li>
+<li><strong>Dynamic subagents</strong> (shipped as agent teams in preview, via <code>/teamwork</code>): the lead agent assembles Avengers-like specialized roles; no two subagents are alike (main agent configures, prompts, seeds on the fly); <strong>subagents can run a different model chosen by the main agent, not the user</strong>; they run in parallel across sandboxes/remote execution. "As the model gets smarter, your team will become more specialized, more collaborative."</li>
+<li><strong>Gemini 3.5 Flash</strong> (launched April) is credited with unlocking this: "really good at leading teams," faster and cheaper — pushing the Pareto curve of intelligence vs speed vs cost.</li>
+<li><strong>Hero run</strong> (demoed by colleague Varun at Google I/O): a complete OS kernel from scratch, playing Doom — <strong>93 subagents, 12 hours wall-clock, 15,000 requests, 2 billion tokens, under $1,000.</strong> Caveat from Hou: nobody will spend that daily; the point is ceiling-demonstration. Also built: a browser-based RAW photo editor and a messaging app (hundreds of subagents, ~half a day each).</li>
+<li><strong>Eval automation</strong> ("where the real magic starts happening"): side-by-side eval analysis (control vs experiment tables) traditionally took "a lot of Jupyter Notebook elbow grease"; researchers automated <strong>90%</strong> by asking in natural language — the agent proposes <strong>100 hypotheses</strong> for the deltas, assigns one subagent per hypothesis in parallel, maps results back, and generates an interactive UI (dropdowns, filters, segment slicing). Total user input: loading a skills file and asking. What took manual effort now takes minutes.</li>
+<li><strong>Sidecars:</strong> a new long-lived plugin protocol letting the model listen to the outside world and set its own triggers (SMS, webhooks, cron jobs, GitHub PR hooks) — a generic primitive, not a feature set; <strong>scheduled tasks are the shipped proof point</strong> (cron sidecar); spec promised "later this summer." Strategic significance: agents stop being purely reactive to prompts.</li>
+<li><strong>Generative UI:</strong> "we hypothesize that human written specialized UIs are kind of dead." Enabler: <strong>Gemini Flash at ~900 tokens/sec</strong> on Antigravity (<strong>10x</strong> typical frontier experiences) — thought → prompt → purpose-built inline UI in seconds. Examples: Kanban boards, Chrome-debugger-style timelines, charts, tables, Doom. Steve Jobs iPhone-keyboard analogy: fixed controls "are there whether you need them or not" — Antigravity "skipped the heavy infrastructure and mechanical UIs," producing an experience "not fixed in plastic."</li>
+<li><strong>Model-product flywheel:</strong> Antigravity 1.0 (parallel agents, human in the driver's seat) taught Gemini multi-agent management; that capability was imbued into the model, which is what makes 2.0 buildable — causality runs both ways (product teaches model, model enables next product).</li>
+<li><strong>Builder heuristic to close:</strong> ask what primitives your product has and how they scale with model intelligence; shipping features is easy now, choosing which ones is the discipline — so the product is amplified, not obsoleted, by the next (inevitably faster, better, cheaper) model release. Closing joke: reusing the slide until the team has "actually conquered the TPU crunch" — compute supply, not model capability, is the binding constraint he expects to persist.</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>93 subagents / 12 hours / 15,000 requests / 2 billion tokens / under $1,000 — OS kernel from scratch, running Doom.</li>
+<li>"We hypothesize that human written specialized UIs are kind of dead."</li>
+<li>"Flash now isn't just good at executing tasks, it's actually really good at leading teams. It's faster and cheaper, pushing the pareto curve of what is intelligent versus the speed and the cost at which you run those things."</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li><strong>Explicit token/cost accounting:</strong> 2B tokens for &lt;$1,000 on the hero run; Flash selected for the intelligence/speed/cost Pareto frontier; <strong>lead agents choose per-subagent models</strong> (cost-aware orchestration).</li>
+<li><strong>Eval-driven iteration at scale:</strong> 90% of side-by-side eval analysis automated — 100 hypotheses pursued in parallel by subagents, results mapped back into interactive reports.</li>
+<li><strong>Compute as the binding constraint:</strong> the "TPU crunch" joke flags supply, not capability, as the durable bottleneck.</li>
+</ul>
+<h3 id="local-deploy-takeaways">Local-deploy takeaways</h3>
+<ul>
+<li><strong>Let the lead agent pick per-subagent models, not the user</strong> — cost-aware orchestration: route subtasks to the cheapest model that clears the quality bar, reserving frontier models for the lead/planning role. This is the deployable pattern behind the 2B-tokens-under-$1,000 hero run.</li>
+<li><strong>Treat compute supply as the binding constraint:</strong> when capability is no longer scarce, budget and schedule against available inference capacity — the "TPU crunch" lesson applies to local GPU queues as much as Google's fleet.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>YouTube description/chapters: https://www.youtube.com/watch?v=buHC7bQE1X4</li>
+<li>BigGo AI talk summary: https://finance.biggo.com/podcast/316ffdea38e9fe6c</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "Your Coding Agent Is 6 Months Out of Date" — Jakub Hojsan, Exa · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-your-coding-agent-is-6-months-out-of-date-jakub-hojsan-exa">Talk Notes: "Your Coding Agent Is 6 Months Out of Date" — Jakub Hojsan, Exa</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=cKhpeEBnT1o">Your Coding Agent Is 6 Months Out of Date — Jakub Hojsan, Exa</a> · AI Engineer channel · Oct 2, 2026 · 12:23 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript. The video page itself showed "Video unavailable" in our browser.</p>
+<h2 id="thesis">Thesis</h2>
+<p>Every LLM has a ~6-month lag between training cutoff and release, leaving a review blind spot — the model cannot even judge code it could not have written. Bolting on web search is insufficient: the agent must be instructed WHEN to search (rules — e.g., dependency-bump diffs trigger upstream lookup), and search must return distilled highlights (~500 chars computed at runtime with no LLM, zero added latency) instead of full pages. Exa's provider-agnostic, fully traceable API — plus the new Exa Agent with third-party data partners — is the pitch.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>Cutoff gap:</strong> ~6 months between cutoff and release; example PR to the Kuder vector store fell after GPT-5.5's cutoff — invisible to the model.</li>
+<li><strong>Human vs model:</strong> a human Stack Overflows the "inertia check" removal; the model reads the diff as a cleanup — wrong, because it is actually a dependency bump requiring a refactor. Web search pulls the repo + changelog to explain the migration.</li>
+<li><strong>Highlights, not pages:</strong> ~500 characters fed to the model instead of ~100,000; extraction is computational (pulls specific lines at runtime, no LLM) → "zero added latency."</li>
+<li><strong>Generality demos:</strong> same personal website → bio query vs phone-number query return different highlights; "bajillion lines" GitHub repo; latest NVIDIA news constrained to mention Jensen.</li>
+<li><strong>Two-step integration:</strong> (1) instruct when to search — Claude Code natively has web search yet says Sonnet 4.6/4.7 "doesn't exist" because it never invokes it; (2) execute the search. "Adding it to the harness alone does not work."</li>
+<li><strong>Transparency vs native:</strong> OpenAI/Anthropic search is a black box (sources without content, up to ~10s latency); Exa returns the full span/trace — exact queries, sources, highlights — routable into a telemetry tree.</li>
+<li><strong>Cost:</strong> native search bills go unnoticed until workloads grow; Exa claims to be "priced much more effectively" at scale with better quality "in most instances" (vendor claim).</li>
+<li><strong>Provider neutrality:</strong> one fixed API across GLM, new Anthropic/OpenAI models as they ship — a standardization layer decoupled from model choice.</li>
+<li><strong>Exa Agent:</strong> orchestrated search for customers who don't want to build it; data partners SimilarWeb (web analytics), Particle (podcast intelligence), Crunchbase (private markets); targets financial firms/hedge funds (see Exa Connect).</li>
+<li><strong>Retrieval pipeline:</strong> multistage — query embedding → keyword filtering + semantic search → re-ranking; curated index of "tens of billions" of high-quality docs (fewer than Google, higher quality).</li>
+<li><strong>Structured output:</strong> natural-language → schema (up to 10 fields on deep, ~100 on agents); additionalProperties flag; adopted as coding-docs search API by Cursor, Cognition, Warp, CodeRabbit.</li>
+<li><strong>Distribution:</strong> available via MCP and "essentially every provider that supports it."</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"You're not feeding the model 100,000 characters anymore. You're feeding it quite literally only 500 characters to answer the question."</li>
+<li>"Adding a search tool to your agent is not enough."</li>
+<li>"We're quite literally just pulling certain lines at runtime, not using an LLM."</li>
+<li><strong>Stat:</strong> ~200x fewer tokens per search (500 vs 100,000 chars), zero added latency.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li>~200x fewer tokens per search (500 vs 100,000 chars) with zero added latency — context-window and cost savings on every lookup.</li>
+<li>Cheaper than native provider search at scale (vendor claim).</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>The two-step pattern is the portable lesson: a search tool in the harness is inert unless the agent is instructed <em>when</em> to invoke it (e.g., dependency-bump diffs trigger upstream lookup) — encode the trigger rules, not just the tool.</li>
+<li>Distill-then-feed (highlights, not pages; ~500 chars) is the local RAG discipline: computational extraction beats LLM summarization on both cost and latency.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>biggo AI summary: https://finance.biggo.com/podcast/ff19f92438af3ba7</li>
+<li>Video description: https://www.youtube.com/watch?v=cKhpeEBnT1o</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

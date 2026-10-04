@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "AI-Generated Code Is Already Competing With Human Code" — Daksh Gupta, Greptile · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-ai-generated-code-is-already-competing-with-human-code-daksh-gupta-greptile">Talk Notes: "AI-Generated Code Is Already Competing With Human Code" — Daksh Gupta, Greptile</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=474j-n1Ltxc">AI-Generated Code Is Already Competing With Human Code — Daksh Gupta, Greptile</a> · AI Engineer channel · Sep 27, 2026 · 12:40 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary — treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.</p>
+<h2 id="thesis">Thesis</h2>
+<p>Fully autonomous coding agents crossed the enterprise-usability threshold around <strong>December 2025</strong>. Greptile — reviewing <strong>1M+ PRs/month</strong> for NVIDIA, Coinbase, Scale, Datadog, American Express — finds roughly <strong>a quarter of reviewed PRs are now completely or largely AI-generated</strong> (up from &lt;1% in early 2025), and on three independent quality tests (revert rates, P0/P1/P2 bug severity, review iterations to merge) agent-authored PRs perform roughly on par with human-authored ones. Since validation can't scale with agent output, Greptile reframed validation around three questions answered by sandboxed browser agents rather than human review.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>The arc:</strong> 2022–23 tab-completion era (Copilot, Cursor TabComplete); 2024 multi-file editing (Cursor first mover); 2025 autonomous agents producing whole PRs. <strong>December 2025 is the watershed</strong> — "coding agents became literally completely autonomous" (100-PRs-a-day developers, polyphasic-sleep anecdotes). Gupta moved to SF ~2023 specifically for AI coding after GPT-3.5.</li>
+<li><strong>Detection was the hard first problem; three signals combined:</strong> GitHub author field (Codex/Claude/Cursor as committer — under 1% alone), "Co-authored by Claude/Cursor" PR footers, and branch-name prefixes agents give themselves. Combined: <strong>~25% of PRs in the prior month</strong> completely/largely AI-generated vs <strong>&lt;1% in early 2025</strong>. "The progress is very continuous" — no step-jumps visible at model release dates.</li>
+<li><strong>Test 1 — revert rates</strong> (GitHub's <code>revert-</code> branch prefixes enable tracking): <strong>Codex ~1 per 1,000; Devin ~3.5 per 1,000; humans in the middle at ~2.5 per 1,000.</strong> "Very little correlation, if any" between PR size and revert rates — undercutting the objection that humans keep the hard work for themselves.</li>
+<li><strong>Test 2 — Greptile bug-severity comments:</strong> three of four agents tested produced <strong>fewer P0s than humans</strong>; the pattern held for P1s and P2s. "Human-generated PRs were about equal in quality to agent-generated PRs based on this data."</li>
+<li><strong>Test 3 — review iterations to merge</strong> (Greptile's modal workflow is review → agent addresses comments → new commit): <strong>Devin averaged 2.1 cycles, Codex 2.45, humans in the middle</strong> — agent PRs needed no extra rounds.</li>
+<li><strong>Failure modes differ qualitatively.</strong> From a corpus of ~4 comments/PR (several million comments), normalized to human = 1x — <strong>Claude was ~1.5x more likely</strong> than humans to produce a SQL injection; <strong>Devin ~0.5x as likely</strong> to produce an off-by-one. Distinct per-agent failure signatures imply agent review tooling needs <strong>error-class-specific tuning</strong>, not one generic bar.</li>
+<li><strong>The scaling crisis.</strong> Greptile used weekly by tens of thousands of engineers; PRs per user per month — median <strong>50</strong> (~2/workday), P90 <strong>500</strong> (~25/workday), P99 <strong>in the thousands</strong>. "The people on the margins are actually producing pull requests at the rate at which they're coming up with new ideas." Manual review, testing, and external QA cannot scale to this.</li>
+<li><strong>Greptile's three-question merge framework</strong> (instead of "automate QA"):</li>
+<li><strong>Q1</strong> — does the change violate the user contract? (block merge)</li>
+<li><strong>Q2</strong> — does it increase propensity of a future violation?</li>
+<li><strong>Q3</strong> — does it fulfill the author's stated intent? (high-confidence merge)</li>
+<li><strong>Mechanism:</strong> spin code up in a sandbox, install dependencies, mock inputs, run browser agents that click around trying to break things, inspect every changed file plus related files.</li>
+<li><strong>Adoption signal:</strong> nearly <strong>one-fifth of all PRs</strong> Greptile reviews are already merged with <strong>no human review or human testing</strong> — a number Gupta explicitly wants to increase "within the guardrails of producing really high-quality code."</li>
+<li><strong>Caveats</strong> (per the secondary summary's own synthesis): the 25% estimate rests on self-reported/tool-emitted signals (true rate may be higher or sample-skewed); revert is a coarse proxy that misses subtle correctness/maintainability regressions.</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>~25% of PRs largely AI-generated (from &lt;1% a year earlier); revert rates Codex 1 / Devin 3.5 / humans 2.5 per 1,000.</li>
+<li>"Three out of the four agents that we tested performed better than humans in terms of the rate at which they were producing P0s."</li>
+<li>"The P99 is in the thousands of pull requests. That means that the people on the margins are actually producing pull requests at the rate at which they're coming up with new ideas."</li>
+<li>"In spite of my initial skepticism around the enterprise usability of end-to-end coding agents, the evidence seems to suggest that they're here."</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li><strong>~20% of PRs merged with zero human review/testing</strong> via sandboxed agent validation — direct labor-cost efficiency; the explicit goal is pushing that share higher inside quality guardrails.</li>
+</ul>
+<h3 id="local-deploy-takeaways">Local-deploy takeaways</h3>
+<ul>
+<li><strong>Tune review tooling per agent's failure signature, not one generic bar</strong> — distinct agents produce distinct error classes (SQL injection vs off-by-one); error-class-specific review configs get more signal per review-token spent.</li>
+<li><strong>Shift review from "automate QA" to the three-question framework</strong> (violates user contract? increases future-violation propensity? fulfills stated intent?) — executed by sandboxed agents that exercise the code, which scales where human review queues can't.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>YouTube description/chapters: https://www.youtube.com/watch?v=474j-n1Ltxc</li>
+<li>BigGo AI talk summary: https://finance.biggo.com/podcast/e0c502d3f5b75332</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

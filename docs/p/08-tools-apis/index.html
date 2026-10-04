@@ -1,0 +1,91 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>08 — Tools & APIs · AI Skills Playbook</title><link rel="stylesheet" href="../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><h1 id="08-tools-apis">08 — Tools &amp; APIs</h1>
+<p><strong>Thesis:</strong> The infrastructure layer beneath the agents: free API directories, voice input that beats typing, agentic browsers that act without APIs, and — most importantly for the local-first thesis — proof that a capable agent runs in 44 lines on your own machine. These five reels are the "what to actually install" shelf of the collection.</p>
+<h3 id="public-apis-free-apis-for-everything">public-apis: free APIs for everything</h3>
+<ul>
+<li><strong>Creator:</strong> @softwarewithnick · <strong>Date:</strong> 2025-10-08</li>
+<li><strong>What it suggests:</strong> A tour of the public-apis GitHub repo — an enormous categorized directory of free APIs spanning sports, fitness, crypto, anime, and hundreds more topics. The reel doubles as a quick explainer of what an API is, but the durable value is the resource itself: it's the fastest way to answer "is there a free API for X?" before writing a line of integration code. For agent builders, it's doubly useful — agents that need real-world data (scores, prices, weather, transit) usually don't need a paid tier or a custom scraper; they need this list. Bookmark it as the first stop in any "agent needs external data" design.</li>
+<li><strong>Repos/tools:</strong> <a href="https://github.com/public-apis/public-apis">public-apis/public-apis</a></li>
+<li><strong>Extractable skill:</strong> API-first data sourcing — check the free directory before building scrapers or buying tiers.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DPkja3vDD_f/</li>
+</ul>
+<h3 id="three-voice-ai-apps-that-beat-typing">Three voice AI apps that beat typing</h3>
+<ul>
+<li><strong>Creator:</strong> @sabrina_ramonov · <strong>Date:</strong> 2025-08-15</li>
+<li><strong>What it suggests:</strong> Voice input is three to four times faster than typing, and three apps worth knowing: WhisperFlow, which cleans spoken transcripts into polished, email-ready text; SuperWhisper, which does its AI processing locally on your machine — private by construction, no voice data to the cloud; and Voice Inc, free and open-source, newer with fewer features but worth watching. The comparison is really a decision framework: pick WhisperFlow for output polish, SuperWhisper for privacy and offline use, Voice Inc for zero cost and hackability. The local-processing pick (SuperWhisper) echoes the collection's local-first economics — the best voice tool may be the one that never leaves your machine.</li>
+<li><strong>Repos/tools:</strong> WhisperFlow, SuperWhisper, Voice Inc (open source)</li>
+<li><strong>Extractable skill:</strong> Voice-first capture — dictate-then-polish for anything long-form; default to local processing where privacy matters.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DNY9TEUKlaR/</li>
+</ul>
+<h3 id="a-real-ai-agent-in-44-lines-running-entirely-locally">A real AI agent in 44 lines, running entirely locally</h3>
+<ul>
+<li><strong>Creator:</strong> @ai.christianson · <strong>Date:</strong> 2025-08-15</li>
+<li><strong>What it suggests:</strong> The most economically significant demo in this category: a genuinely useful AI agent built in 44 lines of code with open-source tools, running entirely on a personal computer. The recipe: Hugging Face's smolagents library plus the open-weight Qwen3 30B model, with exactly two tools — shell-command execution and file writing. That's enough for it to query system info like disk space and organize files. The point isn't the specific tasks; it's the collapsed floor. Capable agentic behavior no longer requires cloud APIs, API keys, or per-token billing — it requires a decent open model and a weekend afternoon. For tokenomics, this is the existence proof behind the SLM thesis: the long tail of agentic work can move local, and the build cost is trivial.</li>
+<li><strong>Repos/tools:</strong> <a href="https://github.com/huggingface/smolagents">huggingface/smolagents</a>, Qwen3 30B (open weights)</li>
+<li><strong>Extractable skill:</strong> Local-agent baseline — before reaching for a cloud agent, check what smolagents + an open model + two tools can already do.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DNYjqVfNYHT/</li>
+</ul>
+<h3 id="fellou-the-agentic-browser">Fellou: the agentic browser</h3>
+<ul>
+<li><strong>Creator:</strong> @sabrina_ramonov · <strong>Date:</strong> 2025-05-19</li>
+<li><strong>What it suggests:</strong> Fellou bills itself as "the world's first agentic browser": a browser with an agent that acts on private, logged-in websites, works in a virtual workspace, and generates reports. The demo example — logging into LinkedIn, writing a post, and publishing it without any API — shows the category's real proposition: automating the long tail of web tasks that have no API and never will. The presenter adds a cautionary note, which is worth keeping: a browser agent with your credentials acting on private sites is powerful and also a meaningful trust and security surface. Evaluate agentic browsers on credential handling and action auditability, not just capability demos.</li>
+<li><strong>Repos/tools:</strong> Fellou (agentic browser)</li>
+<li><strong>Extractable skill:</strong> API-less automation assessment — for sites with no API, agentic browsers are the answer; vet them on credential security and audit trails first.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DJ2RwR3IiG-/</li>
+</ul>
+<h3 id="showcase-ai-work-on-hugging-face-spaces">Showcase AI work on Hugging Face Spaces</h3>
+<ul>
+<li><strong>Creator:</strong> @edhonour · <strong>Date:</strong> 2025-05-04</li>
+<li><strong>What it suggests:</strong> Hugging Face Spaces as the default place to showcase AI projects — the argument being that unlike GitHub, which shows code, Spaces gives visitors a fully interactive environment where they can see the model or app actually running. For anyone building in this collection's patterns (skills, agents, demos), the takeaway is about distribution: interactive demos convert better than repos, because the evaluator experiences the behavior instead of inferring it from code. If you're publishing agent work — especially for hiring, clients, or community feedback — ship the Space alongside the repo.</li>
+<li><strong>Repos/tools:</strong> Hugging Face Spaces (huggingface.co/spaces)</li>
+<li><strong>Extractable skill:</strong> Demo-driven distribution — publish an interactive Space with every significant AI project, not just the code.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DJPz_Ulya7Q/</li>
+</ul>
+<h2 id="from-x-bookmarks-sep-2026">From X bookmarks (Sep 2026)</h2>
+<p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>
+<h3 id="debug-visualizer-see-your-data-structures-inside-vs-code">Debug Visualizer: see your data structures inside VS Code</h3>
+<ul>
+<li><strong>Creator:</strong> @code · <strong>Date:</strong> 2026-09-23</li>
+<li><strong>What it suggests:</strong> Recommends the Debug Visualizer extension for VS Code for anyone working with data structures — it renders them visually during debugging (text truncates), with a demo video. Verifiable: this is a visualization tool that renders data structures instead of making you read raw object dumps. For agent-assisted development it matters twice: humans reviewing agent-written data-structure code comprehend it faster visually, and it's the kind of comprehension tooling that keeps human review effective as machine-written code volume grows.</li>
+<li><strong>Repos/tools:</strong> Debug Visualizer (VS Code extension; no URL in post text)</li>
+<li><strong>Extractable skill:</strong> Visualize data structures during debugging instead of reading raw dumps, especially when reviewing agent-written code.</li>
+<li><strong>Source:</strong> https://x.com/code/status/2102760396490719499</li>
+</ul>
+<h3 id="link-collection-skill-evaluation-and-agent-infrastructure">Link collection: skill evaluation and agent infrastructure</h3>
+<ul>
+<li><strong>Creator:</strong> @OrenMe · <strong>Date:</strong> 2026-09-20</li>
+<li><strong>What it suggests:</strong> This post has no body text — it is a pure link collection, listed here as shown. The theme is evaluation and agent infrastructure: NVIDIA's SkillEvaluator (link card describes it as a multi-tier framework for evaluating AI agent skills), Microsoft's Waza site, a Harbor framework repo, Microsoft's APM site, and a GitHub Marketplace link. With no commentary from the poster, treat this as a reading list: the SkillEvaluator repo is the standout for anyone building the skill libraries discussed elsewhere in this collection, since skills need evals to stay trustworthy as they accumulate.</li>
+<li><strong>Repos/tools:</strong> NVIDIA SkillEvaluator — github.com/NVIDIA/skillev… (display truncated in source); microsoft.github.io/waza/; Harbor framework — github.com/harbor-framewo… (display truncated in source); microsoft.github.io/apm/; github.com/marketplace/re… (display truncated in source)</li>
+<li><strong>Extractable skill:</strong> Pair every skill library with an evaluation framework so skills stay trustworthy as they accumulate.</li>
+<li><strong>Source:</strong> https://x.com/OrenMe/status/2101685294961422461</li>
+</ul>
+<h3 id="alibaba-open-sourced-its-production-code-reviewer">Alibaba open-sourced its production code reviewer</h3>
+<ul>
+<li><strong>Creator:</strong> @agenticgirl · <strong>Date:</strong> 2026-09-13</li>
+<li><strong>What it suggests:</strong> Reports that Alibaba open-sourced the code reviewer it claims has served tens of thousands of developers and found significant issues (text truncates), with an image. Verifiable: this is a production-hardened review tool — battle-tested at massive developer scale — now available as open source. That provenance matters: unlike demo-ware, its rules and workflows survived real enterprise use. The detailed findings are at the permalink. For teams building review automation, this is a reference implementation worth studying before building your own.</li>
+<li><strong>Repos/tools:</strong> None linked in post text (repo link not in visible text — see permalink).</li>
+<li><strong>Extractable skill:</strong> Study production-hardened open-source reviewers before building your own review automation.</li>
+<li><strong>Source:</strong> https://x.com/agenticgirl/status/2099087022900367845</li>
+</ul>
+<h3 id="second-batch-aug-24-sep-12">Second batch (Aug 24 – Sep 12)</h3>
+<h3 id="every-pr-ships-with-an-interactive-walkthrough-open-sourced">Every PR ships with an interactive walkthrough — open-sourced</h3>
+<ul>
+<li><strong>Creator:</strong> @OhansEmmanuel · <strong>Date:</strong> 2026-09-07</li>
+<li><strong>What it suggests:</strong> "Mermaid diagrams are the floor. Every PR at @ColdteaAI ships with an interactive walkthrough. Open source: github.com/coldteadotai/pr-walkthrough." The bar-raising claim: static diagrams are the minimum; the standard is an interactive walkthrough of what the PR does — and the tooling is open source. This connects to the /show-me PR-description skill and the PR-review-agent cluster: the PR is becoming the richest agent artifact — described, walked through, and reviewed by machines. For teams: adopt the walkthrough as the PR standard and let agents generate it.</li>
+<li><strong>Repos/tools:</strong> github.com/coldteadotai/pr-walkthrough</li>
+<li><strong>Extractable skill:</strong> Make interactive PR walkthroughs the team standard; generate them with agents.</li>
+<li><strong>Source:</strong> https://x.com/OhansEmmanuel/status/2096996689680978148</li>
+</ul>
+<h3 id="the-agentic-setup-that-ships-faster-than-99-of-devs-brief">The agentic setup that ships faster than 99% of devs (brief)</h3>
+<ul>
+<li><strong>Creator:</strong> @DavidOndrej1 · <strong>Date:</strong> 2026-09-02</li>
+<li><strong>What it suggests:</strong> "I ship faster than 99% of devs. not because I'm smarter — my agentic setup does the heavy lifting. j[ust, truncated]." The claim is setup-over-talent: velocity comes from the harness, not the human. Filed as a pointer; the setup details are at the permalink.</li>
+<li><strong>Repos/tools:</strong> None linked in post text.</li>
+<li><strong>Extractable skill:</strong> Invest in the setup; velocity compounds from the harness.</li>
+<li><strong>Source:</strong> https://x.com/DavidOndrej1/status/2095101217764507813</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../";</script><script src="../../assets/search.js"></script></body></html>

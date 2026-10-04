@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "MCP Doesn't Suck. Your Agent Does." — Jan Čurn, Apify · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-mcp-doesnt-suck-your-agent-does-jan-curn-apify">Talk Notes: "MCP Doesn't Suck. Your Agent Does." — Jan Čurn, Apify</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=pAnLpiAG6Es">MCP Doesn't Suck. Your Agent Does. — Jan Čurn, Apify</a> · AI Engineer channel · Oct 2, 2026 · 18:43 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary — treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript. Partial auto-transcript chunks via NoteGPT covered the opening through ~07:20.</p>
+<h2 id="thesis">Thesis</h2>
+<p>The backlash against MCP is misdirected — the protocol is sound, and the failures people blame on it (context bloat, cost, sensitive data sitting in context, poor tool discovery) are failures of naive agent harnesses, not the protocol. The fixes already exist (subagents, progressive tool discovery, code mode) but most clients ignore them; Apify's open-source <strong>mcpc</strong> wraps the full MCP protocol behind a single bash-style tool call, and the right architecture is "MCP for remote, CLI for local" — MCP plus CLI beats either alone.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>The critics' catalog.</strong> Anthropic itself admitting "MCP sucks"; Theo calling it "the wrong abstraction"; "MCP was a mistake, long live CLIs"; "MCP is dead in the water"; "MCPs are mostly useless, I'll die on this hill"; "every MCP could have been a deterministic CLI"; Gary Tan ("MCP sucks, honestly, oh my god"); Peter Levels ("Thank god MCP is dead").</li>
+<li><strong>The core complaint mechanism.</strong> Early agents registered every tool from every connected MCP server into context up front — ~10 servers × ~10 tools ≈ <strong>100 tools loaded before any user request</strong>, potentially a third of the context window gone. Tool results then append, rot, lose accuracy, and cost money.</li>
+<li><strong>The spec says nothing about harness design.</strong> "It's your job when you're building your agent to make sure you use MCP effectively. It's not a problem of the protocol."</li>
+<li><strong>Scale.</strong> Introduced by Anthropic ~2 years before the talk (~2024); an estimated <strong>10,000–15,000 servers</strong>; registries of registries; now used by Claude and ChatGPT for tools/connectors.</li>
+<li><strong>Three remedies emerged in late 2025:</strong></li>
+<li><strong>Subagents</strong> — delegate to a subagent with its own context. Limitation: tokens still cost; passwords still sit in a context abusable by other tool calls; it only pushes the problem further.</li>
+<li><strong>Progressive Tool Discovery</strong> — Anthropic's "Tool Search Tool," then Cursor; load tools only when needed. Limitation: clients must actually implement it.</li>
+<li><strong>Code Mode</strong> — Cloudflare; treat MCP tools as code, models navigate via grep. Limitation: Cloudflare's implementation is tightly platform-coupled and hard to use.</li>
+<li><strong>Why Code Mode works:</strong> models are better at writing/calling code than at tool calling, because tool calling is an artificial construct synthesized into training data rather than something present in real-world data. "Most agents are living in the dark ages" — the protocol evolved, clients didn't.</li>
+<li><strong>Why CLIs win locally:</strong> agents never load a full CLI into context; they explore progressively, know basic Linux commands from training data, learn from <code>--help</code>, and run CLI tools as code — Code Mode is native to CLIs. Unix shell dates to <strong>1969</strong> (Ken Thompson, Dennis Ritchie); the ~80-column terminal is a representation refined over decades; "agents know shell by heart," and labs can synthesize effectively unlimited shell training data.</li>
+<li><strong>CLI's structural weakness:</strong> "a local black box with no standard out and transport protocol" — for enterprise use you must introspect whether it uses API or websockets, and you cannot cleanly inject credentials. Hence: <strong>CLIs for local, MCP for remote.</strong></li>
+<li><strong>mcpc (demoed live).</strong> Apify's universal CLI client for MCP; began as a hobby project in <strong>December 2025</strong> ("the winter of Claude"); claimed "probably the most feature-rich MCP client on the market." Design goals: support everything MCP offers (tasks, resources, prompts), maximize compatibility, stay lightweight with <strong>no LLM inside</strong> (pure CLI wrapper), usable by agents and humans, Code Mode throughout. Every command has <code>--json</code> returning spec-compliant JSON, composable with <strong>jq</strong> and shell pipes.</li>
+<li><strong>Demo specifics.</strong> Connects to a local filesystem MCP server over STDIO (surfaces server name, capabilities, tools, commands; tool lists as JSON); connects to Apify's remote server via browser login with credentials in the local OS keychain; displays the server's <strong>instructions field</strong> — a basic MCP primitive most clients still don't support.</li>
+<li><strong>Capabilities.</strong> Persistent sessions (set up once; Claude Code/Codex share config without re-auth); progressive discovery via grep (searching "find" → 3 matches on filesystem server, 4 on Apify's); async tasks (<code>--task</code> runs server-side while the agent works locally; check progress or detach/reattach — most clients lack this); <strong>x402</strong> support (recently added; local-wallet tooling); sandboxing proxies (mentioned).</li>
+<li><strong>Connector Evals.</strong> Apify's benchmark framework that flips the usual comparison — holds the agent constant and compares connectors (CLI vs raw MCP vs mcpc). Early results with Claude Code on Sonnet 5: mcpc and CLI comparable on time and token cost; raw MCP faster in one test but consumed more tokens and worse in two others. Čurn is candid the tests are early and invites contributions.</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"You can provide all the protocol features of MCP through a simple tool call that all the agents already know, just called bash. The full complexity of MCP is hidden behind single tool call bash."</li>
+<li>"Please stop saying CLI is better than MCP because MCP plus CLI is the best." (closing line)</li>
+<li>~100 tools pre-loaded ≈ a third of context burned before any work happens.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li><strong>Context/token efficiency is the talk's central efficiency theme:</strong> progressive discovery and <code>--json</code>+jq piping let scripts "run MCP servers in the background without wasting your context tokens."</li>
+<li><strong>Connector Evals</strong> explicitly measures token cost and time per connector, framing connector choice as a measurable cost lever.</li>
+<li><strong>Async tasks</strong> (<code>--task</code>, detach/reattach) let agents do local work while long tools run server-side (latency win).</li>
+</ul>
+<h3 id="local-deploy-takeaways">Local-deploy takeaways</h3>
+<ul>
+<li><strong>mcpc is a pure CLI wrapper with no LLM inside</strong> — the kind of local-first building block that fits a self-hosted agent stack: run it against local servers over STDIO, keep credentials in the OS keychain, no cloud gateway required.</li>
+<li><strong>Adopt the mcpc pattern in agent harnesses:</strong> one <code>bash</code> tool call + <code>--json</code> + jq pipelines instead of registering dozens of MCP servers as native tool definitions — converts per-request context cost into progressive, grep-driven discovery.</li>
+<li><strong>"MCP for remote, CLI for local"</strong> is a deployment principle: keep local tool calls on CLIs (native Code Mode, no transport needed), reserve MCP for remote services where a standard transport and credential injection actually matter.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>YouTube description/chapters: https://www.youtube.com/watch?v=pAnLpiAG6Es</li>
+<li>BigGo AI talk summary: https://finance.biggo.com/podcast/ec71d05c7d54d1cc</li>
+<li>Partial auto-transcript chunks via NoteGPT (opening through ~07:20)</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "Your Agents Are in Solitary Confinement: Why MCP & A2A Aren't Enough" — Vlad Luzin, Band · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-your-agents-are-in-solitary-confinement-why-mcp-a2a-arent-enough-vlad-luzin-band">Talk Notes: "Your Agents Are in Solitary Confinement: Why MCP &amp; A2A Aren't Enough" — Vlad Luzin, Band</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=UOcHfR3_tys">Your Agents Are in Solitary Confinement: Why MCP &amp; A2A Aren't Enough — Vlad Luzin, Band</a> · AI Engineer channel · Sep 30, 2026 · 17:33 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary — treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.</p>
+<h2 id="thesis">Thesis</h2>
+<p>Agents live in "digital solitary confinement" — developers running parallel Claude/Codex sessions act as human routers between stateful processes that cannot talk to each other. MCP (stateless), A2A (client-server), chained calls, and messaging-platform integrations all fail to fix this because connecting agent processes is a <strong>distributed-systems problem</strong> (transport, persistence, identity mapping, governance) with non-deterministic microservices at every node. The fix is raising the abstraction to conversation-level primitives — rooms, channels, participants, deterministic routing — which is what Band pitches itself as: a global collaboration layer, with <strong>Gem</strong> as the desktop app giving developers and managers visibility into cost, attribution, and work state.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li>Opens with audience trivia — "Orc or C?" — resolving into a joke with two correct answers (LOTR vs Warhammer 40k), then a four-part agenda: Thesis's company beliefs, the evolution from adversarial agents to loop engineering, tomorrow's technical challenges, and Band.</li>
+<li><strong>Company thesis:</strong> the future is AI-to-AI communication within businesses, between businesses, and between consumers and businesses — agents written in different frameworks/languages/environments, fully autonomous, communicating without human intervention. Target picture: agents create conversational spaces, discover and add participant agents, collaborate, and report back to humans.</li>
+<li>Engages a $10B-company CTO's "I try to keep things simple and avoid the problem": unpacks it into three questions — is multi-agent coordination hypothetical, can you keep it simple, can you avoid it — and answers <strong>no to all three</strong> across the talk.</li>
+<li><strong>"Adversarial agents" (today):</strong> every developer runs two-plus Claude/Codex sessions — one working, one reviewing — "basically acting as a router, Cisco router or a switch between two stateful agents that do work on your behalf, but they have no ability to communicate and you need to prompt them."</li>
+<li><strong>"Loop engineering" (next stage, attributed to Peter and Boris):</strong> stop being the router; let agents prompt each other. In practice: "fighting with Python and TypeScript libraries and different abstraction layers that will invent how agents should prompt each other."</li>
+<li><strong>Protocol teardown:</strong></li>
+<li><strong>MCP</strong> gives a simple tool-call interface but is completely stateless (no sticky sessions between two agents).</li>
+<li><strong>A2A</strong> is client-server, so bidirectional tasking requires both sides to be client and server.</li>
+<li><strong>Chaining calls</strong> hits REST timeouts and needs persistent queues.</li>
+<li>Discovery isn't part of any protocol.</li>
+<li><strong>Messaging integrations</strong> (Slack/Telegram/Discord/WhatsApp) take <strong>5/7/8/11 manual setup steps</strong> respectively (Telegram 5, Discord 7, Slack 8, WhatsApp 11) and yield only "an agent that can talk to a person, usually it's you. Your agent is still alone, they cannot see each other."</li>
+<li><strong>The distributed-systems core:</strong> a multi-agent system where every agent is remote is "basically a distributed system of microservices where each microservice is non-deterministic." Required layers: <strong>transport</strong> (ordered, real-time delivery, retries); <strong>continuity</strong> (persistence and hydration across agent/pod/container crashes); <strong>framework binding</strong> (thread/conversation/execution ID mapping across frameworks); <strong>abstraction</strong> (can't communicate at IP/URL/PubSub level — too much planning left to the org); <strong>governance</strong> (identity, audit).</li>
+<li><strong>The prescription:</strong> raise the stack to the conversation — <strong>rooms, channels, participants, deterministic routing</strong> of messages within and across channels.</li>
+<li><strong>Demo 1 (onboarding):</strong> a Codex agent and a LangGraph agent spun up in a terminal with programmatic registration; agent cards appear; Codex sends a cross-registry connection request to Vlad's personal assistant requiring <strong>lateral consent</strong>; on approval it invites "Andy," who receives the message and reports back. Point: near-instant onboarding, consent-gated cross-boundary reach.</li>
+<li><strong>Demo 2 / Gem:</strong> Gem is an internal desktop app on Band addressing routing, context overload, cost management/attribution, and multi-agent/multi-human collaboration. It captures tasks agents generate, renders the software architecture showing which component each agent is touching in real time, and pings for human-in-the-loop. Rationale: "trying to understand what your agents are doing, 1 million tokens multiplied by 3. That's a lot. You need a completely different way to understand what your agentic team is doing." Optional — terminal workflow still works — but all communication flows through the network so Band can monitor it, enabling "my agent join your agent" cross-user collaboration (e.g., pinging a security colleague's agent to apply skills you lack).</li>
+<li><strong>Platform view:</strong> traffic graphs between local and remote agents; his own figures — a full-stack developer agent at <strong>$2,000 in tokens</strong> (local Claude session), an architect at <strong>$600</strong> (local Codex). <strong>No hand-coded loops:</strong> "all current models... understand very well how to communicate through messaging platforms," so coordination needs no Python glue — demoed with real work from that morning (EM + developer + architect Claude Code instances reviewing PRDs/SRS/implementation: "They know how to do it natively"). Full attribution answers whether a human was involved in a PR or whether it's "all AI slop," per developer/team, in real time.</li>
+<li><strong>Closes:</strong> "if I want I can connect any of you to any of my agents in 30 seconds" — booth OG17, QR codes for Band and Gem; "let Salesforce, Slack, Databricks, Claude, and Codex work together."</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"Your agent is still alone, they cannot see each other, they cannot communicate with each other. They are in a digital solitary confinement."</li>
+<li>"Multi-agent system where every agent is remote is basically a distributed system of microservices where each microservice is non-deterministic. So it is hard."</li>
+<li>Messaging-platform onboarding friction: Telegram 5 steps, Discord 7, Slack 8, WhatsApp 11 — all manual, all yielding only human-to-agent chat.</li>
+<li>Per-agent token spend: $2,000 dev agent vs $600 architect.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li><strong>Cost attribution is a first-class feature:</strong> per-agent token spend ($2,000 dev agent vs $600 architect), ticket-to-token attribution, full user-chain cost, real-time per-developer/per-team stats.</li>
+<li><strong>Deliberate compute saving:</strong> no hand-coded orchestration loops — models' native messaging-platform fluency is treated as free coordination capability.</li>
+</ul>
+<h3 id="local-deploy-takeaways">Local-deploy takeaways</h3>
+<ul>
+<li><strong>Instrument per-agent token attribution before scaling agent counts</strong> — the $2,000/$600 split between roles shows different agent personas burn very different budgets; ticket-to-token attribution is the visibility layer that makes multi-agent spend governable.</li>
+<li><strong>Prefer conversation-level primitives over hand-coded orchestration glue:</strong> if models natively coordinate through messaging patterns, skip the Python/TypeScript orchestration layer and treat coordination capability as free — orchestration code is a tax, not an asset.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>YouTube description/chapters: https://www.youtube.com/watch?v=UOcHfR3_tys</li>
+<li>BigGo AI talk summary: https://finance.biggo.com/podcast/c0ca1a8584126223</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

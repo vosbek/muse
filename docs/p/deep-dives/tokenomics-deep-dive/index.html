@@ -1,0 +1,140 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tokenomics Deep Dive: what AI-assisted engineering actually costs, and how to cut it · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><h1 id="tokenomics-deep-dive-what-ai-assisted-engineering-actually-costs-and-how-to-cut-it">Tokenomics Deep Dive: what AI-assisted engineering actually costs, and how to cut it</h1>
+<p><strong>What it is.</strong> A synthesis of 12 recent tokenomics articles/posts, the open-source cost-cutting toolstack, and Copilot-specific + local-CLI levers — researched October 2026 — combined with this repo's own distilled evidence (37 AI Engineer talks, vendor cost writeups, storage/memory maps). Written for a team standardized on VS Code + GitHub Copilot that wants Copilot as the main tool and cheaper paths everywhere else.</p>
+<p><strong>Status.</strong> Advisory. Vendor percentages are marketing-adjacent even when the math checks out; Copilot's credit allowances shift (a promo "credit cliff" just stepped down Sep 1, 2026). Verify plan specifics against docs.github.com before contracting. Unverified items are flagged inline.</p>
+<h2 id="the-core-equation">The core equation</h2>
+<p><strong>Cost per successful task</strong> = (tokens in × input rate + tokens out × output rate + tool calls) ÷ tasks actually completed. Everything else is a vanity metric. The evidence:</p>
+<ul>
+<li>Agentic coding tasks average <strong>~3,500× the tokens</strong> of single-round reasoning; same-task runs vary up to <strong>30×</strong> in tokens (theagentloop, DEV Sep 2026).</li>
+<li>TheAgentCompany benchmark: $4.20/task at 30.3% success = <strong>~$13.90 per successful task</strong>. A cheap model that fails and retries costs more than a capable one that succeeds first try.</li>
+<li>Anthropic's own finding: inference is <strong>&gt;85% of enterprise AI budgets</strong>; agent tasks run 50K–500K tokens vs 2–4K for chat (via Requesty).</li>
+</ul>
+<h2 id="the-ranked-levers-with-numbers">The ranked levers (with numbers)</h2>
+<p><strong>1. Prompt caching — the highest-ROI single change.</strong> Provider-native KV-cache on stable prefixes:
+- Anthropic: 90% off cached input reads (writes cost 1.25× — a mutating prefix costs <em>more</em> than no cache). PwC's measurement study: <strong>78.5% cost savings on Sonnet 4.5</strong>, 79.6% on GPT-5.2 across 500+ long-horizon sessions. ⚠️ secondary-source figures; paper not fetched directly.
+- OpenAI: 50% off (90% on GPT-5.4/5.5), automatic prefix matching. Gemini: ~75% via explicit CachedContent API.
+- The discipline that decides everything: <strong>static prefix first, dynamic content last.</strong> A timestamp at the top of a system prompt produced 0% cache hits on OpenAI and <em>+25% cost</em> on Anthropic in a 2026 reproducible benchmark; moving volatile content to the end cut input cost 82% / 68–73% respectively. Manus calls KV-cache hit rate "the single most important metric for a production-stage AI agent" (input:output ≈ 100:1; Sonnet cached $0.30 vs $3/MTok — via secondary source).
+- Worked example: 10-turn agent session on 128K context — resend $3.93 vs cache $0.95 vs RAG $0.33 (DigitalOcean). Caching ~4× cheaper than resending; retrieval ~12×.</p>
+<p><strong>2. Model routing — the 70/20/10 rule.</strong> Route 70% of traffic to nano/flash tier, 20% mid, 10% frontier. Requesty's worked math: moving off Claude Opus 4.8 to 70% Flash ($0.30/M) + 20% Sonnet ($3/M) drops average cost <strong>$15 → ~$2.10/M tokens (86%)</strong>. This repo's own evidence: Kimchi's cost-per-task routing saved <strong>2.5x vs Claude</strong>; a 70x token spread between models on one identical eval (Kirschner, VS Code talk); GEPA served GPT-OSS 120B above Claude Opus at <strong>90x lower cost</strong>. Re-benchmark quarterly — cheapest today isn't cheapest next quarter.</p>
+<p><strong>3. Context hygiene — the free lever.</strong> From this repo: <code>.github/copilot-instructions.md</code> (highest-ROI single file), standards in the reviewer not the implementer (Pocock), content exclusions, and Exa's 200x (500-char computed highlights vs 100k-char raw pages). From Anthropic's cost post: prompt-audit at model migration — removing "verify twice" (two words) cut per-ticket cost <strong>by a third</strong> on Opus 5 with zero accuracy change; full audit cut 14.6% and <em>raised</em> accuracy 5.3%.</p>
+<p><strong>4. Effort calibration.</strong> Anthropic's dial: Fable 5 at low effort 11.5% @ $5.35/task vs 30.9% at max @ $19.00/task — and "a stronger model at low effort can be cheaper than a weaker model working hard" (Fable 5.1 low-effort matched Fable 5 high-effort at a third of the cost).</p>
+<p><strong>5. Deferred/progressive context.</strong> Factory's deferred context engine: <strong>50%+ token savings</strong> via progressive tool disclosure. Don't load context speculatively.</p>
+<p><strong>6. Semantic caching + compression.</strong> GPTCache (semantic cache, Zilliz): 40–70% fewer LLM calls on repetitive workloads (community-reported). LLMLingua (Microsoft Research, MIT): up to 20x prompt compression. leanctx: drop-in SDK claiming 40–60% bill cuts (newer project, smaller community).</p>
+<h2 id="the-2026-copilot-billing-reality-for-your-team">The 2026 Copilot billing reality (for your team)</h2>
+<p>GitHub moved to <strong>AI Credits</strong> (1 credit = $0.01) on June 1, 2026 — metered on actual tokens at per-model API rates. What matters for a Copilot-standardized team (corroborated across 4+ Sep–Oct 2026 sources; re-verify at docs.github.com):</p>
+<ul>
+<li><strong>Completions are free and unlimited</strong> on all paid plans — zero credits. Agents, chat, code review, CLI, and Spark are what draw the balance. Business ($19/seat): 1,900 credits/user pooled; Enterprise ($39/seat): 3,900 pooled. A promo that inflated these just stepped down Sep 1, 2026 ("credit cliff").</li>
+<li><strong>Model spread is ~50x on input.</strong> Documented per-1M rates run from MAI-Code-1.1-Flash ($0.20/$1.20) to Claude Fable 5 ($10/$50). The model picker is a cost lever most teams leave on default. Auto model selection earns 10%; cached tokens bill ~10%; don't switch models mid-session (invalidates cache); run subagents on cheaper models.</li>
+<li><strong>Budgets are the only hard stop.</strong> Four levels (user / cost-center / org / enterprise); overage is on by default. Set the user-level budget first.</li>
+<li><strong>Output is the expensive token class</strong> (~5x input): "Code only, no explanation" in copilot-instructions.md is guide-claimed at 40–70% output cuts per code task (anecdotal percentage, sound mechanism).</li>
+<li><strong>Hooks kill the most expensive failure mode</strong>: PreToolUse/Stop hooks block redundant tool calls and runaway agent loops under credit billing.</li>
+<li><strong><code>/chronicle</code></strong> (Copilot CLI) surfaces recurring patterns — encode them into copilot-instructions.md once instead of re-paying per session.</li>
+</ul>
+<h2 id="the-open-source-toolstack-router-observe-compress">The open-source toolstack (router → observe → compress)</h2>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Pick</th>
+<th>Why</th>
+<th>Repo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Router/gateway</td>
+<td><strong>LiteLLM</strong></td>
+<td>100+ providers, cost-based routing, per-team budgets; the default OSS pick</td>
+<td>github.com/BerriAI/litellm</td>
+</tr>
+<tr>
+<td>Router (fast)</td>
+<td><strong>Bifrost</strong></td>
+<td>Go gateway, &lt;100µs overhead, when Python proxy is the bottleneck</td>
+<td>github.com/maximhq/bifrost</td>
+</tr>
+<tr>
+<td>Observability</td>
+<td><strong>Langfuse</strong></td>
+<td>Per-request token+cost tracing, self-hostable (MIT)</td>
+<td>github.com/langfuse/langfuse</td>
+</tr>
+<tr>
+<td>Observability</td>
+<td><strong>Opik</strong></td>
+<td>Tracing + agent optimizer that compounds into lower per-task spend (Apache-2.0)</td>
+<td>github.com/comet-ml/opik</td>
+</tr>
+<tr>
+<td>Dev spend visibility</td>
+<td><strong>ccusage</strong></td>
+<td>CLI reporting per-dev coding-agent spend from on-disk data</td>
+<td>github.com/ryoppippi/ccusage</td>
+</tr>
+<tr>
+<td>Pre-call estimating</td>
+<td><strong>tokencost</strong></td>
+<td>Dollar cost before you call, for routing logic</td>
+<td>github.com/AgentOps-AI/tokencost</td>
+</tr>
+<tr>
+<td>Compression</td>
+<td><strong>LLMLingua</strong></td>
+<td>Up to 20x prompt compression (Microsoft Research, MIT)</td>
+<td>github.com/microsoft/LLMLingua</td>
+</tr>
+<tr>
+<td>Semantic cache</td>
+<td><strong>GPTCache</strong></td>
+<td>Near-duplicate queries never hit the model (Zilliz)</td>
+<td>github.com/zilliztech/GPTCache</td>
+</tr>
+</tbody>
+</table>
+<p>Acquisition notes: Portkey (gateway) → Palo Alto Networks; Langfuse → ClickHouse; Helicone → Mintlify (maintenance mode — use for the logging pattern, not as a forward bet). Continue (coding assistant) → Cursor, repo archived — do not standardize on it.</p>
+<h2 id="local-cli-complements-the-copilot-adjacent-stack">Local CLI complements (the Copilot-adjacent stack)</h2>
+<p>Keep engineers in VS Code; move metered agentic burn off Copilot credits where it makes sense:</p>
+<ul>
+<li><strong>Ollama</strong> (ollama.com) — local model runner, OpenAI-compatible API, zero marginal token cost. Best local coding models in 2026 guides: Qwen2.5-Coder 7B/14B/32B (Apache 2.0), DeepSeek-Coder-V2-Lite, Codestral 22B. Honest scope: great for completions, test scaffolds, docstrings, lint fixes, eval judges — weak at multi-file refactors and agentic loops vs frontier.</li>
+<li><strong>Aider</strong> (github.com/Aider-AI/aider) — git-native pair programming, BYOK, local-capable. Its <strong>Architect mode</strong> is the canonical cheap/expensive split: strong model plans, cheap model writes the edits.</li>
+<li><strong>Cline / Roo Code / Kilo Code / Goose / Crush</strong> — VS Code-native or terminal agents with BYOK and local-model support; Goose is Apache-2.0 and local-first with MCP + hooks.</li>
+<li><strong>The pattern teams run:</strong> Copilot completions (unlimited/free) + Aider/Cline pointed at a cheap API or local model for agent work. Same UI, metered burn moved.</li>
+<li><strong>vLLM for team serving:</strong> breakeven ≈150–200 req/hr; ~70% cheaper than hosted volume at 500+/hr — but idle GPU time destroys the economics, and GPU ops is real work.</li>
+</ul>
+<h2 id="reading-list-the-12">Reading list (the 12)</h2>
+<ol>
+<li>Anthropic, "Reducing cost and improving performance with Claude Platform" (2026-09-08) — claude.com/blog/reducing-cost-and-improving-performance-with-claude-platform</li>
+<li>GitHub, "How we make AI coding more cost efficient without sacrificing task quality" (Sep 2026) — github.blog (already a deep dive in this repo)</li>
+<li>PwC AI Research, "Don't Break the Cache" (arXiv 2601.06007, Jan 2026) — arxiv.org/abs/2601.06007 ⚠️ secondary-source figures</li>
+<li>Manus on KV-cache hit rate as the production SLO (2025, canonical) — via tokenbill research notes ⚠️ secondary source</li>
+<li>theagentloop, "What one agent run actually costs" (DEV, ~Sep 2026) — dev.to/theagentloop/what-one-agent-run-actually-costs-28i8</li>
+<li>Requesty, "AI Agent Cost Optimization: cut LLM spend 80% with routing" (~Jun 2026) — requesty.ai/blog/...</li>
+<li>CloudZero, "LLM cost optimization: 7 strategies" (Jul 2026, upd. Sep 2026) — cloudzero.com/blog/llm-cost-optimization/</li>
+<li>DigitalOcean, "What it actually costs to serve a 1M-token model" (DEV, ~Sep 2026) — dev.to/digitalocean/...</li>
+<li>Manveer Banxal, "AI Agent Cost per Month: the token maths, worked out" (DEV, Oct 2026) — dev.to/manveer-banxal/...</li>
+<li>Brinvik, "A better model, a 36% bigger bill, an unread prompt" (Sep 2026) — brinvik.com/en/journal/claude-ai-costs-prompt-audit</li>
+<li>ravoid.com, "Stop asking RAG vs fine-tuning. Ask this." (~Sep 2026) — ravoid.com/blog/rag-vs-fine-tuning-cost/</li>
+<li>sedai77/tokenbill — open-source agent cost profiler with graded evidence — github.com/sedai77/tokenbill-llm-agent-cost-profiler</li>
+</ol>
+<h2 id="what-to-do-monday-morning-sequenced-for-a-copilot-team">What to do Monday morning (sequenced for a Copilot team)</h2>
+<ol>
+<li><strong>Set user-level budgets</strong> in Copilot (the only hard stop) and check where the Sep 1 credit step-down left you.</li>
+<li><strong>Write the team <code>copilot-instructions.md</code></strong> — output discipline ("code only" defaults), path-scoped sections, landmines only. One afternoon.</li>
+<li><strong>Measure cost per successful task</strong> for two weeks on one repo (ccusage for dev-level visibility; Langfuse/Opik if you want team dashboards).</li>
+<li><strong>Run the model-routing eval</strong>: same tasks across Copilot's model picker, score quality vs tokens. Expect a wide spread; set per-surface defaults (cheap for completions, frontier for hard agents).</li>
+<li><strong>Pilot the local complement</strong>: Ollama + Aider on one project for the mechanical tier (scaffolds, docstrings, lint fixes) before spending on anything else.</li>
+<li><strong>Calendar the re-benchmark</strong>: quarterly model-routing re-run + prompt-audit at every model migration. The Brinvik rule: prompts written for older models carry hidden taxes on newer ones.</li>
+</ol>
+<h2 id="verification-flags">Verification flags</h2>
+<ul>
+<li>PwC cache figures (78–80%) and Manus numbers are via secondary sources, not the primaries.</li>
+<li>Requesty/CloudZero percentages are vendor-authored; the arithmetic is explicit but the headlines are marketing-adjacent.</li>
+<li>Copilot credit allowances and per-model rates corroborated across multiple Sep–Oct 2026 sources, but GitHub adjusts flex allotments — re-verify at docs.github.com before quoting internally.</li>
+<li>"40–70% output cut", "70% cheaper self-hosting", local-model benchmark scores: single-source or guide-claimed; mechanisms sound, magnitudes anecdotal.</li>
+<li>tokenbill is the single most useful open-source find for the "open source repo tool" ask: a cost profiler <em>plus</em> a graded-evidence research corpus.</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

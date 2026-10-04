@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "GLM-5.2: Open Weights, Near-Frontier Intelligence" — Zixuan Li, Z.ai · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-glm-52-open-weights-near-frontier-intelligence-zixuan-li-zai">Talk Notes: "GLM-5.2: Open Weights, Near-Frontier Intelligence" — Zixuan Li, Z.ai</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=9JFGohx4E7U">GLM-5.2: Open Weights, Near-Frontier Intelligence — Zixuan Li, Z.ai</a> · AI Engineer channel · Sep 27, 2026 · 13:46 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>Open-weights models can now reach near-frontier intelligence — GLM-5.2 sits between Claude Opus 4.7 and 4.8 on the hardest long-horizon coding/agentic benchmarks — and "intelligence" means more than IQ-style math/physics tests. Z.ai open-sources the weights because users need security and control, domains need fine-tuning, and co-design requires visibility into the architecture and training recipe. The talk closes with "one more thing": Z Code, Z.ai's own coding harness.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>The name.</strong> The company is Zhipu ("GLM" is not a brand name but a generic term: "general language model pre-training with auto-regressive blank filling," from a 2021 paper). Zhipu was among the first LLM labs, alongside OpenAI, Anthropic, and DeepMind. The original architecture is no longer used, but the name stuck (GLM-4.x → 5.1 → 5.2).</li>
+<li><strong>Redefining intelligence.</strong> From GLM-4.5 to 4.7, the team explored the "intelligence upper bound" beyond IQ-style tests — reasoning, coding, and agentic capabilities matter more than math/physics benchmarks alone.</li>
+<li><strong>Benchmarks.</strong> GLM-5.2 lands between Opus 4.7 and 4.8 on the hardest long-horizon tasks — DeepSWE, Terminal Bench 2.1 ("mentioned by the OpenAI team") — "on par with at least Opus 4.7." A big jump over 5.1. (Secondary — Z.ai blog: FrontierSWE 74.4, PostTrainBench 34.3, SWE-Marathon 13.0, SWE-bench Pro 62.1, Terminal Bench 2.1 81.0/82.7, HLE 40.5/54.7 with tools.)</li>
+<li><strong>Thinking levels.</strong> A new "high" thinking level (thinking budget) for harder tasks, with attention to token efficiency. Striking claim: "even without thinking, the non-thinking model is better than the 5.1 thinking model."</li>
+<li><strong>More than a coding model.</strong> Trained on GPQA-style, math, roleplay, and general chat. Leads other open-weight models on the Artificial Analysis Intelligence Index, close to frontier. People already use GLM inside Claude Code, Codex, and OpenCode.</li>
+<li><strong>Why open weights (three reasons).</strong></li>
+<li>Users want security, control, and trust — weights are on Hugging Face for on-prem enterprise/government use, especially in Western markets.</li>
+<li>Diversity — fine-tuning for law, finance, and security. Harvey is fine-tuning GLM-4.1 and considering 5.2; other companies are planning GLM fine-tunes to differentiate.</li>
+<li>Co-design — customers need to see the architecture and training recipe to "co-shape the future."</li>
+<li><strong>Community credit.</strong> "GLM 5.2 couldn't succeed without" the open-source community (Unsloth, Ollama, individual developers) — "you are the true hero."</li>
+<li><strong>Resources.</strong> A tech blog with the training pipeline/recipe, the Hugging Face repo, a chatbot/agent trial, the API, and a GLM Coding Plan (a Codex/Claude-style subscription).</li>
+<li><strong>Z Code.</strong> Z.ai's own coding harness, built for GLM-5.2 but supporting all frontier models with BYOK. Codex-like operations ("go/compact" techniques). "First time we share the code to the whole community."</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"It's somewhere between Opus 4.7 and 4.8... on par with at least Opus 4.7" — long-horizon coding/agentic benchmarks</li>
+<li>"Even without thinking, the non-thinking model is better than the 5.1 thinking model."</li>
+<li>"If our users want security and control and we want to build trust, we can open weight model."</li>
+<li>(Secondary — Z.ai blog) 1M-token context; MIT license; vLLM/SGLang support</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li><strong>Explicit thinking budgets.</strong> The new "high" thinking level treats the thinking budget as a dial and token efficiency as a first-class design concern — the same spend-control logic as model routing: pay for reasoning depth only where the task needs it.</li>
+<li><strong>Non-thinking 5.2 beating 5.1-thinking</strong> implies same-or-better quality at lower inference cost: free quality gains translate directly into per-task savings.</li>
+<li><strong>Architecture-level efficiency (secondary — Z.ai blog):</strong> IndexShare reuses one indexer across every four sparse-attention layers (fewer per-token FLOPs); MTP speculative decoding acceptance length 4.56 → 5.47 (+20%) — faster decode means lower cost per token served.</li>
+<li><strong>Open weights as a cost lever:</strong> on-prem deployment lets teams use dedicated compute, where caching/prefill savings (the talk's framing) accrue to the operator instead of the API provider.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>MIT-licensed open weights runnable under vLLM/SGLang on dedicated compute — a direct fit for the local-first strategy: near-frontier coding/agent quality without per-token API spend.</li>
+<li>The thinking-budget dial maps to local inference planning: lighter non-thinking passes for routine tasks, full thinking only for hard ones.</li>
+<li>Fine-tuning story (Harvey, domain-specific firms) suggests the weights are a viable base for domain-specialized local models in regulated verticals.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Video: https://www.youtube.com/watch?v=9JFGohx4E7U</li>
+<li>Z.ai blog: z.ai/blog/glm-5.2</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>03 — Agent Memory · AI Skills Playbook</title><link rel="stylesheet" href="../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><h1 id="03-agent-memory">03 — Agent Memory</h1>
+<p><strong>Thesis:</strong> A model without memory re-pays the same context tax every session. These five reels converge on one conclusion from different angles: memory must be an explicit, engineered subsystem — hierarchical stores, background consolidation, lesson files, cross-harness transcripts — not something you hope the context window handles. And the fourth reel adds the crucial warning: when agents fail, suspect the harness (the layer between model and files) before you suspect the model.</p>
+<h3 id="a-real-agentic-coding-graph-project-four">A real agentic coding graph: Project Four</h3>
+<ul>
+<li><strong>Creator:</strong> @agentic.james · <strong>Date:</strong> 2026-08-15</li>
+<li><strong>What it suggests:</strong> A from-scratch build of "cross-harness-memory": a tool that centralizes transcripts across Codex, Claude Code, and OpenCode into one searchable store other agents can query. The architecture: a local database, harness adapters that parse each tool's transcripts, and an agent plugin for access. The build process itself is the lesson — a Coordinator thread defines requirements and goal contracts, then spawns worker threads with their own slash-goal prompts to figure out how many threads are needed and what each contract should be; threads converge into a centralized deployed-runtime evaluation that verifies the code in production by running headless Claude Code, Codex, and OpenCode CLIs; a final thread checks scalability and edge cases before independent review and push to a private GitHub repo. It ran mostly autonomously while he did other work. Two takeaways: memory should be harness-agnostic (transcripts from every tool, one store), and verification should be runtime-based (does it work headless in production?), not review-based.</li>
+<li><strong>Repos/tools:</strong> Private GitHub repo (planned community release); Codex, Claude Code, OpenCode CLIs</li>
+<li><strong>Extractable skill:</strong> Cross-harness memory — centralize transcripts from every agent tool into one searchable local store; verify agent-built systems with headless production runs.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DcFJ_VBjfRK/</li>
+</ul>
+<h3 id="long-term-memory-in-three-skills-memory-recall-rem-sleep">Long-term memory in three skills: /memory, /recall, /rem sleep</h3>
+<ul>
+<li><strong>Creator:</strong> @agentic.james · <strong>Date:</strong> 2026-01-22</li>
+<li><strong>What it suggests:</strong> A clean three-part decomposition of agent memory. The Memory skill stores information in a hierarchical folder structure (hierarchy matters — flat dumps become unsearchable). The REM Sleep skill is a background process that records conversation transcripts into the Memory store without interrupting the main agent. The Recall skill is another background process that retrieves relevant memories for the current task. The architecture mirrors the Jev pattern: capture and retrieval happen outside the main context, in background processes, and only relevant memories surface into the working session. The naming is doing conceptual work too — memory isn't one feature, it's three (store, consolidate, retrieve), and conflating them is why naive "remember this" implementations fail.</li>
+<li><strong>Repos/tools:</strong> Claude Code (skills)</li>
+<li><strong>Extractable skill:</strong> Memory as three subsystems — hierarchical storage, background consolidation, background retrieval; never let bookkeeping touch the main thread.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DT1UnU_DdMR/</li>
+</ul>
+<h3 id="continual-learning-with-a-nested-memory-tree">Continual learning with a nested memory tree</h3>
+<ul>
+<li><strong>Creator:</strong> @agentic.james · <strong>Date:</strong> 2026-01-06</li>
+<li><strong>What it suggests:</strong> Taking the memory idea further: persistent memory plus continual learning, built on a nested tree structure for organizing information specifically to prevent context bloat. The key mechanism is background subagents that manage the memory tree — pruning, reorganizing, consolidating — without interfering with the main agent's context. This solves the scaling problem that kills simpler memory systems: a lessons file or folder store works for weeks, then grows into its own context hog. A tree with active gardeners stays useful. The system was still in development at recording time, but the design principle stands alone: memory needs maintenance labor, and that labor should be agent-driven and off the main thread.</li>
+<li><strong>Repos/tools:</strong> Claude Code (subagents; system in development)</li>
+<li><strong>Extractable skill:</strong> Gardened memory — use a nested structure plus background subagents for pruning/consolidation, so memory stays an asset instead of becoming bloat.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DTMMKKZjYJQ/</li>
+</ul>
+<h3 id="the-harness-is-the-hidden-layer-why-coding-agents-really-fail">The harness is the hidden layer (why coding agents really fail)</h3>
+<ul>
+<li><strong>Creator:</strong> @brooke.bytes · <strong>Date:</strong> 2026-07-23</li>
+<li><strong>What it suggests:</strong> A summary of an Amazon research paper (arXiv 2606.17454) with the most important technical claim in this collection: between the model and your files sits the harness — the layer translating model intent into edits and reporting results back — and most coding-agent failures live there, in the intent-execution gap. The canonical failure: the model asks for a one-line change, the harness misapplies it (replacing text in three classes, or matching a short fragment inside longer lines), and the model blames itself and spirals. The fixes, built into the open-source Strands Agents harness (SSA), are all harness-level: expand context until matches are unique, require whole-line matches, show a feedback diff after every edit so the model can verify, and reject bad edits upfront. SSA matched or beat vendor-published scores across 21 models (Claude, GPT, Gemini, Grok, Qwen) on Terminal Bench 2 — model-agnostic, and improvements compound across every model you plug in. The strategic read: when agents fail, audit the edit/verify loop before upgrading the model.</li>
+<li><strong>Repos/tools:</strong> Strands Agents SDK (AWS, open source on GitHub); paper arXiv 2606.17454</li>
+<li><strong>Extractable skill:</strong> Harness-first debugging — verify unique matches, whole-line edits, post-edit diffs, and upfront rejection before blaming model quality.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DbJRhHIRzlc/</li>
+</ul>
+<h3 id="a-self-improving-agent-via-lessonsmd">A self-improving agent via lessons.md</h3>
+<ul>
+<li><strong>Creator:</strong> @keshavsuki · <strong>Date:</strong> 2026-03-14</li>
+<li><strong>What it suggests:</strong> The simplest continual-learning loop in the collection, in three steps: after any correction, append the lesson to a <code>tasks/lessons.md</code> file; read that file at the start of every session; apply the relevant rule before touching any code. Done consistently for a month, the agent adapts to your patterns and preferences. It's deliberately low-tech — no vector DB, no framework — which is the point: the failure mode of memory systems is usually adoption friction, not sophistication. A markdown file you'll actually maintain beats an architecture you won't. This is the minimum viable version of everything the fancier memory reels describe, and it's the right starting point before graduating to hierarchical stores or background gardeners.</li>
+<li><strong>Repos/tools:</strong> None (markdown file + discipline)</li>
+<li><strong>Extractable skill:</strong> lessons.md loop — capture corrections immediately, re-read at session start, apply before acting. Start here before building anything fancier.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DV4a43ZjkMa/</li>
+</ul>
+<h2 id="from-x-bookmarks-sep-2026">From X bookmarks (Sep 2026)</h2>
+<p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>
+<h3 id="unreal-agent-an-open-source-harness-claiming-state-of-the-art-cost-efficiency">Unreal Agent: an open-source harness claiming state-of-the-art cost efficiency</h3>
+<ul>
+<li><strong>Creator:</strong> @unreallabsai · <strong>Date:</strong> 2026-09-22</li>
+<li><strong>What it suggests:</strong> Introduces Unreal Agent, an open-source harness claiming state-of-the-art cost efficiency — 39% cheaper than its baseline (text truncates), with an image presumably showing the comparison. Verifiable: this is a harness-level cost play — not a cheaper model, but cheaper orchestration of models — and it's open source, so the techniques are inspectable. The 39% figure needs its baseline from the permalink. For the memory angle: harness efficiency gains increasingly come from memory design — what context you keep, compact, and re-fetch — so an open harness with measured cost wins is exactly where to look for transferable memory techniques.</li>
+<li><strong>Repos/tools:</strong> None linked in post text.</li>
+<li><strong>Extractable skill:</strong> Optimize the harness itself (orchestration, memory, retries), not just the model, for the next cost multiple.</li>
+<li><strong>Source:</strong> https://x.com/unreallabsai/status/2102435462065385775</li>
+</ul>
+<h3 id="graph-engineering-for-agents-jev-fits-the-langgraph-memory-model">Graph engineering for agents: Jev fits the LangGraph memory model</h3>
+<ul>
+<li><strong>Creator:</strong> @sydneyrunkle · <strong>Date:</strong> 2026-09-18</li>
+<li><strong>What it suggests:</strong> Notes that months after writing about graph engineering for agents with LangGraph, Jev fits nicely into that picture (text truncates) — quoting the author's own article on three years of graph engineering with LangGraph. Verifiable: the claim is architectural fit — decision models slot naturally into graph-based agent orchestration, where nodes make routing decisions and edges carry state. For agent memory, this is the key intersection: graphs are the memory and state substrate, and Jev-class models are the decision function at each node. The full argument is at the permalink.</li>
+<li><strong>Repos/tools:</strong> None linked in post text (LangGraph mentioned).</li>
+<li><strong>Extractable skill:</strong> Model agent memory as a graph and put cheap decision models at the routing nodes.</li>
+<li><strong>Source:</strong> https://x.com/sydneyrunkle/status/2101128449033416825</li>
+</ul>
+<h3 id="second-batch-aug-24-sep-12">Second batch (Aug 24 – Sep 12)</h3>
+<h3 id="the-clearest-agent-harness-explainer-turned-into-a-guide">The clearest agent-harness explainer, turned into a guide</h3>
+<ul>
+<li><strong>Creator:</strong> @free_ai_guides · <strong>Date:</strong> 2026-09-09 (amplifying @mardehaym)</li>
+<li><strong>What it suggests:</strong> "Mark's breakdown of the AI agent harness is the clearest explanation of the topic I've read, so I tu[rned it into a guide, truncated]." Filed with the harness cluster below: the through-line is that the harness — the loop, tools, state, and verification around the model — is where agent quality lives, not the model weights. When multiple independent readers call one breakdown "the clearest," treat it as canonical onboarding material for anyone building agents.</li>
+<li><strong>Repos/tools:</strong> None linked in post text.</li>
+<li><strong>Extractable skill:</strong> Onboard agent builders with harness-first mental models before model specifics.</li>
+<li><strong>Source:</strong> https://x.com/free_ai_guides/status/2097756980408623376</li>
+</ul>
+<h3 id="production-ai-agents-inside-a-pe-portcos-prior-auth-pipeline">Production AI agents inside a PE portco's prior-auth pipeline</h3>
+<ul>
+<li><strong>Creator:</strong> @mardehaym · <strong>Date:</strong> 2026-09-10</li>
+<li><strong>What it suggests:</strong> A PE operating partner asked them to put production AI agents inside a portfolio company's prior-authorization pl[an, truncated] — agents doing real, regulated, high-stakes workflow work (healthcare prior authorization), not demos. This is the enterprise deployment pattern the factory talk describes: agents embedded in an existing business process with human gates, audit trails, and measurable throughput. The sector matters — prior auth is paperwork-heavy, rules-bound, and expensive, which is exactly where agent economics work. Full case details at the permalink.</li>
+<li><strong>Repos/tools:</strong> None linked in post text.</li>
+<li><strong>Extractable skill:</strong> Deploy agents inside existing regulated workflows with human gates; paperwork-heavy processes are the best first targets.</li>
+<li><strong>Source:</strong> https://x.com/mardehaym/status/2097979140884570267</li>
+</ul>
+<h3 id="the-harness-deep-dive-its-not-the-model">The harness deep-dive: it's not the model</h3>
+<ul>
+<li><strong>Creator:</strong> @mardehaym · <strong>Date:</strong> 2026-09-09</li>
+<li><strong>What it suggests:</strong> "To truly understand AI agents, you need to understand the harness. And it's not the model. I went d[eep, truncated]." The central claim of this batch's biggest theme: agent capability = harness quality. The model is interchangeable; the loop (plan, act, verify, recover), the tools, the state management, and the evals are what separate a demo from a production system. This is the thesis behind the factory talk's inner loop and the COMBINED.md patterns. Treat harness engineering as the discipline; model selection as a configuration choice.</li>
+<li><strong>Repos/tools:</strong> None linked in post text.</li>
+<li><strong>Extractable skill:</strong> When an agent fails, debug the harness (loop, tools, state, evals) before blaming the model.</li>
+<li><strong>Source:</strong> https://x.com/mardehaym/status/2097736766245499226</li>
+</ul>
+<h3 id="endorsement-of-the-harness-breakdown">Endorsement of the harness breakdown</h3>
+<ul>
+<li><strong>Creator:</strong> @alex_prompter · <strong>Date:</strong> 2026-09-09</li>
+<li><strong>What it suggests:</strong> "the best breakdown of agent harnesses I've seen on this app:" — a pointer amplifying @mardehaym's harness thread. Filed as a corroborating signal: when practitioners independently converge on one explainer, it belongs in the canonical reading list.</li>
+<li><strong>Repos/tools:</strong> None.</li>
+<li><strong>Extractable skill:</strong> Weight explainers by independent practitioner convergence, not by like counts alone.</li>
+<li><strong>Source:</strong> https://x.com/alex_prompter/status/2097737171218075771</li>
+</ul>
+<h3 id="agent-primitives-should-graduate-from-slack-markdown-files">Agent primitives should graduate from Slack markdown files</h3>
+<ul>
+<li><strong>Creator:</strong> @OrenMe · <strong>Date:</strong> 2026-09-08</li>
+<li><strong>What it suggests:</strong> "Managing agent primitives should graduate from sending markdown files in Slack between team members." The primitives — skills, prompts, evals, configs — are currently passed around like folklore: paste this markdown, trust me it works. The point is that this doesn't scale: primitives need versioning, ownership, distribution, and deprecation — treated as software artifacts with a supply chain, not chat attachments. This is the governance half of skill-driven development: the skill library is the asset, and assets need infrastructure.</li>
+<li><strong>Repos/tools:</strong> None linked in post text.</li>
+<li><strong>Extractable skill:</strong> Give agent primitives a real supply chain — versioned, owned, distributed, deprecable — not Slack folklore.</li>
+<li><strong>Source:</strong> https://x.com/OrenMe/status/2097419890755813854</li>
+</ul>
+<h3 id="agent-customization-converges-on-skills-not-prompt-files">Agent customization converges on Skills, not prompt files</h3>
+<ul>
+<li><strong>Creator:</strong> @OrenMe · <strong>Date:</strong> 2026-09-08</li>
+<li><strong>What it suggests:</strong> "Agent customization is converging. I'm happy to see @GitHubCopilot new harness engine (AHP) no longer supports prompt files. It asks you to migrate them to Skills. I [truncated]." GitHub Copilot's new harness engine dropping prompt-file support in favor of Skills is the industry converging on one customization primitive. Prompts were the wild west — freeform text with no structure; Skills are packaged, versioned, evaluable units. When the biggest coding assistant migrates users off prompt files, the debate is over: build on Skills.</li>
+<li><strong>Repos/tools:</strong> GitHub Copilot (AHP harness engine)</li>
+<li><strong>Extractable skill:</strong> Build all agent customization as Skills; prompt files are the legacy format.</li>
+<li><strong>Source:</strong> https://x.com/OrenMe/status/2097407731452059914</li>
+</ul>
+<h3 id="inside-a-real-ai-factory-at-limestonehq">Inside a real AI Factory at LimestoneHQ</h3>
+<ul>
+<li><strong>Creator:</strong> @mardehaym · <strong>Date:</strong> 2026-09-02</li>
+<li><strong>What it suggests:</strong> "We run an AI Factory at @LimestoneHQ. Here's what actually happens between a ticket and a merged pull request. Most teams already tried [truncated]." A field report from a production AI factory: the full path from ticket to merged PR, including what most teams tried and where it breaks. This is the factory-engineering thesis with real scars — the value is in the failure modes and the fixes, not the architecture diagram. Pairs with the explainer endorsement below and the Uber factory posts in 09-learn.</li>
+<li><strong>Repos/tools:</strong> None linked in post text.</li>
+<li><strong>Extractable skill:</strong> Study production factory postmortems for the ticket-to-merge failure modes; that's where the real design constraints live.</li>
+<li><strong>Source:</strong> https://x.com/mardehaym/status/2095095728565588436</li>
+</ul>
+<h3 id="the-enterprise-ai-factory-explainer-endorsed">The enterprise AI factory explainer, endorsed</h3>
+<ul>
+<li><strong>Creator:</strong> @alex_prompter · <strong>Date:</strong> 2026-09-02</li>
+<li><strong>What it suggests:</strong> "the best breakdown of what an enterprise AI factory is:" — amplifying the LimestoneHQ factory thread. Another convergence signal: practitioners independently naming the same factory explainer as canonical.</li>
+<li><strong>Repos/tools:</strong> None.</li>
+<li><strong>Extractable skill:</strong> Same as above — treat practitioner-converged explainers as canonical.</li>
+<li><strong>Source:</strong> https://x.com/alex_prompter/status/2095096200693186859</li>
+</ul>
+<h3 id="tobi-open-sources-self-improving-loop-infra-tangleml">Tobi open-sources self-improving-loop infra (tangleml)</h3>
+<ul>
+<li><strong>Creator:</strong> @tobi (Tobi Lütke) · <strong>Date:</strong> 2026-09-01</li>
+<li><strong>What it suggests:</strong> "Btw we open sourced the core infra piece that makes these self improving loops possible." — tangleml.com. 98 replies, 250 reposts, 4,148 likes. This is the outer loop from the factory talk (the loop that improves the system itself) as open infrastructure: the mechanism by which agent systems get better from their own operation, released for anyone to use. Self-improving loops are the difference between a system that decays and one that compounds; open-sourcing the infra makes the pattern adoptable instead of tribal knowledge. If your agents don't get better with use, you're paying the same learning tax forever.</li>
+<li><strong>Repos/tools:</strong> tangleml.com</li>
+<li><strong>Extractable skill:</strong> Adopt self-improving-loop infrastructure; systems that don't learn from operation pay a permanent tax.</li>
+<li><strong>Source:</strong> https://x.com/tobi/status/2094904650709234015</li>
+</ul>
+<h3 id="the-1-of-ai-engineers-build-self-improving-systems-2">The 1% of AI engineers build self-improving systems (×2)</h3>
+<ul>
+<li><strong>Creators:</strong> @res1dualedge · <strong>Date:</strong> 2026-09-01; @callanxai · <strong>Date:</strong> 2026-08-30</li>
+<li><strong>What it suggests:</strong> Two posts quoting an Anthropic engineer: "If you want to be in the 1% of AI engineers, you need to build a system that i[s self-improving, truncated]." The 1% framing is hype, but the substance matches the tangleml post: the differentiator isn't prompt skill, it's building systems with feedback loops — evals, memory, and improvement mechanisms. Two independent posts surfacing the same quote in two days signals the idea has crossed into consensus.</li>
+<li><strong>Repos/tools:</strong> None.</li>
+<li><strong>Extractable skill:</strong> Build the feedback loop, not just the agent; self-improvement is the senior skill.</li>
+<li><strong>Source:</strong> https://x.com/res1dualedge/status/2094925075606610048 · https://x.com/callanxai/status/2094065331576688985</li>
+</ul>
+<p><strong>Deep dives:</strong> <a href="../deep-dives/unreal-agent">unreal-agent</a> (async-first harness) · <a href="../deep-dives/tangleml">tangleml</a> (self-improving loop substrate).</p></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../";</script><script src="../../assets/search.js"></script></body></html>
