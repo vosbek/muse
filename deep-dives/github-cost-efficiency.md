@@ -1,0 +1,17 @@
+# GitHub: How we make AI coding more cost efficient
+
+**What it is.** GitHub Engineering's Sep 2026 writeup of four production changes to the Copilot harness, each A/B tested on task completion — the canonical example of *orchestration-level* cost optimization: nothing about the model changed.
+
+**The four changes (measured in AI Credits, effects not strictly additive).**
+1. **Selective output compaction** (~5.5% in their chart). Install/build/test/lint output is repetitive noise; source-like output (`cat`, `git diff`) and arbitrary command results usually carry what the agent needs. Policy: preserve source-like output unchanged, reorganize search results without dropping matches, compress only predictable repetitive noise — with a **recovery path** to the full original. Agents "extremely rarely" opened the originals; no significant success regression.
+2. **Remove line-number prefixes from the `view` tool** (~5% offline model-inference cost, ~3% online per user/day). Every file read carried per-line numbers the current edit workflow no longer uses. Ideal change: no new instructions, nothing to recover, file contents reach the model unchanged.
+3. **Prompt compression via meta-prompting** (~1,300 fewer `task`-tool tokens/turn; 1.8% fewer prompt tokens/session; 2.9% lower cost/active hour). Copilot iteratively rewrote its own prompt — but the first online experiment caught a regression offline evals missed: cautious parallelism guidance became a hard scheduling policy and independent agents ran sequentially. They stopped the experiment, wrote a regression test, and fixed it with one sentence: *"Independent agents can run in parallel; consider side effects."* Prompt behavior needs tests.
+4. **Batched background notifications** (~2.3%). Previously each completed background task woke the model for a retrieval turn; now completions batch and deliver results directly in tool-result format — four model calls become one.
+
+Separately: migrating Copilot code review to shared file tools + instruction tuning cut review cost **~20%**.
+
+**The five lessons (worth pinning up).** 1. Optimize the *completed task*, not the tool call. 2. Optimize *orchestration*, not just model output — eliminate model turns the harness can do deterministically. 3. Compress by what the output *represents*; prefer lossless; measure recovery-path usage. 4. Prompt rewrites have unintended consequences — validate behavior. 5. Evidence is local to the workload — re-measure everywhere it ships. The killer demo of lesson 1: they tested RTK (a shell-output shortener) and it made tasks *more* expensive — the model reopened outputs and reran commands to recover what was cut. Tokens per tool call is the wrong objective.
+
+**Why it matters for tokenomics / context management.** This is the measurement discipline every enterprise harness needs: per-change A/Bs on *task completion*, a recovery path that doubles as an evaluation signal (if agents keep fetching the original, your compressor is too aggressive), and the explicit finding that **trimming tool output beats trimming prompts**. For a context-layer owner, the transferable checklist is: kill dead formatting, compress only predictable noise, batch completions, and never ship a prompt change without a behavior test.
+
+**Links.** Article: https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/

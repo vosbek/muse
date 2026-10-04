@@ -76,3 +76,5 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** None linked in post text.
 - **Extractable skill:** Map Uber's factory phases to your rollout; treat their efficiency work as the peer benchmark.
 - **Source:** https://x.com/UberEng/status/2093444169037762840
+
+**Deep dives:** [uber-software-factory](../deep-dives/uber-software-factory.md) (Uber's cost equation and levers).
