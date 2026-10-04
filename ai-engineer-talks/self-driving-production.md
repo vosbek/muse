@@ -8,6 +8,43 @@
 
 Coding agents compressed development, so the bottleneck shifted to troubleshooting — and observability tools (Datadog, Splunk, ServiceNow) tell you *what* is broken but not *why*. Root cause analysis is a causal machine-learning problem, not an observability problem. Traversal's "production world model" plus "causal search engine" let agents find root cause, propose a fix, and verify it — a closed loop Schwartz calls "self-driving production," framed as five autonomy levels.
 
+## The mental model
+
+Three-layer architecture, closed on itself:
+
+```mermaid
+flowchart LR
+    A[Ingest all production data without raising cost] --> B[Production world model maps entity relationships]
+    B --> C[Causal search engine]
+    C --> D[Find root cause]
+    D --> E[Propose fix]
+    E --> F[Verify fix]
+```
+
+The incident before/after, Amex case:
+
+```mermaid
+flowchart TD
+    subgraph Old[Before]
+        B1[Five to ten teams paged] --> B2[Twenty to fifty engineers]
+        B2 --> B3[Sixty minutes to hours or days]
+    end
+    subgraph New[After]
+        A1[Traversal first responder] --> A2[Dispatched within three minutes]
+        A2 --> A3[RCA posted to incident channel]
+    end
+```
+
+The five autonomy levels:
+
+```mermaid
+flowchart LR
+    L0[Level zero manual war room] --> L1[Level one rules and agent loops]
+    L1 --> L3[Levels two and three debug one service]
+    L3 --> L4[Level four diagnoses hundreds of services]
+    L4 --> L5[Level five diagnoses fixes verifies without paging]
+```
+
 ## Key points
 
 - **The shifted bottleneck:** three buckets — system design, development, troubleshooting. Coding agents shrank the middle, so more code ships, engineers understand less of it, and debugging time (not design time) grows.
@@ -39,6 +76,14 @@ Coding agents compressed development, so the bottleneck shifted to troubleshooti
 
 - The "world model" framing transfers: for a local context layer, pre-compute entity relationships (services ↔ repos ↔ logs) once, so agents query the map instead of re-discovering it per incident.
 - The five vendor questions double as a checklist before buying any AI SRE tooling — especially "improve autonomously (no markdown-file maintenance)?" which is the hidden toil test.
+
+## How to apply it
+
+1. Pre-compute your production map. Build a local index of entity relationships — service ↔ repo ↔ log index ↔ alert rule — refreshed on a schedule, so a Copilot agent queries the map instead of re-discovering topology on every incident.
+2. Set a 3-minute auto-dispatch bar. Configure your first responder (a Copilot agent or runbook) to engage within 3 minutes of a declared incident bridge and post its working RCA to the incident Slack channel.
+3. Run the five vendor questions over any AI SRE purchase: can it see all production data, search petabytes without blowing up cost or your observability infra, map entity relationships, improve autonomously with no markdown-file maintenance, and multi-hop to root cause in under five minutes?
+4. Track two incident metrics for one quarter: minutes-to-RCA and engineers-paged per incident. Report war-room hours spared — that is the labor-saving ledger the talk is selling.
+5. Start an Alert Intelligence practice: pre-investigate recurring alerts and land the noise-reduction actions as code — fix alert rules, dismiss no-action alerts, ticket tech debt — so each alert cycle gets quieter, like the Pepsi example.
 
 ## Sources
 

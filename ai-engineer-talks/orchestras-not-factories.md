@@ -8,6 +8,32 @@
 
 The fastest builders follow six principles (his acronym "Stickfo"): stay near the frontier, don't beat the market, create slop-free zones, feed the beast, free-range agents — and frame the work as conducting an orchestra, not managing a factory: a human in flow, crafting with a team of agents, not a line manager pushing buttons to pump out features.
 
+## The mental model
+
+```mermaid
+flowchart TD
+    SF[Stickfo - six principles] --> P1[Stay near the frontier]
+    SF --> P2[Do not beat the market]
+    SF --> P3[Slop free zones]
+    SF --> P4[Feed the beast]
+    SF --> P5[Free range agents]
+    SF --> P6[Orchestras not factories]
+```
+
+```mermaid
+flowchart TD
+    SM[Slack messages] --> DB[Central Postgres database]
+    DR[Discord bug reports] --> DB
+    MT[Recorded meetings] --> DB
+    DB --> SQL[Agent with a SQL tool]
+```
+
+```mermaid
+flowchart LR
+    F[Factory - line manager pushes buttons] --> O1[Pumped out features]
+    O[Orchestra - human in flow conducts agents] --> O2[Crafted product]
+```
+
 ## Key points
 
 - **Conductor.** A desktop app for managing a team of coding agents in one interface (vs. many terminal windows for Claude Code/Codex). Born as an internal tool: the team were Claude Code power users (from Feb of last year), cloned their repo 5×, discovered worktrees, and "bit by bit" built Conductor. They were previously building a different app called Chorus.
@@ -31,6 +57,15 @@ The fastest builders follow six principles (his acronym "Stickfo"): stay near th
 - **"Don't beat the market" is a capital-efficiency rule:** don't spend engineering time optimizing workflows vendors will commoditize — invest only where you hold proprietary "alpha." Same logic applies to token spend: don't build bespoke routing/context machinery for commodity tasks.
 - **Slop-free zones = targeted allocation of expensive human review attention.** Strict where it matters, loose elsewhere — review effort is a scarce resource to budget like tokens.
 - **Feed the beast.** One centralized context store plus a SQL tool is cheap, reusable context retrieval for all agents — a single shared memory surface instead of per-agent re-gathering.
+
+## How to apply it
+
+1. **Declare your slop-free zones**: name the files and surfaces that always get strict human review (migrations, customer-facing copy, CLAUDE.md and skills) — invest heavily there, stay loose elsewhere.
+2. **Feed the beast**: stand up one central database of org knowledge (chat history, bug reports, meeting notes) and give every agent a SQL tool — one shared memory surface instead of per-agent re-gathering.
+3. **Apply the market test**: before building any workflow optimization, ask "why isn't this the default?" — only invest engineering time where you hold proprietary alpha about your users and codebase.
+4. **Stay near the frontier**: try new models and features the day they ship; the social-graph trickle-down leaves you months behind.
+5. **Make agents free-range**: use sandboxes that survive laptop closes, let agents spawn subagents, and make workspaces visible for real-time human review and comments.
+6. **Treat CLAUDE.md as onboarding**: rewrite it as what you'd whisper in a new intern's ear every session — it's the highest-leverage context you load.
 
 ## Sources
 

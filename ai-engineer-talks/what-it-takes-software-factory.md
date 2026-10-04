@@ -4,9 +4,50 @@
 
 **Note:** distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.
 
+![Visual one-pager](onepager-software-factory.jpg)
+
 ## Thesis
 
 A software factory isn't a coding agent or even a swarm of agents — it's the whole autonomous software lifecycle (signals → feedback/logs → prioritization → orchestration → execution → validation → production testing → iteration + continuous learning). Building one takes three things — be agnostic, be truly autonomous, always improve — and requires rebuilding the organization from the ground up, not bolting on a consultancy. (In production for enterprises like EY and Adobe.)
+
+## The mental model
+
+The software factory definition loop — the whole autonomous lifecycle:
+
+```mermaid
+flowchart LR
+    A[Signals] --> B[Feedback and logs]
+    B --> C[Prioritization]
+    C --> D[Orchestration]
+    D --> E[Execution]
+    E --> F[Validation]
+    F --> G[Production testing]
+    G --> H[Iteration]
+    H --> I[Continuous learning]
+    I --> A
+```
+
+Automatic model routing — cheapest model predicted to succeed:
+
+```mermaid
+flowchart LR
+    A[Assign task with role defaults] --> B[Classify difficulty]
+    B --> C[Threshold cheapest model predicted to succeed]
+    C --> D[Go]
+    D --> E[Mid task failover]
+    E --> C
+```
+
+Missions — validation contract before code, validators that judge code they did not write:
+
+```mermaid
+flowchart TB
+    A[Orchestrator writes validation contract before code] --> B[Workers execute sequentially]
+    B --> C[Scrutiny validator linters types tests]
+    B --> D[User testing validator clicks through app]
+    C --> E[Send back or ship]
+    D --> E
+```
 
 ## Key points
 
@@ -44,6 +85,15 @@ A software factory isn't a coding agent or even a swarm of agents — it's the w
 - Self-hosted open models on dedicated compute unlock the same caching/prefill savings API providers price in — a concrete cost case for local inference infra.
 - The deferred context engine pattern (short tool list + lazy load) is directly implementable in a local harness to cut per-task token overhead.
 - The "agent readiness" hygiene checklist (reproducible dev env, tests, docs, linters) is a prerequisite any local factory deployment should audit first.
+
+## How to apply it
+
+1. Adopt the mission template for any multi-step agent work: the orchestrator writes the validation contract before any code, workers execute sequentially, validators review — and budget roughly 40% of runtime for validation.
+2. Implement automatic model routing: per-role default models, difficulty classification, cheapest-above-threshold selection, mid-task failover. Target 25%+ savings and measure cost per completed task.
+3. Ship a deferred context engine in the harness: a short tool list with short descriptions, full tool definitions loaded only on demand. Target 50%+ token savings on tool-heavy tasks.
+4. Run the agent-readiness hygiene audit before scaling autonomy: reproducible dev environment, tests, docs, code style, linters. Fix what fails first.
+5. Split validators into scrutiny (linters, types, tests) and user-testing (computer-use clicking through the app) roles.
+6. Package reusable knowledge as plugins/skills with auto-updating docs so the factory gains knowledge instead of re-learning it.
 
 ## Sources
 

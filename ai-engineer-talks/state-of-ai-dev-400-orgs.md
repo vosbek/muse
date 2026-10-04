@@ -8,6 +8,37 @@
 
 DX's platform telemetry (**~200,000 engineers, 400+ organizations**; the team behind DORA/SPACE/DevEx) shows AI is genuinely lifting raw velocity but modestly and unevenly — median **+7.7% PR throughput**, +4.5% perceived delivery, **nobody near 2x** — while quality signals turn volatile and developer confidence diverges from maintainability. Code generation is only **14–16% of the value stream**, so it was never the bottleneck; durable value comes from treating AI as a throughput/capacity story (not headcount replacement) and investing in platform readiness.
 
+## The mental model
+
+The three-dimension measurement framework:
+
+```mermaid
+flowchart LR
+    U[Utilization DAU WAU and use cases] --> I[Impact which business metrics move]
+    I --> C[Cost token spend per use case]
+```
+
+The velocity/quality split:
+
+```mermaid
+flowchart TD
+    subgraph Vel[Velocity up]
+        A[PR throughput median plus 7.7 percent] --> B[Perceived delivery plus 4.5 percent]
+    end
+    subgraph Qual[Quality signals diverge]
+        D[Maintainability perception plus 4 percent] --> E[Change confidence minus 6 percent]
+        F[PR size 44 to 72 lines] --> G[Change failure rate volatile]
+    end
+```
+
+The bottleneck argument:
+
+```mermaid
+flowchart LR
+    A[Code gen is 14 to 16 percent of value stream] --> B[Code gen was never the bottleneck]
+    B --> C[Attack non AI drag first]
+```
+
 ## Key points
 
 - **Deployment frequency (DORA) is up but tapering.** North America trends up while Europe pulled back slightly last quarter (attributed to work practices, token-spend budgeting, regulation). Caveat: the metric covers only PR-creation-to-production and ignores reverts and defect ratios.
@@ -42,6 +73,14 @@ DX's platform telemetry (**~200,000 engineers, 400+ organizations**; the team be
 
 - **Measure tokens per use case, not just total spend** — the junior/senior split shows the same tooling burns very different tokens depending on operator skill; per-use-case tracking is the cost lever.
 - **Invest readiness before inference:** clear docs, modular code, reliable local CI, and non-flaky tests reduce the token burn per successful agent task — the cheapest tokens are the ones the agent never has to retry.
+
+## How to apply it
+
+1. Stand up the three-dimension dashboard: utilization (DAU/WAU, use cases) → impact (delivery metrics that move) → cost (token spend per use case). If a tool can't show all three, you can't answer "spent ten million — where's our 10x productivity?"
+2. Slice token spend by seniority. When juniors burn more tokens per use case than staff-plus engineers, add guardrails — tighter task scopes, smaller diffs — instead of blanket throttles.
+3. Track PR size and change failure rate weekly. PRs drifting from ~44 toward 72 lines and volatile failure rates are the early warning that velocity gains are being paid for in quality.
+4. Run the platform-readiness audit before standing up new agents: clear docs, clean data relations, modular code, reliable local CI, non-flaky tests. Every gap is token burn, because agents retry what flaky infra breaks.
+5. Fund the throughput story, not headcount math. Frame the AI budget around PR throughput and value per engineer (the Zapier case) and attack the non-AI drag — meetings, context switching, env friction — that Goldratt's rule says is the real bottleneck.
 
 ## Sources
 

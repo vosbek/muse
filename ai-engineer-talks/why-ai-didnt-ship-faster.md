@@ -8,6 +8,39 @@
 
 AI writes code faster than humans can review it, so verification — not generation — is now the bottleneck. Assertion-based tests cannot exhaustively define correct behavior up front; Meticulous inverts the model: record real user workflows → replay them on CI → screenshot every atomic moment → diff before/after → human or agent judges expected vs unexpected. "If you have exhaustive verification, then you can ship code at the speed that your agents write it."
 
+## The mental model
+
+The record-to-verdict pipeline on every PR:
+
+```mermaid
+flowchart LR
+    A[Inject JS on non prod] --> B[Record thousands of flows]
+    B --> C[PR opened]
+    C --> D[CI spins app on localhost]
+    D --> E[Replay events one by one]
+    E --> F[Screenshot every atomic moment]
+    F --> G[Diff before and after]
+    G --> H[PR comment in minutes]
+```
+
+The interdependent stack — each layer depends on the one below:
+
+```mermaid
+flowchart TB
+    D[Exhaustive verification] --> C[Coverage algorithm]
+    C --> B[Per moment screenshots]
+    B --> A[Root level flake elimination]
+```
+
+The testing-model inversion:
+
+```mermaid
+flowchart LR
+    A[Assertion based tests] --> B[Judgment encoded up front]
+    C[Record replay with diffs] --> D[Judgment moved to review time]
+    D --> E[Human or agent reviews the delta]
+```
+
 ## Key points
 
 - **Three consequences of the verification gap:** (1) bugs/regressions with business impact; (2) orgs spending double-digit percentages of time maintaining e2e suites — manual validation, review, flake debugging, test updates; (3) foregone capability (could bump all dependencies, do sweeping refactors, but don't dare).
@@ -38,6 +71,15 @@ AI writes code faster than humans can review it, so verification — not generat
 
 - The core insight is harness-shaped: record-replay with network stubbing gives 1,000 identical runs and per-test isolation — a local deterministic replay rig removes both flakes and the cloud CI queue for front-end verification.
 - Diff-at-review-time (judgment moved to review) maps to agent workflows: agents generate, cheap diffs surface, humans judge only the delta.
+
+## How to apply it
+
+1. Inject the recording snippet on non-prod environments this week and capture the real flows users already run — thousands of flows, zero developer effort.
+2. Build the replay side in CI: spin the app locally, dispatch recorded events one by one, screenshot every atomic moment, diff against main, post the delta as a PR comment within minutes.
+3. Add network mocking: record requests/responses at record time, stub at replay — this buys idempotency (1,000 identical runs), per-test isolation, and horizontal parallelization.
+4. Fix flakiness at the root with a deterministic browser layer (CPU clock, setTimeout/setInterval interleaving, animation timing) before scaling screenshot volume.
+5. Add coverage-maximizing subset selection over recorded workflows so code-covered becomes code-tested, then prune the assertion suites it replaces.
+6. Track the KPI that matters: share of eng time spent maintaining e2e suites and reviewing — drive it down as verification gets exhaustive.
 
 ## Sources
 

@@ -2,9 +2,47 @@
 
 **Video:** [How VS Code Went from Monthly to Weekly Releases with AI — Harald Kirschner](https://www.youtube.com/watch?v=I2LL_wd89-A) · AI Engineer channel · Oct 3, 2026 · 19:34 · Recorded at AI Engineer World's Fair 2026
 
+![Visual one-pager](onepager-vscode-weekly-releases.jpg)
+
 ## Thesis
 
 After 10 years of monthly releases, VS Code moved to weekly releases not from "more AI" but by evolving the whole system — codebase agent-readiness, quality loops, triage, staged rollouts, and learning loops — so higher velocity ships at quality and the team learns faster.
+
+## The mental model
+
+The whole-system evolution loop that took releases from monthly to weekly:
+
+```mermaid
+flowchart LR
+    A[Agent ready codebase] --> B[Faster builds]
+    B --> C[Self correcting loop]
+    C --> D[Mandatory AI review]
+    D --> E[AI issue triage]
+    E --> F[Error stacks to auto fix PRs]
+    F --> G[Staged rollouts]
+    G --> H[Bench evals hill climbing]
+    H --> A
+```
+
+The telemetry-to-fix pipeline:
+
+```mermaid
+flowchart LR
+    A[51B telemetry events per day] --> B[Filter to error stacks]
+    B --> C[Fingerprint and bucket]
+    C --> D[Assign area owners]
+    D --> E[Auto create PR with diagnosis]
+```
+
+The token-efficiency insight — identical eval, wildly different cost:
+
+```mermaid
+flowchart TB
+    A[Same 5 char file eval] --> B[Cheapest model]
+    A --> C[Most expensive model]
+    C --> D[70x more tokens]
+    D --> E[Select models by cost per completed task]
+```
 
 ## Key points
 
@@ -42,3 +80,12 @@ After 10 years of monthly releases, VS Code moved to weekly releases not from "m
 - **Make token efficiency a model-selection criterion**: the 70x spread on an identical eval proves price-per-token tells you almost nothing — benchmark cost-per-completed-task per model before putting it behind the enterprise router.
 - **Code survival rate (agent-written code actually committed) is the deployable metric** for agent quality — track it per model/skill combo; it directly measures wasted generation tokens vs. kept output.
 - **Review-effort dials are the cost-control pattern**: low/medium/high effort settings with explicit cost-benefit tradeoffs — apply the same dial to retrieval depth, planning effort, and verification loops.
+
+## How to apply it
+
+1. Baseline code survival rate (agent-written code actually committed) per model and skill combo; re-measure quarterly. The VS Code arc was 55% to 86%.
+2. Add AGENTS.md and a generated codebase map to every active repo; encode area expertise as skills reviewed and maintained by the area owner.
+3. Turn on mandatory AI code review with a low/medium/high effort dial; block human review until AI review comments are resolved.
+4. Stand up AI issue triage — spam filter, enrich, translate, assign area owners — and feed agent mistakes back into prompts and skills up front.
+5. Pipe telemetry into error-stack fingerprinting; auto-open PRs with an initial diagnosis routed to area owners; ship via staged rollouts with monitoring.
+6. Build an internal agentic bench in the VSC-Bench pattern: template-generated scenarios, hill-climb against them, offline plus online runs; rank models by tokens per completed task and expect large spreads.

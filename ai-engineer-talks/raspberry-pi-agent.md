@@ -6,6 +6,31 @@
 
 A useful, private personal AI agent doesn't need a laptop or a Mac Mini — it can run on a cheap old Raspberry Pi 4B using NanoClaw (a compact, hackable agent runtime), WhatsApp as the interface, Claude as the cloud brain, and a Neo4j knowledge-graph memory with a POLE schema — built for hackability and understanding over feature-completeness.
 
+## The mental model
+
+```mermaid
+flowchart LR
+    WA[WhatsApp on phone] --> NC[NanoClaw on Pi 4B]
+    BT[GPIO voice button] --> NC
+    NC --> CL[Claude cloud API - the big brain]
+    NC --> MCP[Neo4j via MCP server]
+    MCP --> NG[Neo4j graph with POLE schema]
+```
+
+```mermaid
+flowchart TD
+    PO[POLE schema] --> P[Person]
+    PO --> O[Object]
+    PO --> L[Location]
+    PO --> E[Event]
+    PO --> ORG[Organization]
+```
+
+```mermaid
+flowchart LR
+    CAP[Capture voice note offline] --> LG[Local Neo4j stores it] --> UP[Upload when online] --> CE[Cloud enrichment adds theme nodes]
+```
+
 ## Key points
 
 - **Hardware**: Raspberry Pi 4B (not the latest model), previously ran a 32-bit OS; originally used to measure dish weight in the sink — "Will it claw? It claws real good."
@@ -37,3 +62,12 @@ A useful, private personal AI agent doesn't need a laptop or a Mac Mini — it c
 - **The architecture is Matt's local-first pattern at pocket scale**: cloud reasoning over the wire + local graph memory on-device. Enterprise version: local decision models with local RAG/memory, cloud frontier only for reasoning overflow.
 - **POLE schema (Person, Object, Location, Event + Organization) is a ready-made memory ontology** — steal it for the governed memory layer instead of inventing a custom schema.
 - **Capture-local, enrich-cloud** is the offline pattern: cheap local writes during capture, expensive enrichment later — directly analogous to batching retrieval/enrichment off the hot path.
+
+## How to apply it
+
+1. **Steal the POLE schema**: use Person, Object, Location, Event plus Organization as your governed memory ontology instead of inventing a custom schema.
+2. **Pilot a tiny agent runtime**: stand up a NanoClaw-style compact runtime (~15 source files) on cheap hardware or a VM — hackable and understandable beats feature-complete for a memory pilot.
+3. **Keep the brain remote, memory local**: run reasoning over the wire against a frontier API while the knowledge graph lives on your own infrastructure — the enterprise version of the Pi pattern.
+4. **Query memory over MCP**: expose the graph through an MCP server so agents write Cypher (or your query language) instead of getting raw dumps.
+5. **Build capture-local, enrich-cloud**: let edge devices or offline clients write cheap local notes, then upload and enrich when connectivity returns — batch expensive enrichment off the hot path.
+6. **Distill history into memories**: run existing chat and ticket history through an extraction pass into people, locations, and concepts before going live.

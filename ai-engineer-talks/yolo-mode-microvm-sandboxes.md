@@ -8,6 +8,40 @@
 
 Harness-level guardrails ("please don't do nefarious things") are not a security boundary — agents talk their way around them, and once an agent reaches the host machine it is too late. Protection must sit below the agent at the microVM boundary. Docker Sandboxes (sbx) runs any agent in a microVM with its own kernel, isolated filesystem, placeholder-substituted secrets, default-deny networking, and a full audit trail — seven extra keystrokes (`sbx run claude`) buys security by design.
 
+## The mental model
+
+The five isolation layers — protection sits below the agent, not in it:
+
+```mermaid
+flowchart TB
+    A[Hypervisor separate kernel] --> B[Network deny by default]
+    B --> C[Dedicated Docker Engine per sandbox]
+    C --> D[Workspace isolation mountless or clone]
+    D --> E[Credential isolation proxy injects keys]
+```
+
+The before/after contrast from the self-hack demo:
+
+```mermaid
+flowchart LR
+    N[Native run] --> N1[Browser history visible]
+    N --> N2[Bank accounts reachable]
+    N --> N3[Network egress open]
+    S[Sandboxed run] --> S1[No browser installed]
+    S --> S2[No host data visible]
+    S --> S3[Egress blocked by default]
+```
+
+Credential isolation — the agent never holds the secret:
+
+```mermaid
+flowchart LR
+    A[Agent makes network request] --> B[Host side proxy]
+    B --> C[Proxy injects API key into HTTP header]
+    C --> D[Value never enters the VM]
+    A --> E[Agent only holds placeholder]
+```
+
 ## Key points
 
 - **Self-hack demo:** Claude Code running natively on his Mac, five prompts to go from browser history to real bank accounts, recent check orders, Zelle activity, and the last 4 digits of an account. He "scored" 9/10 on the technique.
@@ -40,6 +74,15 @@ Harness-level guardrails ("please don't do nefarious things") are not a security
 - Run agents in microVM sandboxes on local/dev machines by default — the local free tier means there's no cost excuse, and placeholder-substituted secrets keep real credentials out of the VM entirely.
 - Pair this with the playbook's Docker Sandboxes setup notes (setups/) — read-only mounts for related repos plus the in-sandbox MCP catalog give a standard "least privilege" template per project.
 - Roadmap Cedar-style delegation chains are exactly the agent-identity pattern to watch before granting sandboxes network egress in enterprise rollout.
+
+## How to apply it
+
+1. Install sbx via package manager on dev machines and make `sbx run <agent>` the default invocation — seven keystrokes, secure by default.
+2. Keep networking deny-by-default; add explicit allow rules only where the task genuinely needs egress.
+3. Route every credential through placeholder substitution and host-side proxy header injection so secret values never enter the VM.
+4. Mount related repos read-only so agents can read adjacent code but cannot commit outside their own repo.
+5. Run MCP servers inside sandboxes under the same network and filesystem controls; keep the full audit trail on.
+6. Red-team it like the talk: attempt the 5-prompt self-hack natively and sandboxed, confirm the boundary holds, then roll out org-wide.
 
 ## Sources
 

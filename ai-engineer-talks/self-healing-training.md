@@ -6,6 +6,40 @@
 
 At thousands of GPUs, hardware failures are inevitable and manual remediation doesn't scale; Crusoe's managed Slurm on Kubernetes (via CMK + the open-source Slinky project) with AutoClusters automatically detects critical GPU errors (e.g., XID 79), replaces the node, and resumes training from checkpoint with no user action — full recovery in under 15 minutes.
 
+## The mental model
+
+The XID 79 auto-remediation flow, end to end:
+
+```mermaid
+flowchart TD
+    A[Detect XID 79] --> B[Notify user no action required]
+    B --> C[Slurm operator drains node]
+    C --> D[SIGTERM gives time to save checkpoint]
+    D --> E[Job requeued automatically]
+    E --> F[Node cordoned and removed from pool]
+    F --> G[Healthy node added from spare capacity]
+    G --> H[Recovery validated and logged]
+    H --> I[App loads checkpoint and resumes]
+```
+
+The unified hardware pool:
+
+```mermaid
+flowchart LR
+    A[Idle inference GPUs] --> P[Unified GPU pool]
+    B[Training hero runs] --> P
+    P --> C[Freed training nodes take inference pods]
+```
+
+The managed-Slurm layering:
+
+```mermaid
+flowchart LR
+    U[User SSHs in and sees Slurm] --> S[Managed Slurm operator layer]
+    S --> K[Crusoe Managed Kubernetes]
+    K --> N[GPU nodes are K8s nodes first]
+```
+
 ## Key points
 
 - **Slurm excels at training**: tight collective communication across ranks, gang scheduling, topology awareness, prologue/epilog cluster validation — 20+ years, built by researchers for researchers.
@@ -33,3 +67,11 @@ At thousands of GPUs, hardware failures are inevitable and manual remediation do
 - Auto-remediation replaces engineers logging in at 3 a.m. for hours — less downtime = fewer burned GPU-hours.
 
 No direct local-deploy relevance (datacenter-scale training infrastructure talk), noted here rather than inventing one.
+
+## How to apply it
+
+1. Mandate checkpoint-on-SIGTERM discipline. Every training job must flush checkpoints and logs when it receives SIGTERM — no checkpoint hygiene, no self-healing.
+2. Codify the remediation flow as an automated runbook: detect → notify (no action required) → drain → requeue → cordon/remove → replace from spares → validate/log → resume, with each step timed against the 15-minute bar.
+3. Run a simulated failure drill. Inject a GPU error on a sacrificial node, clock time from error to resumed training, and log where the minutes leak — repeat quarterly.
+4. Collapse separate GPU reservations into one unified pool so idle inference GPUs feed training hero runs and freed training nodes immediately take inference pods.
+5. If your team runs both Slurm and Kubernetes today, evaluate the open-source Slinky project to kill the double-infrastructure burden instead of maintaining two stacks.

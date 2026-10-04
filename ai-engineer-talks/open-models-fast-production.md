@@ -6,6 +6,29 @@
 
 Open models are now competitive with proprietary models on quality, and Nebius makes them fast and cost-efficient in production via a full-stack "Token Factory" — selection, deployment, post-training, and a serving stack with per-model engine selection, cache-aware routing, speculative decoding with custom-trained draft models, KV-cache optimization, and disaggregated prefill/decode.
 
+## The mental model
+
+```mermaid
+flowchart LR
+    I[Inference] --> DL[Data lab] --> PT[Post training] --> D[Deployment]
+    D --> I
+```
+
+```mermaid
+flowchart TD
+    REQ[Request in] --> RAR[Cache aware routing to cached prefix]
+    RAR --> PRE[Prefill - compute bound]
+    PRE --> DEC[Decode - memory bound, one token at a time]
+    DEC --> SPEC[Speculative decode with small draft model]
+    SPEC --> OUT[Large model approves drafts]
+```
+
+```mermaid
+flowchart TD
+    HBM[HBM cache - limited, fastest] --> CPU[CPU memory] --> DISK[Disk storage]
+    HBM --> EVICT[Eviction policy decides keep or swap]
+```
+
 ## Key points
 
 - **Token Factory**: full loop — inference → data lab → post-training → deployment; 60+ models in production.
@@ -37,3 +60,12 @@ Open models are now competitive with proprietary models on quality, and Nebius m
 
 - **The prefix-cache idea applies locally**: wherever Matt serves local models (Ollama/vLLM), prefix caching and prompt-prefix reuse across repeated tasks (system prompts, tool schemas, session preambles) cut decode cost — same mechanics, smaller hardware.
 - **Per-model quantization discipline**: benchmark quality degradation per model at each quantization level rather than applying one default — directly relevant to picking local model sizes for the enterprise router.
+
+## How to apply it
+
+1. **Inventory your local serving**: list every model you serve (Ollama, vLLM) and pick the best serving engine per model — not one engine for all.
+2. **Enable prefix caching**: make system prompts, tool schemas, and session preambles byte-identical across repeated tasks so KV-cache reuse kicks in — up to 10x speedup on the same mechanics locally.
+3. **Design prompts cache-first**: put the stable prefix first and the volatile content last so requests land on already-cached prefixes.
+4. **Benchmark quantization per model**: find the quality-vs-size sweet spot for each model individually instead of applying one default quantization.
+5. **Train draft models on your own traffic**: small draft models for speculative decoding improve up to 30% even on generic data — better on your production requests.
+6. **Split prefill and decode thinking**: treat the compute-bound prefill phase and the memory-bound sequential decode phase as separate optimization targets when routing and sizing.

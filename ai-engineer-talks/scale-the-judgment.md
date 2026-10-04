@@ -8,6 +8,28 @@
 
 The bottleneck for scaling coding agents isn't model quality — it's institutional judgment. Agents boot with blank context windows and no memory; everything humans absorb implicitly (mentorship, code review, the 3 a.m. incident) must be made explicit. We're now "harness engineers": the job is encoding judgment (skills, work logs, personas), verifying it (a verification ladder), and managing its decay — "scale the judgment, not the model."
 
+## The mental model
+
+```mermaid
+flowchart TD
+    V1[Builds and tests] --> V2[Screenshot tests with model reasoning] --> V3[Video of feature running] --> V4[Telemetry in production] --> V5[Human merges]
+```
+
+```mermaid
+flowchart TD
+    SC[Scars - postmortems and reviewer questions] --> SK[Skills - judgment made executable]
+    WL[Work logs - plan, decisions, attempts] --> MEM[Memory keeps itself]
+    PE[Personas - security lead, UX researcher, contrarian] --> TASTE[Domain taste on demand]
+```
+
+```mermaid
+flowchart TD
+    JR[Judgment rots] --> PM[Postmortems folded back into skills]
+    JR --> BT[Agent bedtime - scheduled self audit]
+    PM --> SH[System wakes up sharper]
+    BT --> SH
+```
+
 ## Key points
 
 - **Hook.** An engineer at another company ran a recurring "war room" every two weeks just to delete dead experiments — "burning political capital to make maintenance happen by hand."
@@ -42,6 +64,16 @@ The bottleneck for scaling coding agents isn't model quality — it's institutio
 - The flag agent runs daily on his laptop — the whole fleet pattern (small specialists, cron/event triggers, human approval at merge) is designed for cheap local/offline execution, not cloud-only infrastructure.
 - Work logs as persistent local state (git-hook-enforced) are a local-first memory pattern: no external memory service needed for session continuity.
 - OS-level gates (after repo hooks proved bypassable) are the right containment layer for locally-running agents with file-system access.
+
+## How to apply it
+
+1. **Find the judgment bottleneck**: identify the question your team always asks the same person about — that is the first skill to encode.
+2. **Write the skill as reviewer questions**: turn the expert's checklist (is the rollout frozen, who owns it, what breaks) into an executable skill so the agent refires it instead of guessing.
+3. **Enforce work logs**: add a git hook that blocks commits without an updated work log — plan, decisions, attempts, surprises — so any fresh agent can resume with one word.
+4. **Build the verification ladder**: builds and tests, then screenshot tests with model reasoning, then video of the feature running, then production telemetry, then human merge. Earn autonomy one rung at a time.
+5. **Gate the choke point, not the repo hook**: agents bypass repo hooks — move enforcement to the OS level, make bypass operator-only, and never hand the agent a reason it can grant itself.
+6. **Schedule skill bedtime**: run a regular pass where an agent reads its own skills, finds stale ones and contradictions, and opens drafts for human review. A stale skill is worse than none.
+7. **Pilot one specialist fleet agent**: copy the flag-cleanup playbook — score like a reviewer, back-test against history, run on a schedule, track dollars per PR.
 
 ## Sources
 

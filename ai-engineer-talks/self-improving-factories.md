@@ -8,6 +8,39 @@
 
 Software factories should self-improve — getting better, more efficient, faster over time — via three concrete mechanisms: (1) skills that improve through an outer-loop agent observing the inner loop, (2) persistent memory as an agent-scoped fact store, and (3) eval-driven model routing. This is becoming a core software-engineering job as we shift from building products to building and maintaining factories. (Warp context: ~1M active users of its agentic dev environment; now building the "Oz" cloud agent platform for software factories.)
 
+## The mental model
+
+Mechanism 1 — the outer-loop skill improvement cycle:
+
+```mermaid
+flowchart TD
+    A[Inner loop agent runs] --> B[Outer loop agent observes runs]
+    B --> C[Spots mistakes and human feedback]
+    C --> D[Synthesizes skill update]
+    D --> E[Pull request with full git history]
+    E --> F[Human reviews and merges]
+    F --> A
+```
+
+Mechanism 2 — the persistent memory loop:
+
+```mermaid
+flowchart TD
+    R[Inner loop runs] --> X[Extract facts learnings outcomes]
+    X --> M[Versioned agent scoped memory store]
+    M --> N[New run reuses stored memories]
+    N --> R
+```
+
+Mechanism 3 — eval-driven model routing:
+
+```mermaid
+flowchart LR
+    T[Task class] --> R2[Router picks model]
+    R2 --> U[Eval sidecar runs best at k]
+    U --> V[GLM for UI tasks Qwen for docs]
+```
+
 ## Key points
 
 - **Framing.** Self-improvement = agents/models improving over time with humans phased out of the improvement loop; software factories = automations from triage to production. Factories themselves must get better/more efficient/faster.
@@ -36,6 +69,14 @@ Software factories should self-improve — getting better, more efficient, faste
 - The persistent-memory pattern (versioned, human-editable, source-traceable fact store) is implementable locally — e.g., a sqlite-backed store — without Warp's Oz platform.
 - Task-class routing config (migrations → GLM, docs → Qwen) maps directly onto a local Ollama/multi-model setup: cheap local models for routine agent chores, frontier only where evals justify it.
 - The best-at-k eval sidecar is a repeatable local pattern: run the same agent prompt across models, measure, pin the cheapest that clears the bar.
+
+## How to apply it
+
+1. Pick one agent — e.g., your Sentry-style triage agent — and stand up the outer-loop observer: it reviews trajectories plus thumbs-up/down and user comments, synthesizes skill updates, and lands them as a PR for human review so the loop can't make the agent worse.
+2. Create a versioned, human-editable fact store for that agent's repeat issues (start with sqlite). Link every memory to its source run and prune "local maxima" — stale memories that trap the agent.
+3. Write a task-class routing config: migrations → GLM, runbooks/API docs → Qwen (or your local Ollama equivalents); keep the frontier model pinned only where evals justify it.
+4. Run a best-at-k eval sidecar on one workflow next week: same prompt across models, measure pass rate, pin the cheapest model that clears the bar, and re-run as new models arrive to stay on the Pareto frontier.
+5. Measure memory reuse: count how often repeat runs hit stored memories instead of re-gathering context, and track the token delta — that is the direct savings ledger for persistent memory.
 
 ## Sources
 

@@ -6,6 +6,40 @@
 
 Most teams never deliberately decide where knowledge lives — prompt, memory/retrieval, or model weights — so six months of normal product work decides it for them by accident. These aren't a ladder to climb but three tools for three jobs, and you need a deliberate harness for circulating knowledge between them; fine-tuning should be reserved for knowledge that has stopped changing.
 
+## The mental model
+
+The placement decision — which job goes where:
+
+```mermaid
+flowchart TD
+    Q[Is it behavior] -->|Yes| P[Prompt keep it small and stable]
+    Q -->|No| Q2[Is it current large or citable]
+    Q2 -->|Yes| M[Memory with permission checks]
+    Q2 -->|No| Q3[Has it stopped changing]
+    Q3 -->|Yes| W[Fine tune the stable center]
+    Q3 -->|No| H[Hold in memory until stable implied]
+```
+
+The circulation loop:
+
+```mermaid
+flowchart LR
+    A[Prompt] --> B[Signals from use]
+    B --> C[Durable memory]
+    C --> A
+    C --> D[Patterns move to weights]
+    D --> E[Retrieval needs shrink]
+```
+
+When fine-tuning earns its keep:
+
+```mermaid
+flowchart LR
+    A[Frontier model plus human corrections] --> B[Human override rates flatline]
+    B --> C[Fine tune the stable center]
+    C --> D[Humans stay on the contested edge]
+```
+
 ## Key points
 
 - **Prompt's job = behavior**: small, stable, editable knowledge about how to act (e.g., support-agent tone, "offer human escalation after three failures"). Wrong job: storing facts — too many instructions dilute, and you pay context cost.
@@ -38,3 +72,11 @@ Most teams never deliberately decide where knowledge lives — prompt, memory/re
 - **Keep a standing decision table for every skill/pipeline**: behavior → prompt/skills, facts → local RAG/retrieval, reflexes → fine-tuned small local model. Review it whenever a new knowledge source enters the system.
 - **The circulation loop is the local strategy**: use local retrieval (sqlite/LanceDB) for fast-changing knowledge, and only bake the stable center into a locally fine-tuned small model — exactly the Ollama + local RAG split Matt already runs.
 - **Access control is the hard constraint for local-first**: per-user/per-repo data must stay retrievable with permission checks, never baked into weights — weights can't do ACLs.
+
+## How to apply it
+
+1. Put the standing decision table in your skill repo: behavior → prompt, current/large/citable facts → local RAG, stopped-changing reflexes → fine-tuned small local model. Review it every time a new knowledge source enters the system.
+2. Pull facts out of your prompts into local retrieval (sqlite/LanceDB) with code-aware chunking and denormalized metadata — repo, user, commit — so retrieval returns exact chunks instead of prompts carrying stale facts.
+3. Run the circulation loop: harvest signals from each session into durable memory, pull memory back into the prompt at session start, and only bake pattern-stabilized knowledge into weights so retrieval needs shrink over time.
+4. Track human override rates on every fine-tuning candidate. Do not fine-tune until the rate flatlines — then fine-tune the stable center and keep humans on the contested edge, exactly the ICD-10 pattern (fine-tune the format reflex, not the codes).
+5. Keep access control in the memory/retrieval layer with per-user/per-repo permission checks. Never bake ACLs into weights — weights cannot enforce permissions.
