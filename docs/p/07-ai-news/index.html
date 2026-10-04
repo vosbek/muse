@@ -1,0 +1,115 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>07 — AI News · AI Skills Playbook</title><link rel="stylesheet" href="../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><h1 id="07-ai-news">07 — AI News</h1>
+<p><strong>Thesis:</strong> Two data points, one argument between them. @edhonour's take — the model (Opus 4.5) is excellent, the coding tool (Claude Code) is the bottleneck, and the open Qwen-based alternative won on a real task — reinforces the collection's harness-first theme: evaluate the full stack, not the model in isolation. @leon.petrou's Gemini news shows the other axis that matters: proprietary data access (250M real-world locations) as a moat no parameter count can replicate. Read together: the tooling layer and the data layer are where differentiation now lives, not raw model quality.</p>
+<h3 id="opus-45-is-amazing-claude-code-is-the-problem">Opus 4.5 is amazing — Claude Code is the problem</h3>
+<ul>
+<li><strong>Creator:</strong> @edhonour · <strong>Date:</strong> 2025-11-30</li>
+<li><strong>What it suggests:</strong> Jay R. Asher's argument, from direct experience: Anthropic's Opus 4.5 is an excellent model, but Claude Code as a coding tool underperformed on a complex task — while Qwen-Agents, an open-source alternative running the Qwen Code 3.0 model, succeeded on the same work. The takeaway isn't "switch tools"; it's the evaluation discipline. Judge the model and the harness separately, test alternatives on your actual workload instead of your assumptions, and don't let brand loyalty override measured results. It also quietly reinforces the open-model story running through this collection: the gap between frontier-proprietary and open weights keeps narrowing to the point where the harness decides the winner.</li>
+<li><strong>Repos/tools:</strong> Qwen-Agents / Qwen Code 3.0 (open source, Qwen), Claude Code, Opus 4.5 (Anthropic)</li>
+<li><strong>Extractable skill:</strong> Stack-separated evaluation — benchmark model vs. harness independently on your real tasks; re-test open alternatives regularly.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DRs5CHVDsoU/</li>
+</ul>
+<h3 id="gemini-grounding-with-google-maps-250m-real-world-locations">Gemini grounding with Google Maps: 250M real-world locations</h3>
+<ul>
+<li><strong>Creator:</strong> @leon.petrou · <strong>Date:</strong> 2025-11-11</li>
+<li><strong>What it suggests:</strong> Google gave Gemini "Grounding with Google Maps" — live access to 250M+ real-world locations with hours, ratings, and reviews inside the Gemini app. The pitch is accuracy: grounded answers about places beat generic or hallucinated ones from competitors. But the strategic read matters more than the feature: proprietary, continuously-updated data access is a durable moat that model weights alone can't cross. For builders, it's also a signal about where to invest — the post explicitly frames it as an opportunity to build travel planners, digital tour guides, and local apps on top of grounded location data. The general principle: when evaluating AI platforms, weight exclusive data access alongside model quality; the best model with stale data loses to a good model with live data.</li>
+<li><strong>Repos/tools:</strong> Gemini app (Google), Google Maps Platform</li>
+<li><strong>Extractable skill:</strong> Data-moat evaluation — when choosing platforms, score proprietary live-data access as heavily as model benchmarks.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/DQ65_PejKYJ/</li>
+</ul>
+<h2 id="from-x-bookmarks-sep-2026">From X bookmarks (Sep 2026)</h2>
+<p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>
+<h3 id="six-lessons-on-getting-the-most-out-of-bots-from-grok-bots-leads">Six lessons on getting the most out of bots, from Grok Bot's leads</h3>
+<ul>
+<li><strong>Creator:</strong> @peteryang · <strong>Date:</strong> 2026-09-28</li>
+<li><strong>What it suggests:</strong> Shares six things learned from Grok Bot's engineering and design leads on getting the most out of bots — the visible portion begins mid-list (text truncates) — quoting the author's own Sep 27 post about delegating everything touched by keyboard and mouse to bots. A short video and an image accompany it. Verifiable: the operating principle is aggressive delegation — keyboard-and-mouse work routed to bots by default — with six concrete lessons from the team that builds Grok Bot. The full list is at the permalink.</li>
+<li><strong>Repos/tools:</strong> None (news).</li>
+<li><strong>Extractable skill:</strong> Default to delegating keyboard-and-mouse work to bots; learn the delegation playbook from teams that ship them.</li>
+<li><strong>Source:</strong> https://x.com/peteryang/status/2104575614263144794</li>
+</ul>
+<h3 id="the-week-in-agents-xai-meta-openai-anthropic-roundup">The week in agents: xAI, Meta, OpenAI, Anthropic roundup</h3>
+<ul>
+<li><strong>Creator:</strong> @ParkerRex · <strong>Date:</strong> 2026-09-21</li>
+<li><strong>What it suggests:</strong> A Monday roundup video covering everything that changed in agents last week across the major labs (text truncates). The substance is the short video at the permalink. Verifiable: this is a news digest, not a technical post — useful as a weekly catch-up surface for the pace of agent releases. For the playbook, the durable lesson is the habit: a weekly agent-news scan beats sporadic deep dives when the landscape moves this fast.</li>
+<li><strong>Repos/tools:</strong> None (news).</li>
+<li><strong>Extractable skill:</strong> Run a weekly scan of agent releases across labs instead of relying on sporadic deep dives.</li>
+<li><strong>Source:</strong> https://x.com/ParkerRex/status/2102078834409340962</li>
+</ul>
+<h3 id="github-copilot-models-deprecated-oct-19-2026-dont-hard-tie-to-one-model">GitHub Copilot models deprecated Oct 19, 2026 — don't hard-tie to one model</h3>
+<ul>
+<li><strong>Creator:</strong> @OrenMe · <strong>Date:</strong> 2026-09-20</li>
+<li><strong>What it suggests:</strong> Warns builders of agentic workflows, prompts, skills, and custom agents: if your work is tied to a specific model, pay attention — quoting the GitHub changelog notice that selected GitHub Copilot models will be deprecated on October 19, 2026, with a link to the changelog (text truncates). Verifiable: the news is the deprecation date; the lesson is architectural — model deprecations are now a routine operational event, so prompts, skills, and evals must be portable across models. This is the strongest argument in the collection for the abstraction layers (routers, adapters, skills) that insulate you from any single model's lifecycle.</li>
+<li><strong>Repos/tools:</strong> None (news). Changelog — github.blog/changelog/2026… (display truncated in source)</li>
+<li><strong>Extractable skill:</strong> Keep prompts, skills, and evals portable; treat model deprecation as a routine operational event.</li>
+<li><strong>Source:</strong> https://x.com/OrenMe/status/2101685249633587623</li>
+</ul>
+<h3 id="new-jira-canvas-in-the-github-copilot-app">New Jira canvas in the GitHub Copilot app</h3>
+<ul>
+<li><strong>Creator:</strong> @pierceboggan · <strong>Date:</strong> 2026-09-14</li>
+<li><strong>What it suggests:</strong> Announces a Jira canvas in the GitHub Copilot app that turns Jira tasks into action, with a short demo video. The post is complete. Verifiable: this is Copilot extending from code into task management — Jira tickets becoming actionable work items inside the agent surface. News value: the agent IDE is absorbing the project-management layer, which shortens the path from ticket to working code and is worth evaluating for teams living in Jira.</li>
+<li><strong>Repos/tools:</strong> None (news).</li>
+<li><strong>Extractable skill:</strong> Evaluate agent surfaces that turn tickets directly into action to shorten the ticket-to-code path.</li>
+<li><strong>Source:</strong> https://x.com/pierceboggan/status/2099572243240276466</li>
+</ul>
+<h3 id="claude-now-writes-80-of-anthropics-code-engineers-ship-8x-more">Claude now writes 80% of Anthropic's code; engineers ship 8x more</h3>
+<ul>
+<li><strong>Creator:</strong> @addyosmani · <strong>Date:</strong> 2026-09-14</li>
+<li><strong>What it suggests:</strong> Reports that at Anthropic, Claude now writes 80% of the company's code and engineers ship 8x more code per quarter — linking the Anthropic blog post on agentic coding, with an image (text truncates). Verifiable: this is a first-party productivity claim from the lab building the model — 80% machine-written code, 8x throughput. Treat vendor self-reports as directional; the full analysis is at the permalink and the linked blog.</li>
+<li><strong>Repos/tools:</strong> None (news). Blog — claude.com/blog/agentic-c… (display truncated in source)</li>
+<li><strong>Extractable skill:</strong> Measure your own agent-written code share and throughput; don't manage by vendor benchmarks alone.</li>
+<li><strong>Source:</strong> https://x.com/addyosmani/status/2099577600159158765</li>
+</ul>
+<h3 id="second-batch-aug-24-sep-12">Second batch (Aug 24 – Sep 12)</h3>
+<h3 id="githubs-hydrafusion-frontier-level-coding-from-the-orchestrator">GitHub's HydraFusion: frontier-level coding from the orchestrator</h3>
+<ul>
+<li><strong>Creator:</strong> @pierceboggan · <strong>Date:</strong> 2026-09-10</li>
+<li><strong>What it suggests:</strong> "The best model may not be a model after all. @Jujujuliakasper walks us through our early learnings with Project Hydrafusion and how we're delivering frontier-leve[l results, truncated]" — linking gh.io/githubcopilotd. GitHub's thesis: the orchestrator — the system that routes, decomposes, and verifies — matters more than any single model. "Frontier-level" results from orchestration rather than weights is the decision-model economics argument wearing an enterprise product hat. For buyers: evaluate the harness, not the model card.</li>
+<li><strong>Repos/tools:</strong> gh.io/githubcopilotd (Project HydraFusion)</li>
+<li><strong>Extractable skill:</strong> Evaluate coding assistants on orchestration quality; the router is the product.</li>
+<li><strong>Source:</strong> https://x.com/pierceboggan/status/2098080315562733795</li>
+</ul>
+<h3 id="hands-on-with-hydrafusion-exactly-how-youd-want-a-teammate-to-work">Hands-on with HydraFusion: "exactly how you'd want a teammate to work"</h3>
+<ul>
+<li><strong>Creator:</strong> @OrenMe · <strong>Date:</strong> 2026-09-10</li>
+<li><strong>What it suggests:</strong> "I recently got to play with HydraFusion. It's exactly how you would want your employee or team mate t[o work, truncated]" (gh.io/GitHubCopilotD). An independent hands-on corroborating GitHub's claims: the experience feels like working with a competent teammate, not an autocomplete tool. The bar being set is behavioral — does it work like a colleague? — a harder eval than benchmark scores and a more useful one for adoption decisions.</li>
+<li><strong>Repos/tools:</strong> gh.io/GitHubCopilotD</li>
+<li><strong>Extractable skill:</strong> Eval agent tools on teammate-behavior, not just benchmarks.</li>
+<li><strong>Source:</strong> https://x.com/OrenMe/status/2097920445081165850</li>
+</ul>
+<h3 id="hydrafusion-in-plain-english">HydraFusion in plain English</h3>
+<ul>
+<li><strong>Creator:</strong> @acolombiadev · <strong>Date:</strong> 2026-09-08</li>
+<li><strong>What it suggests:</strong> "Learn about @github HydraFusion in plain English." A pointer post — the accessible explainer for this HydraFusion cluster. When a product generates its own plain-English explainers within days of launch, it's a signal the category is moving fast enough to need translation layers.</li>
+<li><strong>Repos/tools:</strong> None.</li>
+<li><strong>Extractable skill:</strong> When a launch spawns instant explainers, treat the category as fast-moving and track it closely.</li>
+<li><strong>Source:</strong> https://x.com/acolombiadev/status/2097455710023876655</li>
+</ul>
+<h3 id="lerna-use-hydrafusion-in-the-copilot-cli-watch-subagents-live">Lerna: use HydraFusion in the Copilot CLI, watch subagents live</h3>
+<ul>
+<li><strong>Creator:</strong> @unixterminal (Hayden Barnes) · <strong>Date:</strong> 2026-09-07</li>
+<li><strong>What it suggests:</strong> "Lerna - Use GitHub's new AI orchestrator, HydraFusion, in GitHub Copilot CLI - Monitor subagent acti[vity, truncated]" — github.com/sirredbeard/Lerna. A third-party tool that puts HydraFusion orchestration in the terminal and, crucially, lets you watch subagent activity. Observability is the missing piece in most agent setups: when the orchestrator fans out to subagents, you need to see what each one is doing. Lerna's angle — monitoring as the feature — is the right instinct for anyone operating multi-agent systems.</li>
+<li><strong>Repos/tools:</strong> github.com/sirredbeard/Lerna</li>
+<li><strong>Extractable skill:</strong> Demand subagent observability in any orchestrator; fan-out without visibility is undebuggable.</li>
+<li><strong>Source:</strong> https://x.com/unixterminal/status/2097033608481082663</li>
+</ul>
+<h3 id="hydrafusion-is-here-brief">"Hydrafusion is here!" (brief)</h3>
+<ul>
+<li><strong>Creator:</strong> @burkeholland · <strong>Date:</strong> 2026-09-04</li>
+<li><strong>What it suggests:</strong> Launch-day pointer for HydraFusion. Filed with the cluster above; details at the permalink.</li>
+<li><strong>Repos/tools:</strong> None.</li>
+<li><strong>Extractable skill:</strong> None — pointer.</li>
+<li><strong>Source:</strong> https://x.com/burkeholland/status/2095965855297220835</li>
+</ul>
+<h3 id="ive-got-some-bad-news-brief">"I've got some bad news…" (brief)</h3>
+<ul>
+<li><strong>Creator:</strong> @burkeholland · <strong>Date:</strong> 2026-09-12</li>
+<li><strong>What it suggests:</strong> Text is just "I've got some bad news…" (4 replies, 53 likes) — the substance is presumably in attached media or replies. Filed as a stub; the take is at the permalink.</li>
+<li><strong>Repos/tools:</strong> None.</li>
+<li><strong>Extractable skill:</strong> None — stub.</li>
+<li><strong>Source:</strong> https://x.com/burkeholland/status/2098622630425416023</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../";</script><script src="../../assets/search.js"></script></body></html>

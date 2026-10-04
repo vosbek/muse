@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Skills Playbook · AI Skills Playbook</title><link rel="stylesheet" href="../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#start'>Start here</a></div><article class='doc'><div class='badge'>Start here</div><h1 id="ai-skills-playbook">AI Skills Playbook</h1>
+<p>One place for everything saved — so the AI keeps the best of all of it.</p>
+<p>This repo implements the 3-step system from <a href="https://www.instagram.com/reel/Dd9DCEZh3In/">@stilesai's reel</a>:</p>
+<ol>
+<li><strong>Collect</strong> — Put every saved reel, guide, and freebie in one place, organized by topic. That's what the nine folders below are: 39 tech/AI reels plus 92 X bookmarks (Aug–Sep 2026), each distilled into what it actually teaches.</li>
+<li><strong>Compare</strong> — When multiple creators teach the same skill, compare them and keep only what actually works. Duplicates get merged; the collection holds exactly one best version of each skill.</li>
+<li><strong>Stack</strong> — Combine the refined skills into reusable project setups, so every new project starts with the AI already knowing the playbook. Finished setups live in <code>setups/</code>.</li>
+</ol>
+<h2 id="the-collection">The collection</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Category</th>
+<th>Reels</th>
+<th>X posts</th>
+<th>What it covers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>01</td>
+<td><a href="../01-claude-code-agents">claude-code-agents</a></td>
+<td>8</td>
+<td>18</td>
+<td>Claude Code skills, subagents, guides, dynamic workflows</td>
+</tr>
+<tr>
+<td>02</td>
+<td><a href="../02-jev-context-economics">jev-context-economics</a></td>
+<td>3</td>
+<td>33</td>
+<td>Jev decision models, MCP tool selection, retrieval economics, SLMs</td>
+</tr>
+<tr>
+<td>03</td>
+<td><a href="../03-agent-memory">agent-memory</a></td>
+<td>5</td>
+<td>13</td>
+<td>Memory systems, continual learning, agentic coding graphs, harness failure modes</td>
+</tr>
+<tr>
+<td>04</td>
+<td><a href="../04-automation">automation</a></td>
+<td>5</td>
+<td>1</td>
+<td>Power Automate, browser automation, Gmail agent builder, NotebookLM, Obsidian-for-agents</td>
+</tr>
+<tr>
+<td>05</td>
+<td><a href="../05-prompts-evals">prompts-evals</a></td>
+<td>1</td>
+<td>0</td>
+<td>Prompt testing methodology</td>
+</tr>
+<tr>
+<td>06</td>
+<td><a href="../06-design-vibe-coding">design-vibe-coding</a></td>
+<td>7</td>
+<td>4</td>
+<td>Design skills, animation libraries, landing-page agent teams, vibe-coding practice</td>
+</tr>
+<tr>
+<td>07</td>
+<td><a href="../07-ai-news">ai-news</a></td>
+<td>2</td>
+<td>11</td>
+<td>Model takes and predictions (Opus, Gemini, Qwen)</td>
+</tr>
+<tr>
+<td>08</td>
+<td><a href="../08-tools-apis">tools-apis</a></td>
+<td>5</td>
+<td>5</td>
+<td>Voice AI apps, agentic browsers, local agents, free APIs, HF Spaces</td>
+</tr>
+<tr>
+<td>09</td>
+<td><a href="../09-learn">learn</a></td>
+<td>3</td>
+<td>7</td>
+<td>Fundamentals, project ideas, free tutorials</td>
+</tr>
+</tbody>
+</table>
+<p>Start with <a href="../COMBINED">COMBINED.md</a> — the cross-cutting patterns across all 131 items (39 reels + 92 X posts), plus what's highest-leverage for a tokenomics + context-management remit.</p>
+<h2 id="how-to-use-it">How to use it</h2>
+<p><strong>Adding a skill (Step 1):</strong> copy <code>templates/skill-card.md</code>, fill it in, file it under the right topic. One skill per file, always with a source link back to the reel.</p>
+<p><strong>Deduplicating (Step 2):</strong> two creators teaching the same thing? Use <code>templates/skill-compare.md</code> to note what each gets right, keep the winner, merge anything worth salvaging, drop the rest.</p>
+<p><strong>Starting a project (Step 3):</strong> copy <code>templates/project-setup.md</code> into <code>setups/</code>, pick the skills the project needs, paste the playbook into your AI tool. The AI starts with the playbook, not a blank slate.</p>
+<h2 id="maintenance">Maintenance</h2>
+<ul>
+<li>New save → skill card, filed by topic. Two minutes.</li>
+<li>Same skill twice → compare, keep the best, drop the rest.</li>
+<li>New project → stack a setup from proven skills.</li>
+</ul>
+<p>The collection compounds. That's the whole point.</p>
+<h2 id="deep-dives">Deep dives</h2>
+<p>Ten deep-dive dossiers that go beyond the distilled summaries, built from the actual source material (repo READMEs, vendor engineering blogs, official docs):</p>
+<table>
+<thead>
+<tr>
+<th>Dossier</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../deep-dives/jevgrep">jevgrep</a> — Jev-powered code research CLI, 28.6% measured cost cut</td>
+<td>https://github.com/dzhng/jevgrep</td>
+</tr>
+<tr>
+<td><a href="../deep-dives/unreal-agent">unreal-agent</a> — async-first harness, durable operations</td>
+<td>https://github.com/unreallabsai/unreal-agent</td>
+</tr>
+<tr>
+<td><a href="../deep-dives/jev-thesis">jev-thesis</a> — TypeSafe's System One Models launch post (RLCD, $0.042/MTok)</td>
+<td>https://typesafe.ai/blog/introducing-system-one-models-and-jev</td>
+</tr>
+<tr>
+<td><a href="../deep-dives/uber-software-factory">uber-software-factory</a> — Uber's cost equation, 34%/52% unit-cost cuts</td>
+<td>https://www.uber.com/us/en/blog/efficient-software-factory/</td>
+</tr>
+<tr>
+<td><a href="../deep-dives/github-cost-efficiency">github-cost-efficiency</a> — Copilot's 4 harness changes + 5 lessons</td>
+<td>https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/</td>
+</tr>
+<tr>
+<td><a href="../deep-dives/spotify-shunt">spotify-shunt</a> — routing agent I/O to cheap models via hooks</td>
+<td>spotify/portal-ai-plugins</td>
+</tr>
+<tr>
+<td><a href="../deep-dives/claude-cost-optimization">claude-cost-optimization</a> — Anthropic's ranked lever order + /claude-api cost-optimize</td>
+<td>https://claude.com/blog/reducing-cost-and-improving-performance-with-claude-platform</td>
+</tr>
+<tr>
+<td><a href="../deep-dives/tangleml">tangleml</a> — Shopify's open-source experimentation platform + self-improving loops</td>
+<td>https://tangleml.com</td>
+</tr>
+<tr>
+<td><a href="../deep-dives/show-me-skill">show-me-skill</a> — visual-explanation skill (humanlayer/skills)</td>
+<td>https://github.com/humanlayer/skills</td>
+</tr>
+<tr>
+<td><a href="../deep-dives/jev-model-router">jev-model-router</a> — routing Claude Code turns with Jev</td>
+<td>https://github.com/satviksinha/jev-model-router</td>
+</tr>
+<tr>
+<td><a href="../deep-dives/dashboards-are-dead">dashboards-are-dead</a> — Sarah Simionescu (Composio): why MCP alone fails agents + the agent-designed interface</td>
+<td>https://www.youtube.com/watch?v=YiFqcu9YA38</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ai-engineer-talks">AI Engineer talks</h2>
+<p>37 talks from the AI Engineer channel's World's Fair 2026 run (Sep 25 – Oct 3), each distilled into thesis, key points, quotes/data, and a tokenomics angle with local-deploy takeaways. Start with the <a href="../ai-engineer-talks">index</a> — highlights: GEPA's 3-examples-beat-25k-rollouts reflection loop, Kimchi's cost-per-task model routing (2.5x savings), Factory's deferred context engine (50%+ token savings), Qdrant's fully-offline memory demo, and the DX data showing median +7.7% PR throughput with nobody near 2x.</p>
+<h2 id="the-learning-site">The learning site</h2>
+<p>This repo publishes as a static learning site via GitHub Pages (served from <code>docs/</code>, built by <code>site/build.py</code> — run it after adding new entries, then push <code>docs/</code>). Start with the <a href="../tokenomics-playbook">Tokenomics Playbook</a> if you care about what AI-assisted engineering actually costs.</p></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../";</script><script src="../../assets/search.js"></script></body></html>
