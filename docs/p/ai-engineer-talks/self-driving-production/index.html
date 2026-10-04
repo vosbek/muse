@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "The 5 Levels of Self-Driving Production" — Eric Schwartz, Traversal · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-the-5-levels-of-self-driving-production-eric-schwartz-traversal">Talk Notes: "The 5 Levels of Self-Driving Production" — Eric Schwartz, Traversal</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=y-OVWZD4j6U">The 5 Levels of Self-Driving Production — Eric Schwartz, Traversal</a> · AI Engineer channel · Oct 2, 2026 · 18:32 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript.</p>
+<h2 id="thesis">Thesis</h2>
+<p>Coding agents compressed development, so the bottleneck shifted to troubleshooting — and observability tools (Datadog, Splunk, ServiceNow) tell you <em>what</em> is broken but not <em>why</em>. Root cause analysis is a causal machine-learning problem, not an observability problem. Traversal's "production world model" plus "causal search engine" let agents find root cause, propose a fix, and verify it — a closed loop Schwartz calls "self-driving production," framed as five autonomy levels.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>The shifted bottleneck:</strong> three buckets — system design, development, troubleshooting. Coding agents shrank the middle, so more code ships, engineers understand less of it, and debugging time (not design time) grows.</li>
+<li><strong>Economics:</strong> ~$400B annual enterprise spend on troubleshooting; 40% of execs call it a team-level problem; engineers lose 7+ hours per week to on-call.</li>
+<li><strong>The five levels:</strong> 0 = manual (Slack war room — where most companies are); 1 = rules/automations including Claude Code/Cursor/Codex loops (break on novel situations); 2–3 = L3 is a homegrown agent good at debugging one service; 4 = diagnosis across hundreds of services/repos/log indexes ("quite challenging" to home-grow); 5 = diagnose + fix + verify across the full enterprise, ideally without paging anyone.</li>
+<li><strong>The observability complaint (from his ServiceNow years):</strong> "You're telling me what's broken. You're not telling me why, and you're not telling me what to do about it."</li>
+<li><strong>Context breadth:</strong> a failing checkout API can need 5–10 hops across dozens of services and petabytes of data — e.g., an expired TLS certificate five hops away. At Fortune 100 scale no single engineer holds that context, hence 50-engineer war rooms.</li>
+<li><strong>Founders:</strong> three from academia, one from quant finance — decades of causal-ML research.</li>
+<li><strong>Pepsi (Alert Intelligence):</strong> thousands to tens of thousands of alerts per week, single-engineer backlogs of 700 ("crippling"). Traversal pre-investigates and prioritizes, and surfaces noise-reduction actions: fix alert rules in code, dismiss no-action alerts, ticket tech debt.</li>
+<li><strong>American Express (Incident RCA):</strong> before — 5–10 teams / 20–50 engineers paged, 60 minutes to hours or days. Now — Traversal is first responder, dispatched within 3 minutes of a declared "bridge," posts RCA to the incident Slack channel (optional ServiceNow update). 50+ engineers spared — "a good night of sleep that 53 engineers can have now."</li>
+<li><strong>Five questions to ask AI SRE vendors:</strong> can it see all production data? Search it (petabytes, hundreds of billions of logs) without blowing up cost or observability infra? Map entity relationships? Improve autonomously (no markdown-file maintenance)? Multi-hop to non-obvious root cause in minutes? — over five minutes and "you've lost the plot."</li>
+<li><strong>Architecture, three layers:</strong> (1) ingestion/integration "without increasing costs" → (2) production world model (maps relationships across all data) → (3) causal search engine (the agent harness). Use cases: Alert Intelligence, Incident RCA, Self-Healing, Production Support, Code Resilience.</li>
+<li><strong>Scale claims (vendor's own, unverified):</strong> trillions of logs and spans, tens of billions of metrics/events, 80%+ root-cause accuracy on high-severity incidents. Customers named: Amex, Pepsi, DigitalOcean, Capital One.</li>
+<li><strong>External validation cited:</strong> Google's SRE handbook ("the Bible of site reliability engineering") and Anthropic's admission that LLMs are "not great at" identifying root cause.</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"Fundamentally, the belief that we have at Traversal is that root cause analysis is not an observability problem, it's a causal problem."</li>
+<li>"What we've seen is like anything more than five minutes and you've kind of lost the plot, you've lost the patience of the on-call team."</li>
+<li><strong>Stat:</strong> 80%+ root-cause accuracy claimed on high-severity incidents across trillions of logs/spans.</li>
+<li><strong>Stat:</strong> ~$400B annual enterprise troubleshooting spend; engineers lose 7+ hrs/week to on-call.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li>Ingestion/analysis positioned as "without increasing costs" — searching petabytes must not "blow up costs or take down your observability infrastructure."</li>
+<li>3-minute automated dispatch vs 60-minute war rooms; tens of engineers spared per incident — the efficiency story is on-call labor, not tokens.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>The "world model" framing transfers: for a local context layer, pre-compute entity relationships (services ↔ repos ↔ logs) once, so agents query the map instead of re-discovering it per incident.</li>
+<li>The five vendor questions double as a checklist before buying any AI SRE tooling — especially "improve autonomously (no markdown-file maintenance)?" which is the hidden toil test.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>biggo AI summary: https://finance.biggo.com/podcast/eb4bc626c151995f</li>
+<li>Video description: https://www.youtube.com/watch?v=y-OVWZD4j6U</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

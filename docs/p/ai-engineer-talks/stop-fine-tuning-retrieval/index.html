@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "Stop Fine-Tuning to Fix Retrieval Problems" — Anant Srivastava · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-stop-fine-tuning-to-fix-retrieval-problems-anant-srivastava">Talk Notes: "Stop Fine-Tuning to Fix Retrieval Problems" — Anant Srivastava</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=qflLT3SoVbw">Stop Fine-Tuning to Fix Retrieval Problems — Anant Srivastava</a> · AI Engineer channel · Oct 3, 2026 · 20:11 · Recorded at AI Engineer World's Fair 2026</p>
+<h2 id="thesis">Thesis</h2>
+<p>Most teams never deliberately decide where knowledge lives — prompt, memory/retrieval, or model weights — so six months of normal product work decides it for them by accident. These aren't a ladder to climb but three tools for three jobs, and you need a deliberate harness for circulating knowledge between them; fine-tuning should be reserved for knowledge that has stopped changing.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>Prompt's job = behavior</strong>: small, stable, editable knowledge about how to act (e.g., support-agent tone, "offer human escalation after three failures"). Wrong job: storing facts — too many instructions dilute, and you pay context cost.</li>
+<li><strong>Memory's job = knowledge that is current, large, and citable</strong> — covers both agent memory and external/RAG memory like refund policies. Changes faster than you can fine-tune; can't fit in a prompt.</li>
+<li><strong>Wrong job for memory: behavior/reasoning</strong> — if the model can't reason over retrieved docs, more context doesn't help; you need the right model.</li>
+<li><strong>Access control belongs in memory</strong> — per-user/per-repo data must be retrievable with permission checks, never baked into weights.</li>
+<li><strong>Code-assistant example</strong>: don't fine-tune on code (changes too fast); use code-aware chunking, filtering, and denormalized metadata (repo, user, commit) to retrieve exact chunks.</li>
+<li><strong>Weights = what has stopped changing</strong>; fine-tuning needs a strong reason — retraining locks in a boundary that may still be moving.</li>
+<li><strong>Classic fine-tuning mistake</strong>: a team fine-tuned on documentation when it was actually a retrieval problem — stale docs got baked into weights.</li>
+<li><strong>When fine-tuning works</strong>: ambiguous judgment tasks (content moderation, claims processing) — bootstrap with a frontier model + human corrections, wait until human override rates flatline, fine-tune the stable "center," keep humans on the contested edge.</li>
+<li><strong>Medical coding example (ICD-10, 70k codes; IMO Health / Mount Sinai)</strong>: fine-tune the reflex (format understanding), not the codes themselves.</li>
+<li><strong>Fine-tuning decision = capability vs. cost</strong> — fine-tune a small model and run volume cheap (e.g., 10M requests/day).</li>
+<li><strong>Decision table</strong>: prompt = behavior; memory = what to know (facts); weights = how to act (reflexes).</li>
+<li><strong>Circulating architecture</strong>: prompt → signals → durable knowledge in memory → memory pulled back into prompt on new sessions; over time, patterns move memory → weights via fine-tuning and retrieval needs shrink — the loop makes the agent better.</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"The model is the easy part. What you build around the model... is the key architecture."</li>
+<li>ICD-10 has 70,000 codes — fine-tune the format reflex, not the codes.</li>
+<li>Human override rates flatlining = the signal that knowledge is stable enough to fine-tune.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li>Stuffing facts into the prompt wastes context tokens ("you pay the cost for it") and dilutes instruction-following.</li>
+<li>Fine-tune small models to run high volume cheaply when it's a cost problem, not a capability problem.</li>
+<li>Circulating memory → weights reduces retrieval needs over time.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li><strong>Keep a standing decision table for every skill/pipeline</strong>: behavior → prompt/skills, facts → local RAG/retrieval, reflexes → fine-tuned small local model. Review it whenever a new knowledge source enters the system.</li>
+<li><strong>The circulation loop is the local strategy</strong>: use local retrieval (sqlite/LanceDB) for fast-changing knowledge, and only bake the stable center into a locally fine-tuned small model — exactly the Ollama + local RAG split Matt already runs.</li>
+<li><strong>Access control is the hard constraint for local-first</strong>: per-user/per-repo data must stay retrievable with permission checks, never baked into weights — weights can't do ACLs.</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

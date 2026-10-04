@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "How VS Code Went from Monthly to Weekly Releases with AI" — Harald Kirschner · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-how-vs-code-went-from-monthly-to-weekly-releases-with-ai-harald-kirschner">Talk Notes: "How VS Code Went from Monthly to Weekly Releases with AI" — Harald Kirschner</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=I2LL_wd89-A">How VS Code Went from Monthly to Weekly Releases with AI — Harald Kirschner</a> · AI Engineer channel · Oct 3, 2026 · 19:34 · Recorded at AI Engineer World's Fair 2026</p>
+<h2 id="thesis">Thesis</h2>
+<p>After 10 years of monthly releases, VS Code moved to weekly releases not from "more AI" but by evolving the whole system — codebase agent-readiness, quality loops, triage, staged rollouts, and learning loops — so higher velocity ships at quality and the team learns faster.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>Code survival metric</strong> (% of agent-written code actually committed): 55% → 86%, tracked over a year.</li>
+<li><strong>Success created problems</strong>: massive increase in issues (AI helps file issues — more quality issues but also automated low-quality ones), more open PRs from team velocity and community.</li>
+<li><strong>The litmus test</strong>: "Can a PM vibe code here?" — Harald himself vibe codes in the VS Code repo; accepted by engineering.</li>
+<li><strong>Agent-ready codebase</strong>: AGENTS.md files (a slash command generates a good draft), a map of the codebase for agents.</li>
+<li><strong>Skills</strong>: expert knowledge encoded as skills — e.g., an accessibility best-practices skill, reviewed and maintained by the area owner.</li>
+<li><strong>TypeScript Go</strong>: 10x faster builds — critical because slow CI/CD compounds when 10–20 agents are running.</li>
+<li><strong>Let agents use your app</strong>: component browser — automated builds screenshot every component, diffs point out unexpected changes; faster PR review (attach video/screenshots).</li>
+<li><strong>Self-correcting loop with Playwright</strong>: the /launch skill launches a browser and the agent verifies the fix actually works.</li>
+<li><strong>Mandatory AI code review</strong>: low/medium/high effort dial for cost-benefit; humans don't even look at a PR until all review comments are resolved.</li>
+<li><strong>Holding quality</strong>: AI issue triage — filters spam, enriches, translates, assigns area owners; agent mistakes feed back into agent work up front.</li>
+<li><strong>Error stacks → auto-fix PRs</strong>: 51 billion telemetry events per day filtered down to error stacks; fingerprinting/bucketing; assigned to area owners; a PR is auto-created with an initial diagnosis (example: a cancellation request missing from the RPC protocol).</li>
+<li><strong>Staged rollouts</strong>: previously YOLO releases to 100%; now staged with monitoring, because rollbacks on installed apps are expensive.</li>
+<li><strong>VSC-Bench</strong>: their own evals of their agentic product — issues filed to add new scenarios, picked up by an agent from a template; hill climbing against scenarios; offline + online experimentation.</li>
+<li><strong>70x tokens for a 5-character file</strong>: a simple eval (write a hello-world file) — the most expensive model took 70x more tokens than the cheapest; insight into how you evaluate models.</li>
+<li><strong>Daily sprints, smaller squads, durable ownership</strong>; 50M+ users on a very small team.</li>
+<li><strong>Blogs</strong>: "What 50,000 Runs of a 5-Line Eval Taught Us" and "Improving token efficiency in GitHub Copilot."</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>Code survival 55% → 86%.</li>
+<li>51 billion telemetry events per day → error stacks → auto-fix PRs.</li>
+<li>Most expensive model took 70x more tokens for the same 5-character file.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li>Token efficiency: 70x token spread across models for an identical eval — token efficiency is a first-class model criterion.</li>
+<li>TypeScript Go: 10x faster builds unblock agent CI/CD loops.</li>
+<li>AI code-review effort dial (low/medium/high) for explicit cost-benefit.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li><strong>Make token efficiency a model-selection criterion</strong>: the 70x spread on an identical eval proves price-per-token tells you almost nothing — benchmark cost-per-completed-task per model before putting it behind the enterprise router.</li>
+<li><strong>Code survival rate (agent-written code actually committed) is the deployable metric</strong> for agent quality — track it per model/skill combo; it directly measures wasted generation tokens vs. kept output.</li>
+<li><strong>Review-effort dials are the cost-control pattern</strong>: low/medium/high effort settings with explicit cost-benefit tradeoffs — apply the same dial to retrieval depth, planning effort, and verification loops.</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
