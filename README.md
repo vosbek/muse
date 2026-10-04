@@ -57,3 +57,7 @@ Ten deep-dive dossiers that go beyond the distilled summaries, built from the ac
 | [show-me-skill](deep-dives/show-me-skill.md) — visual-explanation skill (humanlayer/skills) | https://github.com/humanlayer/skills |
 | [jev-model-router](deep-dives/jev-model-router.md) — routing Claude Code turns with Jev | https://github.com/satviksinha/jev-model-router |
 | [dashboards-are-dead](deep-dives/dashboards-are-dead.md) — Sarah Simionescu (Composio): why MCP alone fails agents + the agent-designed interface | https://www.youtube.com/watch?v=YiFqcu9YA38 |
+
+## AI Engineer talks
+
+37 talks from the AI Engineer channel's World's Fair 2026 run (Sep 25 – Oct 3), each distilled into thesis, key points, quotes/data, and a tokenomics angle with local-deploy takeaways. Start with the [index](ai-engineer-talks/README.md) — highlights: GEPA's 3-examples-beat-25k-rollouts reflection loop, Kimchi's cost-per-task model routing (2.5x savings), Factory's deferred context engine (50%+ token savings), Qdrant's fully-offline memory demo, and the DX data showing median +7.7% PR throughput with nobody near 2x.
