@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "Fixing the PR Bottleneck" — Matt Pocock, AIHero · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-fixing-the-pr-bottleneck-matt-pocock-aihero">Talk Notes: "Fixing the PR Bottleneck" — Matt Pocock, AIHero</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=LlgiOCmFG_w">Fixing the PR Bottleneck — Matt Pocock, AIHero</a> · AI Engineer channel · Sep 25, 2026 · 22:34 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>AI agents massively increased PR volume — the "software factory," where agents rather than humans initiate work (classifiers turning bug reports into fixes, PlanetScale slow-query reports auto-triggering work) — which without brakes becomes a "slop cannon." The fix is three quality brakes — automated checks (cheap, deterministic), automated review (agents as lie detectors for the checks), and human review — arranged so that raising code quality counterintuitively speeds everything up: better code needs fewer human interventions. Key mechanisms: deep-module codebase design, coding standards enforced at review time rather than implementation time, one-way vs two-way door triage, human-friendly PR bodies, and a "retro" skill that compounds review learnings back into checks and standards.</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li>The PR bottleneck predates AI (piles of unreviewed PRs), but AI massively increased the strain. The central promise of AI: agents let us scale up — "do more with less."</li>
+<li><strong>The "software factory"</strong> (his "biggest buzzword of the day"): humans no longer initiate all work — agents do. Examples: a classifier turning bug reports into fixes/repros; PlanetScale slow-query reports triggering work; deterministic code (not humans) firing factory steps. Acceleration pushes more code through — but with only acceleration and no brakes, "you're going to end up with a slop cannon."</li>
+<li><strong>Brakes</strong> = mechanisms that slow down to increase quality, preventing a "software entropy nightmare" — because code is the environment your agent operates in, and "bad code begets more bad code." Three brakes form a cake: automated checks → automated review → human review. Goal: make human review faster by leaning on the first two. First principle: "stop the slop" — higher shipped quality → less human review → counterintuitively faster.</li>
+<li><strong>Automated checks (layer 1) are cheap:</strong> no tokens (unlike automated review), no human effort — just CPU cycles. (Tokens spent fixing agent bugs that tests catch are "tokens pretty well spent.") Layer loads of them on; most repos underuse them.</li>
+<li><strong>Checks can lie:</strong> green CI ≠ ready to merge. Human and automated review are "lie detectors" for the checks.</li>
+<li><strong>Lie 1 — tautological tests:</strong> tests that reassert the implementation ("Opus 5 got addicted to these") — e.g., X-post char limit = 280, tested by expecting the limit to be 280. Extremely structure-sensitive: renaming a constant breaks the test.</li>
+<li><strong>Lie 2 — structure-sensitive UI test:</strong> reads the source file into memory and asserts "videos" appears after "content plan" in the source text, instead of rendering — any layout change breaks it.</li>
+<li><strong>Lie 3 — tests that cannot fail:</strong> abused mocking (useAudioBoost stubbing the DOM AudioContext with fakes) never exercises real error modes → strange production failures.</li>
+<li><strong>Design your way out: deep modules</strong> (John Ousterhout, <em>A Philosophy of Software Design</em>) — module A hides a large implementation behind a tiny interface (deep); module B exposes a large interface where each function does little (shallow). Deep modules → fewer structure-sensitive tests, because tests sit at the interface. His codebase-design skill finds deepening opportunities and emits a before/after HTML doc (reducing duplication, creating deep testable modules) — works even on the "craziest vibe-coded codebase." It also defines a shared team language: locality (related code located together), leverage (caller gets big value from a simple call), seam.</li>
+<li><strong>Don't put coding standards in the implementer agent:</strong> implementation is OVERLOADED (explore + change + debug in one context window) — standards make it worse. Instead, a code-review skill receives the diff, reads coding-standards.md from the repo, and checks compliance — running in a SUBAGENT with its own context window and budget; review is UNDERLOADED (a little exploration, no implementation/debugging), so it absorbs standards far better. Two-part process: implement = make it work; review = make it good — red-green-refactor across two context windows. Keep standards out of AGENTS.md (drowns the implementer); coding-standards.md is for the reviewer only.</li>
+<li><strong>Don't outsource automated review:</strong> generic third-party reviewers (Cursor bugbot, CodeRabbit) are too general (false positives) or too specific (TypeScript-only, useless for Rust). Build your own; accumulate coding standards over time; share them across the team; put those unread docs to work.</li>
+<li><strong>The reviewer should COMMIT, not comment:</strong> verbose PR comments just create triage work for the human. Default to commits that fix findings; comment only on genuine questions — so the human reviews "a really nice artifact." "Stop trying to one-shot good code."</li>
+<li><strong>Human-friendly PRs</strong> (his upcoming "PR skill"):</li>
+<li><strong>Principle 1 — not all reviews are equal;</strong> triage with AWS one-way vs two-way doors. Most PRs are two-way doors (merge + revert — "the glorious benefit of software vs civil engineering"), but nuance matters: a trivial change that emails 60,000 people is a one-way door; expensive migrations/data loss = one-way door → "review the hell out of that PR." Attach a "merge danger" summary (door type + blast radius): two-way door with localized blast radius → light review.</li>
+<li><strong>Make the "why" fast to grasp:</strong> pseudocode and diagrams over prose (credit: the "show me" skill by Dex Hadley, humanlayer skills repo) — mermaid/UML sequence diagrams, CLI command/flag summaries. "It's hard to overstate" the difference.</li>
+<li><strong>Review the system, not just the code:</strong> the process producing the code matters as much as the code — "never write the same comment twice"; never catch the agent doing the same thing across two PRs. The mechanism is his new <strong>"retro" (retrospective) skill:</strong> feed it a session, a PR+session, or a week's PRs+reviews, and it suggests new automated checks and coding-standards.md updates — a compounding effect where each human review raises the quality of the next. Retro also audits navigation pointers (add AGENTS.md pointers), tool economy (token efficiency of tools used), and bloat (bloated steering files/skills → reorganize).</li>
+<li><strong>Goal:</strong> make human review fast, simple, and optional — "you really don't need to review every single two-way door. Every single one-way door you do."</li>
+<li>Skills at aihero.dev/skills; v1.3 shipping that week. Most-viewed of the eight at ~147K views; talk given in Paris.</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"If you just have permanent acceleration pushing stuff through your factory, you're going to end up with a slop cannon."</li>
+<li>"Code is the environment your agent operates in. If you have bad code in your codebase, that is going to beget more bad code."</li>
+<li>"Automated checks are cheap… they don't cost tokens like automated review does… just CPU cycles."</li>
+<li>"Does a green CI mean that the code is ready for merge? No, it does not."</li>
+<li>"Stop trying to one-shot good code."</li>
+<li>"You never want to write the same comment twice."</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li>Automated checks cost CPU cycles, not tokens or human effort — layer them aggressively; tokens spent fixing test-caught agent bugs are "tokens pretty well spent."</li>
+<li>The retro skill explicitly audits <strong>tool economy</strong> (token efficiency of tools used) and steering-file/skill bloat (bloated skills → reorganize).</li>
+<li>Reviewer commits fixes directly (saves human triage); one-way/two-way-door triage focuses scarce human attention where it matters; the underloaded reviewer subagent keeps the implementer's context window lean.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>The overloaded-implementer / underloaded-reviewer split is a context-management pattern to adopt everywhere: keep standards out of AGENTS.md (drowns the implementer), run review in a separate subagent with its own context window and budget.</li>
+<li>Checks-first is the cheapest quality spend: deterministic CPU-cycle checks before any token-burning review — build the check layer before the review layer.</li>
+<li>Run the retro loop locally: feed a week's PRs+reviews to a retrospective pass that proposes new checks and standards updates — each review compounds, and the retro explicitly audits token economy and steering-file bloat.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Video page: https://www.youtube.com/watch?v=LlgiOCmFG_w</li>
+<li>Full transcript: https://www.usetranscribe.io/yt/LlgiOCmFG_w/pr-bottleneck-fix</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

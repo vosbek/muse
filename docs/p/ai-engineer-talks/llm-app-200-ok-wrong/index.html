@@ -1,0 +1,37 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "Your LLM App Returned 200 OK. It Was Still Wrong." — Marina Petzel, Datadog · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-your-llm-app-returned-200-ok-it-was-still-wrong-marina-petzel-datadog">Talk Notes: "Your LLM App Returned 200 OK. It Was Still Wrong." — Marina Petzel, Datadog</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=rTojoVotlD8">Your LLM App Returned 200 OK. It Was Still Wrong. — Marina Petzel, Datadog</a> · AI Engineer channel · Oct 2, 2026 · 18:00 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> transcript unavailable; distilled from chapter list, description, and tagline. Kept shorter; no specifics invented beyond what's given.</p>
+<h2 id="thesis-from-titletaglinechapters">Thesis (from title/tagline/chapters)</h2>
+<p>Classic "golden signals" (latency, errors, traffic, saturation) tell you your app is up — they don't tell you if it's right. GenAI apps need additional monitoring pillars: cost, safety, and quality.</p>
+<h2 id="key-points-from-chapter-list">Key points (from chapter list)</h2>
+<ul>
+<li><strong>Golden signals aren't enough anymore</strong> (0:12) — latency/errors/traffic/saturation tell you the app is up, not that it's right.</li>
+<li><strong>How GenAI apps are different</strong> (1:12); <strong>new attack vectors</strong> (2:22).</li>
+<li><strong>Quality is subjective</strong> (2:47).</li>
+<li><strong>Cost monitoring</strong> (3:51): token creep, model drift, uncached calls (4:56).</li>
+<li><strong>Cost attribution: tag everything</strong> (6:55).</li>
+<li><strong>Safety metrics</strong> (9:15): prompt injection, PII, toxicity, jailbreaks (9:55).</li>
+<li><strong>Quality monitoring</strong> (12:09): five quality metrics (13:19).</li>
+<li><strong>Putting it all together</strong> (15:43); <strong>Datadog Agent Observability</strong> (16:38).</li>
+<li><strong>Referenced sources</strong>: Google SRE book (golden signals); Datadog docs on LLM observability; Datadog blog "How to Monitor AI Agents: The Four Pillars of Agent Observability"; Datadog "AI SORT: A Framework for Evaluating AI Systems for SRE"; book "Observability Engineering" (Charity Majors, Liz Fong-Jones, George Miranda, Honeycomb); paper "Can Large Language Models Be an Alternative to Human Evaluations?" (Chiang &amp; Lee, 2023).</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>Tagline: "Latency, errors, traffic and saturation tell you your app is up. They don't tell you if it's right."</li>
+<li>Golden signals originate from the Google SRE book.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle-from-chapters">Tokenomics / efficiency angle (from chapters)</h2>
+<ul>
+<li>Cost monitoring pillar: token creep, model drift, uncached calls.</li>
+<li>Cost attribution: tag everything.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li><strong>Tag everything for cost attribution</strong>: even in a local-first stack, tag every request by use case/team/model so token creep and uncached calls are attributable — you can't control what you can't attribute.</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

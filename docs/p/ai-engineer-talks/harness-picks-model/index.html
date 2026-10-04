@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "Stop Rationing Tokens: Let the Harness Pick the Model" — Žilvinas Urbonas & Laurent Gil, Cast AI · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-stop-rationing-tokens-let-the-harness-pick-the-model-zilvinas-urbonas-laurent-gil-cast-ai">Talk Notes: "Stop Rationing Tokens: Let the Harness Pick the Model" — Žilvinas Urbonas &amp; Laurent Gil, Cast AI</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=48YUYDjwfYY">Stop Rationing Tokens: Let the Harness Pick the Model — Kimchi by Cast AI</a> · AI Engineer channel · Oct 2, 2026 · 18:07 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript.</p>
+<h2 id="thesis">Thesis</h2>
+<p>Cost per token is a misleading metric because models differ in how many tokens and retries they need to finish the same task at the same quality — cost per task is the real metric. Capping developer tokens is like giving a developer a one-hour laptop battery; management's job is unlimited, inexpensive tokens. Kimchi's open-source harness routes each task to the cheapest-per-completed-task model (2.5x savings vs Claude over 3 months across Cast AI's 300-person org while token volume grew 1.5x), wrapped with Ferment (autonomous long tasks with quality scoring), Teleport (remote sandbox), and Studio (team board).</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>Crisis anecdotes:</strong> a company in India spent $500M on Anthropic in one month; Uber's CTO tweeted he burned the year's Anthropic budget in four months.</li>
+<li><strong>University white-paper comparison</strong> (cost/token vs cost/task at equal quality): Gemini 3 Flash at $3.50/M blended tokens → $705/task vs Minimax 2.7 at $1.50/M → $148/task — Minimax 2.7 "one of my favorites."</li>
+<li><strong>3-month internal data</strong> (300 employees, two-thirds developers): 2.5x savings vs Claude; token volume +1.5x while cost-vs-Claude −1.5x ("the agent's cost grows 2.5x less than the growth in tokens per task").</li>
+<li><strong>Model-selection drift:</strong> Kimi 2.6 dominant on 3 June → visible shift on 12 June → Minimax 3 winning by 21 June. "No human team would re-benchmark at that cadence, but an autonomous harness obsessed with token cost will."</li>
+<li><strong>Origin:</strong> a "skyrocketing" Claude Code bill ~6 months earlier; the harness was built on the Pi Mono SDK and is being open-sourced with intent to keep contributing.</li>
+<li><strong>Ferment:</strong> long-running autonomous task mode (human needed only every 2–3 hours); asks clarifying questions, breaks work into milestones, build/breakage checks; a scoring model grades output — artifact complete at B or better, can iterate to A; a higher-order model re-checks quality and sends failures back.</li>
+<li><strong>Full-SDLC loop:</strong> change → build → check breakage → redeploy to staging. Production still human-gated ("at least at this point"), with K8s metrics/SLO-based auto-ship as the stated path.</li>
+<li><strong>Code review:</strong> "reading code is not enough anymore" — agentic 2,000-line PRs force reviewers to assess intent and the spec given to the agent, not just the diff.</li>
+<li><strong>Teleport:</strong> secure remote sandbox (Google hyperscaler; SaaS or on-prem for fintech); close the laptop, session continues; origin story = an engineer coding on a plane whose battery died. 62% of Cast AI engineers now use it exclusively.</li>
+<li><strong>Studio:</strong> Teleport for teams — Kanban board (backlog/in progress/in review) for 5–10-person "pizza teams"; plans reviewable by peers/PMs before implementation; fixes the "terminal/CLI can't be shared" collaboration gap.</li>
+<li><strong>Business model:</strong> harness fully open source; Studio/Teleport need a Google account, ~5-minute install.</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"Our job is not to prevent the developer to use coding agents. Our job is to make sure they can use it as much as they want for as long as they want in a completely unlimited fashion."</li>
+<li>"It means the models are not the same. They don't cost the same, but they're also not the same per task."</li>
+<li>"What we believe is that reading code is not enough anymore." (Urbonas)</li>
+<li><strong>Stat:</strong> $705/task (Gemini 3 Flash) vs $148/task (Minimax 2.7) at equal quality; 2.5x savings vs Claude over 3 months.</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li>Cost-per-task routing beats cost-per-token shopping — the headline metric of this talk.</li>
+<li>Autonomous re-benchmarking captures new cheaper models within weeks without human effort; Teleport eliminates lost sessions.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>Cost-per-task as the unit metric is directly adoptable: log tokens + retries per completed task per model, route automatically, and re-benchmark on a cadence no human team would — that cadence is what catches model drift like Kimi 2.6 → Minimax 3 within weeks.</li>
+<li>The Ferment quality-scoring loop (grade to B, iterate to A, higher-order model re-check) is a local harness pattern: quality gates replace token caps.</li>
+<li>"Reading code is not enough anymore" — review the spec given to the agent, not just the diff; a process change with zero tooling cost.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>biggo AI summary: https://finance.biggo.com/podcast/65ae25b9fc80259b</li>
+<li>Video description: https://www.youtube.com/watch?v=48YUYDjwfYY</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
