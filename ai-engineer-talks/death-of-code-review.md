@@ -38,6 +38,31 @@ flowchart TD
 - **Production automated review is mainstream.** GitHub's Copilot reviewer — **60M reviews, more than 1 in 5 of all GitHub reviews**. Cursor's reviewer: first version ran **8 passes per diff plus shuffled re-review** (order changed outcomes) to filter false positives — Peking University replicated the multi-pass idea for up to **+44% quality**; rebuilt so the model reasons over the diff with tools, and had to be instructed to be suspicious (it defaulted to "that looks good to me, ship it"). Review is fusing with repair: Cursor's reviewer spawns a fix agent from its findings; next goal is the reviewer running code to prove its own bug report. Field-wide metric: human acceptance (CodeRabbit 13M+ PRs; Greptile's repo graph; Graphite's accept/reject eval sets; Cursor's "resolution rate" **52%→70%**).
 - **The human checkpoint survives — it moves.** OpenAI's write-up echoes Cisco ("when something failed, the fix was almost never to try harder"); review "didn't disappear... it got rebuilt as a system, and that system is built by humans." The security argument is decisive: Anthropic's own auto security reviewer README warns it's not hardened against prompt injection — usable only on trusted PRs; a March 2026 study found innocent-framed vulnerable commits **fooled autonomous reviewers 88% of the time vs 35% for humans**. "You take the human out of the loop, you don't just lose a reviewer, you lose the thing that was hard to fool."
 - **Prescription:** "stop reviewing PRs — it is the wrong level of abstraction for 2026." Pour judgment into the harness: codified definitions of good, company context, domain knowledge, rubrics, evals — then crank up the agents. "You can go much faster than one-third faster if you concentrate your efforts higher up the stack of reviewers, rules, and evals." And once pre-merge review is all machines, production observability becomes the last reviewer standing.
+- **The intellectual case for removing humans** (cited, not endorsed): Peter Steinberger (OpenClaw) argues you shouldn't prompt coding agents but design the loops that prompt them; Andrej Karpathy has argued the human holds the system back. Voss treats these as the position the evidence then tests.
+- **OpenAI's agent-to-agent review loop, in detail:** Codex reviews its own changes, then more agents review those reviews in a loop until every agent reviewer is satisfied; Codex was made bootable at every change so it could run a copy of itself, inspect the UI, and verify fixes; the whole logging stack was exposed to the agent. "Review didn't disappear... it got rebuilt as a system, and that system is built by humans."
+- **Bun's wry coda:** the giant PR deleting all the Zig code was flagged by *another robot* as "AI slop — you can't possibly delete all of your code."
+- **The METR caveat, dismissed:** agents got no chance to iterate on maintainer feedback — Voss's reply is that giving them that chance just puts a human back in the loop, which is what the experiment was testing the removal of.
+- **Voss's 80% rule** (separate interview, chainofthought.show): the best code-review AI tools he's seen have ~80% hit rate — "really good, but not enough to put stuff out into production." The working model: AI does the 80%, humans focus on the last 20% — which matters more than ever given the volume. Ops (deploy, hardware sizing, scaling) remains firmly human for now.
+
+## By the numbers
+
+- **741% / 30%** — more code written vs more software shipped by autonomous-agent users (100,000+ GitHub developers, three economists); ~8x writing, ~⅓ more shipping; authors explicit that review is the bottleneck.
+- **400 lines / 450 lines/hour** — Cisco study (2,500 reviews, 3.2M lines, 10 months): defect-finding effectiveness collapses past 400 lines in one sitting, off a cliff past 450 lines/hour. One 10,000-line agent PR = 3–4 working days of genuine review.
+- **50M lines / 1 day** — Stripe/Anthropic Fable Ruby migration (vs 2+ months for a team); **1M+ lines / 6 days** — Bun's Zig→Rust port at 99.8% test-suite pass.
+- **13,044 vs ~74** — unsafe blocks in Bun's ported Rust vs comparable human-written Rust: three orders of magnitude of asserted-but-unproven memory safety.
+- **~1M lines / ~1,500 PRs / 3 engineers / 5 months** — OpenAI's "no manually written code" product; **~2,000 agent sessions** — Carlini's Rust C compiler that built the Linux kernel.
+- **88% vs 29%** — Fable 5 on SWE-bench Pro vs Frontier Code's hardest slice (same model, "would you merge it?" vs "does it pass tests"); GPT 5.5 under 6% on Frontier Code; **~50%** — METR: share of SWE-bench-passing PRs four OSS maintainers would actually merge.
+- **60M / 1-in-5** — Copilot reviewer reviews on GitHub; **13M+** — CodeRabbit PRs reviewed; **8 passes** — Cursor's per-diff review count (plus shuffled re-review); **+44%** — Peking U multi-pass agreement quality gain; **52%→70%** — Cursor's "resolution rate."
+- **88% vs 35%** — prompt-injection-dressed vulnerable commits fooling autonomous reviewers vs human reviewers (Mar 2026 study).
+- **~80%** — hit rate of the best code-review AI tools per Voss: good, not shippable alone.
+
+## Decision framework
+
+- **When automated review earns its place:** high-volume, low-blast-radius changes where human acceptance is a workable proxy for quality — and where you budget verification compute deliberately (multi-pass, shuffled re-review, reviewer-with-tools).
+- **When the human checkpoint is non-negotiable:** correctness isn't cheaply checkable, blast radius is large, or security sign-off requires a name on the result. Prompt injection is the decisive argument: the reviewer can be talked out of its findings by the code it reviews (Anthropic's own README says so).
+- **Watch the metric, not just the number:** the whole vendor field optimizes "is a human accepting my answer?" — acceptance is not correctness. Cursor's 52%→70% resolution rate is real progress and simultaneously a metric that could plateau against actual correctness.
+- **Traps:** treating test passage as mergeability (the 88%-to-29% gap); letting a mergeability benchmark become a training signal without noticing (Sarah Guo's turning point cuts both ways — today's rubric becomes next year's gaming target); disagreeing about how to grade the graders (leaky scaffolds, no consensus on review-quality measurement); reviewing harder instead of rebuilding the system (the Cisco arithmetic doesn't budge).
+- **The relocation rule:** the human checkpoint moves, never vanishes — to harness design, rubric authorship, and production observability. Staff those three, not the review queue.
 
 ## Notable quotes & data
 
@@ -59,13 +84,15 @@ flowchart TD
 ## How to apply it
 
 1. Measure your own asymmetry: pull PR data for the last quarter (lines generated vs lines shipped) and confirm whether review is the bottleneck before spending anything.
-2. Write the definition of mergeable as a versioned artifact: correctness, regression safety, scope discipline, test quality, maintainability — a rubric file every reviewer (human or agent) grades against, stored in the repo.
-3. Budget verification compute explicitly: shift token spend from generating more diffs to multi-pass automated review — shuffled re-review and reviewer-with-tools loops, with false-positive filtering like Cursor's.
-4. Fuse review with repair: let the reviewer's findings spawn a fix agent that commits the fix directly, so human triage only sees genuine questions.
-5. Instruct the reviewer to be suspicious by default: agent reviewers approve too easily, and innocent-framed vulnerable commits fool autonomous reviewers far more often than humans — add a prompt-injection sanity check to the harness.
-6. Make production observability the last reviewer: wire deploys so runtime signals (errors, SLO drift) feed back into the merge bar, closing the loop the talk prescribes.
+2. Write the definition of mergeable as a versioned artifact: correctness, regression safety, scope discipline, test quality, maintainability — a rubric file every reviewer (human or agent) grades against, stored in the repo. Remember: whoever writes today's review standard is writing next year's default model behavior — write it deliberately.
+3. Budget verification compute explicitly: shift token spend from generating more diffs to multi-pass automated review — 8-pass + shuffled re-review and reviewer-with-tools loops, with false-positive filtering like Cursor's (a reviewer that flags good code gets ignored).
+4. Fuse review with repair: let the reviewer's findings spawn a fix agent that commits the fix directly, so human triage only sees genuine questions; the next bar is the reviewer running the code to prove its own bug report.
+5. Instruct the reviewer to be suspicious by default: agent reviewers approve too easily (they default to "looks good to me, ship it"), and innocent-framed vulnerable commits fool autonomous reviewers far more often than humans (88% vs 35%) — add a prompt-injection sanity check to the harness, and never run the reviewer on untrusted PRs without hardening.
+6. Keep humans on the last 20%: AI does the 80% pass, humans focus where correctness isn't cheaply checkable, blast radius is large, or a name must go on the result.
+7. Make production observability the last reviewer: wire deploys so runtime signals (errors, SLO drift) — and the trajectory of what the system did step by step — feed back into the merge bar, closing the loop the talk prescribes.
 
 ## Sources
 
 - YouTube description/chapters: https://www.youtube.com/watch?v=_mi3alkqy4s
-- BigGo AI talk summary: https://finance.biggo.com/podcast/6de2edbc9a704378
+- BigGo AI talk summary (full evidentiary chain): https://finance.biggo.com/podcast/6de2edbc9a704378
+- Voss on the 80% review hit-rate rule and evals-as-tests (Chain of Thought interview): https://chainofthought.show/podcast/74-ai-codes-product-engineers-decide-what-to-build-laurie-voss/

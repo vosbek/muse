@@ -50,6 +50,26 @@ flowchart LR
 - **Memory works across all harnesses on Oz** (Warp's own, Claude Code, Codex — names as transcribed): auto-created, fully traceable, human-reviewable.
 - **Mechanism 3 — Model routing.** "Prohibitively expensive to run all of your agents that are doing simple things like triage or fixing simple CI failures with Opus." Warp's "auto models": out-of-the-box routers continuously evaluated for Pareto efficiency as new models arrive — better than pinning to Opus or Haiku. Users can also define custom routing rules in config: task classes → models (his example: database migrations → GLM, runbooks/API docs → Qwen).
 - **Eval-driven routing.** Task-class routing is "more art than science" today; next step is customer-facing evals (define what you care about, which knobs to turn). Internally, an "eval sidecar" uses a best-at-k approach — run agents across models on Oz for a prompt; finding: "UI tasks are really well done with GLM. We don't really need to run those with Opus." Workflow-specific evals, not generic benchmarks. Being productized for customers.
+- **The platform behind the talk: Oz.** Warp's cloud agent orchestration platform (launched Feb 2026) is the control plane the three mechanisms run on: it runs Claude Code, Codex, and Warp Agent side by side with consistent access controls, governance, and audit logs; automatic multi-agent orchestration with real-time tracking; cross-harness persistent memory (research preview) so agents "remember how their team works across every session" — with companies owning their memory corpus. Warp's client repo is open-source (AGPL) and itself run as a factory: agents do the bulk of implementation, humans focus on ideas, direction, and verification. (warp.dev/oz; SD Times, May 2026.)
+- **Proof it's not just Warp's own demo:** Rectangle Health built "Rex" on Warp — an AI teammate living in Slack, connected to Jira, writing 35,000 lines of code per week, 54% of its own code. Lloyd: Warp automates 30–35% of its own tasks weekly, "and as models improve, as the context improves, as the harness improves, that number is going to go up." (TechCrunch, Aug 2026.)
+
+## By the numbers
+
+- **~1M** — active users of Warp's agentic dev environment (talk context).
+- **5** — stored memories the demo Sentry agent reused to speed up triage on a repeat root-cause analysis.
+- **3** — the self-improvement mechanisms (outer-loop skill improvement; persistent memory; eval-driven model routing).
+- **35,000 lines/week / 54%** — what Rectangle Health's "Rex" teammate writes on Warp, and the share of its own code it authors (TechCrunch).
+- **30–35%** — of Warp's own tasks automated weekly, per Lloyd — his "going up over time" as models, context, and harness improve.
+- **Feb 2026** — Oz launch; the multi-harness + cross-harness-memory update landed May 2026.
+- **best-at-k** — the eval sidecar's method: run one prompt across N models, pick the cheapest that clears the bar; the concrete finding was "UI tasks → GLM, no Opus needed."
+
+## Decision framework
+
+- **Which mechanism first:** skills when the work is a repeatable procedure (triage, repro, release chores); persistent memory when the same issues recur and context re-gathering is the tax (Sentry-style root-cause work); model routing when routine agent volume is high — that's where "prohibitively expensive" lives.
+- **The human's non-negotiable seats:** skill updates land as PRs a human reviews (the outer loop must not be allowed to make the inner loop worse); memories are human-editable/deletable with source traces (prune "local maxima" — plausible-but-wrong memories that trap the agent).
+- **Routing maturity ladder:** (1) stop pinning everything to the frontier model → (2) task-class rules in config (migrations → GLM, docs → Qwen) → (3) eval sidecar with best-at-k on your own workflows → (4) auto models re-evaluated for Pareto efficiency as new models land. Don't skip to (4) without (3): without your own evals, routing is "more art than science."
+- **Traps:** stale skills (procedures decay as the repo changes — that's what the outer loop is for, not a one-time write); memory without provenance (a fact store you can't audit becomes a rumor store); routing on generic benchmarks instead of workflow-specific evals; running agents on someone else's infrastructure when the enterprise requirement is data ownership (the Oz pitch is explicitly "your infrastructure, your data").
+- **Buy-vs-build read:** Warp productized all three mechanisms into Oz (multi-harness control plane, shared memory, auto routing) — if you're already in that ecosystem, the decision is configuration; if not, each mechanism is independently implementable locally (sqlite fact store, config-file routing, best-at-k harness).
 
 ## Notable quotes & data
 
@@ -72,12 +92,16 @@ flowchart LR
 
 ## How to apply it
 
-1. Pick one agent — e.g., your Sentry-style triage agent — and stand up the outer-loop observer: it reviews trajectories plus thumbs-up/down and user comments, synthesizes skill updates, and lands them as a PR for human review so the loop can't make the agent worse.
-2. Create a versioned, human-editable fact store for that agent's repeat issues (start with sqlite). Link every memory to its source run and prune "local maxima" — stale memories that trap the agent.
-3. Write a task-class routing config: migrations → GLM, runbooks/API docs → Qwen (or your local Ollama equivalents); keep the frontier model pinned only where evals justify it.
+1. Pick one agent — e.g., your Sentry-style triage agent — and stand up the outer-loop observer: it reviews trajectories plus thumbs-up/down and user comments, synthesizes skill updates, and lands them as a PR for human review so the loop can't make the agent worse. Warp runs its own open-sourced client repo this way.
+2. Create a versioned, human-editable fact store for that agent's repeat issues (start with sqlite). Link every memory to its source run and prune "local maxima" — stale memories that trap the agent. Measure the hit rate: how often repeat runs reuse stored memories instead of re-gathering context, and the token delta — that is the direct savings ledger.
+3. Write a task-class routing config: migrations → GLM, runbooks/API docs → Qwen (or your local Ollama equivalents); keep the frontier model pinned only where evals justify it. Climb the maturity ladder: rules in config → best-at-k eval sidecar on your own workflows → auto re-evaluation as new models land.
 4. Run a best-at-k eval sidecar on one workflow next week: same prompt across models, measure pass rate, pin the cheapest model that clears the bar, and re-run as new models arrive to stay on the Pareto frontier.
-5. Measure memory reuse: count how often repeat runs hit stored memories instead of re-gathering context, and track the token delta — that is the direct savings ledger for persistent memory.
+5. Decide the data-ownership posture up front: if the enterprise requirement is "our infrastructure, our data," self-host the fact store and routing — the mechanisms don't require Warp's platform.
 
 ## Sources
 
 - Video: https://www.youtube.com/watch?v=TN3mj92oZ8I
+- Full transcript: https://www.usetranscribe.io/yt/TN3mj92oZ8I/self-improving-agent-factories
+- Oz cloud agent platform (multi-harness control plane, cross-harness memory, auto routing): https://www.warp.dev/oz
+- Warp Factories customer proof point — Rectangle Health's "Rex" (35K lines/week, 54% own code) and Lloyd's 30–35% automation figure (TechCrunch, Aug 2026): https://techcrunch.com/2026/08/18/warps-new-system-is-an-out-of-the-box-software-factory-for-ai-development/
+- Oz multi-harness + memory update (SD Times, May 2026): https://sdtimes.com/ai/warp-updates-oz-to-help-enterprises-orchestrate-coding-agents-across-any-model-or-harness/
