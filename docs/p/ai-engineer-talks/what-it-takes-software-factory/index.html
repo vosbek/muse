@@ -1,0 +1,52 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Talk Notes: "What It Actually Takes to Build a Software Factory" — Tereza Tížková, Factory · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-what-it-actually-takes-to-build-a-software-factory-tereza-tizkova-factory">Talk Notes: "What It Actually Takes to Build a Software Factory" — Tereza Tížková, Factory</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=vGCJ7diEtrw">What It Actually Takes to Build a Software Factory — Tereza Tížková, Factory</a> · AI Engineer channel · Sep 27, 2026 · 22:49 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>A software factory isn't a coding agent or even a swarm of agents — it's the whole autonomous software lifecycle (signals → feedback/logs → prioritization → orchestration → execution → validation → production testing → iteration + continuous learning). Building one takes three things — be agnostic, be truly autonomous, always improve — and requires rebuilding the organization from the ground up, not bolting on a consultancy. (In production for enterprises like EY and Adobe.)</p>
+<h2 id="key-points">Key points</h2>
+<ul>
+<li><strong>Definition.</strong> The whole loop of developing software with autonomy: collecting signals, reacting to user feedback and logs, prioritizing, orchestrating, executing, validating, testing in production, iterating, continuously improving and gaining knowledge/skills.</li>
+<li><strong>Why now.</strong> 2023-era attempts (AutoGPT, BabyAGI) failed — hallucinating LLMs, context length, reasoning quality, no good isolated environments. The tech has caught up.</li>
+<li><strong>What it's not.</strong> Not a coding agent, "not even a swarm of coding agents, even thousands of agents" — "generating code... that's the easy part"; engineers don't spend most time writing code. Not a consultancy or abstract strategy — "you should really rebuild your organization from ground up."</li>
+<li><strong>Three pillars.</strong> (a) Agnostic — independent of LLM choices and existing workflows (Slack, GitHub, BYO subscriptions); (b) autonomous — give agents trust/permissions/governance and let them run long (their "missions" already run for weeks; predictions of year-plus runs); (c) always improving — onboard agents like humans (codebase understanding, docs) and let them gain/share knowledge.</li>
+<li><strong>Model agnosticism.</strong> Cites a Coinbase CEO chart: the org kept growing token usage ("token maxing") while flattening spend via different default models per role (stop pushing frontier as default), caching, no spend limits but requiring visible results, and smart routing.</li>
+<li><strong>Factory's "automatic model routing."</strong> Assign task (org-level permissions/default models per role) → classify difficulty ("the magic": prompt structure, codebase, task difficulty, tools used) → threshold ("cheapest model that is predicted to accomplish your task") → go, with automatic failover mid-task. Benefits beyond cost: reliability and speed (open models often faster; automatic provider failover). Conservative benchmark: <strong>~25%+ savings</strong>.</li>
+<li><strong>Caching.</strong> "Just a pricing decision, not a technical challenge" — labs save by skipping context prefill; self-hosted open models on dedicated compute get the same advantage.</li>
+<li><strong>Autonomy's hard problem</strong> isn't loops (Ralph loops etc.) but defining "done" for open-ended, nondeterministic tasks; cheating risk (agents passing tests without accomplishing the task). "Scary chart": autonomous run durations keep growing, but production reliability isn't solved.</li>
+<li><strong>Factory "missions."</strong> Long-running agent sessions (weeks). Orchestrator writes the conditions/validation contract <em>before</em> code → workers execute in sequence (not a parallel swarm — "more fresh context," like human code review; each worker may still use parallel sub-agents) → validators review and send back. Real customer mission: <strong>16 hours, with validation taking 40% of the whole process</strong>.</li>
+<li><strong>Validators judge code they didn't write.</strong> Two types: scrutiny validator (rigorous code check: linters, types, tests) and user-testing validator ("in the arena" — a virtual computer that clicks through the app and checks it actually works; needed for a codebase migration where other tools produced non-interactive dummies). Enabled by computer-use progress + persistent VMs.</li>
+<li><strong>Context: "deferred context engine."</strong> Progressive disclosure of tools — short list + short descriptions; fully load only when needed; nothing removed, just hidden. "Saves 50% of tokens or more" at scale.</li>
+<li><strong>Power law of adoption.</strong> Succeed big or fail big; unready codebases degrade. Cites Stanford data: without structured codebases and docs, AI makes code worse. "Agent readiness" hygiene framework (reproducible dev env, tests, docs, code style, linters) — bigger customers go through checks + recommended fixes.</li>
+<li><strong>Continuous learning.</strong> Plugins = packaged reusable skills/context; auto-updating documentation.</li>
+<li><strong>Humans.</strong> Won't be obsoleted — we keep moving up abstraction levels (human computers → programming languages → coding agents → software factories). "We should be as humans deciding what to build in the software, not how to build it." AI takes the annoying stuff (alignment meetings, status syncs); humans keep the cool stuff. Close: "go touch some grass and let your agents build for you."</li>
+</ul>
+<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<ul>
+<li>"Software factory is not just coding agent and it's not even a swarm of coding agents even thousands of agents because generating code... that's the easy part."</li>
+<li>"You can save for example 25% but even more probably" (model routing); "you can save 50% of tokens or more" (deferred context engine)</li>
+<li>"Go touch some grass and let your agents build for you."</li>
+<li>Real mission: 16 hours, 40% of it validation; missions already run for weeks</li>
+</ul>
+<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+<ul>
+<li><strong>Automatic model routing.</strong> Classify task difficulty → cheapest model above the capability threshold; ~25%+ cost savings plus reliability/speed (open models often faster, provider failover). The Coinbase "token maxing with flat spend" example is the enterprise playbook: per-role defaults, caching, visible results, smart routing.</li>
+<li><strong>Deferred context engine.</strong> Progressive tool disclosure saves 50%+ tokens at scale — the same retrieval-before-inclusion principle as the playbook's context-management stack, applied to tool definitions.</li>
+<li><strong>Caching as pricing, not tech.</strong> Open models on dedicated compute capture the same prefill savings the labs do — a cost-structure argument for self-hosting.</li>
+<li><strong>Validation is a first-class budget line.</strong> 40% of a 16-hour mission went to validation — factory economics must price eval cost, not just generation cost.</li>
+</ul>
+<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+<ul>
+<li>Self-hosted open models on dedicated compute unlock the same caching/prefill savings API providers price in — a concrete cost case for local inference infra.</li>
+<li>The deferred context engine pattern (short tool list + lazy load) is directly implementable in a local harness to cut per-task token overhead.</li>
+<li>The "agent readiness" hygiene checklist (reproducible dev env, tests, docs, linters) is a prerequisite any local factory deployment should audit first.</li>
+</ul>
+<h2 id="sources">Sources</h2>
+<ul>
+<li>Video: https://www.youtube.com/watch?v=vGCJ7diEtrw</li>
+</ul></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>

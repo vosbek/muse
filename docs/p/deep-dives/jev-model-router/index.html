@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jev model router for Claude Code · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><h1 id="jev-model-router-for-claude-code">Jev model router for Claude Code</h1>
+<p><strong>What it is.</strong> A family of Claude Code mods/plugins that route each task or turn to the right model tier <em>using Jev as the decision-maker</em>. Implementations found: <strong>satviksinha/jev-model-router</strong> (standalone mod), the <strong>jev-model-router mod in davila7/claude-code-templates</strong> (<code>productivity/jev-model-router</code>), and <strong>chrishan17/claude-jev-mod</strong> (adds a <code>$.jev</code> helper over Jev for any plugin).</p>
+<p><strong>How it works.</strong> A Jev <em>Choice</em> question is asked over model tiers (e.g. nano / fast / balanced / frontier, or haiku / sonnet / opus / fable), each tier described by a one-line rubric of what it's for. Jev returns a probability per tier plus confidence; the router picks the tier and rewrites the request. The davila7 mod exposes three switches, not equally safe:</p>
+<table>
+<thead>
+<tr>
+<th>Switch</th>
+<th>What it sets</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>routeSubagentModel</code></td>
+<td>model of each subagent, at <code>agent.spawn</code></td>
+<td><strong>on</strong></td>
+</tr>
+<tr>
+<td><code>routeMainEffort</code></td>
+<td>reasoning effort of the main conversation, at <code>turn.step</code></td>
+<td><strong>on</strong></td>
+</tr>
+<tr>
+<td><code>routeMainModel</code></td>
+<td>model of the main conversation, at <code>turn.step</code></td>
+<td><strong>off</strong> — switching models mid-session invalidates the prompt cache</td>
+</tr>
+</tbody>
+</table>
+<p>Example tier table from one implementation: nano <code>openai/gpt-5-nano</code> ($0.05/$0.40 per M), fast <code>google/gemini-3-flash</code> ($0.50/$3.00), balanced <code>anthropic/claude-sonnet-5</code> ($2.00/$10.00), frontier <code>anthropic/claude-fable-5.1</code> ($10.00/$50.00). Editing the tier rubrics is how you change routing behavior.</p>
+<p><strong>Providers.</strong> Jev is reachable several ways; the mod picks by whichever key is set:</p>
+<table>
+<thead>
+<tr>
+<th>Backend</th>
+<th>Endpoint</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>typesafe</code></td>
+<td><code>POST api.typesafe.ai/v1/systemone</code> (<code>TYPESAFE_API_KEY</code>)</td>
+<td><strong>Preferred</strong> — the only one reporting calibrated confidence per answer, so <code>minConfidence</code> thresholds actually fire</td>
+</tr>
+<tr>
+<td><code>vercel</code> (AI Gateway)</td>
+<td><code>POST ai-gateway.vercel.sh/…/evaluation-model</code> (<code>AI_GATEWAY_API_KEY</code>, model <code>typesafe-ai/jev</code>)</td>
+<td>No confidence field; confidence derived from the optional probability distribution</td>
+</tr>
+<tr>
+<td>openrouter / cloudflare / litellm / custom</td>
+<td>various</td>
+<td>Same System One wire shape</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Deploy it locally.</strong></p>
+<pre><code class="language-jsonc">// ~/.claude/settings.json
+{ &quot;env&quot;: {
+    &quot;TYPESAFE_API_KEY&quot;: &quot;...&quot;,      // or AI_GATEWAY_API_KEY
+    &quot;CLAUDE_CODE_ENABLE_FUNCTION_HOOKS&quot;: &quot;1&quot;   // not optional — without it the mod loads and silently does nothing
+} }
+</code></pre>
+<p>Then <code>claude --plugin-dir &lt;mod-dir&gt;</code>; move to <code>~/.claude/skills/jev-router/</code> to keep it on permanently. Notes: the router <strong>fails open</strong> — misconfiguration shows up as "mod doing nothing," so run the bundled check script (<code>npm run check-jev</code>) when nothing routes. The Vercel gateway needs a card on file even for free credits. The gateway's evaluation endpoint isn't publicly documented; one implementation read it from the AI SDK source.</p>
+<p><strong>Why it matters for tokenomics / context management.</strong> This is the deployable version of the oldest cost insight in the playbook: <em>most turns don't need the frontier model</em>. The design details are the valuable part — route subagents (the volume) aggressively, route main-loop <em>effort</em> but not the main-loop <em>model</em> (cache invalidation), gate escalation on calibrated confidence, and fail open so a router outage never breaks the session. For an enterprise, this is the reference implementation to copy before building a bespoke router.</p>
+<p><strong>Links.</strong> https://github.com/satviksinha/jev-model-router · Mod: https://github.com/davila7/claude-code-templates (<code>cli-tool/components/mods/productivity/jev-model-router/</code>) · <code>$.jev</code> helper: https://github.com/chrishan17/claude-jev-mod.</p></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
