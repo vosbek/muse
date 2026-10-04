@@ -39,3 +39,20 @@ Start with [COMBINED.md](COMBINED.md) — the cross-cutting patterns across all 
 - New project → stack a setup from proven skills.
 
 The collection compounds. That's the whole point.
+
+## Deep dives
+
+Ten deep-dive dossiers that go beyond the distilled summaries, built from the actual source material (repo READMEs, vendor engineering blogs, official docs):
+
+| Dossier | Source |
+|---|---|
+| [jevgrep](deep-dives/jevgrep.md) — Jev-powered code research CLI, 28.6% measured cost cut | https://github.com/dzhng/jevgrep |
+| [unreal-agent](deep-dives/unreal-agent.md) — async-first harness, durable operations | https://github.com/unreallabsai/unreal-agent |
+| [jev-thesis](deep-dives/jev-thesis.md) — TypeSafe's System One Models launch post (RLCD, $0.042/MTok) | https://typesafe.ai/blog/introducing-system-one-models-and-jev |
+| [uber-software-factory](deep-dives/uber-software-factory.md) — Uber's cost equation, 34%/52% unit-cost cuts | https://www.uber.com/us/en/blog/efficient-software-factory/ |
+| [github-cost-efficiency](deep-dives/github-cost-efficiency.md) — Copilot's 4 harness changes + 5 lessons | https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/ |
+| [spotify-shunt](deep-dives/spotify-shunt.md) — routing agent I/O to cheap models via hooks | spotify/portal-ai-plugins |
+| [claude-cost-optimization](deep-dives/claude-cost-optimization.md) — Anthropic's ranked lever order + /claude-api cost-optimize | https://claude.com/blog/reducing-cost-and-improving-performance-with-claude-platform |
+| [tangleml](deep-dives/tangleml.md) — Shopify's open-source experimentation platform + self-improving loops | https://tangleml.com |
+| [show-me-skill](deep-dives/show-me-skill.md) — visual-explanation skill (humanlayer/skills) | https://github.com/humanlayer/skills |
+| [jev-model-router](deep-dives/jev-model-router.md) — routing Claude Code turns with Jev | https://github.com/satviksinha/jev-model-router |

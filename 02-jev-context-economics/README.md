@@ -260,3 +260,5 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** Claude Platform docs (article link at permalink)
 - **Extractable skill:** The big three cost levers — prompt caching, instruction hygiene, effort routing — applied systematically.
 - **Source:** https://x.com/ClaudeDevs/status/2097369738968195513
+
+**Deep dives:** [jevgrep](../deep-dives/jevgrep.md) (28.6% measured cut) · [jev-thesis](../deep-dives/jev-thesis.md) (System One Models) · [jev-model-router](../deep-dives/jev-model-router.md) (routing Claude Code with Jev) · [github-cost-efficiency](../deep-dives/github-cost-efficiency.md) (Copilot harness) · [claude-cost-optimization](../deep-dives/claude-cost-optimization.md) (Anthropic's ranked levers).

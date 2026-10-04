@@ -181,3 +181,5 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** aka.ms/VSCode/Learn-Java
 - **Extractable skill:** Learn tools through their agent workflows; that's where vendors now put the leverage.
 - **Source:** https://x.com/code/status/2093449548437786828
+
+**Deep dives:** [spotify-shunt](../deep-dives/spotify-shunt.md) (routing I/O to cheap models) · [show-me-skill](../deep-dives/show-me-skill.md) (visual-explanation skill).
