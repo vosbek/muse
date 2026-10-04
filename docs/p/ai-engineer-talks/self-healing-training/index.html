@@ -6,6 +6,27 @@
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=bRGyYaE0lxI">GPU Died. Training Didn't: Self-Healing Training at Scale — Connor Guerrero &amp; Young Jeong, Crusoe</a> · AI Engineer channel · Oct 3, 2026 · 16:53 · Recorded at AI Engineer World's Fair 2026</p>
 <h2 id="thesis">Thesis</h2>
 <p>At thousands of GPUs, hardware failures are inevitable and manual remediation doesn't scale; Crusoe's managed Slurm on Kubernetes (via CMK + the open-source Slinky project) with AutoClusters automatically detects critical GPU errors (e.g., XID 79), replaces the node, and resumes training from checkpoint with no user action — full recovery in under 15 minutes.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<p>The XID 79 auto-remediation flow, end to end:</p>
+<pre class="mermaid">flowchart TD
+    A[Detect XID 79] --> B[Notify user no action required]
+    B --> C[Slurm operator drains node]
+    C --> D[SIGTERM gives time to save checkpoint]
+    D --> E[Job requeued automatically]
+    E --> F[Node cordoned and removed from pool]
+    F --> G[Healthy node added from spare capacity]
+    G --> H[Recovery validated and logged]
+    H --> I[App loads checkpoint and resumes]</pre>
+<p>The unified hardware pool:</p>
+<pre class="mermaid">flowchart LR
+    A[Idle inference GPUs] --> P[Unified GPU pool]
+    B[Training hero runs] --> P
+    P --> C[Freed training nodes take inference pods]</pre>
+<p>The managed-Slurm layering:</p>
+<pre class="mermaid">flowchart LR
+    U[User SSHs in and sees Slurm] --> S[Managed Slurm operator layer]
+    S --> K[Crusoe Managed Kubernetes]
+    K --> N[GPU nodes are K8s nodes first]</pre>
 <h2 id="key-points">Key points</h2>
 <ul>
 <li><strong>Slurm excels at training</strong>: tight collective communication across ranks, gang scheduling, topology awareness, prologue/epilog cluster validation — 20+ years, built by researchers for researchers.</li>
@@ -32,6 +53,16 @@
 <li>Unified pool reduces idle GPU waste — idle inference GPUs reallocated to training, freed training nodes immediately schedule inference pods.</li>
 <li>Auto-remediation replaces engineers logging in at 3 a.m. for hours — less downtime = fewer burned GPU-hours.</li>
 </ul>
-<p>No direct local-deploy relevance (datacenter-scale training infrastructure talk), noted here rather than inventing one.</p></article></div>
+<p>No direct local-deploy relevance (datacenter-scale training infrastructure talk), noted here rather than inventing one.</p>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li>Mandate checkpoint-on-SIGTERM discipline. Every training job must flush checkpoints and logs when it receives SIGTERM — no checkpoint hygiene, no self-healing.</li>
+<li>Codify the remediation flow as an automated runbook: detect → notify (no action required) → drain → requeue → cordon/remove → replace from spares → validate/log → resume, with each step timed against the 15-minute bar.</li>
+<li>Run a simulated failure drill. Inject a GPU error on a sacrificial node, clock time from error to resumed training, and log where the minutes leak — repeat quarterly.</li>
+<li>Collapse separate GPU reservations into one unified pool so idle inference GPUs feed training hero runs and freed training nodes immediately take inference pods.</li>
+<li>If your team runs both Slurm and Kubernetes today, evaluate the open-source Slinky project to kill the double-infrastructure burden instead of maintaining two stacks.</li>
+</ol></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

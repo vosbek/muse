@@ -6,6 +6,19 @@
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=TRe1u7dHYiA">What Makes Open Models Fast in Production — Sujee Maniyam, Nebius</a> · AI Engineer channel · Oct 3, 2026 · 20:31 · Recorded at AI Engineer World's Fair 2026</p>
 <h2 id="thesis">Thesis</h2>
 <p>Open models are now competitive with proprietary models on quality, and Nebius makes them fast and cost-efficient in production via a full-stack "Token Factory" — selection, deployment, post-training, and a serving stack with per-model engine selection, cache-aware routing, speculative decoding with custom-trained draft models, KV-cache optimization, and disaggregated prefill/decode.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<pre class="mermaid">flowchart LR
+    I[Inference] --> DL[Data lab] --> PT[Post training] --> D[Deployment]
+    D --> I</pre>
+<pre class="mermaid">flowchart TD
+    REQ[Request in] --> RAR[Cache aware routing to cached prefix]
+    RAR --> PRE[Prefill - compute bound]
+    PRE --> DEC[Decode - memory bound, one token at a time]
+    DEC --> SPEC[Speculative decode with small draft model]
+    SPEC --> OUT[Large model approves drafts]</pre>
+<pre class="mermaid">flowchart TD
+    HBM[HBM cache - limited, fastest] --> CPU[CPU memory] --> DISK[Disk storage]
+    HBM --> EVICT[Eviction policy decides keep or swap]</pre>
 <h2 id="key-points">Key points</h2>
 <ul>
 <li><strong>Token Factory</strong>: full loop — inference → data lab → post-training → deployment; 60+ models in production.</li>
@@ -37,6 +50,17 @@
 <ul>
 <li><strong>The prefix-cache idea applies locally</strong>: wherever Matt serves local models (Ollama/vLLM), prefix caching and prompt-prefix reuse across repeated tasks (system prompts, tool schemas, session preambles) cut decode cost — same mechanics, smaller hardware.</li>
 <li><strong>Per-model quantization discipline</strong>: benchmark quality degradation per model at each quantization level rather than applying one default — directly relevant to picking local model sizes for the enterprise router.</li>
-</ul></article></div>
+</ul>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li><strong>Inventory your local serving</strong>: list every model you serve (Ollama, vLLM) and pick the best serving engine per model — not one engine for all.</li>
+<li><strong>Enable prefix caching</strong>: make system prompts, tool schemas, and session preambles byte-identical across repeated tasks so KV-cache reuse kicks in — up to 10x speedup on the same mechanics locally.</li>
+<li><strong>Design prompts cache-first</strong>: put the stable prefix first and the volatile content last so requests land on already-cached prefixes.</li>
+<li><strong>Benchmark quantization per model</strong>: find the quality-vs-size sweet spot for each model individually instead of applying one default quantization.</li>
+<li><strong>Train draft models on your own traffic</strong>: small draft models for speculative decoding improve up to 30% even on generic data — better on your production requests.</li>
+<li><strong>Split prefill and decode thinking</strong>: treat the compute-bound prefill phase and the memory-bound sequential decode phase as separate optimization targets when routing and sizing.</li>
+</ol></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

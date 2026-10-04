@@ -6,6 +6,21 @@
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=oUZEt4EiPbk">I Built a Personal AI Agent on a Raspberry Pi — Jeremy Adams, Neo4j</a> · AI Engineer channel · Oct 3, 2026 · 20:10 · Recorded at AI Engineer World's Fair 2026</p>
 <h2 id="thesis">Thesis</h2>
 <p>A useful, private personal AI agent doesn't need a laptop or a Mac Mini — it can run on a cheap old Raspberry Pi 4B using NanoClaw (a compact, hackable agent runtime), WhatsApp as the interface, Claude as the cloud brain, and a Neo4j knowledge-graph memory with a POLE schema — built for hackability and understanding over feature-completeness.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<pre class="mermaid">flowchart LR
+    WA[WhatsApp on phone] --> NC[NanoClaw on Pi 4B]
+    BT[GPIO voice button] --> NC
+    NC --> CL[Claude cloud API - the big brain]
+    NC --> MCP[Neo4j via MCP server]
+    MCP --> NG[Neo4j graph with POLE schema]</pre>
+<pre class="mermaid">flowchart TD
+    PO[POLE schema] --> P[Person]
+    PO --> O[Object]
+    PO --> L[Location]
+    PO --> E[Event]
+    PO --> ORG[Organization]</pre>
+<pre class="mermaid">flowchart LR
+    CAP[Capture voice note offline] --> LG[Local Neo4j stores it] --> UP[Upload when online] --> CE[Cloud enrichment adds theme nodes]</pre>
 <h2 id="key-points">Key points</h2>
 <ul>
 <li><strong>Hardware</strong>: Raspberry Pi 4B (not the latest model), previously ran a 32-bit OS; originally used to measure dish weight in the sink — "Will it claw? It claws real good."</li>
@@ -37,6 +52,17 @@
 <li><strong>The architecture is Matt's local-first pattern at pocket scale</strong>: cloud reasoning over the wire + local graph memory on-device. Enterprise version: local decision models with local RAG/memory, cloud frontier only for reasoning overflow.</li>
 <li><strong>POLE schema (Person, Object, Location, Event + Organization) is a ready-made memory ontology</strong> — steal it for the governed memory layer instead of inventing a custom schema.</li>
 <li><strong>Capture-local, enrich-cloud</strong> is the offline pattern: cheap local writes during capture, expensive enrichment later — directly analogous to batching retrieval/enrichment off the hot path.</li>
-</ul></article></div>
+</ul>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li><strong>Steal the POLE schema</strong>: use Person, Object, Location, Event plus Organization as your governed memory ontology instead of inventing a custom schema.</li>
+<li><strong>Pilot a tiny agent runtime</strong>: stand up a NanoClaw-style compact runtime (~15 source files) on cheap hardware or a VM — hackable and understandable beats feature-complete for a memory pilot.</li>
+<li><strong>Keep the brain remote, memory local</strong>: run reasoning over the wire against a frontier API while the knowledge graph lives on your own infrastructure — the enterprise version of the Pi pattern.</li>
+<li><strong>Query memory over MCP</strong>: expose the graph through an MCP server so agents write Cypher (or your query language) instead of getting raw dumps.</li>
+<li><strong>Build capture-local, enrich-cloud</strong>: let edge devices or offline clients write cheap local notes, then upload and enrich when connectivity returns — batch expensive enrichment off the hot path.</li>
+<li><strong>Distill history into memories</strong>: run existing chat and ticket history through an extraction pass into people, locations, and concepts before going live.</li>
+</ol></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

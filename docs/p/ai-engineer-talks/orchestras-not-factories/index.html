@@ -7,6 +7,22 @@
 <p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
 <h2 id="thesis">Thesis</h2>
 <p>The fastest builders follow six principles (his acronym "Stickfo"): stay near the frontier, don't beat the market, create slop-free zones, feed the beast, free-range agents — and frame the work as conducting an orchestra, not managing a factory: a human in flow, crafting with a team of agents, not a line manager pushing buttons to pump out features.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<pre class="mermaid">flowchart TD
+    SF[Stickfo - six principles] --> P1[Stay near the frontier]
+    SF --> P2[Do not beat the market]
+    SF --> P3[Slop free zones]
+    SF --> P4[Feed the beast]
+    SF --> P5[Free range agents]
+    SF --> P6[Orchestras not factories]</pre>
+<pre class="mermaid">flowchart TD
+    SM[Slack messages] --> DB[Central Postgres database]
+    DR[Discord bug reports] --> DB
+    MT[Recorded meetings] --> DB
+    DB --> SQL[Agent with a SQL tool]</pre>
+<pre class="mermaid">flowchart LR
+    F[Factory - line manager pushes buttons] --> O1[Pumped out features]
+    O[Orchestra - human in flow conducts agents] --> O2[Crafted product]</pre>
 <h2 id="key-points">Key points</h2>
 <ul>
 <li><strong>Conductor.</strong> A desktop app for managing a team of coding agents in one interface (vs. many terminal windows for Claude Code/Codex). Born as an internal tool: the team were Claude Code power users (from Feb of last year), cloned their repo 5×, discovered worktrees, and "bit by bit" built Conductor. They were previously building a different app called Chorus.</li>
@@ -31,9 +47,20 @@
 <li><strong>Slop-free zones = targeted allocation of expensive human review attention.</strong> Strict where it matters, loose elsewhere — review effort is a scarce resource to budget like tokens.</li>
 <li><strong>Feed the beast.</strong> One centralized context store plus a SQL tool is cheap, reusable context retrieval for all agents — a single shared memory surface instead of per-agent re-gathering.</li>
 </ul>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li><strong>Declare your slop-free zones</strong>: name the files and surfaces that always get strict human review (migrations, customer-facing copy, CLAUDE.md and skills) — invest heavily there, stay loose elsewhere.</li>
+<li><strong>Feed the beast</strong>: stand up one central database of org knowledge (chat history, bug reports, meeting notes) and give every agent a SQL tool — one shared memory surface instead of per-agent re-gathering.</li>
+<li><strong>Apply the market test</strong>: before building any workflow optimization, ask "why isn't this the default?" — only invest engineering time where you hold proprietary alpha about your users and codebase.</li>
+<li><strong>Stay near the frontier</strong>: try new models and features the day they ship; the social-graph trickle-down leaves you months behind.</li>
+<li><strong>Make agents free-range</strong>: use sandboxes that survive laptop closes, let agents spawn subagents, and make workspaces visible for real-time human review and comments.</li>
+<li><strong>Treat CLAUDE.md as onboarding</strong>: rewrite it as what you'd whisper in a new intern's ear every session — it's the highest-leverage context you load.</li>
+</ol>
 <h2 id="sources">Sources</h2>
 <ul>
 <li>Video: https://www.youtube.com/watch?v=TRfzFJCJ7ZE</li>
 </ul></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>
