@@ -1,0 +1,59 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Tokenomics Playbook · AI Skills Playbook</title><link rel="stylesheet" href="../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#start'>Start here</a></div><article class='doc'><div class='badge'>Start here</div><h1 id="the-tokenomics-playbook">The Tokenomics Playbook</h1>
+<p><strong>For:</strong> a team standardized on VS Code + GitHub Copilot, trying to cut what AI-assisted engineering actually costs — tokens, context, and tooling spend.
+<strong>Status:</strong> advisory. Every claim below points at a distilled source in this repo; verify plan-level specifics (Copilot accounting, current model prices) against your own contracts before acting on them.</p>
+<h2 id="the-one-number-that-matters-cost-per-completed-task">The one number that matters: cost per completed task</h2>
+<p>Don't track tokens. Don't track seats. Track <strong>cost per completed task</strong> — tokens in + tokens out + tool calls, divided by work actually merged. Cast AI's Kimchi harness proved the point on real traffic: cost-per-task routing saved <strong>2.5x vs Claude</strong> while token volume <em>grew</em> 1.5x, because cheaper models did more of the work (<a href="../ai-engineer-talks/harness-picks-model">source</a>). If you take one thing from this page: instrument cost-per-task before you change anything else.</p>
+<h2 id="lever-1-context-hygiene-biggest-lever-zero-spend">Lever 1 — Context hygiene (biggest lever, zero spend)</h2>
+<p>Most teams burn tokens on context they never needed. The fixes are configuration, not products:</p>
+<ul>
+<li><strong><code>.github/copilot-instructions.md</code></strong> — repo-level instructions injected into every Copilot prompt by the client, read locally, costs nothing. This is the single highest-ROI file your team can write: coding standards, architectural constraints, "never do X" rules. The repo's skill system (<a href="../templates/skill-card">skill cards</a>, <a href="../setups">project setups</a>) is the grown-up version of the same idea.</li>
+<li><strong>Put standards in the reviewer, not the implementer.</strong> From Matt Pocock's AI Engineer talk: coding standards belong in a <em>reviewer</em> subagent with its own context window, never in AGENTS.md alongside the implementer — red-green-refactor across two context windows (<a href="../ai-engineer-talks/fixing-pr-bottleneck">source</a>). One crowded context window is the most expensive mistake in agent design.</li>
+<li><strong>Content exclusions</strong> — paths Copilot must never read (<code>.env</code>, secrets, generated code). Enforced client-side before data leaves the machine. Caveat from the research: exclusions don't cover agent mode, and file names can leak — treat them as hygiene, not a security boundary (<a href="../01-claude-code-agents/github-copilot-storage-memory-map">source</a>).</li>
+<li><strong>Feed computed highlights, not raw pages.</strong> Exa's finding, and it generalizes: ~500 characters of computed summary beat 100k-character raw pages — a <strong>~200x token cut</strong> with zero latency penalty (<a href="../ai-engineer-talks/coding-agent-out-of-date">source</a>). Anywhere your workflow pastes raw docs into context, summarize first.</li>
+</ul>
+<h2 id="lever-2-model-routing-the-70x-spread">Lever 2 — Model routing (the 70x spread)</h2>
+<p>On one identical eval (five character files, one model), token consumption varied <strong>70x between models</strong> (Harald Kirschner's VS Code talk, <a href="../ai-engineer-talks/vscode-weekly-releases">source</a>). Model choice is a cost decision before it's a quality decision:</p>
+<ul>
+<li>Route <strong>completions → cheap models</strong>, <strong>chat → mid-tier</strong>, <strong>hard reasoning/agents → frontier</strong>. Copilot's model picker already allows per-surface selection — most teams leave it on default.</li>
+<li><strong>Re-benchmark on a schedule.</strong> Kimchi's autonomous re-benchmarking caught model drift within weeks — a model that's cheapest today isn't cheapest next quarter.</li>
+<li><strong>Never hard-tie prompts to one model.</strong> GitHub deprecated selected Copilot models on Oct 19, 2026 with routine notice (<a href="../07-ai-news">source</a>). Portable prompts, skills, and evals are cost infrastructure: they let you move to the cheapest capable model without rewriting anything.</li>
+</ul>
+<h2 id="lever-3-deferred-and-progressive-context">Lever 3 — Deferred and progressive context</h2>
+<p>Don't load context speculatively — disclose it as the task demands it. Factory's <strong>deferred context engine</strong> (progressive tool disclosure) cut token usage <strong>50%+</strong> (<a href="../ai-engineer-talks/what-it-takes-software-factory">source</a>). For a Copilot team, the practical translations:</p>
+<ul>
+<li>Skills over mega-prompts: load the skill for the task at hand, not the whole playbook.</li>
+<li>Summarize-then-expand: keep rolling summaries of long threads; rehydrate detail only when needed.</li>
+<li>The GEPA extreme: one round of text-space reflection on 3 examples beat 25,000 RL rollouts 2x — and Databricks served GPT-OSS 120B above Claude Opus at <strong>90x lower cost</strong> (<a href="../ai-engineer-talks/gepa-optimize-anything">source</a>). Optimization effort compounds harder than model spend.</li>
+</ul>
+<h2 id="lever-4-local-complements-the-local-first-stack">Lever 4 — Local complements (the local-first stack)</h2>
+<p>Your engineers are on VS Code; the machine under their fingers is free compute:</p>
+<ul>
+<li><strong>Local memory that never leaves the disk.</strong> Qdrant's demo: 92 objects, 300+ vectors, 15MB, sub-millisecond, fully offline (<a href="../ai-engineer-talks/stop-renting-memory">source</a>). Project memory doesn't need a cloud vector DB.</li>
+<li><strong>Open weights for the cheap tier.</strong> GLM-5.2 runs between Opus 4.7 and 4.8 on long-horizon coding, MIT-licensed, 1M context (<a href="../ai-engineer-talks/glm-5-2-open-weights">source</a>). The open tier keeps narrowing the gap — re-test it quarterly (Lever 2's discipline).</li>
+<li><strong>Local CLI agents for mechanical tasks.</strong> The repo's own pattern: cheap local execution for the 80% of work that doesn't need frontier reasoning; reserve Copilot's best models for the 20% that does.</li>
+</ul>
+<h2 id="lever-5-memory-that-compounds-stop-paying-twice">Lever 5 — Memory that compounds (stop paying twice)</h2>
+<p>Every repeated failure your team pays tokens to rediscover is a tax. Two patterns from the talks:</p>
+<ul>
+<li><strong>The "retro" skill</strong> (Pocock): after every human code review, compound the feedback into new automated checks and standards. Each review makes the next one cheaper.</li>
+<li><strong>Eval sidecars</strong> (Warp): run a cheap model alongside the expensive one per task type; promote the cheap model wherever it matches quality (<a href="../ai-engineer-talks/self-improving-factories">source</a>).</li>
+</ul>
+<h2 id="what-this-repo-already-gives-you">What this repo already gives you</h2>
+<ul>
+<li><a href="../08-tools-apis/vscode-storage-memory-map">Storage/memory maps</a> for VS Code and <a href="../01-claude-code-agents/github-copilot-storage-memory-map">Copilot</a> — exactly what leaves each machine, so you can see the cost surface.</li>
+<li><a href="../ai-engineer-talks">37 AI Engineer talk distillations</a>, most with a tokenomics angle — the evidence base behind every lever above.</li>
+<li><a href="../COMBINED">COMBINED.md</a> — cross-item patterns: the harness-not-model consensus, skills replacing prompts, vendors publishing real cost numbers.</li>
+</ul>
+<h2 id="suggested-next-steps-for-your-team">Suggested next steps for your team</h2>
+<ol>
+<li>Write the team <code>copilot-instructions.md</code> (Lever 1) — one afternoon, immediate token savings.</li>
+<li>Stand up cost-per-task tracking for one repo for two weeks (the Kimchi metric) — you can't route what you don't measure.</li>
+<li>Run the model-routing eval: same tasks across Copilot's available models, score quality vs. tokens — expect a wide spread.</li>
+<li>Pilot a local memory sidecar (Qdrant pattern) on one project before buying any cloud memory product.</li>
+</ol></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../";</script><script src="../../assets/search.js"></script></body></html>
