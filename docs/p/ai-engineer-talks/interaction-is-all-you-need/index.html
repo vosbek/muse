@@ -6,6 +6,16 @@
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=8aVbXXvJUY4">An Interaction Is All You Need — Ivan Leo, Google DeepMind</a> · AI Engineer channel · Oct 3, 2026 · 17:03 · Recorded at AI Engineer World's Fair 2026</p>
 <h2 id="thesis">Thesis</h2>
 <p>Models became agents but APIs didn't keep up — Google DeepMind rebuilt the API surface: the Interactions API (server-side state via interaction IDs, thought signatures handled automatically, a steps data model, strongly typed outputs) plus Managed Agents (the Antigravity harness running in the cloud with persistent sandboxes), with a credential-injecting proxy so agents can call private APIs without ever seeing tokens.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<pre class="mermaid">flowchart LR
+  Call[Client call with interaction ID] --> Server[Server side state preserved]
+  Server --> Sandbox[Persistent sandbox]
+  Sandbox --> Next[Next call same environment]</pre>
+<pre class="mermaid">flowchart TD
+  Agent[Agent calls private API] --> Proxy[Proxy intercepts]
+  Proxy --> Inject[Injects GitHub token]
+  Inject --> API[Private API]
+  Agent -.->|Never sees| Creds[Credentials]</pre>
 <h2 id="key-points">Key points</h2>
 <ul>
 <li><strong>Evolution</strong>: single completions → function calling (JSON payloads) → models that reason and act → agents; the "agent = LLM in a loop" scaffolding is falling away (models now just use a bash tool directly).</li>
@@ -36,6 +46,16 @@
 <ul>
 <li><strong>Server-side state as a pattern</strong>: persistent session handles (interaction IDs) eliminate re-sending full context on every call — mirror this in local agent design by keeping long-lived session state server-side rather than rehydrating prompts.</li>
 <li><strong>Credential-injecting proxy for local agents</strong>: agents never see API tokens; the proxy injects them at call time — a clean security pattern for enterprise agents that call internal APIs, and it survives prompt injection by design.</li>
-</ul></article></div>
+</ul>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li>Adopt persistent session handles in your own agent design: keep long-lived session state server-side (interaction-ID style) instead of rehydrating full prompts on every call — stop re-sending context you already have.</li>
+<li>Make agent harnesses environment-addressable: pair the session handle with an environment/sandbox ID so repeated calls land in the exact same context — no state-persistence management in client code.</li>
+<li>Stand up the credential-injecting proxy: agents call internal APIs through a proxy that injects tokens at call time — the model never sees credentials, and leaked code stays safe under prompt injection by design.</li>
+<li>Unify the local and cloud harness: tune agents locally, package skills plus harness plus prompt into a folder, and deploy the identical unit remotely — same agent, same behavior, no rewrite.</li>
+<li>Type your agent outputs: replace loose nested JSON with a discriminated-union steps model (model output, thought signatures, function calls, content types) so tool results are machine-readable without brittle parsing.</li>
+</ol></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

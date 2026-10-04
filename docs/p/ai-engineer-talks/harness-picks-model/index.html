@@ -4,45 +4,202 @@
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
 <nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-stop-rationing-tokens-let-the-harness-pick-the-model-zilvinas-urbonas-laurent-gil-cast-ai">Talk Notes: "Stop Rationing Tokens: Let the Harness Pick the Model" — Žilvinas Urbonas &amp; Laurent Gil, Cast AI</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=48YUYDjwfYY">Stop Rationing Tokens: Let the Harness Pick the Model — Kimchi by Cast AI</a> · AI Engineer channel · Oct 2, 2026 · 18:07 · Recorded at AI Engineer World's Fair 2026</p>
-<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript.</p>
+<p><strong>Note (v2 — second pass, Oct 4, 2026):</strong> Now verified against the full spoken transcript (usetranscribe.io, ~198 lines, all 18 minutes covered) plus the open-source harness README (github.com/getkimchi/kimchi) and Cast AI's own follow-up writing. biggo-derived figures the transcript confirms are now treated as verified. Claims drawn from the README or company blog rather than the talk are labeled; anything inferred is marked (inferred).</p>
+<p><img alt="Visual one-pager" src="onepager-harness-picks-model.jpg" /></p>
 <h2 id="thesis">Thesis</h2>
 <p>Cost per token is a misleading metric because models differ in how many tokens and retries they need to finish the same task at the same quality — cost per task is the real metric. Capping developer tokens is like giving a developer a one-hour laptop battery; management's job is unlimited, inexpensive tokens. Kimchi's open-source harness routes each task to the cheapest-per-completed-task model (2.5x savings vs Claude over 3 months across Cast AI's 300-person org while token volume grew 1.5x), wrapped with Ferment (autonomous long tasks with quality scoring), Teleport (remote sandbox), and Studio (team board).</p>
+<h2 id="the-mental-model">The mental model</h2>
+<pre class="mermaid">flowchart TD
+  Task[Task arrives] --> Score[Score each model cost per task]
+  Score --> Route[Route to cheapest]
+  Route --> Run[Run and log retries]
+  Run --> Drift{Model drift?}
+  Drift -->|Yes| Score
+  Drift -->|No| Done[Deliver]</pre>
+<pre class="mermaid">flowchart LR
+  Token[Cost per token] --> Mis[misleading metric]
+  CPT[Cost per task at equal quality] --> Real[real metric]</pre>
 <h2 id="key-points">Key points</h2>
 <ul>
-<li><strong>Crisis anecdotes:</strong> a company in India spent $500M on Anthropic in one month; Uber's CTO tweeted he burned the year's Anthropic budget in four months.</li>
-<li><strong>University white-paper comparison</strong> (cost/token vs cost/task at equal quality): Gemini 3 Flash at $3.50/M blended tokens → $705/task vs Minimax 2.7 at $1.50/M → $148/task — Minimax 2.7 "one of my favorites."</li>
-<li><strong>3-month internal data</strong> (300 employees, two-thirds developers): 2.5x savings vs Claude; token volume +1.5x while cost-vs-Claude −1.5x ("the agent's cost grows 2.5x less than the growth in tokens per task").</li>
-<li><strong>Model-selection drift:</strong> Kimi 2.6 dominant on 3 June → visible shift on 12 June → Minimax 3 winning by 21 June. "No human team would re-benchmark at that cadence, but an autonomous harness obsessed with token cost will."</li>
-<li><strong>Origin:</strong> a "skyrocketing" Claude Code bill ~6 months earlier; the harness was built on the Pi Mono SDK and is being open-sourced with intent to keep contributing.</li>
-<li><strong>Ferment:</strong> long-running autonomous task mode (human needed only every 2–3 hours); asks clarifying questions, breaks work into milestones, build/breakage checks; a scoring model grades output — artifact complete at B or better, can iterate to A; a higher-order model re-checks quality and sends failures back.</li>
-<li><strong>Full-SDLC loop:</strong> change → build → check breakage → redeploy to staging. Production still human-gated ("at least at this point"), with K8s metrics/SLO-based auto-ship as the stated path.</li>
-<li><strong>Code review:</strong> "reading code is not enough anymore" — agentic 2,000-line PRs force reviewers to assess intent and the spec given to the agent, not just the diff.</li>
-<li><strong>Teleport:</strong> secure remote sandbox (Google hyperscaler; SaaS or on-prem for fintech); close the laptop, session continues; origin story = an engineer coding on a plane whose battery died. 62% of Cast AI engineers now use it exclusively.</li>
-<li><strong>Studio:</strong> Teleport for teams — Kanban board (backlog/in progress/in review) for 5–10-person "pizza teams"; plans reviewable by peers/PMs before implementation; fixes the "terminal/CLI can't be shared" collaboration gap.</li>
-<li><strong>Business model:</strong> harness fully open source; Studio/Teleport need a Google account, ~5-minute install.</li>
+<li><strong>How the routing actually works (transcript + README):</strong> the harness is <em>outcome-aware</em> — "an automated harness that will select the right model for the task at the right time based on the outcome of the task" (Gil). In the open-source harness this is implemented as role-based delegation with tier metadata: orchestrator, planner, builder, reviewer, explorer, and researcher roles, each assigned models via <code>modelRoles</code> in <code>~/.config/kimchi/harness/settings.json</code> (toggle per role with <code>/multi-model</code>). The orchestrator picks the <strong>lightest-tier model (light/standard/heavy) that fits the task</strong> and escalates to heavy-tier for complex work — or as a retry after a standard-tier model has failed. Review is always delegated to a fresh context, even when the orchestrator owns the reviewer role, to preserve independence. Trap the README names: external models (Anthropic/OpenAI) have no built-in tier metadata and default to <code>standard</code>, and without metadata "selection is arbitrary" — fix it with a <code>modelMetadata</code> block in <code>settings.json</code> or <code>/multi-model</code> → "Edit model metadata".</li>
+<li><strong>The measurement plumbing that makes cost-per-task real (README):</strong> every LLM request is auto-tagged <code>phase:{explore|plan|build|review|research}</code> + <code>model:{model_id}</code> for usage analytics and cost attribution; user tags via <code>/tags add key:value</code> or the <code>KIMCHI_TAGS</code> env var (project/global/tag defaults hierarchy). Stats — phase/step counts, timing, model usage, grade distributions — are computed on demand and exportable via <code>/ferment export</code>. This is the raw material for the routing scoreboard.</li>
+<li><strong>Crisis anecdotes (transcript):</strong> a company in India spent $500M on Anthropic in one month; Uber's CTO tweeted he burned the year's Anthropic budget in four months. "Token maxing" is the enterprise reality the talk opens with.</li>
+<li><strong>University white-paper comparison</strong> (cost/token vs cost/task at equal quality): Gemini 3 Flash at $3.50/M blended tokens → $705/task (on-screen chart figure — the spoken number was garbled in transcription, so treat the exact figure as chart-only) vs Minimax 2.7 at $1.50/M → $148/task (clearly stated). Minimax 2.7 is "one of my favorites" (Gil). "It means the models are not the same. They don't cost the same, but they are also not the same per task."</li>
+<li><strong>3-month internal data</strong> (300 employees, two-thirds developers, transcript-confirmed): 2.5x savings vs the counterfactual Claude bill ("2.5 times in the amount of savings"), plotted daily — purple line = what they would have paid Claude, blue line = what they paid, same outcome. Token volume +1.5x while "the cost to code decreased by 1.5 times"; Gil's gloss: the coding agent's cost grows 2.5x <em>less</em> than the growth in tokens per task.</li>
+<li><strong>Model-selection drift (transcript):</strong> 3 June — Kimi 2.6 winning "by far"; 12 June — visible shift (orange early-June bars → yellow late-June); 21 June — Minimax 3 winning. "No human team would re-benchmark at that cadence, but an autonomous harness obsessed with token cost will."</li>
+<li><strong>Quality scoring is the license to route cheap (transcript):</strong> Ferment asks clarifying questions up front, breaks work into milestones, and assumes the human appears only every 2–3 hours. A scoring model grades the output — artifact is complete at <strong>B or better</strong>, and you can ask the agent to fix it up and iterate to <strong>A</strong>. A higher-order model re-checks quality and sends failures back ("it looks at the outcome and it's optimizing the token based on the quality of the outcome"). Gil's key line: "the scoring is there to prove you that whatever model we will pick for you you will always have… good enough scoring for the output on the task you're implementing" — without the score, cheap routing is just gambling on quality.</li>
+<li><strong>Full-SDLC loop (transcript):</strong> change → build → check breakage → go back, change again, rebuild → if complete, deploy to <strong>staging</strong>. Staging stop is by design; production still needs "some little human in the loop… at least at this point". The stated path to auto-ship: K8s metrics, observability/SLO data, pods not crashing, application health checks passing — only then does the gate open.</li>
+<li><strong>Origin (transcript):</strong> "we ended up spending too much on claude code like half a year ago" — the bill skyrocketed ~6 months before the talk, so they built the harness on the Pi Mono SDK and open-sourced it with intent to keep contributing. (README confirms: "Built on the pi-mono coding agent SDK".)</li>
+<li><strong>Code review (transcript):</strong> "reading code is not enough anymore" — agentic 2,000-line PRs force reviewers to assess the <em>intent</em> and the <em>spec given to the agent</em>, not just the diff. Worse with less-technical staff in the pipeline: "imagine… product manager doing the coding" and landing a 2,000-line PR nobody can meaningfully read.</li>
+<li><strong>Teleport (transcript + README):</strong> close the laptop, session continues. <code>/teleport</code> rsyncs the working tree to a secure cloud sandbox (Kubernetes pod on Google hyperscaler in Cast AI's case; SaaS or on-prem for fintech); managed sessions, reachable from laptop or mobile, with notifications when human input is needed. Origin story: an engineer coding on a plane — Gil explicitly corrects "it was not the Wi-Fi, it was the battery that broke." 62% of Cast AI engineers now code on Teleport exclusively. Mechanics: <code>/remote-sessions</code> to browse/reattach, <code>/terminal</code> for a raw SSH shell, <code>/sync up|down</code> to move files, <code>kimchi_workspace.yaml</code> to declare resources (cpu/memory/disk as K8s quantities), dependencies, and fail-closed egress policy; resume from CLI, the Kimchi console, <strong>or VS Code</strong>; <code>--force</code> overrides the 5 GB workspace limit. (inferred) This is the pattern for zero lost-session waste.</li>
+<li><strong>Studio (transcript):</strong> Teleport for teams — a graphical Kanban board (backlog / in progress / in review) for 5–10-person "pizza teams", running on the same secure sandboxes. Plans made by the harness are reviewable by peers/PMs <em>before</em> implementation, so wrong specs are caught up front instead of discovered at production. Fixes the "terminal/CLI can't be shared" gap — "first it has to live somewhere else. So teleport is the base of what we call studio."</li>
+<li><strong>Ferment V2 (README, newer than the talk):</strong> experimental objective controller across turns — <code>/ferment-v2 &lt;objective&gt;</code>, optional <code>--tokens &lt;n&gt;</code> budgets (default 200000), an independent tool-free evaluator returning met/impossible/continue (uses the <code>judge</code> role in multi-model mode), and self-pausing on <code>maxUnchangedContinuations: 3</code> or <code>maxConsecutiveErrors: 3</code>. This is the harness's built-in anti-runaway design — the same "automatic shutdown of runaway loops" Cast AI lists in the GA product.</li>
+<li><strong>Benchmark tooling (README):</strong> the repo ships <code>benchmark/manual/</code> (predefined tasks run against different models), <code>benchmark/terminal-bench-2/</code> (89 tasks in Docker containers), and <code>benchmark/audit-session/</code> (audits a completed session for phase discipline, code quality, architecture, testing, model alignment, <em>and</em> cost efficiency) — i.e. the re-benchmarking cadence is scaffolded, not a weekend project.</li>
+<li><strong>Business model (transcript + company writing):</strong> harness entirely open source (Apache-2.0, github.com/getkimchi/kimchi); Studio/Teleport need a Google account, ~5-minute install, as many sessions as you want. GA product (Kimchi Coding) runs in the customer's own VPC or on Cast AI's Nvidia B300 GPUs; Akamai is a named production customer; shadow-mode evaluations were 2.5x cheaper than a commercial-only baseline at matched-or-better spec-match and test-pass rates (itbrief).</li>
 </ul>
+<h2 id="by-the-numbers">By the numbers</h2>
+<table>
+<thead>
+<tr>
+<th>Number</th>
+<th>What it measures (source)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$500M</td>
+<td>India company's Anthropic spend in a single month — crisis anecdote (transcript)</td>
+</tr>
+<tr>
+<td>4 months</td>
+<td>How fast Uber's CTO burned a full year's Anthropic budget — crisis anecdote (transcript)</td>
+</tr>
+<tr>
+<td>$3.50/M</td>
+<td>Gemini 3 Flash blended cost per token in the university study (transcript)</td>
+</tr>
+<tr>
+<td>$705/task</td>
+<td>Gemini 3 Flash cost per <em>completed task</em> at equal quality — chart figure, spoken number garbled (secondary/biggo)</td>
+</tr>
+<tr>
+<td>$1.50/M</td>
+<td>Minimax 2.7 cost per token (transcript)</td>
+</tr>
+<tr>
+<td>$148/task</td>
+<td>Minimax 2.7 cost per <em>completed task</em> at equal quality (transcript)</td>
+</tr>
+<tr>
+<td>300</td>
+<td>Employees in the internal 3-month fleet; two-thirds are developers (transcript)</td>
+</tr>
+<tr>
+<td>3 months</td>
+<td>Internal usage period for the 2.5x-savings claim (transcript)</td>
+</tr>
+<tr>
+<td>2.5x</td>
+<td>Savings vs the counterfactual Claude bill over those 3 months, same outcome (transcript)</td>
+</tr>
+<tr>
+<td>1.5x</td>
+<td>Token volume growth over the period — while cost-vs-Claude fell (transcript)</td>
+</tr>
+<tr>
+<td>3 / 12 / 21 June</td>
+<td>Drift timeline: Kimi 2.6 dominant → shift visible → Minimax 3 winning (transcript)</td>
+</tr>
+<tr>
+<td>B / A</td>
+<td>Artifact grade gates: complete at B or better, iterate to A (transcript)</td>
+</tr>
+<tr>
+<td>2–3 hours</td>
+<td>Human-in-the-loop cadence during Ferment runs (transcript)</td>
+</tr>
+<tr>
+<td>2,000 lines</td>
+<td>The agent-authored PR size that broke diff review (transcript)</td>
+</tr>
+<tr>
+<td>62%</td>
+<td>Share of Cast AI engineers coding on Teleport exclusively (transcript)</td>
+</tr>
+<tr>
+<td>~5 min</td>
+<td>Teleport/Studio install time (transcript)</td>
+</tr>
+<tr>
+<td>5 GB</td>
+<td>Default workspace size limit for <code>/teleport</code> (<code>--force</code> overrides) (README)</td>
+</tr>
+<tr>
+<td>36B/month</td>
+<td>Current fleet token volume — 150 engineers, real agent work (dev.to, Oct 2026)</td>
+</tr>
+<tr>
+<td>12x</td>
+<td>Cheaper than a 100% Anthropic Sonnet+Opus baseline over a 30-day window, same quality bar (dev.to, Oct 2026)</td>
+</tr>
+<tr>
+<td>59%</td>
+<td>Minimax M3 on SWE-bench Pro — Cast AI's default builder, ahead of several commercial rivals per Cast AI (itbrief)</td>
+</tr>
+<tr>
+<td>89 tasks</td>
+<td>terminal-bench-2 suite the repo ships for model comparison (README)</td>
+</tr>
+<tr>
+<td>200k</td>
+<td>Default token budget for a Ferment V2 run (<code>--tokens</code> overrides) (README)</td>
+</tr>
+<tr>
+<td>3 / 3</td>
+<td><code>maxUnchangedContinuations</code> / <code>maxConsecutiveErrors</code> before a Ferment V2 run self-pauses (README)</td>
+</tr>
+</tbody>
+</table>
 <h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
 <ul>
 <li>"Our job is not to prevent the developer to use coding agents. Our job is to make sure they can use it as much as they want for as long as they want in a completely unlimited fashion."</li>
 <li>"It means the models are not the same. They don't cost the same, but they're also not the same per task."</li>
 <li>"What we believe is that reading code is not enough anymore." (Urbonas)</li>
-<li><strong>Stat:</strong> $705/task (Gemini 3 Flash) vs $148/task (Minimax 2.7) at equal quality; 2.5x savings vs Claude over 3 months.</li>
+<li>"No human team would re-benchmark at that cadence, but an autonomous harness obsessed with token cost will." (transcript-verified paraphrase of Gil)</li>
+<li>"The scoring is there to prove you that whatever model we will pick for you you will always have… good enough scoring for the output on the task you're implementing." (Gil, transcript)</li>
+<li>"If it doesn't stop the request, it's an alert wearing a cap's clothes." (Cast AI team, dev.to — on budget governance)</li>
+<li>"Governance is the buyer's problem, not the developer's" — your engineers get the best agent; you keep control of the bill. (Cast AI team, dev.to)</li>
+<li><strong>Stat:</strong> $705/task (Gemini 3 Flash) vs $148/task (Minimax 2.7) at equal quality; 2.5x savings vs Claude over 3 months; 12x vs Sonnet+Opus baseline over 30 days (dev.to, 150 engineers, 36B tokens/month).</li>
 </ul>
 <h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
 <ul>
 <li>Cost-per-task routing beats cost-per-token shopping — the headline metric of this talk.</li>
 <li>Autonomous re-benchmarking captures new cheaper models within weeks without human effort; Teleport eliminates lost sessions.</li>
+<li><strong>Quality gates are what make the routing legitimate:</strong> without a scoring model proving "good enough" output, cheap-model routing is just quality roulette. The gate (B-complete/iterate-to-A, higher-order re-check) is the other half of the tokenomics equation, not a side feature.</li>
+<li><strong>Enforcement &gt; alerts (Cast AI's own bill, dev.to):</strong> every request runs through a proxy that checks the budget <em>before</em> it executes — at/over limit returns HTTP 429 and the request never runs; caps cascade org → team → user → API key, tightest wins, per-model limits bind even when stricter. "You stop paying for the runaway tail, the part that turns a normal month into a board-level problem."</li>
 </ul>
+<h2 id="decision-framework">Decision framework</h2>
+<p><strong>Use harness routing when:</strong> agentic coding volume is large enough that the bill matters; the task mix is heterogeneous (routing gains need diversity — if one model wins every task type, there's nothing to route); new models ship faster than your team can evaluate them (drift happens in ~3 weeks); and you can automate quality gates so the harness can <em>prove</em> cheap output is good enough.</p>
+<p><strong>Don't bother when:</strong> volume is low (a weekly benchmark costs more engineer time than it saves — eyeball it); one model provably wins on cost-per-task across your whole mix; or code/data can't pass through any routing proxy (then deploy the harness fully inside your own VPC — Cast AI itself supports that).</p>
+<p><strong>Measure first, in this order:</strong>
+1. Cost per <em>completed</em> task at equal quality per model per task type — log tokens, retries, and completions (Kimchi's phase:{explore|plan|build|review|research} + model:{id} auto-tags are the schema to copy).
+2. Quality distribution per model — the scoring gate that justifies routing down.
+3. Drift cadence — how often the winner changes; that sets your re-benchmark interval.</p>
+<p><strong>Traps and caveats the speakers (and their writing) named:</strong>
+- Cost/token without a quality anchor is a meaningless comparison — "otherwise, you cannot compare apple with apple."
+- Rationing tokens is a trap: it cripples developers (the one-hour-battery analogy) while leaving cost-per-task untouched.
+- An alert is not a cap: "a smoke detector that watches the house burn and files a report after the fact." Copilot's "stop usage" is off by default, Claude Code has no native real-time per-user attribution, Cursor bills in arrears with no dollar attribution — buy the control, not the dashboard (dev.to).
+- Reviewing diffs is no longer sufficient for 2,000-line agent PRs — review the intent and the spec given to the agent.
+- Staging auto-ship is fine; production auto-ship is not, "at least at this point" — keep the human gate until SLO/observability gating exists.
+- External models without tier metadata get arbitrary routing — supply <code>tier</code> + <code>description</code> or the orchestrator is guessing (README).</p>
 <h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
 <ul>
 <li>Cost-per-task as the unit metric is directly adoptable: log tokens + retries per completed task per model, route automatically, and re-benchmark on a cadence no human team would — that cadence is what catches model drift like Kimi 2.6 → Minimax 3 within weeks.</li>
 <li>The Ferment quality-scoring loop (grade to B, iterate to A, higher-order model re-check) is a local harness pattern: quality gates replace token caps.</li>
 <li>"Reading code is not enough anymore" — review the spec given to the agent, not just the diff; a process change with zero tooling cost.</li>
 </ul>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li><strong>Switch the unit metric this week:</strong> cost per completed task = total tokens × blended price ÷ tasks completed correctly, tracked per model per task type. Copy the tagging schema: auto-tag every request <code>phase:{explore|plan|build|review|research}</code> + <code>model:{model_id}</code> (Kimchi's exact schema) so the scoreboard builds itself from logs.</li>
+<li><strong>Build the routing harness with roles + tiers, not just a price table:</strong> define orchestrator/planner/builder/reviewer/explorer/researcher roles; tag each candidate model <code>light|standard|heavy</code>; orchestrator picks the lightest tier that fits the task, escalates to heavy on complexity or after a standard-tier failure; always delegate review to a fresh context. If you use VS Code/GitHub Copilot agents, replicate the tier escalation rule in your own harness or adopt Kimchi's (Apache-2.0, resumes from VS Code).</li>
+<li><strong>Re-run the benchmark weekly, drift-alert on the winner:</strong> use a fixed task sample (or Kimchi's shipped tooling — <code>benchmark/manual/</code> for predefined tasks, <code>benchmark/terminal-bench-2/</code> for the 89-task suite, <code>benchmark/audit-session/</code> for cost-efficiency audits). The Kimi 2.6 → Minimax 3 shift took three weeks; a quarterly review never catches it.</li>
+<li><strong>Add Ferment-style quality gates before you route cheap:</strong> clarifying questions up front, milestones with build/breakage checks, a scoring model that grades artifacts (complete at B, iterate to A), and a higher-order re-check that sends failures back. Ship to staging automatically; keep production human-gated until SLO-gated auto-ship exists.</li>
+<li><strong>Enforce caps, don't send alerts:</strong> if you route through any proxy, check the budget <em>before</em> the request executes (their pattern: HTTP 429 at/over limit, tightest-wins cascade across org/team/user/API-key scopes, per-model limits that bind even when stricter). An alert that fires while tokens keep flowing is decoration.</li>
+<li><strong>Change the review process for agent PRs:</strong> reviewers assess the intent and the spec given to the agent, not just the diff — zero tooling cost, immediate effect; mandatory once agent PRs hit the thousands of lines.</li>
+<li><strong>Give teams remote sandboxes:</strong> sessions that survive a closed laptop remove lost-session waste — the Teleport pattern (<code>/teleport</code>, <code>/remote-sessions</code>, workspace templates with fail-closed egress). For a local-first shop, the portable insight is the container-sync mechanism, not the Google-hyperscaler deployment.</li>
+</ol>
 <h2 id="sources">Sources</h2>
 <ul>
-<li>biggo AI summary: https://finance.biggo.com/podcast/65ae25b9fc80259b</li>
+<li>Full spoken transcript (this source WORKED — the primary basis for the second pass): https://www.usetranscribe.io/yt/48YUYDjwfYY/ (all 18:07 covered, ~198 lines; alternate slug variant https://www.usetranscribe.io/yt/48YUYDjwfYY/stop-rationing-tokens was not needed)</li>
+<li>Open-source harness, full README (model roles, delegation, phase tracking, tags, Ferment V1/V2, Remote Sessions, benchmark tooling): https://github.com/getkimchi/kimchi (Apache-2.0; the canonical repo — the video description also points here; castai/kimchi is the older configurator repo)</li>
+<li>"The $500M Bill Was Always Going to Happen" — Cast AI team's own follow-up on enforcement-vs-alerts, hard proxy caps, 150 engineers / 36B tokens/mo / 12x vs Sonnet+Opus: https://dev.to/getkimchi/the-500m-bill-was-always-going-to-happen-2k10</li>
+<li>Kimchi Coding GA — 2.5x shadow-mode savings, runaway-loop shutdown, spend dashboard, Akamai customer: https://itbrief.co.nz/story/cast-ai-launches-kimchi-coding-for-enterprise-developers</li>
+<li>Minimax M3 as default builder, 59% SWE-bench Pro: https://itbrief.co.nz/story/cast-ai-adds-minimax-m3-to-kimchi-coding-as-default-model</li>
+<li>Independent user review of the routing + <code>/ferment</code> (useful for the "how it feels" view, not for claims): https://github.com/rothgar/justingarrison.com/blob/HEAD/content/blog/2026-09-08-kimchi.md</li>
+<li>biggo AI summary (original v1 source, now superseded for transcript-derived points): https://finance.biggo.com/podcast/65ae25b9fc80259b</li>
 <li>Video description: https://www.youtube.com/watch?v=48YUYDjwfYY</li>
 </ul></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>
