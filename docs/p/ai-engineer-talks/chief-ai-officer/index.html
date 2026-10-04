@@ -7,6 +7,22 @@
 <p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary — treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.</p>
 <h2 id="thesis">Thesis</h2>
 <p>The CAIO role barely existed five years ago and is proliferating faster than anyone can define it (IBM: <strong>11%</strong> of orgs in 2024 → <strong>26%</strong> in 2025 → <strong>76%</strong>); it isn't one job but a spectrum — <strong>Scientist</strong> (explore/experiment/build), <strong>Architect</strong> (strategy/product/budget/board), <strong>Coach</strong> (evangelize/educate) — whose mix is set by company type, workforce technicality, and AI maturity. Because "there's AI in everything," the role is structurally prone to overload; discipline in focus areas and refusing gameable metrics (she refused to track tokens: "it's so easily hackable") separate a functioning AI function from an overwhelmed one.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<p>The CAIO role is three sliders set by company context, and measurement must track outcomes — never hackable proxies like token counts.</p>
+<pre class="mermaid">flowchart LR
+    C1[Company type] --> MIX[Role mix]
+    C2[AI maturity] --> MIX
+    C3[Workforce skill] --> MIX
+    MIX --> S1[Scientist explore to invent]
+    MIX --> S2[Architect steward to strategist]
+    MIX --> S3[Coach enable to advise]</pre>
+<pre class="mermaid">flowchart TD
+    M[What to measure] --> A[Adoption depth]
+    M --> F[Fluency spread]
+    M --> G[GEO visibility]
+    M --> AR[ARR from AI products]
+    M --> DF[Dogfooding feedback loop]
+    X[Token counts] -.->|refused as hackable| M</pre>
 <h2 id="key-points">Key points</h2>
 <ul>
 <li>The title "means drastically different things based on two criteria": <strong>company type and AI maturity</strong> — plus a third, <strong>the skill set of the person in the seat</strong>. Recruiters show unusual open-mindedness, shaping the mandate around whoever they find; the role sometimes splits in two.</li>
@@ -49,6 +65,15 @@
 <li><strong>Never let raw token counts be the scoreboard</strong> — Khalaf refused the metric because it's hackable; measure outcomes (adoption depth, fluency spread, review quality) instead, or teams will optimize the counter, not the value.</li>
 <li><strong>Design pricing and budgets for agent-driven consumption</strong>, not seats: per-seat plans break when agents multiply usage; consumption-based budgets with explicit guardrails are the durable model.</li>
 </ul>
+<h2 id="how-to-apply-it">How to apply it</h2>
+<ol>
+<li>Write down your AI function's Scientist/Architect/Coach mix for this year based on company type, AI maturity, and workforce technicality — and schedule a yearly re-mix.</li>
+<li>Remove raw token counts from any scoreboard; replace with adoption depth, fluency spread, GEO visibility, and AI-product ARR.</li>
+<li>Move internal AI budgets toward consumption-based models with explicit guardrails; stop planning on per-seat assumptions that agents will break.</li>
+<li>Make every internal product agent-consumable: ship an MCP server, a skills file, and a CLI for it.</li>
+<li>Run a dogfooding loop with a closed feedback channel from engineers back to the platform team.</li>
+<li>Coach by experience: let teams discover failure modes like hallucination hands-on instead of lecturing about them.</li>
+</ol>
 <h2 id="sources">Sources</h2>
 <ul>
 <li>YouTube description/chapters: https://www.youtube.com/watch?v=9cJrbj23fOA</li>
@@ -56,4 +81,6 @@
 <li>daily.dev summary post: https://daily.dev/posts/the-chief-ai-officer-scientist-architect-coach-rania-khalaf-wso2-uberqhgkq</li>
 </ul></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>
