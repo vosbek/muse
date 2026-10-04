@@ -8,6 +8,37 @@
 
 The backlash against MCP is misdirected — the protocol is sound, and the failures people blame on it (context bloat, cost, sensitive data sitting in context, poor tool discovery) are failures of naive agent harnesses, not the protocol. The fixes already exist (subagents, progressive tool discovery, code mode) but most clients ignore them; Apify's open-source **mcpc** wraps the full MCP protocol behind a single bash-style tool call, and the right architecture is "MCP for remote, CLI for local" — MCP plus CLI beats either alone.
 
+## The mental model
+
+```mermaid
+flowchart TD
+    subgraph BEFORE[Before - naive harness]
+    B1[10 servers times 10 tools] --> B2[100 tools loaded up front]
+    B2 --> B3[A third of context gone]
+    end
+    subgraph AFTER[After - mcpc pattern]
+    A1[Single bash tool call] --> A2[mcpc with JSON output]
+    A2 --> A3[Grep and jq for progressive discovery]
+    A3 --> A4[Context spent only on what is used]
+    end
+```
+
+```mermaid
+flowchart LR
+    R[Remote services] --> MCP[MCP for transport and credentials]
+    L[Local tools] --> CLI[CLI as code, shell native]
+    MCP --> BEST[MCP plus CLI is best]
+    CLI --> BEST
+```
+
+```mermaid
+flowchart TD
+    MC[mcpc] --> P[Persistent sessions, no re-auth]
+    MC --> PD[Progressive discovery via grep]
+    MC --> AT[Async tasks, detach and reattach]
+    MC --> JQ[Every command emits JSON for jq]
+```
+
 ## Key points
 
 - **The critics' catalog.** Anthropic itself admitting "MCP sucks"; Theo calling it "the wrong abstraction"; "MCP was a mistake, long live CLIs"; "MCP is dead in the water"; "MCPs are mostly useless, I'll die on this hill"; "every MCP could have been a deterministic CLI"; Gary Tan ("MCP sucks, honestly, oh my god"); Peter Levels ("Thank god MCP is dead").
@@ -43,6 +74,16 @@ The backlash against MCP is misdirected — the protocol is sound, and the failu
 - **mcpc is a pure CLI wrapper with no LLM inside** — the kind of local-first building block that fits a self-hosted agent stack: run it against local servers over STDIO, keep credentials in the OS keychain, no cloud gateway required.
 - **Adopt the mcpc pattern in agent harnesses:** one `bash` tool call + `--json` + jq pipelines instead of registering dozens of MCP servers as native tool definitions — converts per-request context cost into progressive, grep-driven discovery.
 - **"MCP for remote, CLI for local"** is a deployment principle: keep local tool calls on CLIs (native Code Mode, no transport needed), reserve MCP for remote services where a standard transport and credential injection actually matter.
+
+## How to apply it
+
+1. **Audit your MCP registrations**: count how many tools every connected server loads into context before any user request. If it's near 100, you're paying the naive-harness tax.
+2. **Collapse to one bash tool**: replace per-server native tool definitions with a single bash call plus an mcpc-style CLI wrapper — every command emits JSON, piped through jq.
+3. **Make discovery progressive**: grep tool lists on demand instead of registering everything up front; surface server instruction fields your client currently ignores.
+4. **Split local vs remote**: keep local tool calls on CLIs (agents know shell natively), reserve MCP for remote services where standard transport and credential injection matter.
+5. **Keep credentials in the OS keychain**: never let secrets sit in agent context where other tool calls can abuse them.
+6. **Benchmark your connectors**: hold the agent constant and compare CLI vs raw MCP vs wrapper on time and token cost — pick the connector per server on measured cost, not vibes.
+7. **Use async tasks for long tools**: run server-side, detach, and let the agent do local work while waiting.
 
 ## Sources
 

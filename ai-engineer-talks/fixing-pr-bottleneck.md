@@ -8,6 +8,23 @@
 
 AI agents massively increased PR volume — the "software factory," where agents rather than humans initiate work (classifiers turning bug reports into fixes, PlanetScale slow-query reports auto-triggering work) — which without brakes becomes a "slop cannon." The fix is three quality brakes — automated checks (cheap, deterministic), automated review (agents as lie detectors for the checks), and human review — arranged so that raising code quality counterintuitively speeds everything up: better code needs fewer human interventions. Key mechanisms: deep-module codebase design, coding standards enforced at review time rather than implementation time, one-way vs two-way door triage, human-friendly PR bodies, and a "retro" skill that compounds review learnings back into checks and standards.
 
+## The mental model
+
+```mermaid
+flowchart TD
+  Factory[Software factory agents initiate work] --> Brake1[Automated checks cheap CPU]
+  Brake1 --> Brake2[Automated review lie detector]
+  Brake2 --> Brake3[Human review faster]
+  Brake3 --> Ship[Higher quality ships faster]
+```
+
+```mermaid
+flowchart LR
+  Impl[Implementer make it work overloaded] --> Diff[Diff]
+  Diff --> Sub[Review subagent own context]
+  Sub --> Fix[Commit fixes not comments]
+```
+
 ## Key points
 
 - The PR bottleneck predates AI (piles of unreviewed PRs), but AI massively increased the strain. The central promise of AI: agents let us scale up — "do more with less."
@@ -49,6 +66,16 @@ AI agents massively increased PR volume — the "software factory," where agents
 - The overloaded-implementer / underloaded-reviewer split is a context-management pattern to adopt everywhere: keep standards out of AGENTS.md (drowns the implementer), run review in a separate subagent with its own context window and budget.
 - Checks-first is the cheapest quality spend: deterministic CPU-cycle checks before any token-burning review — build the check layer before the review layer.
 - Run the retro loop locally: feed a week's PRs+reviews to a retrospective pass that proposes new checks and standards updates — each review compounds, and the retro explicitly audits token economy and steering-file bloat.
+
+## How to apply it
+
+1. Layer automated checks first: turn on the cheap deterministic checks (lint, type-check, tests, structure guards) before spending a single token on review — CPU cycles before tokens.
+2. Split implementer and reviewer contexts: keep coding standards out of AGENTS.md and the implementer's prompt; run review in a subagent with its own context window that reads coding-standards.md and grades the diff — red-green-refactor across two context windows.
+3. Make the reviewer commit fixes, not comments: default to direct commits on findings; reserve comments for genuine questions so humans triage artifacts, not threads.
+4. Add the one-way vs two-way door triage to every PR body: door type plus blast radius at the top, so humans reserve deep review for one-way doors (migrations, data loss, mass-email changes).
+5. Build your own reviewer instead of outsourcing: start from your team's coding-standards.md, accumulate standards over time, and hunt the three lies — tautological tests, structure-sensitive tests, tests that cannot fail.
+6. Stand up the retro loop weekly: feed a week's PRs and reviews into a retrospective pass that proposes new automated checks and standards updates — and audits tool economy and steering-file bloat each round.
+7. Require human-friendly PR bodies: "why" as pseudocode and mermaid sequence diagrams over prose, so the human reads intent in seconds.
 
 ## Sources
 

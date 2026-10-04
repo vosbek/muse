@@ -6,6 +6,23 @@
 
 Models became agents but APIs didn't keep up — Google DeepMind rebuilt the API surface: the Interactions API (server-side state via interaction IDs, thought signatures handled automatically, a steps data model, strongly typed outputs) plus Managed Agents (the Antigravity harness running in the cloud with persistent sandboxes), with a credential-injecting proxy so agents can call private APIs without ever seeing tokens.
 
+## The mental model
+
+```mermaid
+flowchart LR
+  Call[Client call with interaction ID] --> Server[Server side state preserved]
+  Server --> Sandbox[Persistent sandbox]
+  Sandbox --> Next[Next call same environment]
+```
+
+```mermaid
+flowchart TD
+  Agent[Agent calls private API] --> Proxy[Proxy intercepts]
+  Proxy --> Inject[Injects GitHub token]
+  Inject --> API[Private API]
+  Agent -.->|Never sees| Creds[Credentials]
+```
+
 ## Key points
 
 - **Evolution**: single completions → function calling (JSON payloads) → models that reason and act → agents; the "agent = LLM in a loop" scaffolding is falling away (models now just use a bash tool directly).
@@ -36,3 +53,11 @@ Models became agents but APIs didn't keep up — Google DeepMind rebuilt the API
 
 - **Server-side state as a pattern**: persistent session handles (interaction IDs) eliminate re-sending full context on every call — mirror this in local agent design by keeping long-lived session state server-side rather than rehydrating prompts.
 - **Credential-injecting proxy for local agents**: agents never see API tokens; the proxy injects them at call time — a clean security pattern for enterprise agents that call internal APIs, and it survives prompt injection by design.
+
+## How to apply it
+
+1. Adopt persistent session handles in your own agent design: keep long-lived session state server-side (interaction-ID style) instead of rehydrating full prompts on every call — stop re-sending context you already have.
+2. Make agent harnesses environment-addressable: pair the session handle with an environment/sandbox ID so repeated calls land in the exact same context — no state-persistence management in client code.
+3. Stand up the credential-injecting proxy: agents call internal APIs through a proxy that injects tokens at call time — the model never sees credentials, and leaked code stays safe under prompt injection by design.
+4. Unify the local and cloud harness: tune agents locally, package skills plus harness plus prompt into a folder, and deploy the identical unit remotely — same agent, same behavior, no rewrite.
+5. Type your agent outputs: replace loose nested JSON with a discriminated-union steps model (model output, thought signatures, function calls, content types) so tool results are machine-readable without brittle parsing.

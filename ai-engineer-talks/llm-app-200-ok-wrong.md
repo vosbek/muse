@@ -8,6 +8,34 @@
 
 Classic "golden signals" (latency, errors, traffic, saturation) tell you your app is up — they don't tell you if it's right. GenAI apps need additional monitoring pillars: cost, safety, and quality.
 
+## The mental model
+
+```mermaid
+flowchart TD
+    R[HTTP 200 OK] --> G[Golden signals]
+    G --> L[Latency]
+    G --> E[Errors]
+    G --> T[Traffic]
+    G --> S[Saturation]
+    L --> UP[App is up]
+    E --> UP
+    T --> UP
+    S --> UP
+    UP --> Q{Is it right}
+    Q -->|Unanswered| C[Cost pillar]
+    Q -->|Unanswered| SF[Safety pillar]
+    Q -->|Unanswered| QL[Quality pillar]
+    C --> C1[Token creep]
+    C --> C2[Model drift]
+    C --> C3[Uncached calls]
+    C --> C4[Tag everything]
+    SF --> S1[Prompt injection]
+    SF --> S2[PII]
+    SF --> S3[Toxicity]
+    SF --> S4[Jailbreaks]
+    QL --> QL1[Five quality metrics]
+```
+
 ## Key points (from chapter list)
 
 - **Golden signals aren't enough anymore** (0:12) — latency/errors/traffic/saturation tell you the app is up, not that it's right.
@@ -33,3 +61,12 @@ Classic "golden signals" (latency, errors, traffic, saturation) tell you your ap
 ## Local-deploy takeaways
 
 - **Tag everything for cost attribution**: even in a local-first stack, tag every request by use case/team/model so token creep and uncached calls are attributable — you can't control what you can't attribute.
+
+## How to apply it
+
+1. **Audit your dashboards this week**: list every GenAI dashboard and mark which ones measure only latency, errors, traffic, and saturation. Everything unmarked is a blind spot.
+2. **Tag every request**: add team, use case, and model tags to all agent and Copilot traffic so token creep and uncached calls are attributable by owner.
+3. **Add the cost pillar**: alert on token creep (rising tokens per task), model drift (same prompt, different cost), and uncached calls.
+4. **Add the safety pillar**: gate inputs and outputs for prompt injection, PII leakage, toxicity, and jailbreak attempts before they reach production users.
+5. **Add the quality pillar**: define five quality metrics per use case and score them with LLM judges (see the Chiang and Lee 2023 paper referenced in the talk).
+6. **Change the ship gate**: no GenAI feature ships on 200 OK plus golden signals alone — cost, safety, and quality must all be green.

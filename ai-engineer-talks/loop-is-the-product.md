@@ -4,9 +4,36 @@
 
 **Note:** distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.
 
+![Visual one-pager](onepager-loop-is-the-product.jpg)
+
 ## Thesis
 
 A blueprint for autoresearch in 2026+: three ideas — (1) **the loop is the product** (the progression went RL-for-models → harnesses with commodity models → loops you build instead of code you touch); (2) **system distillation is the moat** (distill each loop's learnings — failure patterns→judges/evals, repeated behaviors→skills/prompts, frustrations→harness extensions — into versioned, portable, provider-agnostic "agent recipes" in git that encode the maker's taste); (3) **valued work per watt is the score** (measure value per unit of compute; the Cursor/Cognition playbook of product→evals→models applies to every vertical).
+
+## The mental model
+
+```mermaid
+flowchart LR
+    A[RL for models] --> B[Harnesses with commodity models] --> C[Loops you build instead of code]
+```
+
+```mermaid
+flowchart TD
+    LP[Loop artifacts] --> FJ[Failure patterns become judges and evals]
+    LP --> RB[Repeated behavior becomes skills and prompts]
+    LP --> UF[User frustration becomes harness extensions and memories]
+    FJ --> GR[Versioned agent recipe in git]
+    RB --> GR
+    UF --> GR
+```
+
+```mermaid
+flowchart LR
+    S[Mine traces for signals] --> J[Agents draft evals, human calibrates]
+    J --> AB[Validate taste in prod with bandit tests]
+    AB --> PR[Promote next recipe version]
+    PR --> S
+```
 
 ## Key points
 
@@ -44,6 +71,15 @@ A blueprint for autoresearch in 2026+: three ideas — (1) **the loop is the pro
 - Agent recipes are git repos, not platforms: versioned, portable, provider-agnostic, model-agnostic — the most local-first moat in the eight talks. Distill your own failures→evals, repeated behaviors→skills, frustrations→harness extensions.
 - "Valued work per watt" is a directly usable metric: for every agent deployment, measure value per unit of compute and cap spend at a fraction of value — this is the cost-control discipline for an enterprise tokenomics remit.
 - Let agents build the evals and keep humans as calibrators ("do you agree we should prefer hidden gems?") — calibration is cheap; hand-authoring evals is the expensive part to eliminate.
+
+## How to apply it
+
+1. **Mine one agent's traces this week**: pull the last month of runs for your most-used internal agent and cluster the patterns — repeated behaviors, user frustrations, failure modes.
+2. **Let agents draft the evals**: have the agent write trajectory judges from the mined patterns (e.g. "did the agent do the thing users actually wanted"). Your job is calibration only — agree or disagree with the judgment, don't author the test.
+3. **Distill into a recipe repo**: failure patterns become judges and evals, repeated behaviors become skills and prompts, frustrations become harness extensions. Commit it all to git, versioned and provider-agnostic.
+4. **Validate taste in production**: run multi-armed-bandit A/B tests — do end users agree with your taste? Promote only confirmed versions.
+5. **Track valued work per watt**: for every agent deployment, measure value generated per unit of compute and cap spend at a fraction of value. Don't spend more than the value warrants.
+6. **Repeat forever**: continuously codify taste into the agent and let production users self-calibrate it.
 
 ## Sources
 

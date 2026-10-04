@@ -8,6 +8,22 @@
 
 Open-weights models can now reach near-frontier intelligence — GLM-5.2 sits between Claude Opus 4.7 and 4.8 on the hardest long-horizon coding/agentic benchmarks — and "intelligence" means more than IQ-style math/physics tests. Z.ai open-sources the weights because users need security and control, domains need fine-tuning, and co-design requires visibility into the architecture and training recipe. The talk closes with "one more thing": Z Code, Z.ai's own coding harness.
 
+## The mental model
+
+```mermaid
+flowchart TD
+  W[Open weights on Hugging Face] --> S1[Security control trust]
+  W --> S2[Fine tuning for law finance security]
+  W --> S3[Co design with customers]
+```
+
+```mermaid
+flowchart LR
+  T[Task arrives] --> E{Routine task?}
+  E -->|Yes| N[Non thinking pass cheaper]
+  E -->|No| H[High thinking budget]
+```
+
 ## Key points
 
 - **The name.** The company is Zhipu ("GLM" is not a brand name but a generic term: "general language model pre-training with auto-regressive blank filling," from a 2021 paper). Zhipu was among the first LLM labs, alongside OpenAI, Anthropic, and DeepMind. The original architecture is no longer used, but the name stuck (GLM-4.x → 5.1 → 5.2).
@@ -42,6 +58,14 @@ Open-weights models can now reach near-frontier intelligence — GLM-5.2 sits be
 - MIT-licensed open weights runnable under vLLM/SGLang on dedicated compute — a direct fit for the local-first strategy: near-frontier coding/agent quality without per-token API spend.
 - The thinking-budget dial maps to local inference planning: lighter non-thinking passes for routine tasks, full thinking only for hard ones.
 - Fine-tuning story (Harvey, domain-specific firms) suggests the weights are a viable base for domain-specialized local models in regulated verticals.
+
+## How to apply it
+
+1. Pilot GLM-5.2 under vLLM or SGLang on one dedicated box: MIT license, near-frontier long-horizon coding quality, zero per-token API spend — the local-first fit this talk makes the case for.
+2. Benchmark it against your current Copilot model mix on your own tasks: DeepSWE/Terminal-Bench style long-horizon work first, then routine generation — confirm the "between Opus 4.7 and 4.8" claim on your workload, not theirs.
+3. Implement the thinking-budget dial in routing: non-thinking passes for routine tasks (completions, scaffolds), high thinking budget only for hard multi-step work — pay for reasoning depth only where needed.
+4. Measure the non-thinking-vs-thinking delta locally: the talk's claim that non-thinking 5.2 beats thinking 5.1 means free quality gains at lower inference cost — verify on your eval set and lock in the cheaper default.
+5. Scope one fine-tuning candidate: pick a regulated or domain-specific vertical (legal, finance, security) where data can't leave the building and the Harvey-style fine-tune story justifies the effort.
 
 ## Sources
 

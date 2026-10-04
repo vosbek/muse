@@ -8,6 +8,34 @@
 
 The standard "software factory" (sandbox + agent + prompt → PR) isn't a real factory, because it optimizes code output instead of product outcomes. WorkOS's factory encodes engineering processes into automation — TARS (agent interaction embedded in Slack/Linear/GitHub, driven by webhooks), Horizon (infrastructure orchestration), and an MCP gateway "context engine" — and measures outcomes (features shipped faster), not PR counts.
 
+## The mental model
+
+```mermaid
+flowchart TD
+    HD[Hilltop document] --> T[TARS agent]
+    T --> SL[Slack]
+    T --> LI[Linear]
+    T --> GH[GitHub]
+    LI --> WH[Webhooks]
+    WH --> T
+    T --> H[Horizon infra layer]
+    H --> MG[MCP gateway context engine]
+    MG --> SF[Snowflake semantic tables]
+```
+
+```mermaid
+flowchart LR
+    B[Brief spec] --> PA[PM agent drafts hilltop] --> HR[Human review in Linear] --> AU[Auto start implementation] --> NT[Auto pick up next ticket]
+```
+
+```mermaid
+flowchart TD
+    OM[Output metrics lie] --> OP[PR counts and AI code percent]
+    RM[Outcome metrics win] --> SH[Features shipped faster]
+    RM --> DR[Defect rate]
+    RM --> TTR[Time to recovery]
+```
+
 ## Key points
 
 - **The standard setup doesn't beat the baseline.** Sandbox on Cloudflare + "open code model router" + prompts → PR produced results "pretty indistinguishable" from engineers running Claude Code on laptops — no incremental or exponential outcome gain.
@@ -36,6 +64,15 @@ The standard "software factory" (sandbox + agent + prompt → PR) isn't a real f
 - **Defect rate and time-to-recovery as guardrail metrics** so factory output doesn't buy speed with instability — cost of rework is a token/effort line item, not an externality.
 - **The MCP gateway as a shared context engine reused across internal tools** — build the context plumbing once, reuse everywhere, instead of per-tool reinvention.
 - **Owning the infrastructure enables session observation** to identify skill gaps and obsolete skills — an eval/iteration loop for self-improvement of the factory itself, so the spend on context goes where it demonstrably pays off.
+
+## How to apply it
+
+1. **Canonicalize your PRD ritual**: write the "hilltop" template for your org — purpose, customer evidence, competitive analysis, early design screens, milestones — so an agent can break it into units of work.
+2. **Add a PM agent**: draft the hilltop from a brief spec, have humans comment and refine the generated tickets in Linear, then auto-start implementation on approval.
+3. **Wire webhooks to the agent**: Linear ticket dependencies auto-trigger the next ticket on completion; between tickets the agent asks whether the plan needs fresh tickets.
+4. **Build one context engine**: stand up an MCP gateway over your internal systems (data lake, ticket system, docs) that builds system prompts and tool guidance — one shared context layer every tool reuses instead of per-tool reinvention.
+5. **Switch the dashboards**: replace PR counts and AI-code percentages with outcome metrics — shipping speed, customer impact, defect rate, time-to-recovery.
+6. **Observe sessions to self-improve**: log where agents struggle, build skills for the gaps, retire obsolete ones. Own the loop, not just the output.
 
 ## Sources
 

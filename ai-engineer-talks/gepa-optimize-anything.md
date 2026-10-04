@@ -4,9 +4,31 @@
 
 **Note:** distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.
 
+![Visual one-pager](onepager-gepa-optimize-anything.jpg)
+
 ## Thesis
 
 Most teams are bottlenecked by sample efficiency — they lack the data/compute for SFT or RL. So instead of RL with verified rewards (which discards everything but a 0/1 score), GEPA does **reflective optimization in text space**: an LLM reads full rollout traces (chains of thought, tool calls, error messages) plus textual feedback and rewrites the prompt, where a single natural-language change can equal thousands of gradient steps. A Pareto candidate pool avoids local optima, and "Optimize Anything" generalizes the same loop to any text artifact — code, agent harnesses, scheduling policies.
+
+## The mental model
+
+```mermaid
+flowchart TD
+  Cand[Prompt candidate] --> Run[Run rollouts]
+  Run --> Trace[Full traces tool calls errors]
+  Trace --> Reflect[LLM reflects in text space]
+  Reflect --> Rewrite[Rewrite the prompt]
+  Rewrite --> Pool[Add to Pareto pool]
+  Pool --> Keep{Best on any example?}
+  Keep -->|Yes| Cand
+```
+
+```mermaid
+flowchart LR
+  R[Rich rollout traces] --> RUse[Used fully]
+  O[O1 score only] --> R1[Wasted by GRPO]
+  RUse --> G2[2x gains in 1 round on 3 examples]
+```
 
 ## Key points
 
@@ -44,6 +66,15 @@ Most teams are bottlenecked by sample efficiency — they lack the data/compute 
 - GEPA runs with Qwen3-8B **self-optimizing, no external teacher** — this works with local open models, not just frontier APIs.
 - The pattern to steal: full rollout traces (tool calls, error messages) + textual reflection beats O(1) score gradients on both sample and token efficiency — apply it to your own prompt/harness tuning loop.
 - Skills are a token-compression device: encoding repo layout and build/test invocation into a skill cut resolution time ~50% — cheap to write locally, pays off on every run.
+
+## How to apply it
+
+1. Pick one expensive prompt or harness config and set up the GEPA loop: problems plus an evaluator returning a score and textual side information (tool errors, compiler output, expert notes) — no weight training, text-space reflection only.
+2. Feed full rollout traces, not scores: store chains of thought, tool calls, and error messages per attempt so the reflection step can read what actually happened.
+3. Keep a Pareto candidate pool instead of a single best prompt: retain any candidate that wins on even one example — the talk credits this with roughly 2x the gains of a plain loop.
+4. Distill the learned prompt into a skill artifact: the detailed problem specification GEPA discovers (input semantics, pipeline purpose, repo layout, test invocation) becomes a versioned skill the whole team inherits — token compression that pays off every run.
+5. Run the eval flywheel: from ~50 human-annotated production trajectories, optimize an LLM-as-judge prompt, then optimize the agent against it — co-improving the harness and its own evaluator.
+6. Try the local path: Qwen3-8B self-optimizing with no external teacher proves this works on open weights on your own hardware, not just frontier APIs.
 
 ## Sources
 

@@ -8,6 +8,43 @@
 
 Agents that carry state over long horizons can't be fixed with prompt tuning or a good demo — they need **controlled experiments**: define scenario suites, run simulations, collect structured traces, score behavior with a balanced scorecard, and let an autoresearch meta-loop search a small frozen "policy surface," keeping only changes that survive measurement (a ratchet). Memory (RAG) alone is insufficient; what matters is the **agent protocol** — how memories get written, uncertainty communicated, trust updated, sources attributed, and replanning triggered.
 
+## The mental model
+
+```mermaid
+flowchart LR
+    A[Define scenario suite] --> B[Simulate agents]
+    B --> C[Collect structured traces]
+    C --> D[Score with balanced scorecard]
+    D --> E[Propose small policy change]
+    E --> F[Rerun scenario]
+    F --> G{Score better and guardrails hold}
+    G -->|Yes| H[Keep the change]
+    G -->|No| I[Revert]
+    H --> E
+    I --> E
+```
+
+```mermaid
+flowchart TD
+    SC[Balanced scorecard] --> D1[Diffusion - reach]
+    SC --> P1[Provenance - source retention]
+    SC --> R1[Rumors - uncertainty preservation]
+    SC --> R2[Rumors - false assertion rate]
+    SC --> PL[Planning - action consistency]
+    SC --> PL2[Planning - time to replan]
+    SC --> PR[Privacy - containment]
+```
+
+```mermaid
+flowchart TD
+    M[Mango rumor spreads agent to agent] --> F1[Source gets lost]
+    M --> F2[Rumor hardens into fact]
+    M --> F3[Facts known but unused in plans]
+    F1 --> X1[Preserve sources in memory writes]
+    F2 --> X2[Store confidence, mark firsthand vs secondhand]
+    F3 --> X3[Classify public facts, proactively share evidence]
+```
+
 ## Key points
 
 - **Project Paradox:** a modular framework from Supercell's AI innovation lab (Karati, ex-Microsoft, ex-Supercell; teammate Arunachalam Manikandan) letting developers plug intelligent autonomous agents into video games as dynamic companions that interact, compete, or cooperate with players and each other.
@@ -44,6 +81,16 @@ Agents that carry state over long horizons can't be fixed with prompt tuning or 
 - The pattern is local-first friendly: freeze everything, edit only a small protocol surface, rerun scenarios — cheap to run on local infrastructure with no frontier dependency.
 - For any stateful assistant (personal assistant, coding agent): add **provenance to every memory** (firsthand/secondhand/verified/uncertain) and keep raw episodic memories separate from current beliefs — this is a data-model change, not a model upgrade.
 - Use a balanced scorecard, not a single quality metric — it prevents the agent from gaming optimization (oversharing, noisy recall) and wasting iteration on regressions.
+
+## How to apply it
+
+1. **Pick one stateful workflow**: choose a long-running agent your team actually depends on (coding agent across issues, support triage) — not a demo.
+2. **Freeze the harness**: lock scenarios, metrics, and infrastructure. Expose only a small editable policy surface: memory-writing policy, retrieval policy, communication prompt, belief and trust rules, source attribution, replanning triggers.
+3. **Write three scenarios**: public-fact diffusion (who learns it, do they remember who said it, do plans change), rumor uncertainty (does uncertainty survive retelling), and replanning (blocked path — do agents update and tell each other).
+4. **Add provenance to every memory write**: tag each memory firsthand, secondhand, verified, or uncertain, and keep raw episodic memories separate from current beliefs.
+5. **Build the balanced scorecard**: diffusion reach, provenance retention, uncertainty preservation plus false-assertion rate, action consistency plus time-to-replan, privacy containment. Never optimize a single metric.
+6. **Run the loop as a ratchet**: simulate, trace, score, change one policy, rerun — keep only what improves the scorecard with guardrails holding, revert everything else.
+7. **Re-run scenarios on every protocol change**: claims stay modest without repeated controlled-loop results.
 
 ## Sources
 

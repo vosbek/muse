@@ -4,9 +4,29 @@
 
 **Note:** YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript.
 
+![Visual one-pager](onepager-harness-picks-model.jpg)
+
 ## Thesis
 
 Cost per token is a misleading metric because models differ in how many tokens and retries they need to finish the same task at the same quality — cost per task is the real metric. Capping developer tokens is like giving a developer a one-hour laptop battery; management's job is unlimited, inexpensive tokens. Kimchi's open-source harness routes each task to the cheapest-per-completed-task model (2.5x savings vs Claude over 3 months across Cast AI's 300-person org while token volume grew 1.5x), wrapped with Ferment (autonomous long tasks with quality scoring), Teleport (remote sandbox), and Studio (team board).
+
+## The mental model
+
+```mermaid
+flowchart TD
+  Task[Task arrives] --> Score[Score each model cost per task]
+  Score --> Route[Route to cheapest]
+  Route --> Run[Run and log retries]
+  Run --> Drift{Model drift?}
+  Drift -->|Yes| Score
+  Drift -->|No| Done[Deliver]
+```
+
+```mermaid
+flowchart LR
+  Token[Cost per token] --> Mis[misleading metric]
+  CPT[Cost per task at equal quality] --> Real[real metric]
+```
 
 ## Key points
 
@@ -39,6 +59,15 @@ Cost per token is a misleading metric because models differ in how many tokens a
 - Cost-per-task as the unit metric is directly adoptable: log tokens + retries per completed task per model, route automatically, and re-benchmark on a cadence no human team would — that cadence is what catches model drift like Kimi 2.6 → Minimax 3 within weeks.
 - The Ferment quality-scoring loop (grade to B, iterate to A, higher-order model re-check) is a local harness pattern: quality gates replace token caps.
 - "Reading code is not enough anymore" — review the spec given to the agent, not just the diff; a process change with zero tooling cost.
+
+## How to apply it
+
+1. Switch the unit metric this week: start logging tokens, retries, and completed tasks per model per task type — cost per completed task replaces cost per token in every report.
+2. Build the routing harness: score candidate models on your own task sample at equal quality, route each task to the cheapest-per-completed-task model, and re-run the benchmark on a weekly cadence no human team would keep manually.
+3. Wire model-drift detection: alert when the winning model shifts (Kimi 2.6 to Minimax 3 took three weeks) — the autonomous harness is what catches it, not a quarterly review.
+4. Add Ferment-style quality gates: milestones with build/breakage checks, a scoring model that grades artifacts (complete at B, iterate to A), and a higher-order re-check that sends failures back — quality gates replace token caps.
+5. Change the review process for agent PRs: reviewers assess the intent and the spec given to the agent, not just the diff — zero tooling cost, immediate effect.
+6. Give teams remote sandboxes: sessions that survive a closed laptop remove lost-session waste — the Teleport pattern, hostable for your own engineers.
 
 ## Sources
 

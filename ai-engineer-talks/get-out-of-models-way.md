@@ -8,6 +8,25 @@
 
 "Scaling with intelligence" — product architecture should be a **function of model capability**, not a fixed design. Builders should remove beloved-but-obsolete primitives (chat sidebars, fixed IDEs, hand-written UIs) and ship primitives that get better as models do: **dynamic subagents, sidecar triggers, and generative UI.** Evidence: **93 subagents built a from-scratch OS kernel running Doom in 12 hours for under $1,000 (2B tokens)**, and DeepMind researchers automated **90% of side-by-side eval analysis** with agent teams — while the "human-written specialized UI" is declared "kind of dead."
 
+## The mental model
+
+```mermaid
+flowchart LR
+  A[2022 deterministic autocomplete] --> B[2024 agents arrive]
+  B --> C[2025 agent manager plus parallel agents]
+  C --> D[2026 agent teams era]
+```
+
+```mermaid
+flowchart TD
+  Lead[Lead agent plans] --> S1[Subagent 1 cheap model]
+  Lead --> S2[Subagent 2 frontier model]
+  Lead --> S3[Subagent 3 cheap model]
+  S1 --> Sand[Parallel sandboxes]
+  S2 --> Sand
+  S3 --> Sand
+```
+
 ## Key points
 
 - **Framing:** coaching Argentina in the 89th minute with Messi on the pitch — "give Messi the ball and get the heck out of the way." LLMs are no longer role players; they can be the star if the product is built so the model can "cook." This is Hou's **fifth AI Eng talk**; he's built dev tools since 2022.
@@ -43,6 +62,15 @@
 
 - **Let the lead agent pick per-subagent models, not the user** — cost-aware orchestration: route subtasks to the cheapest model that clears the quality bar, reserving frontier models for the lead/planning role. This is the deployable pattern behind the 2B-tokens-under-$1,000 hero run.
 - **Treat compute supply as the binding constraint:** when capability is no longer scarce, budget and schedule against available inference capacity — the "TPU crunch" lesson applies to local GPU queues as much as Google's fleet.
+
+## How to apply it
+
+1. Audit your primitives against the timeline: list every fixed UI and deterministic workflow in the internal tooling and flag which ones only existed because 2022-era models couldn't handle more — schedule the obsolete ones for removal.
+2. Let the lead agent choose per-subagent models: configure orchestration so task difficulty picks the model (cheap flash-tier for execution, frontier for planning), not a user-level default — the talk's cost-aware orchestration pattern.
+3. Replace one hand-built analysis dashboard with agent-generated UI: have agents propose hypotheses, investigate in parallel, and render interactive results on demand — the 90% eval-automation pattern, applied to your own metrics first.
+4. Add sidecar triggers to one long-lived agent: scheduled or event-driven invocations (cron, PR hooks, webhooks) so agents stop being purely reactive to prompts.
+5. Decouple the agent manager from the IDE: keep orchestration as a separate layer that works from VS Code, terminal, or CI — the IDE is one surface among several, not the home of the agent.
+6. Plan against compute supply, not model capability: budget GPU/inference capacity as the scarce resource and schedule heavy agent runs (like the 93-subagent hero runs) against that queue.
 
 ## Sources
 

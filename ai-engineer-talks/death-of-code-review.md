@@ -8,6 +8,22 @@
 
 Generation is now nearly free but verification isn't — developers with autonomous agents wrote **741% more code yet shipped only 30% more**, because human review is the bottleneck and humans cannot scale to agent output. Neither reviewing harder nor skipping review survives the evidence (Bun's 13,044 unsafe blocks; an 88%-vs-35% prompt-injection fool rate; a public six-month "don't review" retraction), so code review must be rebuilt as an engineered system: humans stop reviewing PRs line-by-line and instead design the review harness — rubrics, evals, definitions of mergeable — with production observability as the last reviewer standing.
 
+## The mental model
+
+```mermaid
+flowchart LR
+  Gen[Agents write 741 percent more code] --> Bot[Human review bottleneck]
+  Bot --> Ship[Only 30 percent more shipped]
+```
+
+```mermaid
+flowchart TD
+  Humans[Humans design the harness] --> Rub[Rubrics evals mergeable definitions]
+  Rub --> Auto[Automated review with tools]
+  Auto --> Fix[Reviewer spawns fix agent]
+  Fix --> Obs[Production observability last reviewer]
+```
+
 ## Key points
 
 - **The asymmetry.** Three economists tracked **100,000+ GitHub developers** against telemetry of AI adoption — autonomous-agent users wrote **741% more code but shipped only 30% more software** (~8x writing, ~⅓ more shipping); the authors are explicit that review was the bottleneck.
@@ -39,6 +55,15 @@ Generation is now nearly free but verification isn't — developers with autonom
 
 - **Budget verification compute explicitly:** if review is the bottleneck, the spend profile flips — invest inference tokens in multi-pass review and reviewer-with-tools loops rather than generating more diffs per token.
 - **Codify your review harness, not your review queue:** write the rubrics, evals, and definitions of mergeable once as versioned artifacts (skills/eval sets), so every agent in the org inherits the same merge bar — judgment compounds, line-by-line review doesn't scale.
+
+## How to apply it
+
+1. Measure your own asymmetry: pull PR data for the last quarter (lines generated vs lines shipped) and confirm whether review is the bottleneck before spending anything.
+2. Write the definition of mergeable as a versioned artifact: correctness, regression safety, scope discipline, test quality, maintainability — a rubric file every reviewer (human or agent) grades against, stored in the repo.
+3. Budget verification compute explicitly: shift token spend from generating more diffs to multi-pass automated review — shuffled re-review and reviewer-with-tools loops, with false-positive filtering like Cursor's.
+4. Fuse review with repair: let the reviewer's findings spawn a fix agent that commits the fix directly, so human triage only sees genuine questions.
+5. Instruct the reviewer to be suspicious by default: agent reviewers approve too easily, and innocent-framed vulnerable commits fool autonomous reviewers far more often than humans — add a prompt-injection sanity check to the harness.
+6. Make production observability the last reviewer: wire deploys so runtime signals (errors, SLO drift) feed back into the merge bar, closing the loop the talk prescribes.
 
 ## Sources
 
