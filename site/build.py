@@ -65,6 +65,21 @@ article.doc code{background:#262626;padding:2px 7px;border-radius:6px;font-size:
 article.doc pre{background:#1a1a1a;border:1px solid var(--line);border-radius:10px;padding:16px;overflow:auto;margin:14px 0}
 article.doc pre.mermaid{background:#141414;text-align:center}
 article.doc pre.mermaid svg{max-width:100%;height:auto}
+.hero-visual{margin:20px 0;text-align:center}
+.hero-visual img{max-width:100%;border-radius:12px;border:1px solid var(--line)}
+.hero-visual .mermaid{display:inline-block;max-width:100%}
+details.sec{border:1px solid var(--line);border-radius:10px;margin:12px 0;background:#181818}
+details.sec summary{cursor:pointer;padding:14px 16px;font-weight:700;font-size:18px;list-style:none}
+details.sec summary::-webkit-details-marker{display:none}
+details.sec summary::before{content:"▸ ";color:var(--amb)}
+details.sec[open] summary::before{content:"▾ "}
+details.sec .sec-body{padding:0 16px 14px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px;margin-top:18px}
+.gallery figure{margin:0}
+.gallery img{width:100%;border-radius:12px;border:1px solid var(--line)}
+.gallery figcaption{padding:10px 4px;color:var(--mut)}
+.gallery figcaption b{color:var(--txt)}
+.lede{color:var(--mut);font-size:19px}
 article.doc pre code{background:none;padding:0}
 article.doc blockquote{border-left:3px solid var(--grn);padding:4px 16px;color:var(--mut);margin:14px 0}
 .crumb{font-size:14px;color:var(--dim);margin:26px 0 0}.crumb a{color:var(--dim)}
@@ -108,6 +123,37 @@ def mermaid_blocks(html):
         code = code.replace("&amp;", "&").replace("&lt;", "<").replace("&gt;", ">").replace("&quot;", '"')
         return '<pre class="mermaid">' + code.strip() + "</pre>"
     return re.sub(r'<pre><code class="language-mermaid">(.*?)</code></pre>', rep, html, flags=re.S)
+
+
+OPEN_SECTIONS = {"thesis", "the-mental-model", "decision-framework", "how-to-apply-it"}
+
+
+def hero_visual(html):
+    """Pull the first image or mermaid diagram out to feature at the top of the page."""
+    m = re.search(r'<p><img[^>]*></p>|<pre class="mermaid">.*?</pre>', html, re.S)
+    if not m:
+        return "", html
+    return f'<div class="hero-visual">{m.group(0)}</div>', html[:m.start()] + html[m.end():]
+
+
+def collapsible_sections(html):
+    """Keep lead sections open; wrap the rest in <details> so long pages aren't walls of text."""
+    parts = re.split(r'(?=<h2 )', html)
+    out = [parts[0]]
+    for part in parts[1:]:
+        m = re.match(r'<h2 id="([^"]+)">', part)
+        sid = m.group(1) if m else ""
+        h2end = part.find("</h2>") + len("</h2>")
+        if h2end <= len("</h2>") - 1:
+            out.append(part)
+            continue
+        title = re.sub(r"<[^>]+>", "", part[:h2end]).strip()
+        content = part[h2end:]
+        if sid in OPEN_SECTIONS:
+            out.append(part)
+        else:
+            out.append(f'<details class="sec"><summary>{title}</summary><div class="sec-body">{content}</div></details>')
+    return "".join(out)
 
 
 def rewrite_md_links(html, rel, page_rels):
@@ -221,6 +267,8 @@ def main():
         md.reset()
         html = rewrite_md_links(html, rel, page_rels)
         html = mermaid_blocks(html)
+        hero, html = hero_visual(html)
+        html = collapsible_sections(html)
         title = title_of(full)
         sid, sname = section_of(rel)
         url = out_url(rel)
@@ -228,7 +276,7 @@ def main():
         depth = url.count("/")
         root = "../" * depth
         crumb = f"<div class='crumb'><a href='{root}'>Home</a> · <a href='{root}#{sid}'>{sname}</a></div>"
-        inner = html
+        inner = hero + html
         if not src.lstrip().startswith("#"):
             inner = f"<h1>{title}</h1>" + inner
         body = crumb + f"<article class='doc'><div class='badge'>{sname}</div>" + inner + "</article>"
@@ -241,6 +289,8 @@ def main():
         text = re.sub(r"\s+", " ", text)[:600]
         index.append({"t": title, "s": sname, "u": url, "x": text})
         rendered[rel] = (title, sid, sname, url)
+
+    build_visual_index(nav_tpl, index)
 
     with open(OUT + "/search.json", "w") as f:
         json.dump(index, f)
@@ -258,6 +308,7 @@ def main():
 
     hero = """<div class="hero"><h1><span class="g">AI</span> Skills <span class="a">Playbook</span></h1>
 <p>Distilled talks, posts and docs on AI engineering — agents, context economics, memory, evals and tooling. Every entry keeps its thesis, key points and sources.</p>
+<p><a href="p/visual-index/">Browse the visual index →</a> every infographic, full-size.</p>
 <div class="searchbox"><input id="q" placeholder="Search the playbook…"></div><div id="results"></div></div>
 <div class="cards">""" + cards + "</div>" + sec_lists
     home = TEMPLATE.format(title="Home", root="", nav=nav_tpl.format(root=""), body=hero)
@@ -265,6 +316,42 @@ def main():
         f.write(home)
     # search.js needs ROOT var per depth; patch: use relative fetch
     print(f"built {len(pages)} pages -> {OUT}")
+
+
+def build_visual_index(nav_tpl, index):
+    """Gallery page: all one-pager infographics, large, each linking to its talk."""
+    items = [
+        ("loop-is-the-product", "onepager-loop-is-the-product.jpg",
+         "The Loop Is the Product", "Roland Gavrilescu, Introspection"),
+        ("gepa-optimize-anything", "onepager-gepa-optimize-anything.jpg",
+         "Beating RL With Reflection: GEPA", "Lakshya A. Agrawal, GEPA"),
+        ("vscode-weekly-releases", "onepager-vscode-weekly-releases.jpg",
+         "VS Code: Monthly to Weekly Releases", "Harald Kirschner"),
+        ("harness-picks-model", "onepager-harness-picks-model.jpg",
+         "Stop Rationing Tokens: Let the Harness Pick the Model", "Cast AI"),
+        ("what-it-takes-software-factory", "onepager-software-factory.jpg",
+         "What It Takes to Build a Software Factory", "Tereza Tizkova, Factory"),
+        ("stop-renting-memory", "onepager-stop-renting-memory.jpg",
+         "Stop Renting Your AI's Memory", "Dylan Couzon, Qdrant"),
+    ]
+    destdir = os.path.join(OUT, "p", "visual-index")
+    os.makedirs(destdir, exist_ok=True)
+    figs = ""
+    for pagedir, img, title, sub in items:
+        figs += (f"<figure><a href='../ai-engineer-talks/{pagedir}/'>"
+                 f"<img src='../ai-engineer-talks/{pagedir}/{img}' alt='{title}' loading='lazy'></a>"
+                 f"<figcaption><b>{title}</b><br><span>{sub}</span></figcaption></figure>")
+    body = ("<div class='crumb'><a href='../../'>Home</a></div>"
+            "<article class='doc'><div class='badge'>Visual index</div>"
+            "<h1>Visual index</h1>"
+            "<p class='lede'>Every infographic in the playbook, full-size. Tap one to open its talk.</p>"
+            f"<div class='gallery'>{figs}</div></article>")
+    page = TEMPLATE.format(title="Visual index", root="../../",
+                           nav=nav_tpl.format(root="../../"), body=body)
+    with open(os.path.join(destdir, "index.html"), "w", encoding="utf-8") as f:
+        f.write(page)
+    index.append({"t": "Visual index", "s": "Galleries",
+                  "u": "p/visual-index/", "x": "all infographics one-pagers visual gallery"})
 
 
 def blurb(sid):
