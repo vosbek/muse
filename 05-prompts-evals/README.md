@@ -8,3 +8,10 @@
 - **Repos/tools:** None (methodology)
 - **Extractable skill:** Rule-ROI testing — for each prompt rule, run repeated trials, measure aggregate quality and latency, keep only rules that prove their worth; default to fewer, deterministic rules.
 - **Source:** https://www.instagram.com/reel/DbL2Wd3tK_4/
+
+### ASD-STE100: prompt LLMs in aerospace controlled English for clearer explanations
+- **Creator:** @vyzual.ai (surfacing Andrej Karpathy's recommendation) · **Date:** 2026-10-05
+- **What it suggests:** Karpathy's tip: ask the LLM to "explain [topic] using an ASD-STE100 style." ASD-STE100 (Simplified Technical English) is a real controlled-language standard developed for aerospace maintenance documentation — restricted ~900-word vocabulary, short sentences, active voice, one idea per sentence. The mechanism: heavy constraints on diction and syntax force the model into plain, structured output, which reads far more clearly than default LLM prose. The carousel's worked example (explaining "endogeneity"): the normal output is dense academic prose; the STE100 version says the same thing in simple words and short sentences. Karpathy notes he sometimes softens it ("part of the way to ASD-STE100") when the full spec feels too stringent. The generalizable principle: output constraints beat output instructions — telling the model *how* to write (vocabulary, sentence length, voice) constrains the output space more reliably than asking it to "be clear."
+- **Repos/tools:** ASD-STE100 spec (Aerospace and Defence Industries Association of Europe).
+- **Extractable skill:** Constraint-style prompting — append "using ASD-STE100 style: simple words, short sentences, active voice, one idea per sentence" to explanation prompts; prefer structural constraints over vague quality adjectives.
+- **Source:** screenshot of Karpathy's post via @vyzual.ai carousel (user-supplied, Oct 5 2026); spec: ASD Simplified Technical English.

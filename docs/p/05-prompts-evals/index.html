@@ -11,6 +11,14 @@
 <li><strong>Repos/tools:</strong> None (methodology)</li>
 <li><strong>Extractable skill:</strong> Rule-ROI testing — for each prompt rule, run repeated trials, measure aggregate quality and latency, keep only rules that prove their worth; default to fewer, deterministic rules.</li>
 <li><strong>Source:</strong> https://www.instagram.com/reel/DbL2Wd3tK_4/</li>
+</ul>
+<h3 id="asd-ste100-prompt-llms-in-aerospace-controlled-english-for-clearer-explanations">ASD-STE100: prompt LLMs in aerospace controlled English for clearer explanations</h3>
+<ul>
+<li><strong>Creator:</strong> @vyzual.ai (surfacing Andrej Karpathy's recommendation) · <strong>Date:</strong> 2026-10-05</li>
+<li><strong>What it suggests:</strong> Karpathy's tip: ask the LLM to "explain [topic] using an ASD-STE100 style." ASD-STE100 (Simplified Technical English) is a real controlled-language standard developed for aerospace maintenance documentation — restricted ~900-word vocabulary, short sentences, active voice, one idea per sentence. The mechanism: heavy constraints on diction and syntax force the model into plain, structured output, which reads far more clearly than default LLM prose. The carousel's worked example (explaining "endogeneity"): the normal output is dense academic prose; the STE100 version says the same thing in simple words and short sentences. Karpathy notes he sometimes softens it ("part of the way to ASD-STE100") when the full spec feels too stringent. The generalizable principle: output constraints beat output instructions — telling the model <em>how</em> to write (vocabulary, sentence length, voice) constrains the output space more reliably than asking it to "be clear."</li>
+<li><strong>Repos/tools:</strong> ASD-STE100 spec (Aerospace and Defence Industries Association of Europe).</li>
+<li><strong>Extractable skill:</strong> Constraint-style prompting — append "using ASD-STE100 style: simple words, short sentences, active voice, one idea per sentence" to explanation prompts; prefer structural constraints over vague quality adjectives.</li>
+<li><strong>Source:</strong> screenshot of Karpathy's post via @vyzual.ai carousel (user-supplied, Oct 5 2026); spec: ASD Simplified Technical English.</li>
 </ul></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../";</script><script src="../../assets/search.js"></script>
