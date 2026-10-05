@@ -21,6 +21,7 @@ SECTIONS = [
         "03-agent-memory", "04-automation", "05-prompts-evals", "06-design-vibe-coding",
         "07-ai-news", "08-tools-apis", "09-learn"]),
     ("resources", "Resources", ["templates", "setups"]),
+    ("repos", "GitHub Repos", ["github-repos.md"]),
 ]
 
 CSS = """
