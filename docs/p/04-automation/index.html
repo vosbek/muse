@@ -54,6 +54,14 @@
 <li><strong>Repos/tools:</strong> None linked in post text.</li>
 <li><strong>Extractable skill:</strong> Ship PR review as the first production agent: bounded, high-volume, human keeps merge authority.</li>
 <li><strong>Source:</strong> https://x.com/mardehaym/status/2092930766644617569</li>
+</ul>
+<h3 id="the-8-agent-architectures-picking-the-wrong-one-is-why-agents-loop-forever-or-cost-40run">The 8 agent architectures — picking the wrong one is why agents loop forever or cost $40/run</h3>
+<ul>
+<li><strong>Creator:</strong> @Rubix_Codes (Rubix Script) · <strong>Date:</strong> 2026-09-14</li>
+<li><strong>What it suggests:</strong> Most tutorials teach one agent pattern and call it architecture. There are eight, each with a when-to-use and a characteristic failure mode — and the wrong pick is the root cause of infinite loops, runaway bills, and undebuggable agents. The eight: <strong>ReAct</strong> (think-act-observe loop; must cap iterations or it loops forever); <strong>Plan-and-Execute</strong> (plan once with a big model, execute steps with a cheap one — the two-tier cost pattern from 02, applied to planning); <strong>Reflection</strong> (draft, self-grade against a rubric, rewrite — the GEPA loop as an architecture); <strong>Tool-Use</strong> (typed function calling; accuracy falls off a cliff past ~40 tools — the Jev/tool-routing problem); <strong>RAG</strong> (retrieve first, then answer, with auditable citations); <strong>Orchestrator–Worker</strong> (one brain decomposes, many workers run in parallel); <strong>Supervisor</strong> (route each turn to the right sub-agent); <strong>Graph/State Machine</strong> (explicit nodes, edges, checkpoints, human gates — LangGraph-style; the only pattern with real debuggability). The cost framing is the point: architecture choice is a tokenomics decision before it's an engineering one. Code sketches and eval checklists are DM-gated ("comment AGENTS"), but the pattern catalog and failure modes stand alone.</li>
+<li><strong>Repos/tools:</strong> None public (patterns; LangGraph named for graph/state-machine).</li>
+<li><strong>Extractable skill:</strong> Architecture-first agent design — match the pattern to the task (bounded Q&amp;A → RAG; multi-step with verification → plan-and-execute + reflection; parallelizable → orchestrator-worker; auditable enterprise → graph/state machine); cap every loop; keep tool counts under the accuracy cliff or route selection through a decision model.</li>
+<li><strong>Source:</strong> https://www.instagram.com/p/DdS1W-3lW0p/</li>
 </ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../";</script><script src="../../assets/search.js"></script>
