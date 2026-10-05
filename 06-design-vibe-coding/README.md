@@ -83,3 +83,10 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Repos/tools:** Blender MCP, Astra, Tripo (3D generation)
 - **Extractable skill:** Route generative UI through professional tools via MCP; the output ceiling follows the tool, not the model.
 - **Source:** https://x.com/luccacerf/status/2097047098281672782
+
+### Lock in 8 context docs before vibe coding — including an AI Agents Guide
+- **Creator:** @prateekguglani · **Date:** 2026-10-03
+- **What it suggests:** "Vibe coding without structure is just speedrunning hallucinations and broken builds." The fix is locking project context into documents before the agent writes a line of code. Four of the eight docs are named: PRD (scope, user journeys, feature specs), Design System (UI tokens, layout guidelines, component styling), Architecture (tech stack, data flow, system boundaries), and an **AI Agents Guide** (ground rules, constraints, and instructions for Cursor/LLMs). The remaining four docs plus markdown templates are gated behind a "comment DOCS" DM funnel, so they aren't publicly verifiable — but the structural insight stands without the bundle: agents fail on ambiguous intent, and the cheapest place to fix intent is documents the agent reads, not prompts you retype every session. The AI Agents Guide is the same pattern as this repo's tokenomics Lever 1 (AGENTS.md / copilot-instructions.md as the highest-ROI file a team can write).
+- **Repos/tools:** None public (template pack is DM-gated).
+- **Extractable skill:** Context-lock scaffolding — ship PRD + architecture + agent-guide docs with every new project; intent documents beat repeated prompting.
+- **Source:** https://www.instagram.com/p/DeCVll9BBzC/
