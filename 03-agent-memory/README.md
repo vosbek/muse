@@ -126,4 +126,11 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Extractable skill:** Build the feedback loop, not just the agent; self-improvement is the senior skill.
 - **Source:** https://x.com/res1dualedge/status/2094925075606610048 · https://x.com/callanxai/status/2094065331576688985
 
+### Memory is three technologies, not one: match retrieval to data shape (RAG vs graphs vs SQL)
+- **Creator:** @learnbay · **Date:** 2026-09-29
+- **What it suggests:** Most AI agent failures start in the retrieval layer, not the LLM — and they *look* like LLM failures. The post gives the cleanest three-way cut of agent "memory" in this collection: RAG/vector retrieval for unstructured content (PDFs, articles, tickets — semantic similarity); knowledge graphs for connected entities (traverse relationships, multi-hop reasoning instead of asking "what text is similar?"); SQL/tabular for structured records (transactions, metrics, user data — deterministic retrieval and aggregation, not approximate similarity). The failure mode is forcing every data type through a vector database, which creates retrieval failures that get blamed on the model. The decision question reframes the whole category: not "which memory technology is best?" but "what is the shape of my data, and what reasoning does my agent need?" — RAG retrieves passages, graphs traverse relationships, SQL queries structured facts.
+- **Repos/tools:** None (architecture framework).
+- **Extractable skill:** Shape-first retrieval routing — audit which memory layer each query type hits; deterministic paths (SQL) cost less than semantic re-retrieval loops. When an agent fails, check the retrieval layer before upgrading the model.
+- **Source:** https://www.instagram.com/p/Dd5aHuOmqya/
+
 **Deep dives:** [unreal-agent](../deep-dives/unreal-agent.md) (async-first harness) · [tangleml](../deep-dives/tangleml.md) (self-improving loop substrate).

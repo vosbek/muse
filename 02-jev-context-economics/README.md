@@ -23,6 +23,13 @@
 - **Extractable skill:** Two-tier model strategy — default narrow work to SLMs; require evidence (not habit) before spending frontier tokens.
 - **Source:** https://www.instagram.com/reel/DcY6Er0iuwy/
 
+### 9 ways to cut the LLM bill — it's an architecture problem, not a model problem
+- **Creator:** @hackproduct · **Date:** 2026-10-01
+- **What it suggests:** A merged checklist of 9 cost tactics (from 15): route by difficulty (tools first, small model next, big model only when needed); trim context (summarize old turns, drop irrelevant history); retrieve don't stuff (RAG sends a few chunks, not every document); prompt caching (pay a fraction for a long fixed prefix); semantic answer caching (skip the call entirely on near-duplicate questions); lean outputs (cap max_tokens, ask for JSON not essays); batch APIs (~half price for non-urgent work); agent guardrails (cap iterations, tool calls, tokens so one runaway loop can't burn the budget); track cost per request and per feature daily. The two lines most people miss: output tokens usually cost several times input tokens, and agents multiply every call — the cheapest token is the one you never generate. Every tactic maps onto this folder's existing entries (Jev routing, jevgrep retrieval-first, two-tier model strategy) and onto the tokenomics playbook's levers.
+- **Repos/tools:** None (checklist; batch APIs and caching are provider features).
+- **Extractable skill:** Bill-first architecture review — measure the biggest line on the bill (cost per request/feature), then apply routing, caching, and guardrails before touching model choice.
+- **Source:** https://www.instagram.com/p/Dd-Y4rZOSn3/
+
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
 
