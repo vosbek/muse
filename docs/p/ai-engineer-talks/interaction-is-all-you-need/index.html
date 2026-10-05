@@ -2,21 +2,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "An Interaction Is All You Need" — Ivan Leo, Google DeepMind · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-an-interaction-is-all-you-need-ivan-leo-google-deepmind">Talk Notes: "An Interaction Is All You Need" — Ivan Leo, Google DeepMind</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart LR
+  Call[Client call with interaction ID] --> Server[Server side state preserved]
+  Server --> Sandbox[Persistent sandbox]
+  Sandbox --> Next[Next call same environment]</pre></div><h1 id="talk-notes-an-interaction-is-all-you-need-ivan-leo-google-deepmind">Talk Notes: "An Interaction Is All You Need" — Ivan Leo, Google DeepMind</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=8aVbXXvJUY4">An Interaction Is All You Need — Ivan Leo, Google DeepMind</a> · AI Engineer channel · Oct 3, 2026 · 17:03 · Recorded at AI Engineer World's Fair 2026</p>
 <h2 id="thesis">Thesis</h2>
 <p>Models became agents but APIs didn't keep up — Google DeepMind rebuilt the API surface: the Interactions API (server-side state via interaction IDs, thought signatures handled automatically, a steps data model, strongly typed outputs) plus Managed Agents (the Antigravity harness running in the cloud with persistent sandboxes), with a credential-injecting proxy so agents can call private APIs without ever seeing tokens.</p>
 <h2 id="the-mental-model">The mental model</h2>
-<pre class="mermaid">flowchart LR
-  Call[Client call with interaction ID] --> Server[Server side state preserved]
-  Server --> Sandbox[Persistent sandbox]
-  Sandbox --> Next[Next call same environment]</pre>
+
 <pre class="mermaid">flowchart TD
   Agent[Agent calls private API] --> Proxy[Proxy intercepts]
   Proxy --> Inject[Injects GitHub token]
   Inject --> API[Private API]
   Agent -.->|Never sees| Creds[Credentials]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Evolution</strong>: single completions → function calling (JSON payloads) → models that reason and act → agents; the "agent = LLM in a loop" scaffolding is falling away (models now just use a bash tool directly).</li>
 <li><strong>Why a new API</strong>: older endpoints were deeply nested objects; new workloads (deep research agent, spawning agents, multimodal) need the Interactions API.</li>
@@ -31,23 +31,23 @@
 <li><strong>Same agent locally and in the cloud</strong>: tune locally in the Antigravity IDE, package into a folder, upload — same skills, same harness, same prompt.</li>
 <li><strong>Credential-injecting proxy</strong>: the model never sees credentials; the proxy intercepts outbound calls and injects the GitHub API token dynamically; even if prompt-injected and "leaked," the attacker only sees code that runs against the GitHub API.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"You only pay for the model. You don't pay for the storage. You don't pay for the sandbox." (named agents — up to 1,000 per account)</li>
 <li>2M tokens burned analyzing a repo built on a custom DSL (reinforcement-learning environments / Scratch-like).</li>
 <li>Gemini API CLI open-sourced; an Interactions API migration skill is fed to coding agents and regularly evaluated.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>Named agents: pay only for model usage, not sandbox or storage.</li>
 <li>Server-side state and persistent sandboxes avoid re-sending context or rebuilding environments.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li><strong>Server-side state as a pattern</strong>: persistent session handles (interaction IDs) eliminate re-sending full context on every call — mirror this in local agent design by keeping long-lived session state server-side rather than rehydrating prompts.</li>
 <li><strong>Credential-injecting proxy for local agents</strong>: agents never see API tokens; the proxy injects them at call time — a clean security pattern for enterprise agents that call internal APIs, and it survives prompt injection by design.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Adopt persistent session handles in your own agent design: keep long-lived session state server-side (interaction-ID style) instead of rehydrating full prompts on every call — stop re-sending context you already have.</li>
 <li>Make agent harnesses environment-addressable: pair the session handle with an environment/sandbox ID so repeated calls land in the exact same context — no state-persistence management in client code.</li>

@@ -2,13 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "GPU Died. Training Didn't: Self-Healing Training at Scale" — Connor Guerrero & Young Jeong, Crusoe · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-gpu-died-training-didnt-self-healing-training-at-scale-connor-guerrero-young-jeong-crusoe">Talk Notes: "GPU Died. Training Didn't: Self-Healing Training at Scale" — Connor Guerrero &amp; Young Jeong, Crusoe</h1>
-<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=bRGyYaE0lxI">GPU Died. Training Didn't: Self-Healing Training at Scale — Connor Guerrero &amp; Young Jeong, Crusoe</a> · AI Engineer channel · Oct 3, 2026 · 16:53 · Recorded at AI Engineer World's Fair 2026</p>
-<h2 id="thesis">Thesis</h2>
-<p>At thousands of GPUs, hardware failures are inevitable and manual remediation doesn't scale; Crusoe's managed Slurm on Kubernetes (via CMK + the open-source Slinky project) with AutoClusters automatically detects critical GPU errors (e.g., XID 79), replaces the node, and resumes training from checkpoint with no user action — full recovery in under 15 minutes.</p>
-<h2 id="the-mental-model">The mental model</h2>
-<p>The XID 79 auto-remediation flow, end to end:</p>
-<pre class="mermaid">flowchart TD
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
     A[Detect XID 79] --> B[Notify user no action required]
     B --> C[Slurm operator drains node]
     C --> D[SIGTERM gives time to save checkpoint]
@@ -16,7 +10,13 @@
     E --> F[Node cordoned and removed from pool]
     F --> G[Healthy node added from spare capacity]
     G --> H[Recovery validated and logged]
-    H --> I[App loads checkpoint and resumes]</pre>
+    H --> I[App loads checkpoint and resumes]</pre></div><h1 id="talk-notes-gpu-died-training-didnt-self-healing-training-at-scale-connor-guerrero-young-jeong-crusoe">Talk Notes: "GPU Died. Training Didn't: Self-Healing Training at Scale" — Connor Guerrero &amp; Young Jeong, Crusoe</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=bRGyYaE0lxI">GPU Died. Training Didn't: Self-Healing Training at Scale — Connor Guerrero &amp; Young Jeong, Crusoe</a> · AI Engineer channel · Oct 3, 2026 · 16:53 · Recorded at AI Engineer World's Fair 2026</p>
+<h2 id="thesis">Thesis</h2>
+<p>At thousands of GPUs, hardware failures are inevitable and manual remediation doesn't scale; Crusoe's managed Slurm on Kubernetes (via CMK + the open-source Slinky project) with AutoClusters automatically detects critical GPU errors (e.g., XID 79), replaces the node, and resumes training from checkpoint with no user action — full recovery in under 15 minutes.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<p>The XID 79 auto-remediation flow, end to end:</p>
+
 <p>The unified hardware pool:</p>
 <pre class="mermaid">flowchart LR
     A[Idle inference GPUs] --> P[Unified GPU pool]
@@ -27,7 +27,7 @@
     U[User SSHs in and sees Slurm] --> S[Managed Slurm operator layer]
     S --> K[Crusoe Managed Kubernetes]
     K --> N[GPU nodes are K8s nodes first]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Slurm excels at training</strong>: tight collective communication across ranks, gang scheduling, topology awareness, prologue/epilog cluster validation — 20+ years, built by researchers for researchers.</li>
 <li><strong>Slurm falls short</strong>: today's AI workloads are dynamic (training, post-training, eval, inference on one cluster); health checks and node maintenance require manual drain scripts or tooling like NHC.</li>
@@ -42,19 +42,19 @@
 <li><strong>Design for failure</strong>: Slurm + K8s stay in sync; neither platform nor ML teams change workflows; GPU nodes are K8s nodes first.</li>
 <li><strong>Slinky</strong> = the open-source Slurm-on-Kubernetes project.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"Back to training in under 15 minutes" — total downtime from critical error to resumed training.</li>
 <li>"Fixing them by hand at 3 a.m. doesn't scale."</li>
 <li>XID 79 = GPU completely unusable.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>Unified pool reduces idle GPU waste — idle inference GPUs reallocated to training, freed training nodes immediately schedule inference pods.</li>
 <li>Auto-remediation replaces engineers logging in at 3 a.m. for hours — less downtime = fewer burned GPU-hours.</li>
 </ul>
 <p>No direct local-deploy relevance (datacenter-scale training infrastructure talk), noted here rather than inventing one.</p>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Mandate checkpoint-on-SIGTERM discipline. Every training job must flush checkpoints and logs when it receives SIGTERM — no checkpoint hygiene, no self-healing.</li>
 <li>Codify the remediation flow as an automated runbook: detect → notify (no action required) → drain → requeue → cordon/remove → replace from spares → validate/log → resume, with each step timed against the 15-minute bar.</li>

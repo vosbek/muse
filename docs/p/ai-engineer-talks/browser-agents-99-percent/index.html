@@ -2,17 +2,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Why 99% Accurate Browser Agents Still Fail" — Derek Meegan, Browserbase · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-why-99-accurate-browser-agents-still-fail-derek-meegan-browserbase">Talk Notes: "Why 99% Accurate Browser Agents Still Fail" — Derek Meegan, Browserbase</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart LR
+    S1[Step 1 at 99 percent] --> S2[Step 2 at 99 percent]
+    S2 --> S3[Repeat for 100 steps]
+    S3 --> R[Overall about 36 percent]</pre></div><h1 id="talk-notes-why-99-accurate-browser-agents-still-fail-derek-meegan-browserbase">Talk Notes: "Why 99% Accurate Browser Agents Still Fail" — Derek Meegan, Browserbase</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=5xi_S1f9sDU">Why 99% Accurate Browser Agents Still Fail — Derek Meegan, Browserbase</a> · AI Engineer channel · Oct 2, 2026 · 16:49 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript. The video page itself showed "Video unavailable" in our browser.</p>
 <h2 id="thesis">Thesis</h2>
 <p>Per-step accuracy compounds multiplicatively (99%/step over 100 steps ≈ 36% overall) — but the fix is not a smarter model, it is re-architecture: strip deterministic work out of the model's responsibility via encapsulated tools, deterministic verification, and written "skills" (SOPs for agents); measure success per transaction with retries; and evaluate the agent as a P&amp;L line item — profit = revenue − costs, performance first, then cost, then maintainability.</p>
 <h2 id="the-mental-model">The mental model</h2>
 <p>Per-step accuracy compounds multiplicatively, retries convert per-run luck into per-transaction reliability, and the final architecture strips deterministic work out of the model.</p>
-<pre class="mermaid">flowchart LR
-    S1[Step 1 at 99 percent] --> S2[Step 2 at 99 percent]
-    S2 --> S3[Repeat for 100 steps]
-    S3 --> R[Overall about 36 percent]</pre>
+
 <pre class="mermaid">flowchart TD
     A[Per run success 50 percent] --> B[Allow up to 4 retries]
     B --> C[Per transaction success 94 percent]
@@ -24,7 +24,7 @@
     D --> E[Deterministic download]
     E --> F[OCR verify tool]
     F --> G[Authoritative success or failure]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Core economics:</strong> cost accumulates continuously while value is realized only at the terminal step — "no partial credit."</li>
 <li><strong>The 99% figure is a thought experiment, not a product benchmark:</strong> independent 99% per-step success × 100 steps ≈ 36% overall — real dynamic, but "the math isn't the whole story."</li>
@@ -39,24 +39,24 @@
 <li><strong>Final architecture:</strong> request → serverless auth function → browser handed to agent runtime → agent navigates via skill → deterministic download → OCR verify tool → authoritative success/failure.</li>
 <li><strong>Cost anatomy:</strong> per-run cost is predominantly model cost today, but shrinking under open-source price pressure; plus infra/compute and integration/tooling; maintenance = observability (agent decisions + actual browser behavior), reconfig labor, and re-evaluation budget as sites and models change.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"Cost accumulation is continuous, while value realization is terminal."</li>
 <li>"Your agent is just another line item and that your agent should give you more than it takes."</li>
 <li>"Permit retries and measure success against a per transaction basis."</li>
 <li><strong>Stat:</strong> 50% per-run + ≤4 retries → 94% per-transaction success.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>Fewer model-owned steps = lower unit COGS (auth extraction "lowers unit COGS"); the model cost share of deployment is expected to shrink via open-source price pressure.</li>
 <li>Retries trade extra per-run cost for large per-transaction reliability gains (50% → 94%) — measure success per transaction, not per run.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>The architecture pattern is the local lesson: encapsulate deterministic steps (downloads, verification, auth) as tools/functions outside the model — every step the model doesn't take is tokens never spent, and a written skill (SOP) keeps the agent on the critical path instead of wandering.</li>
 <li>"No partial credit" reframes agent budgeting: fund transactions with concrete success artifacts, not agent runs.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Define each agent workflow's success artifact (order ID, confirmation email, queryable record) — fund transactions, not runs; no partial credit.</li>
 <li>Set a retry budget per transaction (e.g., up to 4) and report success per transaction; stop judging agents on per-run accuracy.</li>
@@ -64,11 +64,11 @@
 <li>Write a skill (SOP) for each recurring agent path so the model stays on the critical path instead of wandering.</li>
 <li>Evaluate each agent as a P&amp;L line item in this order: performance first, then cost, then maintainability.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>biggo AI summary: https://finance.biggo.com/podcast/7d545fe57e72f668</li>
 <li>Video description: https://www.youtube.com/watch?v=5xi_S1f9sDU</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

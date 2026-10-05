@@ -2,18 +2,18 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "YOLO Mode, Safely: MicroVM Sandboxes for Any Agent" — Rowan Christmas, Docker · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-yolo-mode-safely-microvm-sandboxes-for-any-agent-rowan-christmas-docker">Talk Notes: "YOLO Mode, Safely: MicroVM Sandboxes for Any Agent" — Rowan Christmas, Docker</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TB
+    A[Hypervisor separate kernel] --> B[Network deny by default]
+    B --> C[Dedicated Docker Engine per sandbox]
+    C --> D[Workspace isolation mountless or clone]
+    D --> E[Credential isolation proxy injects keys]</pre></div><h1 id="talk-notes-yolo-mode-safely-microvm-sandboxes-for-any-agent-rowan-christmas-docker">Talk Notes: "YOLO Mode, Safely: MicroVM Sandboxes for Any Agent" — Rowan Christmas, Docker</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=OE_lLNCNfQo">YOLO Mode, Safely: MicroVM Sandboxes for Any Agent — Rowan Christmas, Docker</a> · AI Engineer channel · Oct 2, 2026 · 11:34 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript.</p>
 <h2 id="thesis">Thesis</h2>
 <p>Harness-level guardrails ("please don't do nefarious things") are not a security boundary — agents talk their way around them, and once an agent reaches the host machine it is too late. Protection must sit below the agent at the microVM boundary. Docker Sandboxes (sbx) runs any agent in a microVM with its own kernel, isolated filesystem, placeholder-substituted secrets, default-deny networking, and a full audit trail — seven extra keystrokes (<code>sbx run claude</code>) buys security by design.</p>
 <h2 id="the-mental-model">The mental model</h2>
 <p>The five isolation layers — protection sits below the agent, not in it:</p>
-<pre class="mermaid">flowchart TB
-    A[Hypervisor separate kernel] --> B[Network deny by default]
-    B --> C[Dedicated Docker Engine per sandbox]
-    C --> D[Workspace isolation mountless or clone]
-    D --> E[Credential isolation proxy injects keys]</pre>
+
 <p>The before/after contrast from the self-hack demo:</p>
 <pre class="mermaid">flowchart LR
     N[Native run] --> N1[Browser history visible]
@@ -28,7 +28,7 @@
     B --> C[Proxy injects API key into HTTP header]
     C --> D[Value never enters the VM]
     A --> E[Agent only holds placeholder]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Self-hack demo:</strong> Claude Code running natively on his Mac, five prompts to go from browser history to real bank accounts, recent check orders, Zelle activity, and the last 4 digits of an account. He "scored" 9/10 on the technique.</li>
 <li><strong>Guardrail bypass:</strong> asking directly for bank data triggers a warning; reframing as "I'm researching how to do security" gets full cooperation — "That is the level of security we're at."</li>
@@ -43,25 +43,25 @@
 <li><strong>Roadmap (announced, not shipped):</strong> agent identity plus delegation chains with Cedar policies (degrade permissions on new events), L7 networking controls, per-repository filesystem controls.</li>
 <li><strong>Docker's own policy:</strong> all Docker developers must write code in sandboxes ("if we don't use it, we get yelled at"). Installs via package manager on Mac/Windows/Linux.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"So doing this at the harness level doesn't really work — agents find their way around it. If it gets down to your host machine, it's too late. So you want to be at that microVM boundary."</li>
 <li>"So five prompts is what it took... It is not your friend."</li>
 <li>"you want to be secure by design, not just, you know, hope and say please and see what's gonna happen."</li>
 <li><strong>Stat:</strong> 5 prompts from browser history to real bank accounts; 9/10 self-hack score.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>CLI and local sandbox compute are free, including commercial use; cloud sandboxes are pay-as-you-go — the secure default costs nothing when it runs locally.</li>
 <li>Adoption friction is framed as "seven extra keystrokes" (<code>sbx run claude</code> vs <code>claude</code>) — the security posture change with near-zero workflow cost.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>Run agents in microVM sandboxes on local/dev machines by default — the local free tier means there's no cost excuse, and placeholder-substituted secrets keep real credentials out of the VM entirely.</li>
 <li>Pair this with the playbook's Docker Sandboxes setup notes (setups/) — read-only mounts for related repos plus the in-sandbox MCP catalog give a standard "least privilege" template per project.</li>
 <li>Roadmap Cedar-style delegation chains are exactly the agent-identity pattern to watch before granting sandboxes network egress in enterprise rollout.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Install sbx via package manager on dev machines and make <code>sbx run &lt;agent&gt;</code> the default invocation — seven keystrokes, secure by default.</li>
 <li>Keep networking deny-by-default; add explicit allow rules only where the task genuinely needs egress.</li>
@@ -70,13 +70,13 @@
 <li>Run MCP servers inside sandboxes under the same network and filesystem controls; keep the full audit trail on.</li>
 <li>Red-team it like the talk: attempt the 5-prompt self-hack natively and sandboxed, confirm the boundary holds, then roll out org-wide.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>Video description/chapters: https://www.youtube.com/watch?v=OE_lLNCNfQo</li>
 <li>Docker docs — Sandboxes: https://docs.docker.com/ai/sandboxes/</li>
 <li>Docker docs — Sandbox security: https://docs.docker.com/ai/sandboxes/security/</li>
 <li>biggo AI summary: https://finance.biggo.com/podcast/c2179c7e0566ca70</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

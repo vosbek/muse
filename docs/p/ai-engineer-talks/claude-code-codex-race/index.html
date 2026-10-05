@@ -2,20 +2,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "We Let Claude Code and Codex Race Human Researchers" — Elie Bakouch, Prime Intellect · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-we-let-claude-code-and-codex-race-human-researchers-elie-bakouch-prime-intellect">Talk Notes: "We Let Claude Code and Codex Race Human Researchers" — Elie Bakouch, Prime Intellect</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
+    G[goal md defines the rules] --> P[Agent proposes ideas]
+    P --> J[Submit jobs with sbatch]
+    J --> V[Check record past threshold]
+    V -->|record| W[Count it]
+    V -->|miss| P
+    W --> P</pre></div><h1 id="talk-notes-we-let-claude-code-and-codex-race-human-researchers-elie-bakouch-prime-intellect">Talk Notes: "We Let Claude Code and Codex Race Human Researchers" — Elie Bakouch, Prime Intellect</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=oVsEddfhdxc">We Let Claude Code and Codex Race Human Researchers — Elie Bakouch, Prime Intellect</a> · AI Engineer channel · Sep 26, 2026 · 19:38 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
 <h2 id="thesis">Thesis</h2>
 <p>Big labs claim recursive self-improvement — models training models without human intervention — is imminent, but no independent, third-party benchmark exists to verify it. So Prime Intellect is building open "speedrun" environments that measure whether AI agents can actually do ML research, arguing this work must happen in the open rather than locked inside big labs.</p>
 <h2 id="the-mental-model">The mental model</h2>
 <p>A speedrun is a verifiable game for ML research; the proposed future is an AlphaEvolve-style multi-agent discovery loop with cheap generators and a judge with taste.</p>
-<pre class="mermaid">flowchart TD
-    G[goal md defines the rules] --> P[Agent proposes ideas]
-    P --> J[Submit jobs with sbatch]
-    J --> V[Check record past threshold]
-    V -->|record| W[Count it]
-    V -->|miss| P
-    W --> P</pre>
+
 <pre class="mermaid">flowchart TD
     G1[Generators cheap open models] --> S[Speedrun gives reward]
     S --> J[Judge with taste gives feedback]
@@ -25,7 +25,7 @@
     A[Ranked by wall clock progress] --> C1[Claude max looks best]
     B[Ranked by cost per output token] --> C2[Kimi most efficient]
     B --> C3[Claude max most hungry]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Origin:</strong> Andrej Karpathy's video training GPT-2 from scratch in ~90 minutes → the community repo <strong>modded-nanogpt</strong> (led by Keller Jordan) drove it 90 min → 45 min → under 2 minutes over ~2 years.</li>
 <li><strong>Speedrun = a game.</strong> Reach the GPT-2 validation-loss target in the shortest time. The <strong>nanoGPT speedrun</strong> has almost no constraints (same train/val data); the <strong>optimizer speedrun</strong> (released ~2 months before the talk) allows changing only optimizer-related code (e.g., Adam → Muon/Shampoo).</li>
@@ -43,7 +43,7 @@
 <li><strong>Leaderboard (Aug 2026):</strong> Fable 5 — 2,726 steps; Opus 5 — 2,920; Kimi K3 — 2,968; Opus 4.8 — 3,018; GPT-5.6 Sol — 3,042; Sonnet 5 — 3,105; Grok 4.6 — 3,220; human reference record — 2,600 steps. Fable 5's run: 8.7 agent days, 800M tokens, 811 experiments — and it closed 81.7% of the gap from the 3,290 baseline to the 2,600 human record. The median of the 18 models closed under 30%; <strong>no run produced a fundamentally new method.</strong></li>
 <li><strong>Traces as artifacts:</strong> the repo publishes full sanitized trajectories per run — events (text, thinking, tool calls, results), subagent transcripts, scratchpad (decision logs, saved variants), and a manifest with per-run metadata. The harness files (<code>AGENTS.md</code> rules/autonomy constraints, <code>goal.md</code> mission context, <code>plan.md</code> mutable attempt state, <code>scratchpad/THREAD.md</code> durable mission logging) are themselves a published pattern: durable file-based working memory matters as much as the optimizer or model code. Interactive results at primeintellect.ai/research/nanogpt-speedrun.</li>
 </ul>
-<h2 id="by-the-numbers">By the numbers</h2>
+</div></details><details class="sec"><summary>By the numbers</summary><div class="sec-body">
 <ul>
 <li><strong>124M</strong> — parameters of the GPT each model must train; <strong>3.28</strong> — target validation loss; <strong>3,290</strong> — steps of the tuned Muon + aux-AdamW baseline.</li>
 <li><strong>2,726</strong> — Fable 5's validated record (best of 18 models), after 8.7 agent days, 800M tokens, 811 experiments; <strong>2,920</strong> — Opus 5; <strong>2,968</strong> — Kimi K3; <strong>2,600</strong> — the human reference record.</li>
@@ -52,7 +52,7 @@
 <li><strong>~1B</strong> — tokens burned by Codex (mostly cached input); <strong>9–10h</strong> — Claude's give-up cycle, idle ~1/3 of the time; <strong>20x/hr vs 1x/hr</strong> — compaction rates (Codex vs Claude, 250k context); <strong>15–20 min</strong> — per speedrun attempt; <strong>5–6 days</strong> — the follow-up run.</li>
 <li><strong>$0 of novelty</strong> — no model invented a new optimizer or mechanism; all gains were "+1 improvements" combining existing papers.</li>
 </ul>
-<h2 id="decision-framework">Decision framework</h2>
+</div></details><h2 id="decision-framework">Decision framework</h2>
 <ul>
 <li><strong>Use speedrun-style evals when:</strong> the task is verifiable (a frozen checker can score it), fast (minutes, not hours), and has clear rules — that combination makes it usable as <em>both</em> an eval and an RL training environment.</li>
 <li><strong>Don't confuse beating a record with doing research:</strong> every model improved on known methods; none invented a mechanism. If your goal is discovery rather than optimization, constrain for novelty explicitly (the novelty track) and add a judge with taste — the reward alone won't produce it.</li>
@@ -60,26 +60,26 @@
 <li><strong>Measure on two axes:</strong> wall-clock progress and cost per output token — the rankings flip (Claude max-mode looks strongest on progress, Kimi wins on token efficiency). Report both or the comparison is meaningless.</li>
 <li><strong>Traps:</strong> unmonitored agents idle (Claude sat idle a third of the time with no monitoring in place); generous context windows hide compaction costs (20 compactions/hour is a real tax); scratchpad discipline is a behavioral signal worth logging, not a curiosity.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"Recursive self-improvement is like model training models without human intervention… but we don't have any benchmark to basically quantify if this is true or not."</li>
 <li>"Claude Code kept stopping every 9 or 10 hours and basically said, 'yeah I cannot improve the record, it's too hard for me.'"</li>
 <li>"They did some clever trick where they combine different papers… but there was really no novel optimizer or mechanism coming from those models."</li>
 <li>Human record ≈ 2,990 steps; Claude beat it by 50–60 steps, Codex by ~20. Codex burned ~1B tokens total (mostly cached input).</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>Codex burned ~1B tokens total — mostly <strong>cached input</strong>, not output — while Claude in max mode consumes far more tokens <strong>per output token</strong> than Codex and Kimi; Kimi is the most token-efficient per unit of progress. Rankings flip depending on which token metric you use.</li>
 <li>Open-source models are "super effective for the cost" as idea generators in the proposed AlphaEvolve-style loop.</li>
 <li>Speedrun runs are cheap and fast (15–20 min), which is what makes them a practical RL/eval environment.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>When comparing agents, track cost <strong>per output token</strong>, not wall-clock progress — the winner flips (Claude max mode looks strong on progress, Kimi wins on token efficiency).</li>
 <li>Use cheap/open models as idea generators and reserve frontier spend for judged winners — the AlphaEvolve-style loop is designed around exactly that cost structure.</li>
 <li>15–20 minute verifiable environments (speedruns) are a practical local RL/eval substrate: fast, cheap, and falsifiable, unlike long-horizon subjective tasks.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Build one 15-20 minute verifiable eval environment (goal.md + rulebook + frozen verifier + statistical threshold, e.g. 8 fixed seeds with a lucky-pass margin priced ~1-in-1000) for your most important agent task this month.</li>
 <li>Publish the harness files as artifacts: AGENTS.md (rules/autonomy constraints), goal.md (mission), plan.md (mutable attempt state), scratchpad/THREAD.md (durable mission log) — file-based working memory is part of the product.</li>
@@ -89,14 +89,14 @@
 <li>Monitor behavioral telemetry (scratchpad volume, idle time, compaction rate) alongside results — behavior drives cost; unmonitored agents idle.</li>
 <li>Keep humans as judges with taste on novelty-constrained tracks; agents combine papers but do not invent mechanisms.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>Video page: https://www.youtube.com/watch?v=oVsEddfhdxc</li>
 <li>Full transcript: https://www.usetranscribe.io/yt/oVsEddfhdxc/automated-eye-research</li>
 <li>Frontier automated speedrun repo — 18-model benchmark artifacts, rulebook, traces, leaderboard: https://github.com/PrimeIntellect-ai/frontier-automated-speedrun</li>
 <li>Interactive results: https://www.primeintellect.ai/research/nanogpt-speedrun</li>
 <li>(Note: the Prime Intellect blog write-up URL from the repo README returned 404 when checked Oct 2026; the repo itself is the primary artifact.)</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

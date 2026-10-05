@@ -2,10 +2,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Beating RL With Reflection: GEPA and Optimize Anything" — Lakshya A. Agrawal, GEPA · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-beating-rl-with-reflection-gepa-and-optimize-anything-lakshya-a-agrawal-gepa">Talk Notes: "Beating RL With Reflection: GEPA and Optimize Anything" — Lakshya A. Agrawal, GEPA</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><p><img alt="Visual one-pager" src="onepager-gepa-optimize-anything.jpg" /></p></div><h1 id="talk-notes-beating-rl-with-reflection-gepa-and-optimize-anything-lakshya-a-agrawal-gepa">Talk Notes: "Beating RL With Reflection: GEPA and Optimize Anything" — Lakshya A. Agrawal, GEPA</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=OA-Mc60Rboo">Beating RL With Reflection: GEPA and Optimize Anything — Lakshya A. Agrawal, GEPA</a> · AI Engineer channel · Sep 26, 2026 · 21:27 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
-<p><img alt="Visual one-pager" src="onepager-gepa-optimize-anything.jpg" /></p>
+
 <h2 id="thesis">Thesis</h2>
 <p>Most teams are bottlenecked by sample efficiency — they lack the data/compute for SFT or RL. So instead of RL with verified rewards (which discards everything but a 0/1 score), GEPA does <strong>reflective optimization in text space</strong>: an LLM reads full rollout traces (chains of thought, tool calls, error messages) plus textual feedback and rewrites the prompt, where a single natural-language change can equal thousands of gradient steps. A Pareto candidate pool avoids local optima, and "Optimize Anything" generalizes the same loop to any text artifact — code, agent harnesses, scheduling policies.</p>
 <h2 id="the-mental-model">The mental model</h2>
@@ -21,7 +21,7 @@
   R[Rich rollout traces] --> RUse[Used fully]
   O[O1 score only] --> R1[Wasted by GRPO]
   RUse --> G2[2x gains in 1 round on 3 examples]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>The sample-efficiency bottleneck.</strong> Pretraining needs trillions of tokens, SFT tens of thousands of labels, RL hundreds of thousands of rollouts — most teams have none of that. The talk names two causes: scarce domain knowledge (too little data for offline algorithms like SFT) and expensive rollouts (long agentic tool calls, slow task metrics — agents now work for hours, so hundreds of thousands of online rollouts are infeasible).</li>
 <li><strong>RL with verified rewards (e.g., GRPO) wastes information.</strong> Rollouts contain chains of thought, tool calls, environment responses and diagnostic error messages — yet only an O(1) score is propagated via gradients. "We learned almost nothing from all of that." GEPA's question: can we use the rich trace instead of just the score?</li>
@@ -42,7 +42,7 @@
 <li><strong>Co-optimizing weights and prompts.</strong> The follow-up paper "Learning Fast and Slow" proposes fast-slow learning: model weights as slow (GRPO updates), the prompt harness as fast (GEPA evolving candidates every T RL steps while maintaining the Pareto frontier) — reported up to 3x sample efficiency with ~70% less drift from the base model (per secondary coverage, not the talk).</li>
 <li><strong>The integration surface.</strong> <code>gepa.optimize(...)</code> takes a seed candidate (dict of named text components), trainset, valset, task_lm, reflection_lm, max_metric_calls; <code>dspy.GEPA(metric=..., max_metric_calls=150, reflection_lm="openai/gpt-5")</code> plugs into DSPy <code>.compile()</code>; built-in adapters for DSPy full programs, generic RAG (ChromaDB, Weaviate, Qdrant, Pinecone), MCP tool descriptions + system prompts, TerminalBench, math; integrations in MLflow (<code>mlflow.genai.optimize_prompts()</code>), Comet Opik, Pydantic AI, OpenAI Cookbook, HuggingFace Cookbook, Google ADK. Zero hard dependencies; works with API-only models (GPT-5, Claude, Gemini through their APIs).</li>
 </ul>
-<h2 id="by-the-numbers">By the numbers</h2>
+</div></details><details class="sec"><summary>By the numbers</summary><div class="sec-body">
 <ul>
 <li><strong>3 examples, 1 reflection round → 2x GRPO's gains after 25,000 rollouts</strong> — multihop-QA experiment, Qwen3-8B self-optimizing, no teacher; a few more rounds doubled the gap again.</li>
 <li><strong>+6% avg (up to +20%) vs GRPO across six tasks, up to 35x fewer rollouts</strong> — the GEPA paper's headline result (ICLR 2026 oral).</li>
@@ -62,25 +62,25 @@
 <li><strong>20 hours</strong> — time from GEPA's release to Snorkel improving internal benchmarks with it.</li>
 <li><strong>+9%</strong> — Qwen3-8B-optimized prompts transferred to GPT-4.1 mini with no re-optimization, per secondary coverage of the paper (generalizable reasoning strategies, not model overfitting).</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"GEPA in just one round of reflection using just three data points got twice the performance gains that GRPO got after 25,000 rollouts."</li>
 <li>"Databricks achieved 90x cost reduction… tuned GPT-OSS 120B to outperform Claude Opus while being 90x cheaper."</li>
 <li>"As models get better the importance of prompt optimization will go down. I argue the opposite."</li>
 <li>Go issue resolution 24% → 93% (GPT-5-mini), 100% with Claude Sonnet 4.5 at ~50% less resolution time; AMD NPU agent 4.25% → 30.52%; ~40% scheduling-cost cut.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>The core thesis is sample efficiency: 3 examples vs 25,000 rollouts; runs complete in 30–60 min, replacing weeks of manual prompt tuning per new model.</li>
 <li>90x cheaper deployed agent (GPT-OSS 120B vs Claude Opus); ~40% scheduling-cost cut; ~50% faster issue resolution via transferred skills (skills encode repo layout/test invocation so the agent spends fewer tokens finding its way).</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>GEPA runs with Qwen3-8B <strong>self-optimizing, no external teacher</strong> — this works with local open models, not just frontier APIs.</li>
 <li>The pattern to steal: full rollout traces (tool calls, error messages) + textual reflection beats O(1) score gradients on both sample and token efficiency — apply it to your own prompt/harness tuning loop.</li>
 <li>Skills are a token-compression device: encoding repo layout and build/test invocation into a skill cut resolution time ~50% — cheap to write locally, pays off on every run.</li>
 </ul>
-<h2 id="decision-framework">Decision framework</h2>
+</div></details><h2 id="decision-framework">Decision framework</h2>
 <p><strong>Reach for reflective optimization when:</strong>
 - Rollouts are expensive (long agentic tool calls, slow task metrics) — GEPA needs 100–500 evals vs 10K+ for RL (repo's "When GEPA Shines").
 - Data is scarce: GEPA works with as few as 3 examples; no large training set required.
@@ -110,14 +110,14 @@
 <li>Turn the output into a versioned skill artifact: the detailed problem specification GEPA discovers (input semantics, repo layout, test invocation, build system) becomes a team skill — the GSkill pattern that cut issue-resolution time ~50% and transfers across models.</li>
 <li>Then close the loop the talk prescribes: ~50 human-annotated production trajectories → GEPA-optimize an LLM-as-judge prompt → optimize the agent against it, re-running per model release instead of weeks of manual tweaking.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>Video page: https://www.youtube.com/watch?v=OA-Mc60Rboo</li>
 <li>Full transcript: https://www.usetranscribe.io/yt/OA-Mc60Rboo/beating-rl-with</li>
 <li>Paper: <em>GEPA: Reflective Prompt Evolution Can Outperform Reinforcement Learning</em> (arXiv:2507.19457, accepted ICLR 2026 oral) — https://arxiv.org/abs/2507.19457</li>
 <li>Repo + docs (README, quick start, optimize_anything API, adapters, integrations, "When GEPA Shines" — read for this pass): https://github.com/gepa-ai/gepa · https://gepa-ai.github.io/gepa/ · https://gepa-ai.github.io/gepa/guides/</li>
 <li>optimize_anything launch blog: https://gepa-ai.github.io/gepa/blog/introducing-optimize-anything/</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

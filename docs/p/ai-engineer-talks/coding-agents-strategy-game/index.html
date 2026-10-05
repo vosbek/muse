@@ -2,24 +2,24 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "I Turned Coding Agents Into a Strategy Game" — Ido Salomon, AgentCraft · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-i-turned-coding-agents-into-a-strategy-game-ido-salomon-agentcraft">Talk Notes: "I Turned Coding Agents Into a Strategy Game" — Ido Salomon, AgentCraft</h1>
-<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=YIVkERhy8xo">I Turned Coding Agents Into a Strategy Game — Ido Salomon, AgentCraft</a> · AI Engineer channel · Sep 27, 2026 · 14:49 · Recorded at AI Engineer World's Fair 2026</p>
-<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
-<h2 id="thesis">Thesis</h2>
-<p>Humans are the bottleneck in agent utilization — steering, directing, and reviewing agents at scale is exhausting — but the supervisory skills we need already exist from video games (Warcraft, Sims, RTS). AgentCraft is a game-inspired orchestrator that raises the ceiling (visibility → autonomy → collaboration) and lowers the floor so the ~90% of non-power-users can orchestrate agents without burning out.</p>
-<h2 id="the-mental-model">The mental model</h2>
-<pre class="mermaid">flowchart TD
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
   Map[Map of agent units] --> Panel[Side panel per agent]
   Panel --> R{RTS jump to attention}
   R --> Q[Answer approve redirect]
   R --> P[Agents propose next tasks]
   P --> A[Accept the quest]
-  A --> Iso[Agent runs in isolated container]</pre>
+  A --> Iso[Agent runs in isolated container]</pre></div><h1 id="talk-notes-i-turned-coding-agents-into-a-strategy-game-ido-salomon-agentcraft">Talk Notes: "I Turned Coding Agents Into a Strategy Game" — Ido Salomon, AgentCraft</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=YIVkERhy8xo">I Turned Coding Agents Into a Strategy Game — Ido Salomon, AgentCraft</a> · AI Engineer channel · Sep 27, 2026 · 14:49 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>Humans are the bottleneck in agent utilization — steering, directing, and reviewing agents at scale is exhausting — but the supervisory skills we need already exist from video games (Warcraft, Sims, RTS). AgentCraft is a game-inspired orchestrator that raises the ceiling (visibility → autonomy → collaboration) and lowers the floor so the ~90% of non-power-users can orchestrate agents without burning out.</p>
+<h2 id="the-mental-model">The mental model</h2>
+
 <pre class="mermaid">flowchart LR
   V[Visibility who needs help] --> U[Autonomy general goal]
   U --> C[Collaboration war rooms]
   C --> G[Raise ceiling lower floor]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>The bottleneck.</strong> "Spin up 25 Claude Code agents and you're done" doesn't work — each agent needs steering, directing, reviewing; at scale it's exhausting. "We are the bottleneck" — but the skills (supervising many units, as in Warcraft/Sims) "are with us all along."</li>
 <li><strong>AgentCraft.</strong> A game-inspired orchestrator. Each agent is a visual unit on a map (represents a Claude Code/OpenClaw/Codex/OpenCode agent); detected on device or spawned from Craft. Prompting via a side panel with voice (multimodal).</li>
@@ -33,24 +33,24 @@
 <li><strong>"Loopers" (experimental, "TBD").</strong> A mobile-game-level simpler mode — prompt → result, projects you keep returning to, loops + autonomous agents, customizable visualization for different people.</li>
 <li><strong>Availability.</strong> AgentCraft installable via npx as a website; Loopers is experimental — he's collecting interest/feedback. (Ido also created MCPUI, which became MCP apps / MCP steering committee.)</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"We are the bottleneck, but we don't have to be."</li>
 <li>"Someone that flunked out of college because he played Starcraft and now you can suddenly do really productive stuff with it."</li>
 <li>"We need to raise the ceiling but we also need to lower the floor... take probably around 90% of the people in the world and bring them into this agentic future without having them burn out."</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li><strong>The review kit attacks the review bottleneck.</strong> Visual evidence (videos/photos of changes) plus running multiple instances in parallel and picking the best implementation — eval-driven, best-of-N review at scale. Best-of-N is a deliberate spend: more generation cost, less wasted review time.</li>
 <li><strong>Autonomy via orchestrator + isolated containers + background loops</strong> removes the per-agent babysitting cost — the human-attention side of the efficiency equation.</li>
 <li><strong>No explicit token/cost figures in the talk.</strong> The efficiency argument is entirely about human supervisory bandwidth, not inference spend.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>War rooms are locally hosted with tunnel-based joining — the collaboration layer is self-hostable, not tied to a vendor cloud.</li>
 <li>Agents run in isolated local containers; orchestration is on-device — consistent with a local-first multi-agent setup.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Build the "who needs attention" panel first: a single dashboard per team showing each running agent's task, last action, and current status — visibility before autonomy, exactly the talk's ladder.</li>
 <li>Add the RTS-style triage ritual: a keyboard-first review queue where the platform team jumps between agents to answer questions, approve plans, or redirect — measure time-to-attention, not just token spend.</li>
@@ -59,10 +59,10 @@
 <li>Adopt the review-kit pattern for parallel agent outputs: collect full diffs plus visual evidence (screenshots, short recordings of behavior change) and run best-of-N, keeping the winner.</li>
 <li>Pilot locally-hosted collaboration: war-room style shared sessions for pair work between humans and agents, joinable over your own network, nothing in a vendor cloud.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>Video: https://www.youtube.com/watch?v=YIVkERhy8xo</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

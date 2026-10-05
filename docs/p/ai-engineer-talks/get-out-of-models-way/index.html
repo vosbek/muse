@@ -2,16 +2,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Get Out of the Model's Way" — Kevin Hou, Google Antigravity · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-get-out-of-the-models-way-kevin-hou-google-antigravity">Talk Notes: "Get Out of the Model's Way" — Kevin Hou, Google Antigravity</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart LR
+  A[2022 deterministic autocomplete] --> B[2024 agents arrive]
+  B --> C[2025 agent manager plus parallel agents]
+  C --> D[2026 agent teams era]</pre></div><h1 id="talk-notes-get-out-of-the-models-way-kevin-hou-google-antigravity">Talk Notes: "Get Out of the Model's Way" — Kevin Hou, Google Antigravity</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=buHC7bQE1X4">Get Out of the Model's Way — Kevin Hou, Google Antigravity</a> · AI Engineer channel · Sep 27, 2026 · 19:00 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary — treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.</p>
 <h2 id="thesis">Thesis</h2>
 <p>"Scaling with intelligence" — product architecture should be a <strong>function of model capability</strong>, not a fixed design. Builders should remove beloved-but-obsolete primitives (chat sidebars, fixed IDEs, hand-written UIs) and ship primitives that get better as models do: <strong>dynamic subagents, sidecar triggers, and generative UI.</strong> Evidence: <strong>93 subagents built a from-scratch OS kernel running Doom in 12 hours for under $1,000 (2B tokens)</strong>, and DeepMind researchers automated <strong>90% of side-by-side eval analysis</strong> with agent teams — while the "human-written specialized UI" is declared "kind of dead."</p>
 <h2 id="the-mental-model">The mental model</h2>
-<pre class="mermaid">flowchart LR
-  A[2022 deterministic autocomplete] --> B[2024 agents arrive]
-  B --> C[2025 agent manager plus parallel agents]
-  C --> D[2026 agent teams era]</pre>
+
 <pre class="mermaid">flowchart TD
   Lead[Lead agent plans] --> S1[Subagent 1 cheap model]
   Lead --> S2[Subagent 2 frontier model]
@@ -19,7 +19,7 @@
   S1 --> Sand[Parallel sandboxes]
   S2 --> Sand
   S3 --> Sand</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Framing:</strong> coaching Argentina in the 89th minute with Messi on the pitch — "give Messi the ball and get the heck out of the way." LLMs are no longer role players; they can be the star if the product is built so the model can "cook." This is Hou's <strong>fifth AI Eng talk</strong>; he's built dev tools since 2022.</li>
 <li><strong>Primitive timeline</strong> (one era per year, each constrained by what contemporary models could handle):</li>
@@ -38,13 +38,13 @@
 <li><strong>Model-product flywheel:</strong> Antigravity 1.0 (parallel agents, human in the driver's seat) taught Gemini multi-agent management; that capability was imbued into the model, which is what makes 2.0 buildable — causality runs both ways (product teaches model, model enables next product).</li>
 <li><strong>Builder heuristic to close:</strong> ask what primitives your product has and how they scale with model intelligence; shipping features is easy now, choosing which ones is the discipline — so the product is amplified, not obsoleted, by the next (inevitably faster, better, cheaper) model release. Closing joke: reusing the slide until the team has "actually conquered the TPU crunch" — compute supply, not model capability, is the binding constraint he expects to persist.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>93 subagents / 12 hours / 15,000 requests / 2 billion tokens / under $1,000 — OS kernel from scratch, running Doom.</li>
 <li>"We hypothesize that human written specialized UIs are kind of dead."</li>
 <li>"Flash now isn't just good at executing tasks, it's actually really good at leading teams. It's faster and cheaper, pushing the pareto curve of what is intelligent versus the speed and the cost at which you run those things."</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li><strong>Explicit token/cost accounting:</strong> 2B tokens for &lt;$1,000 on the hero run; Flash selected for the intelligence/speed/cost Pareto frontier; <strong>lead agents choose per-subagent models</strong> (cost-aware orchestration).</li>
 <li><strong>Eval-driven iteration at scale:</strong> 90% of side-by-side eval analysis automated — 100 hypotheses pursued in parallel by subagents, results mapped back into interactive reports.</li>
@@ -55,7 +55,7 @@
 <li><strong>Let the lead agent pick per-subagent models, not the user</strong> — cost-aware orchestration: route subtasks to the cheapest model that clears the quality bar, reserving frontier models for the lead/planning role. This is the deployable pattern behind the 2B-tokens-under-$1,000 hero run.</li>
 <li><strong>Treat compute supply as the binding constraint:</strong> when capability is no longer scarce, budget and schedule against available inference capacity — the "TPU crunch" lesson applies to local GPU queues as much as Google's fleet.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Audit your primitives against the timeline: list every fixed UI and deterministic workflow in the internal tooling and flag which ones only existed because 2022-era models couldn't handle more — schedule the obsolete ones for removal.</li>
 <li>Let the lead agent choose per-subagent models: configure orchestration so task difficulty picks the model (cheap flash-tier for execution, frontier for planning), not a user-level default — the talk's cost-aware orchestration pattern.</li>
@@ -64,11 +64,11 @@
 <li>Decouple the agent manager from the IDE: keep orchestration as a separate layer that works from VS Code, terminal, or CI — the IDE is one surface among several, not the home of the agent.</li>
 <li>Plan against compute supply, not model capability: budget GPU/inference capacity as the scarce resource and schedule heavy agent runs (like the 93-subagent hero runs) against that queue.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>YouTube description/chapters: https://www.youtube.com/watch?v=buHC7bQE1X4</li>
 <li>BigGo AI talk summary: https://finance.biggo.com/podcast/316ffdea38e9fe6c</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

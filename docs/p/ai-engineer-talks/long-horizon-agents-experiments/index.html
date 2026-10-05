@@ -2,13 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Long-Horizon Agents Need Experiments, Not Just Prompts" — Erina Karati, Supercell · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-long-horizon-agents-need-experiments-not-just-prompts-erina-karati-supercell">Talk Notes: "Long-Horizon Agents Need Experiments, Not Just Prompts" — Erina Karati, Supercell</h1>
-<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=x4e5O9zN0TE">Long-Horizon Agents Need Experiments, Not Just Prompts — Erina Karati</a> · AI Engineer channel · Sep 26, 2026 · 21:26 · Recorded at AI Engineer World's Fair 2026</p>
-<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
-<h2 id="thesis">Thesis</h2>
-<p>Agents that carry state over long horizons can't be fixed with prompt tuning or a good demo — they need <strong>controlled experiments</strong>: define scenario suites, run simulations, collect structured traces, score behavior with a balanced scorecard, and let an autoresearch meta-loop search a small frozen "policy surface," keeping only changes that survive measurement (a ratchet). Memory (RAG) alone is insufficient; what matters is the <strong>agent protocol</strong> — how memories get written, uncertainty communicated, trust updated, sources attributed, and replanning triggered.</p>
-<h2 id="the-mental-model">The mental model</h2>
-<pre class="mermaid">flowchart LR
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart LR
     A[Define scenario suite] --> B[Simulate agents]
     B --> C[Collect structured traces]
     C --> D[Score with balanced scorecard]
@@ -18,7 +12,13 @@
     G -->|Yes| H[Keep the change]
     G -->|No| I[Revert]
     H --> E
-    I --> E</pre>
+    I --> E</pre></div><h1 id="talk-notes-long-horizon-agents-need-experiments-not-just-prompts-erina-karati-supercell">Talk Notes: "Long-Horizon Agents Need Experiments, Not Just Prompts" — Erina Karati, Supercell</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=x4e5O9zN0TE">Long-Horizon Agents Need Experiments, Not Just Prompts — Erina Karati</a> · AI Engineer channel · Sep 26, 2026 · 21:26 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>Agents that carry state over long horizons can't be fixed with prompt tuning or a good demo — they need <strong>controlled experiments</strong>: define scenario suites, run simulations, collect structured traces, score behavior with a balanced scorecard, and let an autoresearch meta-loop search a small frozen "policy surface," keeping only changes that survive measurement (a ratchet). Memory (RAG) alone is insufficient; what matters is the <strong>agent protocol</strong> — how memories get written, uncertainty communicated, trust updated, sources attributed, and replanning triggered.</p>
+<h2 id="the-mental-model">The mental model</h2>
+
 <pre class="mermaid">flowchart TD
     SC[Balanced scorecard] --> D1[Diffusion - reach]
     SC --> P1[Provenance - source retention]
@@ -34,7 +34,7 @@
     F1 --> X1[Preserve sources in memory writes]
     F2 --> X2[Store confidence, mark firsthand vs secondhand]
     F3 --> X3[Classify public facts, proactively share evidence]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Project Paradox:</strong> a modular framework from Supercell's AI innovation lab (Karati, ex-Microsoft, ex-Supercell; teammate Arunachalam Manikandan) letting developers plug intelligent autonomous agents into video games as dynamic companions that interact, compete, or cooperate with players and each other.</li>
 <li><strong>Agent capabilities:</strong> move with intent (guided by memory, emotion, curiosity); interact with the world (pick up/drop objects, context-aware); react to events (beliefs and emotions update on the fly); initiate conversations with agents or players — all stored in memory and feeding back into emotions, beliefs, and goals.</li>
@@ -53,25 +53,25 @@
 <li><strong>Beyond games:</strong> support agents (which policy update supersedes?), personal assistants (commitments, corrections), research agents (provenance, citations, contradiction handling), coding agents (long-running context across issues/files/teammates), workflow agents (access controls, handoffs, replanning) — all share the same problem: state persists and shapes future action.</li>
 <li><strong>Recipe:</strong> freeze the harness, define scenarios, log traces, score behavior, expose a small policy surface, keep only what survives measurement.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"We were no longer evaluating one answer. We were evaluating an entire run."</li>
 <li>"You can add a RAG memory to an agent and still not get the long-term horizon behavior… You need to test behavior through scenarios, not just through vibes."</li>
 <li>"The loop should basically be like a ratchet. Try a change, score it, keep it only if the scorecard improves and guardrails hold."</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>The autoresearch loop automates what would otherwise be endless manual prompt tuning and demo-watching.</li>
 <li>A small editable surface plus ratchet semantics (revert anything that doesn't measurably improve) constrains the search and avoids wasted iteration.</li>
 <li>No direct cost/token figures given.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>The pattern is local-first friendly: freeze everything, edit only a small protocol surface, rerun scenarios — cheap to run on local infrastructure with no frontier dependency.</li>
 <li>For any stateful assistant (personal assistant, coding agent): add <strong>provenance to every memory</strong> (firsthand/secondhand/verified/uncertain) and keep raw episodic memories separate from current beliefs — this is a data-model change, not a model upgrade.</li>
 <li>Use a balanced scorecard, not a single quality metric — it prevents the agent from gaming optimization (oversharing, noisy recall) and wasting iteration on regressions.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li><strong>Pick one stateful workflow</strong>: choose a long-running agent your team actually depends on (coding agent across issues, support triage) — not a demo.</li>
 <li><strong>Freeze the harness</strong>: lock scenarios, metrics, and infrastructure. Expose only a small editable policy surface: memory-writing policy, retrieval policy, communication prompt, belief and trust rules, source attribution, replanning triggers.</li>
@@ -81,11 +81,11 @@
 <li><strong>Run the loop as a ratchet</strong>: simulate, trace, score, change one policy, rerun — keep only what improves the scorecard with guardrails holding, revert everything else.</li>
 <li><strong>Re-run scenarios on every protocol change</strong>: claims stay modest without repeated controlled-loop results.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>Video page: https://www.youtube.com/watch?v=x4e5O9zN0TE</li>
 <li>Full transcript: https://www.usetranscribe.io/yt/x4e5O9zN0TE/long-horizon-agents</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

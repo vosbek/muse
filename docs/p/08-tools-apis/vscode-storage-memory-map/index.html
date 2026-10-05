@@ -2,12 +2,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>VS Code Storage/Memory Map: What's Local, What's Cloud · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#maps'>Storage & memory maps</a></div><article class='doc'><div class='badge'>Storage & memory maps</div><h1 id="vs-code-storagememory-map-whats-local-whats-cloud">VS Code Storage/Memory Map: What's Local, What's Cloud</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#maps'>Storage & memory maps</a></div><article class='doc'><div class='badge'>Storage & memory maps</div><div class="hero-visual"><p><img alt="VS Code storage/memory map" src="vscode-storage-memory-map.png" /></p></div><h1 id="vs-code-storagememory-map-whats-local-whats-cloud">VS Code Storage/Memory Map: What's Local, What's Cloud</h1>
 <p><strong>Source:</strong> Companion graphic to the r/ClaudeAI "Claude storage/memory map" post (u/BenSimonDev, Oct 4 2026) — same dark green/amber visual language, applied to VS Code. Facts verified via web research, Oct 2026.</p>
-<p><img alt="VS Code storage/memory map" src="vscode-storage-memory-map.png" /></p>
+
 <h2 id="thesis">Thesis</h2>
 <p>VS Code is overwhelmingly local — your files, settings, extensions, terminals, and history never leave the machine — but it phones home in four specific ways: Settings Sync, the extension Marketplace, telemetry (on by default), and Remote Tunnels. Know the four and you know your exposure.</p>
-<h2 id="the-map-text-version">The map (text version)</h2>
+<details class="sec"><summary>The map (text version)</summary><div class="sec-body">
 <p><strong>On your disk:</strong>
 - settings.json, keybindings.json, snippets — local User folder; workspace settings in the project's <code>.vscode/</code>
 - Named profiles — local user-data <code>profiles/</code> directory
@@ -24,16 +24,18 @@
 - Codespaces — full dev environments on GitHub's cloud VMs
 - Remote Tunnels — relayed through Microsoft's Dev Tunnels service</p>
 <p><strong>Either (a setting decides):</strong> Remote SSH / WSL windows — the extension host moves to the remote machine.</p>
-<h2 id="notable-facts">Notable facts</h2>
+</div></details><details class="sec"><summary>Notable facts</summary><div class="sec-body">
 <ul>
 <li>Telemetry levels: <code>all</code> (default) / <code>error</code> / <code>crash</code> / <code>off</code> — set <code>telemetry.telemetryLevel</code> to <code>off</code>. Individual extensions may collect their own telemetry outside this setting.</li>
 <li>Settings Sync is encrypted in transit and at rest, but Microsoft publishes no zero-knowledge claim — treat it as readable-by-Microsoft.</li>
 <li>The one hard privacy boundary: SecretStorage secrets never sync at all.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>For a fully local VS Code: telemetry off, skip Settings Sync (or accept Microsoft-held settings), prefer SSH/WSL remotes you control over Tunnels/Codespaces.</li>
 <li>Secrets in SecretStorage are the only thing guaranteed never to leave — keep tokens there, not in settings files that might sync.</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

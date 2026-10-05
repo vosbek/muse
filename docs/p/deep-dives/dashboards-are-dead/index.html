@@ -2,22 +2,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Deep Dive: "Dashboards Are Dead" — Sarah Simionescu, Composio · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><h1 id="deep-dive-dashboards-are-dead-sarah-simionescu-composio">Deep Dive: "Dashboards Are Dead" — Sarah Simionescu, Composio</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><div class="hero-visual"><p><img alt="Composio MCP gateway hero" src="dashboards-are-dead/01-hero.jpg" /></p></div><h1 id="deep-dive-dashboards-are-dead-sarah-simionescu-composio">Deep Dive: "Dashboards Are Dead" — Sarah Simionescu, Composio</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=YiFqcu9YA38">Dashboards Are Dead — Sarah Simionescu, Composio</a> · AI Engineer channel · Oct 3, 2026 · 10:41 · Recorded at AI Engineer World's Fair 2026, San Francisco</p>
 <p><strong>Speaker:</strong> Sarah Simionescu, Member of Technical Staff at Composio (<a href="https://github.com/sarahsimionescu">github.com/sarahsimionescu</a>)</p>
 <h2 id="thesis">Thesis</h2>
 <p>Every dashboard and query language ever built was a translation layer between humans and data — necessary only because machines couldn't understand what we wanted. Now agents are a new species of user: they don't have eyes, they won't click your sparkle button, and they judge your product on exactly one thing — whether they can get the job done. The next era belongs to products that are easy for <em>agents</em> to use, not humans.</p>
-<h2 id="the-postmortem-how-dashboards-died">The postmortem: how dashboards died</h2>
+<details class="sec"><summary>The postmortem: how dashboards died</summary><div class="sec-body">
 <p><strong>2022 — five tools, five query languages.</strong> A Slack bug report meant five windows: Slack for context, Datadog with its own query syntax, session data elsewhere, VS Code for the fix, GitHub for the PR. Every tool had its own query language (Datadog syntax, JQL, Slack modifiers), and even the ones claiming SQL disagreed on the dialect. Redesigns were the least of it.</p>
 <p><strong>2023 — the sparkle button.</strong> LLMs would write a sometimes-correct query for you — as long as your question needed fewer than two joins. Dashboards became "AI native." Problem solved? Not quite.</p>
 <p><strong>2024 — MCP arrives.</strong> Anthropic's open standard let your everyday agent generate the query, execute it, and hand you the answer. The end of the story? Far from it — MCP is a protocol, a channel. It's up to each service to decide <em>how</em> to talk to the agent, and that choice makes all the difference.</p>
-<h2 id="why-mcp-alone-is-a-mess-three-reasons">Why MCP alone is a mess (three reasons)</h2>
+</div></details><details class="sec"><summary>Why MCP alone is a mess (three reasons)</summary><div class="sec-body">
 <ol>
 <li><strong>Agents don't learn.</strong> Every conversation starts from zero — no memory of fumbling Slack link formatting yesterday, so it fumbles again today. Skills were the patch, but skills are a band-aid: agents get <em>dumber</em> the more context you load.</li>
 <li><strong>Too many tools drown the model.</strong> Wire up enough servers and you're dumping thousands of tool definitions into context. Composio's GitHub toolkit alone has 200+ tools. The model grabs the wrong tool, can't resolve call order, can't figure out which to call first.</li>
 <li><strong>Every app is isolated.</strong> Each MCP server knows itself and nothing else. Cross-app tasks — which is all real tasks — leave the agent standing in thousands of separate rooms with no map and no memory.</li>
 </ol>
-<h2 id="the-composio-answer-an-interface-designed-for-agents">The Composio answer: an interface designed for agents</h2>
+</div></details><details class="sec"><summary>The Composio answer: an interface designed for agents</summary><div class="sec-body">
 <p>Instead of raw MCP servers, Composio's gateway gives the agent two things native servers don't:</p>
 <ul>
 <li><strong>Tool search + execution plans.</strong> The agent states what it wants to accomplish; the gateway returns not just the right tools but a <em>plan</em> for using them (e.g., "find the Slack channel ID before querying messages"). Dependencies resolved up front instead of trial-and-error in context.</li>
@@ -26,12 +26,12 @@
 <p><strong>Demo 1 — Slack bug report → fix PR (4:56).</strong> Paste a Slack message link, say "find the root cause, draft a PR, make no mistakes." The agent searches Sentry issues, Datadog logs, and the codebase in parallel, identifies the root cause, and opens a fix PR in under five minutes. No workflow built, no skill written — just Claude on Composio's MCP.</p>
 <p><strong>Demo 2 — cross-app analysis (7:20).</strong> "What vertical do users pick at onboarding?" → PostHog query. Then: "for the e-commerce cohort, what toolkits do they use?" → user IDs from PostHog (saved, not loaded), Metabase schema sampled, dynamic SQL via Remote Workbench, answer in minutes — data from both sources, context intact.</p>
 <p><strong>Measured results (6:25).</strong> Early unreleased numbers comparing Composio against each app's native MCP server on the same tasks with the same model show a clear gap in favor of the agent-designed interface.</p>
-<p><img alt="Composio MCP gateway hero" src="dashboards-are-dead/01-hero.jpg" /></p>
+
 <p><img alt="How the gateway works" src="dashboards-are-dead/02-how-it-works.jpg" /></p>
 <p><img alt="Before Composio vs with the gateway" src="dashboards-are-dead/03-before-after.jpg" /></p>
 <p><img alt="Built for production scale" src="dashboards-are-dead/04-production-scale.jpg" /></p>
 <p><img alt="Tool router: the right tool when you need it" src="dashboards-are-dead/05-tool-router.jpg" /></p>
-<h2 id="why-this-matters-for-tokenomics-context-management">Why this matters for tokenomics + context management</h2>
+</div></details><details class="sec"><summary>Why this matters for tokenomics + context management</summary><div class="sec-body">
 <p>This talk is a direct brief for Matt's remit, four layers deep:</p>
 <ol>
 <li><strong>Tool definitions are context spend.</strong> Thousands of tool schemas in-context is the same token-bloat problem as dumping file trees. Tool <em>search</em> (retrieve-then-call) is the Jev-MCP pattern from the playbook: a small decision surface picks tools so the main context stays clean.</li>
@@ -39,12 +39,14 @@
 <li><strong>Summaries, not dumps.</strong> The Remote Workbench pattern — compute over the data, return the answer — is context management as architecture. Never move data through the context window when you can move the question to the data.</li>
 <li><strong>"Agents don't learn" is a memory-layer gap.</strong> The talk names the exact problem the playbook's memory sections address: persistent, compounding memory across sessions instead of starting from zero.</li>
 </ol>
-<h2 id="links">Links</h2>
+</div></details><details class="sec"><summary>Links</summary><div class="sec-body">
 <ul>
 <li>Composio: https://composio.dev/</li>
 <li>Composio MCP gateway: https://composio.dev/mcp-gateway</li>
 <li>Speaker GitHub: https://github.com/sarahsimionescu</li>
 </ul>
-<p><em>Note: video playback was unavailable in the research environment, so this dossier is built from the full published transcript, description, and Composio's own product pages — not from watched footage.</em></p></article></div>
+<p><em>Note: video playback was unavailable in the research environment, so this dossier is built from the full published transcript, description, and Composio's own product pages — not from watched footage.</em></p></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

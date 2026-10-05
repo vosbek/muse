@@ -2,19 +2,19 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "The 5 Levels of Self-Driving Production" — Eric Schwartz, Traversal · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-the-5-levels-of-self-driving-production-eric-schwartz-traversal">Talk Notes: "The 5 Levels of Self-Driving Production" — Eric Schwartz, Traversal</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart LR
+    A[Ingest all production data without raising cost] --> B[Production world model maps entity relationships]
+    B --> C[Causal search engine]
+    C --> D[Find root cause]
+    D --> E[Propose fix]
+    E --> F[Verify fix]</pre></div><h1 id="talk-notes-the-5-levels-of-self-driving-production-eric-schwartz-traversal">Talk Notes: "The 5 Levels of Self-Driving Production" — Eric Schwartz, Traversal</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=y-OVWZD4j6U">The 5 Levels of Self-Driving Production — Eric Schwartz, Traversal</a> · AI Engineer channel · Oct 2, 2026 · 18:32 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript.</p>
 <h2 id="thesis">Thesis</h2>
 <p>Coding agents compressed development, so the bottleneck shifted to troubleshooting — and observability tools (Datadog, Splunk, ServiceNow) tell you <em>what</em> is broken but not <em>why</em>. Root cause analysis is a causal machine-learning problem, not an observability problem. Traversal's "production world model" plus "causal search engine" let agents find root cause, propose a fix, and verify it — a closed loop Schwartz calls "self-driving production," framed as five autonomy levels.</p>
 <h2 id="the-mental-model">The mental model</h2>
 <p>Three-layer architecture, closed on itself:</p>
-<pre class="mermaid">flowchart LR
-    A[Ingest all production data without raising cost] --> B[Production world model maps entity relationships]
-    B --> C[Causal search engine]
-    C --> D[Find root cause]
-    D --> E[Propose fix]
-    E --> F[Verify fix]</pre>
+
 <p>The incident before/after, Amex case:</p>
 <pre class="mermaid">flowchart TD
     subgraph Old[Before]
@@ -31,7 +31,7 @@
     L1 --> L3[Levels two and three debug one service]
     L3 --> L4[Level four diagnoses hundreds of services]
     L4 --> L5[Level five diagnoses fixes verifies without paging]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>The shifted bottleneck:</strong> three buckets — system design, development, troubleshooting. Coding agents shrank the middle, so more code ships, engineers understand less of it, and debugging time (not design time) grows.</li>
 <li><strong>Economics:</strong> ~$400B annual enterprise spend on troubleshooting; 40% of execs call it a team-level problem; engineers lose 7+ hours per week to on-call.</li>
@@ -46,24 +46,24 @@
 <li><strong>Scale claims (vendor's own, unverified):</strong> trillions of logs and spans, tens of billions of metrics/events, 80%+ root-cause accuracy on high-severity incidents. Customers named: Amex, Pepsi, DigitalOcean, Capital One.</li>
 <li><strong>External validation cited:</strong> Google's SRE handbook ("the Bible of site reliability engineering") and Anthropic's admission that LLMs are "not great at" identifying root cause.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"Fundamentally, the belief that we have at Traversal is that root cause analysis is not an observability problem, it's a causal problem."</li>
 <li>"What we've seen is like anything more than five minutes and you've kind of lost the plot, you've lost the patience of the on-call team."</li>
 <li><strong>Stat:</strong> 80%+ root-cause accuracy claimed on high-severity incidents across trillions of logs/spans.</li>
 <li><strong>Stat:</strong> ~$400B annual enterprise troubleshooting spend; engineers lose 7+ hrs/week to on-call.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>Ingestion/analysis positioned as "without increasing costs" — searching petabytes must not "blow up costs or take down your observability infrastructure."</li>
 <li>3-minute automated dispatch vs 60-minute war rooms; tens of engineers spared per incident — the efficiency story is on-call labor, not tokens.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>The "world model" framing transfers: for a local context layer, pre-compute entity relationships (services ↔ repos ↔ logs) once, so agents query the map instead of re-discovering it per incident.</li>
 <li>The five vendor questions double as a checklist before buying any AI SRE tooling — especially "improve autonomously (no markdown-file maintenance)?" which is the hidden toil test.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Pre-compute your production map. Build a local index of entity relationships — service ↔ repo ↔ log index ↔ alert rule — refreshed on a schedule, so a Copilot agent queries the map instead of re-discovering topology on every incident.</li>
 <li>Set a 3-minute auto-dispatch bar. Configure your first responder (a Copilot agent or runbook) to engage within 3 minutes of a declared incident bridge and post its working RCA to the incident Slack channel.</li>
@@ -71,11 +71,11 @@
 <li>Track two incident metrics for one quarter: minutes-to-RCA and engineers-paged per incident. Report war-room hours spared — that is the labor-saving ledger the talk is selling.</li>
 <li>Start an Alert Intelligence practice: pre-investigate recurring alerts and land the noise-reduction actions as code — fix alert rules, dismiss no-action alerts, ticket tech debt — so each alert cycle gets quieter, like the Pepsi example.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>biggo AI summary: https://finance.biggo.com/podcast/eb4bc626c151995f</li>
 <li>Video description: https://www.youtube.com/watch?v=y-OVWZD4j6U</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

@@ -2,9 +2,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "How VS Code Went from Monthly to Weekly Releases with AI" — Harald Kirschner · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-how-vs-code-went-from-monthly-to-weekly-releases-with-ai-harald-kirschner">Talk Notes: "How VS Code Went from Monthly to Weekly Releases with AI" — Harald Kirschner</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><p><img alt="Visual one-pager" src="onepager-vscode-weekly-releases.jpg" /></p></div><h1 id="talk-notes-how-vs-code-went-from-monthly-to-weekly-releases-with-ai-harald-kirschner">Talk Notes: "How VS Code Went from Monthly to Weekly Releases with AI" — Harald Kirschner</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=I2LL_wd89-A">How VS Code Went from Monthly to Weekly Releases with AI — Harald Kirschner</a> · AI Engineer channel · Oct 3, 2026 · 19:34 · Recorded at AI Engineer World's Fair 2026</p>
-<p><img alt="Visual one-pager" src="onepager-vscode-weekly-releases.jpg" /></p>
+
 <h2 id="thesis">Thesis</h2>
 <p>After 10 years of monthly releases, VS Code moved to weekly releases not from "more AI" but by evolving the whole system — codebase agent-readiness, quality loops, triage, staged rollouts, and learning loops — so higher velocity ships at quality and the team learns faster.</p>
 <h2 id="the-mental-model">The mental model</h2>
@@ -30,7 +30,7 @@
     A --> C[Most expensive model]
     C --> D[70x more tokens]
     D --> E[Select models by cost per completed task]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <h3 id="the-arc-three-evolutions-in-order">The arc: three evolutions, in order</h3>
 <ol>
 <li><strong>Ship faster</strong> — agent-ready codebase, 10× faster builds, prototypes and daily feedback.</li>
@@ -116,7 +116,7 @@
 <li><strong>WebSockets</strong> became the default OpenAI transport (GPT-5.2+): TTFT p50 <strong>−19.46%</strong> (GPT-5.3-Codex).</li>
 <li>The trend driving it all: <strong>each new model generation consumes more tokens per task</strong> — harness efficiency is the counter-trend. Next: specialized subagents on the smallest, cheapest models for search/commands/summarization, and transparency UI for cache cold starts.</li>
 </ul>
-<h2 id="by-the-numbers">By the numbers</h2>
+</div></details><details class="sec"><summary>By the numbers</summary><div class="sec-body">
 <ul>
 <li><strong>55% → 86%</strong> — code survival rate (agent-written code actually committed) over the past year; the trust signal behind shipping more AI code.</li>
 <li><strong>10 years</strong> — monthly release cadence since VS Code 1.0 (the January release ships in February); weekly for "several months."</li>
@@ -137,7 +137,7 @@
 <li><strong>4</strong> — deliberate cache breakpoints (Anthropic): end of tool definitions, end of system prompt, two rolling message anchors.</li>
 <li>(No public figures were given for effort-dial distribution — the only stated dial stat is qualitative: low/medium/high effort set by repo risk.)</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>Code survival 55% → 86%.</li>
 <li>51 billion telemetry events per day → error stacks → auto-fix PRs.</li>
@@ -148,7 +148,7 @@
 <li>"The model is the engine, the harness is the car." (VS Code harness blog — why they spend most engineering time on context assembly, tools, loops, and evaluation, not model choice.)</li>
 <li>"The goal is not to eliminate planning. It is to understand whether a model can tell the difference between a one-step task and a 30-step task." (50,000-runs blog)</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>Token efficiency: 70x token spread across models for an identical eval — token efficiency is a first-class model criterion.</li>
 <li>TypeScript Go: 10x faster builds unblock agent CI/CD loops.</li>
@@ -161,7 +161,7 @@
 <li><strong>Counter-trend awareness</strong>: each new model generation consumes more tokens per task; harness-level wins (caching, deferral, subagents on the cheapest models) are what keep cost per task flat. Measure tokens per <em>passing</em> task, not per run.</li>
 <li><strong>Log tool sequences, not just counts</strong>: <code>{tool_sequence, output_tokens, pass}</code> tells you where overhead came from — the only way to attribute and cut it.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li><strong>Make token efficiency a model-selection criterion</strong>: the 70x spread on an identical eval proves price-per-token tells you almost nothing — benchmark cost-per-completed-task per model before putting it behind the enterprise router.</li>
 <li><strong>Code survival rate (agent-written code actually committed) is the deployable metric</strong> for agent quality — track it per model/skill combo; it directly measures wasted generation tokens vs. kept output.</li>
@@ -170,7 +170,7 @@
 <li><strong>PR-gated evals for harness changes</strong>: any PR touching prompts, tools, or loop behavior ships with benchmark numbers before merging (<code>~requires-eval-assessment</code> pattern: build → versioned eval agent → evald issue → report link on the PR).</li>
 <li><strong>Stand up a smoke eval first</strong> (<code>say_hello</code> pattern): smallest unambiguous task, run constantly as preflight before nightly evals, model onboarding, and infra changes; log tool sequences + output tokens so harness regressions show up before they get expensive across long sessions.</li>
 </ul>
-<h2 id="decision-framework">Decision framework</h2>
+</div></details><h2 id="decision-framework">Decision framework</h2>
 <p>Kirschner never hands you a checklist — he gives an order of operations and a method for finding the next bottleneck:</p>
 <ol>
 <li><strong>Fix in this order</strong>: (1) <em>ship faster</em> — agent-ready codebase (AGENTS.md, codebase maps, skills) plus fast builds, because 10–20 agents compound every bottleneck; (2) <em>hold quality at speed</em> — mandatory review with effort dials, AI triage with human feedback loops; (3) <em>learn faster</em> — own evals, hill-climbing, online experimentation. Skip a stage and the previous one strands you: speed without quality gates → issue/PR floods; quality gates without evals → shipping fast but not the right thing.</li>
@@ -196,7 +196,7 @@
 <li>Add a smoke eval (<code>say_hello</code> pattern) as preflight before nightly evals, model onboarding, and infra changes; log <code>tool_sequence</code> + <code>output_tokens</code>, not just pass/fail.</li>
 <li>Apply harness-level token levers before buying more model: keep prompt prefixes stable and caches warm (cached input up to 10× cheaper), defer tool schemas until searched, and push narrow work (search, command-running, summarization) to subagents on the smallest/cheapest models.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li><strong>Full spoken transcript</strong> (worked): https://www.usetranscribe.io/yt/I2LL_wd89-A/</li>
 <li><strong>Video</strong>: https://www.youtube.com/watch?v=I2LL_wd89-A</li>
@@ -204,7 +204,7 @@
 <li><strong>"Improving token efficiency for GitHub Copilot in VS Code"</strong> — Ryan Caldwell &amp; Bhavya U, Jun 17 2026 (prompt caching, tool search, WebSockets, subagent direction): https://code.visualstudio.com/blogs/2026/06/17/improving-token-efficiency-in-github-copilot</li>
 <li><strong>"The Coding Harness Behind GitHub Copilot in VS Code"</strong> — Julia Kasper, Megan Rogge &amp; Aaron Munger, May 15 2026 (VSC-Bench design, PR-gated eval assessment, "the model is the engine, the harness is the car"): https://code.visualstudio.com/blogs/2026/05/15/agent-harnesses-github-copilot-vscode</li>
 <li>Note: the three blogs are VS Code <em>team</em> posts Kirschner referenced in the talk (the 70× eval and token-efficiency blogs by name); none is bylined to him personally.</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

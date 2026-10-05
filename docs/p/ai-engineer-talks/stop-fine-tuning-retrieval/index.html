@@ -2,7 +2,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Stop Fine-Tuning to Fix Retrieval Problems" — Anant Srivastava · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-stop-fine-tuning-to-fix-retrieval-problems-anant-srivastava">Talk Notes: "Stop Fine-Tuning to Fix Retrieval Problems" — Anant Srivastava</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
+    Q[Is it behavior] -->|Yes| P[Prompt keep it small and stable]
+    Q -->|No| Q2[Is it current large or citable]
+    Q2 -->|Yes| M[Memory with permission checks]
+    Q2 -->|No| Q3[Has it stopped changing]
+    Q3 -->|Yes| W[Fine tune the stable center]
+    Q3 -->|No| H[Hold in memory until stable implied]</pre></div><h1 id="talk-notes-stop-fine-tuning-to-fix-retrieval-problems-anant-srivastava">Talk Notes: "Stop Fine-Tuning to Fix Retrieval Problems" — Anant Srivastava</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=qflLT3SoVbw">Stop Fine-Tuning to Fix Retrieval Problems — Anant Srivastava</a> · AI Engineer channel · Oct 3, 2026 · 20:11 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Speaker:</strong> Anant Srivastava, Principal Technologist for Data and AI Platforms, Oracle (per the video description).</p>
 <p><strong>Note:</strong> distilled from the video's own description/chapters (the speaker's outline, with timestamps) plus biggo.com's AI-generated talk summary — the description's chapter structure and framing lines are the speaker's own words via YouTube.</p>
@@ -10,13 +16,7 @@
 <p>Most teams never deliberately decide where knowledge lives — prompt, memory/retrieval, or model weights — so six months of normal product work decides it for them by accident. These aren't a ladder to climb but three tools for three jobs, and you need a deliberate harness for circulating knowledge between them; fine-tuning should be reserved for knowledge that has stopped changing.</p>
 <h2 id="the-mental-model">The mental model</h2>
 <p>The placement decision — which job goes where:</p>
-<pre class="mermaid">flowchart TD
-    Q[Is it behavior] -->|Yes| P[Prompt keep it small and stable]
-    Q -->|No| Q2[Is it current large or citable]
-    Q2 -->|Yes| M[Memory with permission checks]
-    Q2 -->|No| Q3[Has it stopped changing]
-    Q3 -->|Yes| W[Fine tune the stable center]
-    Q3 -->|No| H[Hold in memory until stable implied]</pre>
+
 <p>The circulation loop:</p>
 <pre class="mermaid">flowchart LR
     A[Prompt] --> B[Signals from use]
@@ -29,7 +29,7 @@
     A[Frontier model plus human corrections] --> B[Human override rates flatline]
     B --> C[Fine tune the stable center]
     C --> D[Humans stay on the contested edge]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>The opening line (from the video description):</strong> "Most AI teams never decide where their knowledge lives. Six months of normal product work decides for them." The talk's arc: "How every prompt edit, indexed doc and training sample is an architecture decision" — each one quietly places knowledge in prompt, memory, or weights, and teams that never choose get an architecture by accident ("Accumulated, not designed").</li>
 <li><strong>Three tools, not a ladder:</strong> prompt, memory and weights "aren't a ladder you climb when answers go wrong. They're three tools for three jobs." The diagnostic question per layer (from the description):</li>
@@ -51,7 +51,7 @@
 <li><strong>Circulating architecture</strong> (17:33): prompt → signals → durable knowledge in memory → memory pulled back into prompt on new sessions; over time, patterns move memory → weights via fine-tuning and retrieval needs shrink — "the agent gets better by doing its job." The loop makes the agent better without anyone re-deciding the architecture.</li>
 <li>Close (19:27): "The model is the easy part. What you build around the model... is the key architecture."</li>
 </ul>
-<h2 id="by-the-numbers">By the numbers</h2>
+</div></details><details class="sec"><summary>By the numbers</summary><div class="sec-body">
 <ul>
 <li><strong>3</strong> — tools for three jobs (prompt / memory / weights), not a ladder</li>
 <li><strong>6 months</strong> — of normal product work that decides your knowledge architecture by accident if you never decide deliberately</li>
@@ -59,25 +59,25 @@
 <li><strong>10M</strong> — requests/day: the volume class where fine-tuning a small model wins on cost, not capability</li>
 <li><strong>3</strong> — failures before human escalation in the support-agent prompt example (behavior, not facts, belongs in the prompt)</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"The model is the easy part. What you build around the model... is the key architecture."</li>
 <li>ICD-10 has 70,000 codes — fine-tune the format reflex, not the codes.</li>
 <li>Human override rates flatlining = the signal that knowledge is stable enough to fine-tune.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>Stuffing facts into the prompt wastes context tokens ("you pay the cost for it") and dilutes instruction-following.</li>
 <li>Fine-tune small models to run high volume cheaply when it's a cost problem, not a capability problem.</li>
 <li>Circulating memory → weights reduces retrieval needs over time.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li><strong>Keep a standing decision table for every skill/pipeline</strong>: behavior → prompt/skills, facts → local RAG/retrieval, reflexes → fine-tuned small local model. Review it whenever a new knowledge source enters the system.</li>
 <li><strong>The circulation loop is the local strategy</strong>: use local retrieval (sqlite/LanceDB) for fast-changing knowledge, and only bake the stable center into a locally fine-tuned small model — exactly the Ollama + local RAG split Matt already runs.</li>
 <li><strong>Access control is the hard constraint for local-first</strong>: per-user/per-repo data must stay retrievable with permission checks, never baked into weights — weights can't do ACLs.</li>
 </ul>
-<h2 id="decision-framework">Decision framework</h2>
+</div></details><h2 id="decision-framework">Decision framework</h2>
 <ul>
 <li><strong>Run the diagnostic on every knowledge source, in order</strong> (question wordings inferred from the description's per-layer diagnostics — the talk names "the diagnostic question" per layer without publishing exact wording):</li>
 <li>"Is this small, stable behavior?" → prompt.</li>
@@ -99,11 +99,11 @@
 <li>Keep access control in the memory/retrieval layer with per-user/per-repo permission checks. Never bake ACLs into weights — weights cannot enforce permissions, and every caller gets baked-in knowledge.</li>
 <li>When fine-tuning for cost (not capability), fine-tune the <em>small</em> model and run the 10M-request/day volume on it — that's the economics that justify training at all.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>Video: https://www.youtube.com/watch?v=qflLT3SoVbw</li>
 <li>Video description with chapter timestamps (speaker's outline — diagnostic questions, support-assistant story, decision table, circulating architecture): https://www.youtube.com/watch?v=qflLT3SoVbw</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

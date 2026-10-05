@@ -2,13 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "No, That's Not a Software Factory" — Ryan Cooke, WorkOS · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-no-thats-not-a-software-factory-ryan-cooke-workos">Talk Notes: "No, That's Not a Software Factory" — Ryan Cooke, WorkOS</h1>
-<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=HvboD89DyQ8">No, That's Not a Software Factory — Ryan Cooke, WorkOS</a> · AI Engineer channel · Sep 27, 2026 · 18:59 · Recorded at AI Engineer World's Fair 2026</p>
-<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
-<h2 id="thesis">Thesis</h2>
-<p>The standard "software factory" (sandbox + agent + prompt → PR) isn't a real factory, because it optimizes code output instead of product outcomes. WorkOS's factory encodes engineering processes into automation — TARS (agent interaction embedded in Slack/Linear/GitHub, driven by webhooks), Horizon (infrastructure orchestration), and an MCP gateway "context engine" — and measures outcomes (features shipped faster), not PR counts.</p>
-<h2 id="the-mental-model">The mental model</h2>
-<pre class="mermaid">flowchart TD
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
     HD[Hilltop document] --> T[TARS agent]
     T --> SL[Slack]
     T --> LI[Linear]
@@ -17,7 +11,13 @@
     WH --> T
     T --> H[Horizon infra layer]
     H --> MG[MCP gateway context engine]
-    MG --> SF[Snowflake semantic tables]</pre>
+    MG --> SF[Snowflake semantic tables]</pre></div><h1 id="talk-notes-no-thats-not-a-software-factory-ryan-cooke-workos">Talk Notes: "No, That's Not a Software Factory" — Ryan Cooke, WorkOS</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=HvboD89DyQ8">No, That's Not a Software Factory — Ryan Cooke, WorkOS</a> · AI Engineer channel · Sep 27, 2026 · 18:59 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); supplementary secondary sources are marked where used.</p>
+<h2 id="thesis">Thesis</h2>
+<p>The standard "software factory" (sandbox + agent + prompt → PR) isn't a real factory, because it optimizes code output instead of product outcomes. WorkOS's factory encodes engineering processes into automation — TARS (agent interaction embedded in Slack/Linear/GitHub, driven by webhooks), Horizon (infrastructure orchestration), and an MCP gateway "context engine" — and measures outcomes (features shipped faster), not PR counts.</p>
+<h2 id="the-mental-model">The mental model</h2>
+
 <pre class="mermaid">flowchart LR
     B[Brief spec] --> PA[PM agent drafts hilltop] --> HR[Human review in Linear] --> AU[Auto start implementation] --> NT[Auto pick up next ticket]</pre>
 <pre class="mermaid">flowchart TD
@@ -25,7 +25,7 @@
     RM[Outcome metrics win] --> SH[Features shipped faster]
     RM --> DR[Defect rate]
     RM --> TTR[Time to recovery]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>The standard setup doesn't beat the baseline.</strong> Sandbox on Cloudflare + "open code model router" + prompts → PR produced results "pretty indistinguishable" from engineers running Claude Code on laptops — no incremental or exponential outcome gain.</li>
 <li><strong>Output metrics lie.</strong> "% of PRs," PR counts, AI-generated code in prod "disguise how well these systems are working"; "it's very hard to distinguish whether the output is actually driving outcomes."</li>
@@ -42,19 +42,19 @@
 <li><strong>Success metrics.</strong> Outcome metrics (shipping, customer impact, defect rate, time-to-recovery) + anecdotal (engineers choosing TARS, electing to move from local harness to cloud sandbox). Owning the infrastructure lets them observe sessions to find where to build skills and which skills are obsolete — "we use this information to self-improve the factory."</li>
 <li><strong>Honest open gap.</strong> Authorization for agents — "we haven't figured it out yet"; he invited the audience to share ideas at the WorkOS booth.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"Percentage of PRs or number of PRs may be lying... It's very hard to distinguish whether the output is actually driving outcomes."</li>
 <li>"The dream of the software factory is that it gives each of our engineers a small engineering team for themselves."</li>
 <li>"Sandboxes are great. It's cool to run an agent and have it open a PR. We really think about our software engineering practices and processes and we want to encode those in automation."</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li><strong>Defect rate and time-to-recovery as guardrail metrics</strong> so factory output doesn't buy speed with instability — cost of rework is a token/effort line item, not an externality.</li>
 <li><strong>The MCP gateway as a shared context engine reused across internal tools</strong> — build the context plumbing once, reuse everywhere, instead of per-tool reinvention.</li>
 <li><strong>Owning the infrastructure enables session observation</strong> to identify skill gaps and obsolete skills — an eval/iteration loop for self-improvement of the factory itself, so the spend on context goes where it demonstrably pays off.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li><strong>Canonicalize your PRD ritual</strong>: write the "hilltop" template for your org — purpose, customer evidence, competitive analysis, early design screens, milestones — so an agent can break it into units of work.</li>
 <li><strong>Add a PM agent</strong>: draft the hilltop from a brief spec, have humans comment and refine the generated tickets in Linear, then auto-start implementation on approval.</li>
@@ -63,10 +63,10 @@
 <li><strong>Switch the dashboards</strong>: replace PR counts and AI-code percentages with outcome metrics — shipping speed, customer impact, defect rate, time-to-recovery.</li>
 <li><strong>Observe sessions to self-improve</strong>: log where agents struggle, build skills for the gaps, retire obsolete ones. Own the loop, not just the output.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>Video: https://www.youtube.com/watch?v=HvboD89DyQ8</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

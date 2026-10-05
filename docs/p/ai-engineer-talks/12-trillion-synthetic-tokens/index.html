@@ -2,26 +2,26 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Lessons from Generating 12 Trillion Synthetic Tokens" — Bogdan Gaza, DatologyAI · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-lessons-from-generating-12-trillion-synthetic-tokens-bogdan-gaza-datologyai">Talk Notes: "Lessons from Generating 12 Trillion Synthetic Tokens" — Bogdan Gaza, DatologyAI</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
+    A[Highest quality customer docs] --> B[Rephrase and restructure pipeline]
+    B --> C[Curation Spark jobs]
+    C --> D[Generation on vLLM core]
+    D --> E[Training on H100 fleet]
+    E --> F[Evals]
+    F -->|wins improve the recipe| B</pre></div><h1 id="talk-notes-lessons-from-generating-12-trillion-synthetic-tokens-bogdan-gaza-datologyai">Talk Notes: "Lessons from Generating 12 Trillion Synthetic Tokens" — Bogdan Gaza, DatologyAI</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=FQwTqUmcbRg">Lessons from Generating 12 Trillion Synthetic Tokens — Bogdan Gaza, DatologyAI</a> · AI Engineer channel · Oct 2, 2026 · 20:31 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript.</p>
 <h2 id="thesis">Thesis</h2>
 <p>Synthetic data is now load-bearing for frontier pre-training — scaling laws demand exponentially more data for linear gains while the usable public web tops out around 30T tokens. The hard part is not the data recipe but the data-engineering plumbing: DatologyAI's ~12T-token run (~7T web + ~5T math/code) was enabled by consolidating a Slurm research silo onto unified Kubernetes and fixing four concrete bottlenecks (metadata, GPU failures, cross-cluster scheduling, inference tuning).</p>
 <h2 id="the-mental-model">The mental model</h2>
 <p>Two architectures — the old research silo and the new unified pipeline — plus four bottlenecks, each with a concrete fix.</p>
-<pre class="mermaid">flowchart TD
-    A[Highest quality customer docs] --> B[Rephrase and restructure pipeline]
-    B --> C[Curation Spark jobs]
-    C --> D[Generation on vLLM core]
-    D --> E[Training on H100 fleet]
-    E --> F[Evals]
-    F -->|wins improve the recipe| B</pre>
+
 <pre class="mermaid">flowchart TD
     B1[Slow metadata listing] --> F1[Batch S3 list API calls]
     B2[GPU partition dies near the end] --> F2[Checkpoint to S3 and resume]
     B3[CPU free while GPU full] --> F3[Dedicated pools and atomic scheduling]
     B4[Bad inference flags] --> F4[Grid search batch size and speculative decode]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>BeyondWeb recipe:</strong> rephrasing/restructuring pipeline seeded from the highest-quality documents in a customer's corpus — unseeded prompting just reproduces modes of the original training distribution.</li>
 <li><strong>Quality claims (DatologyAI's own, dated "late summer '25," now "much, much better"):</strong> a 3B model on BeyondWeb matches 8B Nemotron Synth accuracy; same performance with ~2.7x fewer tokens than Nemotron Synth and ~5.3x fewer than Cosmopedia. Tested at 1B/3B/8B vs Nemotron Synth, Cosmopedia, QARap, RedPajama.</li>
@@ -34,25 +34,25 @@
 <li><strong>Scale:</strong> ~30B tokens in limited runs (end 2024) → ~7T web + ~5T math/code across customers (end 2025) — roughly 400x output in ~12 months.</li>
 <li><strong>Paper:</strong> arxiv.org/abs/2505.15743. Open areas: domain coverage (web, multilingual, math, code, legal). Hiring across data infra, cloud infra, PM.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"So 11 days to two hours, that's the first one."</li>
 <li>"You can get a lot of gains — in this case, about 40% throughput gains — just by tweaking the flags."</li>
 <li>"On the web, we can find about 30 trillion tokens, give or take."</li>
 <li><strong>Stat:</strong> 400x output in ~12 months (30B → 12T tokens).</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>2.7–5.3x token efficiency vs public synthetic datasets = proportionally less training compute per capability point.</li>
 <li>Metadata 11 days → 2 hours avoids millions in idle GPU spend; 40% vLLM throughput gain from flags alone; atomic scheduling raises fleet utilization.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>The vLLM lesson ports directly to local inference: build a small benchmarking harness and grid-search batch size / speculative decoding before buying hardware — ~40% gains can come from flags alone.</li>
 <li>S3-compatible APIs (MinIO locally) mean the same curation pipelines run on-prem without cloud lock-in — matches the local-first posture.</li>
 <li>Seed synthetic data from your own best documents, not unseeded prompts — unseeded generation just replays the base model's distribution, which is wasted compute.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Build a small vLLM benchmarking harness on your local inference box this week and grid-search batch size and speculative decoding flags before spending on hardware — the talk got ~40% throughput from flags alone.</li>
 <li>Stand up MinIO (S3-compatible) locally and port one curation pipeline to it, proving the same jobs run on-prem without cloud lock-in.</li>
@@ -60,12 +60,12 @@
 <li>Add checkpointing with resumable, idempotent overwrites to any job longer than an hour so a dead partition costs minutes, not the full run.</li>
 <li>Audit your data catalog's metadata access path: replace per-object metadata calls with batched list-API requests at the service page limit.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>biggo AI summary: https://finance.biggo.com/podcast/3c9006f63582ab1f</li>
 <li>Video description: https://www.youtube.com/watch?v=FQwTqUmcbRg</li>
 <li>Paper: https://arxiv.org/abs/2505.15743</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

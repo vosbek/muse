@@ -2,10 +2,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Stop Renting Your AI's Memory" — Dylan Couzon, Qdrant · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-stop-renting-your-ais-memory-dylan-couzon-qdrant">Talk Notes: "Stop Renting Your AI's Memory" — Dylan Couzon, Qdrant</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><p><img alt="Visual one-pager" src="onepager-stop-renting-memory.jpg" /></p></div><h1 id="talk-notes-stop-renting-your-ais-memory-dylan-couzon-qdrant">Talk Notes: "Stop Renting Your AI's Memory" — Dylan Couzon, Qdrant</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=apyrzaWj0Z4">Stop Renting Your AI's Memory — Dylan Couzon, Qdrant</a> · AI Engineer channel · Oct 2, 2026 · 15:16 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> distilled from the full spoken transcript (via ainotes.us, captions sourced from the original YouTube video); the Qdrant Edge launch post fills in product specifics. Direct quotes are the speaker's words per the transcript.</p>
-<p><img alt="Visual one-pager" src="onepager-stop-renting-memory.jpg" /></p>
+
 <h2 id="thesis">Thesis</h2>
 <p>The industry solved the wrong half of the ownership problem — running frontier-class models locally is now cheap (a sub-$2,500 machine runs "last year's frontier"), but the memory that makes an assistant actually yours still lives in someone else's data center. Memory is a three-verb system (<strong>write, retrieve, forget</strong>); owning inference buys autonomy, owning memory buys continuity — and continuity is the real product. A live fully-offline drone demo proves the point: <strong>92 objects, 300+ vectors, 15MB total, sub-millisecond retrieval.</strong></p>
 <h2 id="the-mental-model">The mental model</h2>
@@ -33,7 +33,7 @@
     R --> F[Forget by decay]
     F --> W
     R --> N[Never dump everything into context]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>The talk's actual title, in his words:</strong> "the frontier is coming home." Two versions of superintelligence: one lives in someone else's data center and you pay by the token; the other is yours — it learns from your life, your context stays private, and nobody can switch it off, throttle it, or take it away.</li>
 <li><strong>The hardware half is already won:</strong> "A machine under $2,500 today can run what was basically last year's frontier. And open weights models are closing on fast. The gap is shrinking every quarter." But "a model on its own is just a brilliant stranger" — what makes it yours is everything it knows about you, and that part hasn't come home yet.</li>
@@ -57,7 +57,7 @@
 <li><strong>Close:</strong> "Take the stranger home and give it memory." Picture it five years out — "not a chatbot, a private mind that never forgets you, that nobody can switch off, and that knows you better than any system ever has because you were the only one who ever trained it. That's not a smaller superintelligence. That's the only one worth wanting."</li>
 <li><strong>Qdrant Edge (the product behind the talk, from the launch post):</strong> Qdrant's three waves of vector search — RAG 1.0 (context providers for LLMs) → Agentic AI (long-term memory modules for agents) → <strong>Embedded AI</strong> (on-device reasoning without reliable network or cloud compute). Edge is a lightweight embedded engine: <strong>in-process execution as a library, not a service</strong> — no background optimizers or update threads, all operations synchronous under app control; multitenancy-aware (each device a tenant with isolated data/compute); retains filterable HNSW, hybrid sparse+dense search, multivector/ColBERT-style semantics. Currently in <strong>private beta</strong> — API may change.</li>
 </ul>
-<h2 id="by-the-numbers">By the numbers</h2>
+</div></details><details class="sec"><summary>By the numbers</summary><div class="sec-body">
 <ul>
 <li><strong>&lt;$2,500</strong> — price of a machine that runs "basically last year's frontier" (open-weights gap "shrinking every quarter")</li>
 <li><strong>1,000s×</strong> — tokens burned by one agentic task vs a single chat message</li>
@@ -70,13 +70,13 @@
 <li><strong>2016 / 2019</strong> — HNSW published; embeddings running locally since — "the memory side of superintelligence was never the hard part"</li>
 <li><strong>Every frontier lab</strong> shipped a memory feature in the past year — the continuity gap "is the actual product"</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"We've spent years asking when, but I think when is kind of the boring question. I think the real one is who it belongs to."</li>
 <li>Demo numbers: 92 objects, 300+ vectors, 15MB footprint, <strong>&lt;1 millisecond retrieval, fully offline</strong>.</li>
 <li>"Some developers burn through over $5,000 a month of compute on a $200 plan. That's a subsidy. And those subsidies will ultimately disappear."</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li><strong>Sub-millisecond local vector retrieval</strong> with zero network round-trip (latency); quantization packs ~1M memories into &lt;1GB (storage/compute efficiency at phone/Raspberry Pi scale).</li>
 <li><strong>Fixed owned-hardware cost vs. metered token burn</strong> of rented agentic loops ($5k/mo on $200 plans) — owning the stack converts variable spend into sunk hardware.</li>
@@ -87,7 +87,7 @@
 <li><strong>Design memory as a three-verb API (write / retrieve / forget)</strong> with decay-by-recency/frequency and topic filtering, rather than dumping a Markdown folder into context — retrieval precision is the context-savings lever.</li>
 <li><strong>Quantization makes the scale trivial:</strong> ~1M memories in &lt;1GB means on-device memory for phones and Raspberry Pis; the folder follows the user across models and hardware as long as the embedding model is kept — memory becomes portable, model-agnostic state.</li>
 </ul>
-<h2 id="decision-framework">Decision framework</h2>
+</div></details><h2 id="decision-framework">Decision framework</h2>
 <ul>
 <li><strong>Use local memory when:</strong> continuity across sessions is the product (assistants, agents, copilots); you need sub-ms retrieval or offline operation; the context is personal/team and must stay private; you want the store to survive model and hardware swaps.</li>
 <li><strong>Don't use it as an excuse to skip the architecture question:</strong> the speaker explicitly scoped out "which memory architecture wins" — "That's definitely a different talk." His claim is only about <em>where the disk lives</em>, not what the disk is shaped like.</li>
@@ -109,14 +109,14 @@
 <li>Measure before/after: retrieval latency (target sub-ms, offline) and tokens per answered query versus the dump-everything baseline.</li>
 <li>Keep any cloud sync opt-in and explicit; default to local-only. Sync is for consensual hive-minds (family, team, swarm), never the default.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>YouTube description/chapters: https://www.youtube.com/watch?v=apyrzaWj0Z4</li>
 <li>BigGo AI talk summary: https://finance.biggo.com/podcast/8ecb3ddf484198ae</li>
 <li>Full spoken transcript (captions from the original video): https://ainotes.us/summary/1505</li>
 <li>Qdrant Edge launch post ("three waves of vector search", in-process architecture, beta status): https://qdrant.tech/blog/qdrant-edge/</li>
 <li>Qdrant Edge docs: https://qdrant.tech/documentation/edge/</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

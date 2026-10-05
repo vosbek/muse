@@ -2,13 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "MCP Doesn't Suck. Your Agent Does." — Jan Čurn, Apify · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-mcp-doesnt-suck-your-agent-does-jan-curn-apify">Talk Notes: "MCP Doesn't Suck. Your Agent Does." — Jan Čurn, Apify</h1>
-<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=pAnLpiAG6Es">MCP Doesn't Suck. Your Agent Does. — Jan Čurn, Apify</a> · AI Engineer channel · Oct 2, 2026 · 18:43 · Recorded at AI Engineer World's Fair 2026</p>
-<p><strong>Note:</strong> distilled from the video's own description/chapters (the speaker's outline, with timestamps) plus biggo.com's AI-generated talk summary; the official mcpc SKILL.md (apify/mcp-cli repo) supplies the exact commands and semantics. Partial auto-transcript chunks via NoteGPT covered the opening through ~07:20.</p>
-<h2 id="thesis">Thesis</h2>
-<p>The backlash against MCP is misdirected — the protocol is sound, and the failures people blame on it (context bloat, cost, sensitive data sitting in context, poor tool discovery) are failures of naive agent harnesses, not the protocol. The fixes already exist (subagents, progressive tool discovery, code mode) but most clients ignore them; Apify's open-source <strong>mcpc</strong> wraps the full MCP protocol behind a single bash-style tool call, and the right architecture is "MCP for remote, CLI for local" — MCP plus CLI beats either alone.</p>
-<h2 id="the-mental-model">The mental model</h2>
-<pre class="mermaid">flowchart TD
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
     subgraph BEFORE[Before - naive harness]
     B1[10 servers times 10 tools] --> B2[100 tools loaded up front]
     B2 --> B3[A third of context gone]
@@ -17,7 +11,13 @@
     A1[Single bash tool call] --> A2[mcpc with JSON output]
     A2 --> A3[Grep and jq for progressive discovery]
     A3 --> A4[Context spent only on what is used]
-    end</pre>
+    end</pre></div><h1 id="talk-notes-mcp-doesnt-suck-your-agent-does-jan-curn-apify">Talk Notes: "MCP Doesn't Suck. Your Agent Does." — Jan Čurn, Apify</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=pAnLpiAG6Es">MCP Doesn't Suck. Your Agent Does. — Jan Čurn, Apify</a> · AI Engineer channel · Oct 2, 2026 · 18:43 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> distilled from the video's own description/chapters (the speaker's outline, with timestamps) plus biggo.com's AI-generated talk summary; the official mcpc SKILL.md (apify/mcp-cli repo) supplies the exact commands and semantics. Partial auto-transcript chunks via NoteGPT covered the opening through ~07:20.</p>
+<h2 id="thesis">Thesis</h2>
+<p>The backlash against MCP is misdirected — the protocol is sound, and the failures people blame on it (context bloat, cost, sensitive data sitting in context, poor tool discovery) are failures of naive agent harnesses, not the protocol. The fixes already exist (subagents, progressive tool discovery, code mode) but most clients ignore them; Apify's open-source <strong>mcpc</strong> wraps the full MCP protocol behind a single bash-style tool call, and the right architecture is "MCP for remote, CLI for local" — MCP plus CLI beats either alone.</p>
+<h2 id="the-mental-model">The mental model</h2>
+
 <pre class="mermaid">flowchart LR
     R[Remote services] --> MCP[MCP for transport and credentials]
     L[Local tools] --> CLI[CLI as code, shell native]
@@ -28,7 +28,7 @@
     MC --> PD[Progressive discovery via grep]
     MC --> AT[Async tasks, detach and reattach]
     MC --> JQ[Every command emits JSON for jq]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Speaker:</strong> Jan Čurn, Founder &amp; CEO, Apify. The talk's own description frames it: "Everyone's dunking on MCP. The protocol isn't the problem. Your agent harness is."</li>
 <li><strong>The critics' catalog.</strong> Anthropic itself admitting "MCP sucks"; Theo calling it "the wrong abstraction"; "MCP was a mistake, long live CLIs"; "MCP is dead in the water"; "MCPs are mostly useless, I'll die on this hill"; "every MCP could have been a deterministic CLI"; Gary Tan ("MCP sucks, honestly, oh my god"); Peter Levels ("Thank god MCP is dead").</li>
@@ -56,7 +56,7 @@
 <li><strong>Connector Evals.</strong> Apify's benchmark framework that flips the usual comparison — holds the agent constant and compares connectors (CLI vs raw MCP vs mcpc). Early results with Claude Code on Sonnet 5: mcpc and CLI comparable on time and token cost; raw MCP faster in one test but consumed more tokens and worse in two others. Čurn is candid the tests are early and invites contributions.</li>
 <li><strong>Security caveat on connect:</strong> a bare <code>mcpc connect</code> treats config files in the current directory as <strong>untrusted</strong> — entries referencing <code>${VAR}</code> are skipped and <code>-H</code> refused, because a checked-in <code>.mcp.json</code> could point your token at an attacker's server. Review the file, then connect it by name.</li>
 </ul>
-<h2 id="by-the-numbers">By the numbers</h2>
+</div></details><details class="sec"><summary>By the numbers</summary><div class="sec-body">
 <ul>
 <li><strong>~100</strong> — tools a naive harness pre-loads (≈10 servers × 10 tools), "a third of context gone" before any user request</li>
 <li><strong>10,000–15,000</strong> — estimated MCP servers in the wild; "registries of registries"</li>
@@ -66,13 +66,13 @@
 <li><strong>2025-11-25</strong> — MCP protocol version carrying the tasks capability (<code>--task</code>/<code>--detach</code> need it)</li>
 <li><strong>60s</strong> — default <code>--timeout</code>; <code>--max-chars</code> truncates human-readable output (ignored with <code>--json</code>)</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"You can provide all the protocol features of MCP through a simple tool call that all the agents already know, just called bash. The full complexity of MCP is hidden behind single tool call bash."</li>
 <li>"Please stop saying CLI is better than MCP because MCP plus CLI is the best." (closing line)</li>
 <li>~100 tools pre-loaded ≈ a third of context burned before any work happens.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li><strong>Context/token efficiency is the talk's central efficiency theme:</strong> progressive discovery and <code>--json</code>+jq piping let scripts "run MCP servers in the background without wasting your context tokens."</li>
 <li><strong>Connector Evals</strong> explicitly measures token cost and time per connector, framing connector choice as a measurable cost lever.</li>
@@ -84,7 +84,7 @@
 <li><strong>Adopt the mcpc pattern in agent harnesses:</strong> one <code>bash</code> tool call + <code>--json</code> + jq pipelines instead of registering dozens of MCP servers as native tool definitions — converts per-request context cost into progressive, grep-driven discovery.</li>
 <li><strong>"MCP for remote, CLI for local"</strong> is a deployment principle: keep local tool calls on CLIs (native Code Mode, no transport needed), reserve MCP for remote services where a standard transport and credential injection actually matter.</li>
 </ul>
-<h2 id="decision-framework">Decision framework</h2>
+</div></details><h2 id="decision-framework">Decision framework</h2>
 <ul>
 <li><strong>Use MCP when:</strong> the service is remote; you need a standard transport; authentication and credential injection matter (OAuth in the OS keychain, per-profile, never in context).</li>
 <li><strong>Use a CLI when:</strong> the tool is local; the agent already knows the shell natively; you want Code Mode for free (grep, <code>--help</code>, pipes) with zero transport overhead.</li>
@@ -104,14 +104,14 @@
 <li><strong>Use async tasks for long tools</strong>: <code>tools-call &lt;tool&gt; --task</code> (falls back to sync if the server lacks tasks support) or <code>--detach</code> for a task ID with zero silent fallback; <code>tasks-result</code> blocks until done while the agent does local work.</li>
 <li><strong>Benchmark your connectors</strong>: hold the agent constant and compare CLI vs raw MCP vs mcpc on time and token cost per task — pick the connector per server on measured cost, not vibes. Contribute results back to Connector Evals.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>YouTube description/chapters (speaker's outline — the three fixes, CLI-vs-MCP split, mcpc demo, Connector Evals): https://www.youtube.com/watch?v=pAnLpiAG6Es</li>
 <li>BigGo AI talk summary: https://finance.biggo.com/podcast/ec71d05c7d54d1cc</li>
 <li>Official mcpc SKILL.md (commands, sessions, grep discovery, schema pinning, tasks, proxy, skills): https://github.com/apify/mcp-cli/blob/HEAD/skills/mcpc/SKILL.md</li>
 <li>mcpc repo (mirrors): https://github.com/opklaar/mcpc</li>
 <li>Partial auto-transcript chunks via NoteGPT (opening through ~07:20)</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

@@ -2,20 +2,20 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "How We Built an Agent That Improves Itself" — Zubin Aysola, Weights & Biases · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-how-we-built-an-agent-that-improves-itself-zubin-aysola-weights-biases">Talk Notes: "How We Built an Agent That Improves Itself" — Zubin Aysola, Weights &amp; Biases</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
+    P[Production traces in Weave] --> T[Convert to offline eval tasks]
+    T --> H[Hill climb on misses and wins]
+    H --> C[Candidate agent variants]
+    C --> N[Nightly CI prod versus candidates]
+    N --> D[Deploy the winner]
+    D --> P</pre></div><h1 id="talk-notes-how-we-built-an-agent-that-improves-itself-zubin-aysola-weights-biases">Talk Notes: "How We Built an Agent That Improves Itself" — Zubin Aysola, Weights &amp; Biases</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=XyV6bSMyq-I">How We Built an Agent That Improves Itself — Zubin Aysola, Weights &amp; Biases</a> · AI Engineer channel · Sep 26, 2026 · 17:05 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
 <h2 id="thesis">Thesis</h2>
 <p>W&amp;B's ARIA agent improves itself through a <strong>production↔offline eval flywheel</strong> built on Weave: production traces are logged in the exact same format as offline traces, so every production miss (or win) becomes an offline eval task (886 YAML tasks); a bit-wise identical agent runs in production and in a simulation environment; nightly CI compares prod vs candidate variants; and ARIA itself reviews traces, authors tasks, and proposes prompt/skill variants — "replication from production to simulation to agent-defined improvement." The governing worry: benchmarks, evals, agents, and configs are all covariant, so measurement must be identical across prod and offline.</p>
 <h2 id="the-mental-model">The mental model</h2>
 <p>A production-to-offline flywheel where every production trace becomes an eval task, and a simulation pipeline that keeps research and production agents bit-wise identical.</p>
-<pre class="mermaid">flowchart TD
-    P[Production traces in Weave] --> T[Convert to offline eval tasks]
-    T --> H[Hill climb on misses and wins]
-    H --> C[Candidate agent variants]
-    C --> N[Nightly CI prod versus candidates]
-    N --> D[Deploy the winner]
-    D --> P</pre>
+
 <pre class="mermaid">flowchart LR
     A[YAML config] --> B[Hydrate live data]
     B --> C[Set up expensive env]
@@ -23,7 +23,7 @@
     D --> E[Run bitwise identical agent]
     E --> F[Score normative and relative]
     F --> G[Tear down]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>ARIA:</strong> W&amp;B's agent harness for doing research inside the W&amp;B platform; went GA the Monday before the talk (~Sep 21, 2026). Companion talk by peer Tim Sweeney (see ai-research-agent-experiments.md).</li>
 <li><strong>Core problem</strong> ("what I go to bed thinking about"): benchmarks, evaluations, agents, and configs are all covariant — principled evaluation of a changing system demands identical measurement in production and offline (the sim-to-real gap).</li>
@@ -42,26 +42,26 @@
 <li><strong>Demo payoff:</strong> ARIA turned a real agent trace into a WBAF (W&amp;B Agent Factory) regression task, diagnosed the root cause — <code>weave.log</code> SDK call not invoked properly in the sandbox — replicated the trace, ran agent variants, and the winning candidate got a tight prompt injected into the system prompt/skills fixing that exact SDK error. Prod vs candidate compared in Weave.</li>
 <li><strong>Human stays in the loop:</strong> "I haven't written a line of code in maybe eight months because I just tell Claude to write all my code" — but that doesn't remove the thinking about how to improve; time goes to guardrails and making the system reinforce itself better. Also demoed: ARIA training ML models on H200s on CoreWeave infra and autoresearch on Karpathy's nanochat.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"Benchmarks, evaluations, the agents, and how you configure them are all covariant."</li>
 <li>"For a while the CI broke, we had ARIA fix itself last night."</li>
 <li>"I haven't written a line of code in maybe eight months because I just tell Claude to write all my code for me."</li>
 <li>886 tasks; ~66% on some tasks; 7 weeks of nightly CI traces; 4-hour prod→research sync.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>Offline sim envs are "relatively expensive" (full training logs, simulated GPU execution), so they're parallelized and torn down after scoring.</li>
 <li>YAML-defined configs make it cheap to spin up many parallel agent variants — "better to run more experiments than fewer."</li>
 <li>The automated trace→task→hill-climb flywheel replaces manual offline-benchmark authoring.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>The core pattern — production traces → YAML eval tasks → nightly candidate comparison — is implementable locally: tasks are just files (start state + user config + end state), and the "CI" is a script.</li>
 <li>Keep research and production agent code identical with a sync step; otherwise your offline improvements silently diverge from what's deployed.</li>
 <li>Generating a large volume of traces and deciding what to do with them later (emergent-property measurement, self-review) is cheap relative to hand-authoring evals — volume is the strategy.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Pick one Copilot or agent workflow and start logging its traces in a fixed schema — every production miss becomes an eval task next week.</li>
 <li>Author 10-20 YAML eval tasks (start state + user config + end state) from recent traces, and run them as a nightly script comparing the current agent against one candidate variant.</li>
@@ -69,11 +69,11 @@
 <li>Put the agent on self-review duty: have it review its own rollouts, propose prompt or skill fixes, and let humans approve before they ship.</li>
 <li>Parallelize expensive simulation setups and tear them down after scoring — pay for the run, not the idle environment.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>Video page: https://www.youtube.com/watch?v=XyV6bSMyq-I</li>
 <li>Full transcript: https://www.usetranscribe.io/yt/XyV6bSMyq-I/arya-agent-self</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

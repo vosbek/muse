@@ -2,21 +2,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Why AI Didn't Actually Make You Ship Faster" — Gabriel Spencer-Harper, Meticulous · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-why-ai-didnt-actually-make-you-ship-faster-gabriel-spencer-harper-meticulous">Talk Notes: "Why AI Didn't Actually Make You Ship Faster" — Gabriel Spencer-Harper, Meticulous</h1>
-<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=HLTa7Vcs4X0">Why AI Didn't Actually Make You Ship Faster — Gabriel Spencer-Harper, Meticulous</a> · AI Engineer channel · Oct 2, 2026 · 11:14 · Recorded at AI Engineer World's Fair 2026</p>
-<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript.</p>
-<h2 id="thesis">Thesis</h2>
-<p>AI writes code faster than humans can review it, so verification — not generation — is now the bottleneck. Assertion-based tests cannot exhaustively define correct behavior up front; Meticulous inverts the model: record real user workflows → replay them on CI → screenshot every atomic moment → diff before/after → human or agent judges expected vs unexpected. "If you have exhaustive verification, then you can ship code at the speed that your agents write it."</p>
-<h2 id="the-mental-model">The mental model</h2>
-<p>The record-to-verdict pipeline on every PR:</p>
-<pre class="mermaid">flowchart LR
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart LR
     A[Inject JS on non prod] --> B[Record thousands of flows]
     B --> C[PR opened]
     C --> D[CI spins app on localhost]
     D --> E[Replay events one by one]
     E --> F[Screenshot every atomic moment]
     F --> G[Diff before and after]
-    G --> H[PR comment in minutes]</pre>
+    G --> H[PR comment in minutes]</pre></div><h1 id="talk-notes-why-ai-didnt-actually-make-you-ship-faster-gabriel-spencer-harper-meticulous">Talk Notes: "Why AI Didn't Actually Make You Ship Faster" — Gabriel Spencer-Harper, Meticulous</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=HLTa7Vcs4X0">Why AI Didn't Actually Make You Ship Faster — Gabriel Spencer-Harper, Meticulous</a> · AI Engineer channel · Oct 2, 2026 · 11:14 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary and vendor docs — treat biggo-derived points as secondary, not verbatim transcript.</p>
+<h2 id="thesis">Thesis</h2>
+<p>AI writes code faster than humans can review it, so verification — not generation — is now the bottleneck. Assertion-based tests cannot exhaustively define correct behavior up front; Meticulous inverts the model: record real user workflows → replay them on CI → screenshot every atomic moment → diff before/after → human or agent judges expected vs unexpected. "If you have exhaustive verification, then you can ship code at the speed that your agents write it."</p>
+<h2 id="the-mental-model">The mental model</h2>
+<p>The record-to-verdict pipeline on every PR:</p>
+
 <p>The interdependent stack — each layer depends on the one below:</p>
 <pre class="mermaid">flowchart TB
     D[Exhaustive verification] --> C[Coverage algorithm]
@@ -27,7 +27,7 @@
     A[Assertion based tests] --> B[Judgment encoded up front]
     C[Record replay with diffs] --> D[Judgment moved to review time]
     D --> E[Human or agent reviews the delta]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Three consequences of the verification gap:</strong> (1) bugs/regressions with business impact; (2) orgs spending double-digit percentages of time maintaining e2e suites — manual validation, review, flake debugging, test updates; (3) foregone capability (could bump all dependencies, do sweeping refactors, but don't dare).</li>
 <li><strong>Framing question:</strong> if an engineer AI-generated a PR, would you merge without checking feature flags, roles, permissions, settings, configs, edge cases? Most orgs answer no.</li>
@@ -41,24 +41,24 @@
 <li><strong>Interdependent stack:</strong> exhaustive verification ← coverage algorithm ← per-moment screenshots ← root-level flake elimination.</li>
 <li><strong>Adoption:</strong> entire engineering orgs at Discord, Wiz, Dropbox, Notion, ElevenLabs, LaunchDarkly. Daily use by anyone touching front-end; zero developer effort.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"If you have exhaustive verification, then you can ship code at the speed that your agents write it. If you don't, then someone somewhere at your organization is spending time verifying code, and that is now your new bottleneck."</li>
 <li>"Code-covered is not the same as code-tested, but with Meticulous, it actually is approximately the same."</li>
 <li>"AI writes code faster than humans can review it. And review and verification is now the new bottleneck."</li>
 <li><strong>Stat:</strong> orgs spend double-digit percentages of eng time maintaining e2e suites; tens to hundreds of millions of screenshots; 412-step flow, single-pixel diff flagged.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>Horizontal parallelization → verification results in minutes; orders-of-magnitude fewer flakes = less rerun/maintenance waste.</li>
 <li>Attacks the double-digit-percentage eng-time tax of e2e suite maintenance; zero developer effort to adopt.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>The core insight is harness-shaped: record-replay with network stubbing gives 1,000 identical runs and per-test isolation — a local deterministic replay rig removes both flakes and the cloud CI queue for front-end verification.</li>
 <li>Diff-at-review-time (judgment moved to review) maps to agent workflows: agents generate, cheap diffs surface, humans judge only the delta.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Inject the recording snippet on non-prod environments this week and capture the real flows users already run — thousands of flows, zero developer effort.</li>
 <li>Build the replay side in CI: spin the app locally, dispatch recorded events one by one, screenshot every atomic moment, diff against main, post the delta as a PR comment within minutes.</li>
@@ -67,11 +67,11 @@
 <li>Add coverage-maximizing subset selection over recorded workflows so code-covered becomes code-tested, then prune the assertion suites it replaces.</li>
 <li>Track the KPI that matters: share of eng time spent maintaining e2e suites and reviewing — drive it down as verification gets exhaustive.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>biggo AI summary: https://finance.biggo.com/podcast/55a2eff08aedad5a</li>
 <li>Video description: https://www.youtube.com/watch?v=HLTa7Vcs4X0</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

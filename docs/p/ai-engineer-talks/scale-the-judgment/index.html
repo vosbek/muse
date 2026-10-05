@@ -2,14 +2,14 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Scale the Judgment, Not the Model" — Andrew Orobator, Reddit · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-scale-the-judgment-not-the-model-andrew-orobator-reddit">Talk Notes: "Scale the Judgment, Not the Model" — Andrew Orobator, Reddit</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
+    V1[Builds and tests] --> V2[Screenshot tests with model reasoning] --> V3[Video of feature running] --> V4[Telemetry in production] --> V5[Human merges]</pre></div><h1 id="talk-notes-scale-the-judgment-not-the-model-andrew-orobator-reddit">Talk Notes: "Scale the Judgment, Not the Model" — Andrew Orobator, Reddit</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=6MudaeKdBSk">Scale the Judgment, Not the Model — Andrew Orobator, Reddit</a> · AI Engineer channel · Sep 27, 2026 · 19:32 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); Andrew Orobator's "Vibe Engineering" Medium series (Parts 7 and 10, co-written with Claude Opus 4.6) supplies the full case-study numbers, kill criteria, verification-gate table, and the fleet architecture — cited inline. Direct quotes are the speaker's words per the transcript or his writing.</p>
 <h2 id="thesis">Thesis</h2>
 <p>The bottleneck for scaling coding agents isn't model quality — it's institutional judgment. Agents boot with blank context windows and no memory; everything humans absorb implicitly (mentorship, code review, the 3 a.m. incident) must be made explicit. We're now "harness engineers": the job is encoding judgment (skills, work logs, personas), verifying it (a verification ladder), and managing its decay — "scale the judgment, not the model."</p>
 <h2 id="the-mental-model">The mental model</h2>
-<pre class="mermaid">flowchart TD
-    V1[Builds and tests] --> V2[Screenshot tests with model reasoning] --> V3[Video of feature running] --> V4[Telemetry in production] --> V5[Human merges]</pre>
+
 <pre class="mermaid">flowchart TD
     SC[Scars - postmortems and reviewer questions] --> SK[Skills - judgment made executable]
     WL[Work logs - plan, decisions, attempts] --> MEM[Memory keeps itself]
@@ -19,7 +19,7 @@
     JR --> BT[Agent bedtime - scheduled self audit]
     PM --> SH[System wakes up sharper]
     BT --> SH</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Hook.</strong> An engineer at another company ran a recurring "war room" every two weeks just to delete dead experiments — "burning political capital to make maintenance happen by hand." At Reddit, a developer spent an entire hackathon week fixing lint violations, and a staff engineer hand-deleted unused imports module by module. "This is the work that eats senior engineers. It is deterministic, verifiable, and soul-crushing."</li>
 <li><strong>The debt numbers (from his writing):</strong> Martin Fowler calls feature flags "inventory that comes with a carrying cost." Stripe's Developer Coefficient: ~17 hours/week/developer on maintenance and tech debt. McKinsey: tech debt is 20–40% of the entire technology estate's value. Knight Capital wired <strong>$440M into a smoking crater in 45 minutes in 2012</strong> because a repurposed flag reactivated dormant code on deploy. Reddit's Android codebase: <strong>571 stale flags, 91 over twelve months old</strong> — "That's not a hygiene problem. That's a workflow problem."</li>
@@ -41,7 +41,7 @@
 <li><strong>Encoded judgment rots.</strong> "A skill written for last month's architecture isn't out of date. It's wrong. And that's worse than nothing because the agents trust it." Two cures: postmortems folded back into skills ("Failure becomes a constraint"; his series: "Feedback loops let its skills improve. Every reverted PR should update a skill, not just a human's hunch.") and an agent "bedtime" — a scheduled pass where it reads its own skills, finds stale ones and contradictions, and opens drafts for review ("The system sleeps, cleans house, and wakes up sharper"). A self-driving codebase "keeps its own judgment current in addition to writing code."</li>
 <li><strong>Close.</strong> "Every session, the model wakes up like Drew Barrymore in 50 First Dates. Brilliant, and no memory of yesterday." "We don't ship PRs that pass CI because the model is a genius. They pass because we built a harness that won't let it be wrong." Call to action: find the judgment your team always asks the same person about and make it explicit where an agent can reach it. His closing line for the series: "Pick one chore you hate. Write the skill. Gate it. Rate-limit it. Give it a kill switch. Schedule it. Then close your laptop."</li>
 </ul>
-<h2 id="by-the-numbers">By the numbers</h2>
+</div></details><details class="sec"><summary>By the numbers</summary><div class="sec-body">
 <ul>
 <li><strong>571</strong> — stale flags in Reddit's Android codebase; <strong>91</strong> over twelve months old ("not a hygiene problem — a workflow problem")</li>
 <li><strong>7/7</strong> — Phase 1 cleanups: PRs green on CI, correct code path kept, 0 adjacent flags touched (5 kill switches, 1 flag, 1 four-variant experiment)</li>
@@ -53,26 +53,26 @@
 <li><strong>~17 hrs/week/dev</strong> — Stripe's maintenance-drag estimate; <strong>20–40%</strong> — McKinsey's tech-debt share of tech-estate value</li>
 <li><strong>1986</strong> — Minsky's K-line ("the configuration of mind that solved a problem, reused on the next one")</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"Documentation preserves facts while skills preserve judgment."</li>
 <li>"$1.26 a pull request... runs for under $700 [a year]... at least $26,000 [by hand]."</li>
 <li>"The pit of success assumes people take the easy path. Agents do not. They will build ladders to climb out of the pit of success."</li>
 <li>7/7 PRs with green CI on the back-tested flag agent; some flags 3–4+ years old</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li><strong>$1.26/PR unit economics.</strong> The flag agent is the talk's proof that encoded judgment + cheap-model execution beats raw frontier muscle: ~520 flags/year under $700 vs. $26,000+ manual — a ~37× cost ratio.</li>
 <li><strong>The verification ladder as an autonomy-earning mechanism.</strong> "The more rungs you can run without a human, the more you can hand off" — eval-driven iteration ("generate, test, fail, regenerate"; video recordings as proof) converts human review time into automated gate time.</li>
 <li><strong>Skill-rot management is eval-driven maintenance of the harness itself.</strong> Postmortems folded into skills and scheduled agent self-audits ("bedtime") keep the judgment layer accurate — a stale skill is worse than no skill because agents trust it.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>The flag agent runs daily on his laptop — the whole fleet pattern (small specialists, cron/event triggers, human approval at merge) is designed for cheap local/offline execution, not cloud-only infrastructure.</li>
 <li>Work logs as persistent local state (git-hook-enforced) are a local-first memory pattern: no external memory service needed for session continuity.</li>
 <li>OS-level gates (after repo hooks proved bypassable) are the right containment layer for locally-running agents with file-system access.</li>
 </ul>
-<h2 id="decision-framework">Decision framework</h2>
+</div></details><h2 id="decision-framework">Decision framework</h2>
 <ul>
 <li><strong>Automate when:</strong> the work is deterministic and verifiable (flag cleanup, lint, dependency bumps, dead code); you can name the verification gate <em>before</em> building the agent; kill criteria are written down in advance.</li>
 <li><strong>Don't automate (yet):</strong> ambiguous feature work — that stays in-the-loop with human plan approval; anything you can't verify ("If you can verify it, you can automate it. If you can't, you can't."); any queue where "review required" would collapse under volume — the rate limit is a trust budget, not a throughput knob.</li>
@@ -100,13 +100,13 @@
 <li><strong>Schedule skill bedtime</strong>: run a regular pass where an agent reads its own skills, finds stale ones and contradictions, and opens drafts for human review. Every reverted PR should update a skill, not just a human's hunch.</li>
 <li><strong>Pilot one specialist fleet agent</strong>: copy the flag-cleanup playbook — score like a reviewer, back-test against history (his: 7/7 green), run on a schedule, track dollars per PR (his: $1.26) and avg runtime (his: ~14 min).</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>Video: https://www.youtube.com/watch?v=6MudaeKdBSk</li>
 <li>Video description with chapter timestamps (speaker's outline — verification ladder, $1.26/PR case study, pit-of-success warning): https://www.youtube.com/watch?v=6MudaeKdBSk</li>
 <li>"Vibe Engineering" Part 10 — the full Flag Lifecycle Agent case study (Phase 1 numbers, kill criteria, gate table, fleet architecture): https://medium.com/@andreworobator/vibe-engineering-from-random-code-to-deterministic-systems-part-10-8f96141285e1</li>
 <li>"Vibe Engineering" Part 7 — domain-based CODEOWNERS for skills: https://medium.com/@andreworobator/vibe-engineering-from-random-code-to-deterministic-systems-4f7263b77db4</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

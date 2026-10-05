@@ -2,16 +2,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "The State of AI in Software Development: Data from 400+ Orgs" — Justin Reock, DX · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-the-state-of-ai-in-software-development-data-from-400-orgs-justin-reock-dx">Talk Notes: "The State of AI in Software Development: Data from 400+ Orgs" — Justin Reock, DX</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart LR
+    U[Utilization DAU WAU and use cases] --> I[Impact which business metrics move]
+    I --> C[Cost token spend per use case]</pre></div><h1 id="talk-notes-the-state-of-ai-in-software-development-data-from-400-orgs-justin-reock-dx">Talk Notes: "The State of AI in Software Development: Data from 400+ Orgs" — Justin Reock, DX</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=Se8jHLliLXE">The State of AI in Software Development: Data from 400+ Orgs — Justin Reock, DX</a> · AI Engineer channel · Sep 30, 2026 · 19:09 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary — treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.</p>
 <h2 id="thesis">Thesis</h2>
 <p>DX's platform telemetry (<strong>~200,000 engineers, 400+ organizations</strong>; the team behind DORA/SPACE/DevEx) shows AI is genuinely lifting raw velocity but modestly and unevenly — median <strong>+7.7% PR throughput</strong>, +4.5% perceived delivery, <strong>nobody near 2x</strong> — while quality signals turn volatile and developer confidence diverges from maintainability. Code generation is only <strong>14–16% of the value stream</strong>, so it was never the bottleneck; durable value comes from treating AI as a throughput/capacity story (not headcount replacement) and investing in platform readiness.</p>
 <h2 id="the-mental-model">The mental model</h2>
 <p>The three-dimension measurement framework:</p>
-<pre class="mermaid">flowchart LR
-    U[Utilization DAU WAU and use cases] --> I[Impact which business metrics move]
-    I --> C[Cost token spend per use case]</pre>
+
 <p>The velocity/quality split:</p>
 <pre class="mermaid">flowchart TD
     subgraph Vel[Velocity up]
@@ -25,7 +25,7 @@
 <pre class="mermaid">flowchart LR
     A[Code gen is 14 to 16 percent of value stream] --> B[Code gen was never the bottleneck]
     B --> C[Attack non AI drag first]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Deployment frequency (DORA) is up but tapering.</strong> North America trends up while Europe pulled back slightly last quarter (attributed to work practices, token-spend budgeting, regulation). Caveat: the metric covers only PR-creation-to-production and ignores reverts and defect ratios.</li>
 <li><strong>Perceived rate of delivery rose only ~4.5% over a full year</strong> — modest against total AI spend. Contrast with the METR study from February (16 engineers; Reock calls it "infamous" and "flawed," noting the authors' follow-up): actual productivity <strong>−19%</strong> while perceived rose <strong>+20%</strong>, a ~40-point spread; at DX's aggregate scale perception stays flat.</li>
@@ -44,13 +44,13 @@
 <li><strong>FAIR</strong> — ~3,000 automated code reviews/week, superficial issues, humans in loop, PR comments as system of record.</li>
 <li><strong>Spotify</strong> — SRE agent assembling runbook remediation + incident context into comms channels, killing minutes of discovery.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>Median +7.7% PR throughput (Nov 2024–Feb 2025); perceived delivery +4.5%/year; nobody reached 2x.</li>
 <li>"Code generation was never the bottleneck in the first place... you would still only be attacking anywhere from maybe 14% to 16% of the overall value stream."</li>
 <li>"An hour saved on something that isn't the bottleneck is worthless."</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li><strong>Token spend is an explicit third measurement pillar</strong> ("getting expensive"); DX tracks <strong>tokens per use case</strong> via "agent experience" feedback, finding juniors burn more tokens than seniors for equal time saved.</li>
 <li><strong>Platform readiness</strong> (docs, modular code, reliable CI, non-flaky tests) framed as the prerequisite for efficient agent token spend — "good developer experience" renamed.</li>
@@ -60,7 +60,7 @@
 <li><strong>Measure tokens per use case, not just total spend</strong> — the junior/senior split shows the same tooling burns very different tokens depending on operator skill; per-use-case tracking is the cost lever.</li>
 <li><strong>Invest readiness before inference:</strong> clear docs, modular code, reliable local CI, and non-flaky tests reduce the token burn per successful agent task — the cheapest tokens are the ones the agent never has to retry.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Stand up the three-dimension dashboard: utilization (DAU/WAU, use cases) → impact (delivery metrics that move) → cost (token spend per use case). If a tool can't show all three, you can't answer "spent ten million — where's our 10x productivity?"</li>
 <li>Slice token spend by seniority. When juniors burn more tokens per use case than staff-plus engineers, add guardrails — tighter task scopes, smaller diffs — instead of blanket throttles.</li>
@@ -68,11 +68,11 @@
 <li>Run the platform-readiness audit before standing up new agents: clear docs, clean data relations, modular code, reliable local CI, non-flaky tests. Every gap is token burn, because agents retry what flaky infra breaks.</li>
 <li>Fund the throughput story, not headcount math. Frame the AI budget around PR throughput and value per engineer (the Zapier case) and attack the non-AI drag — meetings, context switching, env friction — that Goldratt's rule says is the real bottleneck.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>YouTube description/chapters: https://www.youtube.com/watch?v=Se8jHLliLXE</li>
 <li>BigGo AI talk summary: https://finance.biggo.com/podcast/75a5a1c4b638f4d6</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

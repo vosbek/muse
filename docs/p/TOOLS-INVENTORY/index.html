@@ -4,7 +4,7 @@
 <body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
 <nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><h1 id="tools-capabilities-inventory-instructions-already-in-the-playbook">Tools &amp; Capabilities Inventory — instructions already in the playbook</h1>
 <p>Everything below has a distilled write-up with usage instructions in the repo / on the site. Format per item: <strong>tool — capability</strong>, and where to find the instructions.</p>
-<h2 id="claude-code-agents-26-items">Claude Code &amp; Agents (26 items)</h2>
+<details class="sec"><summary>Claude Code &amp; Agents (26 items)</summary><div class="sec-body">
 <ul>
 <li><strong>Turn Instagram Saves into a Notion content system</strong> — tools: Notion (database + API), Claude Code / Codex · skill: Scheduled intake automation — define a schema, connect the source, sync on a cadence, then run a transform step that converts raw captures into usable output.</li>
 <li><strong>Dynamic workflows: let the agent write its own orchestration</strong> — tools: Claude Code (dynamic workflows), Langfuse (trace observability) · skill: Agent-written orchestration — provide coordination tools, not fixed graphs; always keep trace inspection as the verification step.</li>
@@ -33,7 +33,7 @@
 <li><strong>Hackathon winner's full Claude Code setup: 68 subagents, 286 skills</strong> — tools: Full setup open-sourced (link at permalink) · skill: At scale, the agent setup is a system — study large open setups for subagent/skill organization patterns.</li>
 <li><strong>VS Code Learn: Java, idea to agent-ready (brief)</strong> — tools: aka.ms/VSCode/Learn-Java · skill: Learn tools through their agent workflows; that's where vendors now put the leverage.</li>
 </ul>
-<h2 id="jevons-context-economics-37-items">Jevons / Context Economics (37 items)</h2>
+</div></details><details class="sec"><summary>Jevons / Context Economics (37 items)</summary><div class="sec-body">
 <ul>
 <li><strong>jevgrep: cut coding-agent cost ~30% with better file retrieval</strong> — tools: <a href="https://github.com/dshng/jevgrep">dshng/jevgrep</a> (npm: <code>@dshng/jevgrep</code>) · skill: Retrieval-first cost control — instrument $/task, then optimize the finding step (targeted search returning exact lines) before upgrading models.</li>
 <li><strong>Jev: choose MCP tools without polluting the main context</strong> — tools: MCP servers (pattern-level; no single repo) · skill: Decision-model isolation — route every selection problem (tools, models, next actions) through a small model in its own context; inject only outcomes into the main session.</li>
@@ -73,7 +73,7 @@
 <li><strong>GitHub: "Using more tokens doesn't always mean better results"</strong> — tools: github.blog (How we make AI coding more cost efficient without sacrificing task quality) · skill: Define efficiency as context-sufficiency per dollar; use GitHub's published framing to anchor the enterprise tokenomics program.</li>
 <li><strong>Claude Platform: cutting cost without cutting quality</strong> — tools: Claude Platform docs (article link at permalink) · skill: The big three cost levers — prompt caching, instruction hygiene, effort routing — applied systematically.</li>
 </ul>
-<h2 id="agent-memory-18-items">Agent Memory (18 items)</h2>
+</div></details><details class="sec"><summary>Agent Memory (18 items)</summary><div class="sec-body">
 <ul>
 <li><strong>A real agentic coding graph: Project Four</strong> — tools: Private GitHub repo (planned community release); Codex, Claude Code, OpenCode CLIs · skill: Cross-harness memory — centralize transcripts from every agent tool into one searchable local store; verify agent-built systems with headless production runs.</li>
 <li><strong>Long-term memory in three skills: /memory, /recall, /rem sleep</strong> — tools: Claude Code (skills) · skill: Memory as three subsystems — hierarchical storage, background consolidation, background retrieval; never let bookkeeping touch the main thread.</li>
@@ -94,7 +94,7 @@
 <li><strong>Tobi open-sources self-improving-loop infra (tangleml)</strong> — tools: tangleml.com · skill: Adopt self-improving-loop infrastructure; systems that don't learn from operation pay a permanent tax.</li>
 <li><strong>The 1% of AI engineers build self-improving systems (×2)</strong> — tools: None. · skill: Build the feedback loop, not just the agent; self-improvement is the senior skill.</li>
 </ul>
-<h2 id="automation-7-items">Automation (7 items)</h2>
+</div></details><details class="sec"><summary>Automation (7 items)</summary><div class="sec-body">
 <ul>
 <li><strong>Power Automate: the daily email recap flow</strong> — tools: Microsoft Power Automate (make.powerautomate.com), Outlook · skill: Deterministic-first triage — use scheduled flows with keyword rules for routine sorting; escalate only the ambiguous cases to AI.</li>
 <li><strong>MarkItDown + Obsidian: make your files usable for agents first</strong> — tools: <a href="https://github.com/microsoft/markitdown">microsoft/markitdown</a>, Obsidian (obsidian.md) · skill: Ingest-then-reason — convert all source material to clean markdown before any agent touches it; treat input hygiene as a cost control.</li>
@@ -104,11 +104,11 @@
 <li><strong>Second batch (Aug 24 – Sep 12)</strong></li>
 <li><strong>A PR review agent that survived production at a PE-backed client</strong> — tools: None linked in post text. · skill: Ship PR review as the first production agent: bounded, high-volume, human keeps merge authority.</li>
 </ul>
-<h2 id="prompts-evals-1-items">Prompts &amp; Evals (1 items)</h2>
+</div></details><details class="sec"><summary>Prompts &amp; Evals (1 items)</summary><div class="sec-body">
 <ul>
 <li><strong>How to run experiments on prompts when output quality is critical</strong> — tools: None (methodology) · skill: Rule-ROI testing — for each prompt rule, run repeated trials, measure aggregate quality and latency, keep only rules that prove their worth; default to fewer, deterministic rules.</li>
 </ul>
-<h2 id="design-vibe-coding-12-items">Design &amp; Vibe Coding (12 items)</h2>
+</div></details><details class="sec"><summary>Design &amp; Vibe Coding (12 items)</summary><div class="sec-body">
 <ul>
 <li><strong>Free interface starter skins for AI-built UIs</strong> — tools: Free starter-skins repo (via @kem_glitch), Claude Code · skill: Reference-first UI — start every AI-built interface from a concrete skin or reference, not from a blank prompt.</li>
 <li><strong>Four JS animation libraries for modern sites</strong> — tools: GSAP (gsap.com), Anime.js (animejs.com), Motion.dev (motion.dev), React Spring (react-spring.dev) · skill: Motion taxonomy — map each animation need to its purpose-built library; encode the mapping in your design skill.</li>
@@ -123,7 +123,7 @@
 <li><strong>Second batch (Aug 24 – Sep 12)</strong></li>
 <li><strong>Generative UI goes 3D: Blender MCP + Astra + Tripo</strong> — tools: Blender MCP, Astra, Tripo (3D generation) · skill: Route generative UI through professional tools via MCP; the output ceiling follows the tool, not the model.</li>
 </ul>
-<h2 id="ai-news-14-items">AI News (14 items)</h2>
+</div></details><details class="sec"><summary>AI News (14 items)</summary><div class="sec-body">
 <ul>
 <li><strong>Opus 4.5 is amazing — Claude Code is the problem</strong> — tools: Qwen-Agents / Qwen Code 3.0 (open source, Qwen), Claude Code, Opus 4.5 (Anthropic) · skill: Stack-separated evaluation — benchmark model vs. harness independently on your real tasks; re-test open alternatives regularly.</li>
 <li><strong>Gemini grounding with Google Maps: 250M real-world locations</strong> — tools: Gemini app (Google), Google Maps Platform · skill: Data-moat evaluation — when choosing platforms, score proprietary live-data access as heavily as model benchmarks.</li>
@@ -140,7 +140,7 @@
 <li><strong>"Hydrafusion is here!" (brief)</strong> — tools: None. · skill: None — pointer.</li>
 <li><strong>"I've got some bad news…" (brief)</strong> — tools: None. · skill: None — stub.</li>
 </ul>
-<h2 id="tools-apis-11-items">Tools &amp; APIs (11 items)</h2>
+</div></details><details class="sec"><summary>Tools &amp; APIs (11 items)</summary><div class="sec-body">
 <ul>
 <li><strong>public-apis: free APIs for everything</strong> — tools: <a href="https://github.com/public-apis/public-apis">public-apis/public-apis</a> · skill: API-first data sourcing — check the free directory before building scrapers or buying tiers.</li>
 <li><strong>Three voice AI apps that beat typing</strong> — tools: WhisperFlow, SuperWhisper, Voice Inc (open source) · skill: Voice-first capture — dictate-then-polish for anything long-form; default to local processing where privacy matters.</li>
@@ -154,7 +154,7 @@
 <li><strong>Every PR ships with an interactive walkthrough — open-sourced</strong> — tools: github.com/coldteadotai/pr-walkthrough · skill: Make interactive PR walkthroughs the team standard; generate them with agents.</li>
 <li><strong>The agentic setup that ships faster than 99% of devs (brief)</strong> — tools: None linked in post text. · skill: Invest in the setup; velocity compounds from the harness.</li>
 </ul>
-<h2 id="learn-ai-11-items">Learn AI (11 items)</h2>
+</div></details><details class="sec"><summary>Learn AI (11 items)</summary><div class="sec-body">
 <ul>
 <li><strong>Build a Second Brain on graph fundamentals</strong> — tools: Obsidian (graph view), markdown; Clief Notes community (link in bio) · skill: Graph-first knowledge design — model your domain as nodes (nouns) and edges (verbs) in markdown before involving any AI.</li>
 <li><strong>Eight AI projects that teach more than college</strong> — tools: ChatGPT (custom GPTs), Lovable.dev (lovable.dev), Bolt.new (bolt.new) · skill: Project-based onboarding — learn AI tooling by shipping eight increasingly-integrated builds, not by watching tutorials.</li>
@@ -168,7 +168,7 @@
 <li><strong>"Software Factories" — the emerging-architecture article</strong> — tools: None linked in post text. · skill: Track the software-factory category as it consolidates; reference architectures are emerging now.</li>
 <li><strong>Running a Software Factory Efficiently at Uber Scale</strong> — tools: None linked in post text. · skill: Map Uber's factory phases to your rollout; treat their efficiency work as the peer benchmark.</li>
 </ul>
-<h2 id="ai-engineer-talk-notes-37">AI Engineer talk notes (37)</h2>
+</div></details><details class="sec"><summary>AI Engineer talk notes (37)</summary><div class="sec-body">
 <ul>
 <li><strong>Talk Notes: "Lessons from Generating 12 Trillion Synthetic Tokens" — Bogdan Gaza, DatologyAI</strong> — <code>ai-engineer-talks/12-trillion-synthetic-tokens.md</code></li>
 <li><strong>Talk Notes: "How We Built an Agent That Improves Itself" — Zubin Aysola, Weights &amp; Biases</strong> — <code>ai-engineer-talks/agent-that-improves-itself.md</code></li>
@@ -208,7 +208,7 @@
 <li><strong>Talk Notes: "Why AI Didn't Actually Make You Ship Faster" — Gabriel Spencer-Harper, Meticulous</strong> — <code>ai-engineer-talks/why-ai-didnt-ship-faster.md</code></li>
 <li><strong>Talk Notes: "YOLO Mode, Safely: MicroVM Sandboxes for Any Agent" — Rowan Christmas, Docker</strong> — <code>ai-engineer-talks/yolo-mode-microvm-sandboxes.md</code></li>
 </ul>
-<h2 id="deep-dives-12">Deep dives (12)</h2>
+</div></details><details class="sec"><summary>Deep dives (12)</summary><div class="sec-body">
 <ul>
 <li><strong>Anthropic: Reducing cost and improving performance with Claude Platform</strong> — <code>deep-dives/claude-cost-optimization.md</code></li>
 <li><strong>Deep Dive: "Dashboards Are Dead" — Sarah Simionescu, Composio</strong> — <code>deep-dives/dashboards-are-dead.md</code></li>
@@ -223,13 +223,15 @@
 <li><strong>Uber: Running a Software Factory Efficiently at Uber Scale</strong> — <code>deep-dives/uber-software-factory.md</code></li>
 <li><strong>Unreal Agent — async-first agent harness</strong> — <code>deep-dives/unreal-agent.md</code></li>
 </ul>
-<h2 id="cross-cutting">Cross-cutting</h2>
+</div></details><details class="sec"><summary>Cross-cutting</summary><div class="sec-body">
 <ul>
 <li><strong>COMBINED.md</strong> — recurring patterns across all reels + highest-leverage moves for tokenomics/context-management</li>
 <li><strong>tokenomics-playbook.md</strong> — 5 ranked cost levers + open-source toolstack + Copilot billing reality + local CLI complements</li>
 <li><strong>setups/</strong> — reusable project setups</li>
 <li><strong>templates/</strong> — skill-card, skill-compare, project-setup templates</li>
 </ul>
-<p><em>Total indexed: 137 distilled items + 37 talk notes + 12 deep dives + patterns + playbooks.</em></p></article></div>
+<p><em>Total indexed: 137 distilled items + 37 talk notes + 12 deep dives + patterns + playbooks.</em></p></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../";</script><script src="../../assets/search.js"></script></body></html>
+<script>var ROOT="../../";</script><script src="../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

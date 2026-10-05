@@ -10,7 +10,7 @@
 <li><strong>Compare</strong> — When multiple creators teach the same skill, compare them and keep only what actually works. Duplicates get merged; the collection holds exactly one best version of each skill.</li>
 <li><strong>Stack</strong> — Combine the refined skills into reusable project setups, so every new project starts with the AI already knowing the playbook. Finished setups live in <code>setups/</code>.</li>
 </ol>
-<h2 id="the-collection">The collection</h2>
+<details class="sec"><summary>The collection</summary><div class="sec-body">
 <table>
 <thead>
 <tr>
@@ -88,18 +88,18 @@
 </tbody>
 </table>
 <p>Start with <a href="../COMBINED">COMBINED.md</a> — the cross-cutting patterns across all 131 items (39 reels + 92 X posts), plus what's highest-leverage for a tokenomics + context-management remit.</p>
-<h2 id="how-to-use-it">How to use it</h2>
+</div></details><details class="sec"><summary>How to use it</summary><div class="sec-body">
 <p><strong>Adding a skill (Step 1):</strong> copy <code>templates/skill-card.md</code>, fill it in, file it under the right topic. One skill per file, always with a source link back to the reel.</p>
 <p><strong>Deduplicating (Step 2):</strong> two creators teaching the same thing? Use <code>templates/skill-compare.md</code> to note what each gets right, keep the winner, merge anything worth salvaging, drop the rest.</p>
 <p><strong>Starting a project (Step 3):</strong> copy <code>templates/project-setup.md</code> into <code>setups/</code>, pick the skills the project needs, paste the playbook into your AI tool. The AI starts with the playbook, not a blank slate.</p>
-<h2 id="maintenance">Maintenance</h2>
+</div></details><details class="sec"><summary>Maintenance</summary><div class="sec-body">
 <ul>
 <li>New save → skill card, filed by topic. Two minutes.</li>
 <li>Same skill twice → compare, keep the best, drop the rest.</li>
 <li>New project → stack a setup from proven skills.</li>
 </ul>
 <p>The collection compounds. That's the whole point.</p>
-<h2 id="deep-dives">Deep dives</h2>
+</div></details><details class="sec"><summary>Deep dives</summary><div class="sec-body">
 <p>Ten deep-dive dossiers that go beyond the distilled summaries, built from the actual source material (repo READMEs, vendor engineering blogs, official docs):</p>
 <table>
 <thead>
@@ -155,9 +155,11 @@
 </tr>
 </tbody>
 </table>
-<h2 id="ai-engineer-talks">AI Engineer talks</h2>
+</div></details><details class="sec"><summary>AI Engineer talks</summary><div class="sec-body">
 <p>37 talks from the AI Engineer channel's World's Fair 2026 run (Sep 25 – Oct 3), each distilled into thesis, key points, quotes/data, and a tokenomics angle with local-deploy takeaways. Start with the <a href="../ai-engineer-talks">index</a> — highlights: GEPA's 3-examples-beat-25k-rollouts reflection loop, Kimchi's cost-per-task model routing (2.5x savings), Factory's deferred context engine (50%+ token savings), Qdrant's fully-offline memory demo, and the DX data showing median +7.7% PR throughput with nobody near 2x.</p>
-<h2 id="the-learning-site">The learning site</h2>
-<p>This repo publishes as a static learning site via GitHub Pages (served from <code>docs/</code>, built by <code>site/build.py</code> — run it after adding new entries, then push <code>docs/</code>). Start with the <a href="../tokenomics-playbook">Tokenomics Playbook</a> if you care about what AI-assisted engineering actually costs.</p></article></div>
+</div></details><details class="sec"><summary>The learning site</summary><div class="sec-body">
+<p>This repo publishes as a static learning site via GitHub Pages (served from <code>docs/</code>, built by <code>site/build.py</code> — run it after adding new entries, then push <code>docs/</code>). Start with the <a href="../tokenomics-playbook">Tokenomics Playbook</a> if you care about what AI-assisted engineering actually costs.</p></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../";</script><script src="../../assets/search.js"></script></body></html>
+<script>var ROOT="../../";</script><script src="../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

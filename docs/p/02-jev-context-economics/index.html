@@ -28,7 +28,7 @@
 <li><strong>Extractable skill:</strong> Two-tier model strategy — default narrow work to SLMs; require evidence (not habit) before spending frontier tokens.</li>
 <li><strong>Source:</strong> https://www.instagram.com/reel/DcY6Er0iuwy/</li>
 </ul>
-<h2 id="from-x-bookmarks-sep-2026">From X bookmarks (Sep 2026)</h2>
+<details class="sec"><summary>From X bookmarks (Sep 2026)</summary><div class="sec-body">
 <p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>
 <h3 id="open-source-adapter-that-decouples-your-agent-from-any-single-llm-provider">Open-source adapter that decouples your agent from any single LLM provider</h3>
 <ul>
@@ -305,7 +305,7 @@
 - <strong>What it suggests:</strong> The infographic distills the Sep 2026 "Context Language Models" paper (arXiv:2609.37725): stop treating context as an append-only transcript — mirror it into a file the model can edit directly (rewrite, delete, reorder, compact), synced into the next turn. Four learned behaviors emerge: delete stale results, track live state, rewrite history compactly, and write reusable helper functions for context management. The paper's numbers: +11.4% accuracy with 21.5% fewer FLOPs on BrowseComp-Plus, +5% score with 59% fewer FLOPs on 12-hour EdgeBench-10, and a co-designed Suffix Cache Reuse serving layer (editing breaks prefix caching; SCR reuses the unaffected suffix, −35% server compute vs SGLang). Context management becomes learned model behavior instead of hand-engineered harness rules — and it keeps improving with RL (Qwen3.5-9B: 28.8% → 42.5%).
 - <strong>Repos/tools:</strong> https://github.com/facebookresearch/context-language-models (CC BY-NC 4.0) · paper: https://arxiv.org/html/2609.37725v1
 - <strong>Extractable skill:</strong> Move context management inside the model: give the agent file-edit tools over its own context plus an evolved (not hand-written) skill doc, and pair it with suffix-aware caching on the serving side.
-- <strong>Source:</strong> infographic by @rakeshgohel01 (image above) · paper arXiv:2609.37725</p></article></div>
+- <strong>Source:</strong> infographic by @rakeshgohel01 (image above) · paper arXiv:2609.37725</p></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../";</script><script src="../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

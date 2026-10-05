@@ -2,12 +2,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>GitHub Copilot Storage/Memory Map: What's Local, What's Cloud · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#maps'>Storage & memory maps</a></div><article class='doc'><div class='badge'>Storage & memory maps</div><h1 id="github-copilot-storagememory-map-whats-local-whats-cloud">GitHub Copilot Storage/Memory Map: What's Local, What's Cloud</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#maps'>Storage & memory maps</a></div><article class='doc'><div class='badge'>Storage & memory maps</div><div class="hero-visual"><p><img alt="GitHub Copilot storage/memory map" src="github-copilot-storage-memory-map.png" /></p></div><h1 id="github-copilot-storagememory-map-whats-local-whats-cloud">GitHub Copilot Storage/Memory Map: What's Local, What's Cloud</h1>
 <p><strong>Source:</strong> Companion graphic to the r/ClaudeAI "Claude storage/memory map" post (u/BenSimonDev, Oct 4 2026) — same dark green/amber visual language, applied to GitHub Copilot. Facts verified via web research, Oct 2026.</p>
-<p><img alt="GitHub Copilot storage/memory map" src="github-copilot-storage-memory-map.png" /></p>
+
 <h2 id="thesis">Thesis</h2>
 <p>Copilot's latency-critical work is all client-side — context extraction, ranking, and prompt assembly happen on your disk — but every inference is a cloud call, and retention/training policies differ sharply by plan and surface. The map's punchline: zero-data-retention is real but surface-specific, and content exclusions are not airtight.</p>
-<h2 id="the-map-text-version">The map (text version)</h2>
+<details class="sec"><summary>The map (text version)</summary><div class="sec-body">
 <p><strong>On your disk:</strong>
 - Client-side extraction — prefix/suffix, open tabs, import graph gathered per keystroke
 - Local ranking — Fixed Window Jaccard Matcher, no local neural model
@@ -22,17 +22,19 @@
 - Training: Business/Enterprise = <strong>never</strong>; Free/Pro/Pro+ = <strong>opt-out since Apr 24, 2026</strong>; third-party models contractually barred from training/retention
 - PR code review — diff analyzed on github.com; coding agent — ephemeral GitHub Actions cloud environment</p>
 <p><strong>Either (a setting decides):</strong> Content exclusions — excluded paths filtered locally, <strong>but agent mode can still <code>cat</code> them</strong>, and file names/paths can leak indirectly.</p>
-<h2 id="notable-facts">Notable facts</h2>
+</div></details><details class="sec"><summary>Notable facts</summary><div class="sec-body">
 <ul>
 <li>Zero data retention is surface-specific: IDE completions/chat for Business/Enterprise are discarded; the same org's github.com chat, CLI, and mobile usage falls in the 28-day bucket.</li>
 <li>Since Apr 24, 2026, Free/Pro/Pro+ interaction data is used for model training by default — toggle off at Settings → Copilot.</li>
 <li>Processing happens in Microsoft Azure; EU Data Boundary options exist for Enterprise.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>The most data ever leaves via Chat and the coding agent — for sensitive codebases, prefer inline completions (zero-retention on Business) and local agent-mode edits over cloud chat threads.</li>
 <li>Don't rely on content exclusions as a security boundary for agent mode — they don't cover it.</li>
 <li>Free/Pro users: check the training opt-out toggle; it's off-by-default only for paying business tiers.</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
-<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script></body></html>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

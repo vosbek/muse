@@ -2,13 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Your LLM App Returned 200 OK. It Was Still Wrong." — Marina Petzel, Datadog · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-your-llm-app-returned-200-ok-it-was-still-wrong-marina-petzel-datadog">Talk Notes: "Your LLM App Returned 200 OK. It Was Still Wrong." — Marina Petzel, Datadog</h1>
-<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=rTojoVotlD8">Your LLM App Returned 200 OK. It Was Still Wrong. — Marina Petzel, Datadog</a> · AI Engineer channel · Oct 2, 2026 · 18:00 · Recorded at AI Engineer World's Fair 2026</p>
-<p><strong>Note:</strong> transcript unavailable; distilled from chapter list, description, and tagline. Kept shorter; no specifics invented beyond what's given.</p>
-<h2 id="thesis-from-titletaglinechapters">Thesis (from title/tagline/chapters)</h2>
-<p>Classic "golden signals" (latency, errors, traffic, saturation) tell you your app is up — they don't tell you if it's right. GenAI apps need additional monitoring pillars: cost, safety, and quality.</p>
-<h2 id="the-mental-model">The mental model</h2>
-<pre class="mermaid">flowchart TD
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
     R[HTTP 200 OK] --> G[Golden signals]
     G --> L[Latency]
     G --> E[Errors]
@@ -30,8 +24,14 @@
     SF --> S2[PII]
     SF --> S3[Toxicity]
     SF --> S4[Jailbreaks]
-    QL --> QL1[Five quality metrics]</pre>
-<h2 id="key-points-from-chapter-list">Key points (from chapter list)</h2>
+    QL --> QL1[Five quality metrics]</pre></div><h1 id="talk-notes-your-llm-app-returned-200-ok-it-was-still-wrong-marina-petzel-datadog">Talk Notes: "Your LLM App Returned 200 OK. It Was Still Wrong." — Marina Petzel, Datadog</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=rTojoVotlD8">Your LLM App Returned 200 OK. It Was Still Wrong. — Marina Petzel, Datadog</a> · AI Engineer channel · Oct 2, 2026 · 18:00 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> transcript unavailable; distilled from chapter list, description, and tagline. Kept shorter; no specifics invented beyond what's given.</p>
+<details class="sec"><summary>Thesis (from title/tagline/chapters)</summary><div class="sec-body">
+<p>Classic "golden signals" (latency, errors, traffic, saturation) tell you your app is up — they don't tell you if it's right. GenAI apps need additional monitoring pillars: cost, safety, and quality.</p>
+</div></details><h2 id="the-mental-model">The mental model</h2>
+
+<details class="sec"><summary>Key points (from chapter list)</summary><div class="sec-body">
 <ul>
 <li><strong>Golden signals aren't enough anymore</strong> (0:12) — latency/errors/traffic/saturation tell you the app is up, not that it's right.</li>
 <li><strong>How GenAI apps are different</strong> (1:12); <strong>new attack vectors</strong> (2:22).</li>
@@ -43,21 +43,21 @@
 <li><strong>Putting it all together</strong> (15:43); <strong>Datadog Agent Observability</strong> (16:38).</li>
 <li><strong>Referenced sources</strong>: Google SRE book (golden signals); Datadog docs on LLM observability; Datadog blog "How to Monitor AI Agents: The Four Pillars of Agent Observability"; Datadog "AI SORT: A Framework for Evaluating AI Systems for SRE"; book "Observability Engineering" (Charity Majors, Liz Fong-Jones, George Miranda, Honeycomb); paper "Can Large Language Models Be an Alternative to Human Evaluations?" (Chiang &amp; Lee, 2023).</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>Tagline: "Latency, errors, traffic and saturation tell you your app is up. They don't tell you if it's right."</li>
 <li>Golden signals originate from the Google SRE book.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle-from-chapters">Tokenomics / efficiency angle (from chapters)</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle (from chapters)</summary><div class="sec-body">
 <ul>
 <li>Cost monitoring pillar: token creep, model drift, uncached calls.</li>
 <li>Cost attribution: tag everything.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li><strong>Tag everything for cost attribution</strong>: even in a local-first stack, tag every request by use case/team/model so token creep and uncached calls are attributable — you can't control what you can't attribute.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li><strong>Audit your dashboards this week</strong>: list every GenAI dashboard and mark which ones measure only latency, errors, traffic, and saturation. Everything unmarked is a blind spot.</li>
 <li><strong>Tag every request</strong>: add team, use case, and model tags to all agent and Copilot traffic so token creep and uncached calls are attributable by owner.</li>

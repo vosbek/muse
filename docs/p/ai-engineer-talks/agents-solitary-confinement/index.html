@@ -2,14 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Your Agents Are in Solitary Confinement: Why MCP & A2A Aren't Enough" — Vlad Luzin, Band · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-your-agents-are-in-solitary-confinement-why-mcp-a2a-arent-enough-vlad-luzin-band">Talk Notes: "Your Agents Are in Solitary Confinement: Why MCP &amp; A2A Aren't Enough" — Vlad Luzin, Band</h1>
-<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=UOcHfR3_tys">Your Agents Are in Solitary Confinement: Why MCP &amp; A2A Aren't Enough — Vlad Luzin, Band</a> · AI Engineer channel · Sep 30, 2026 · 17:33 · Recorded at AI Engineer World's Fair 2026</p>
-<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary — treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.</p>
-<h2 id="thesis">Thesis</h2>
-<p>Agents live in "digital solitary confinement" — developers running parallel Claude/Codex sessions act as human routers between stateful processes that cannot talk to each other. MCP (stateless), A2A (client-server), chained calls, and messaging-platform integrations all fail to fix this because connecting agent processes is a <strong>distributed-systems problem</strong> (transport, persistence, identity mapping, governance) with non-deterministic microservices at every node. The fix is raising the abstraction to conversation-level primitives — rooms, channels, participants, deterministic routing — which is what Band pitches itself as: a global collaboration layer, with <strong>Gem</strong> as the desktop app giving developers and managers visibility into cost, attribution, and work state.</p>
-<h2 id="the-mental-model">The mental model</h2>
-<p>Today the developer is the router between isolated agents; the prescription is to raise the abstraction to conversation-level primitives, backed by a distributed-systems layer cake.</p>
-<pre class="mermaid">flowchart TD
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
     subgraph Today["Today"]
         H[Human acts as router]
         A1[Claude session working]
@@ -26,7 +19,14 @@
     R --> CH
     CH --> PA
     PA --> DR
-    H -.->|raise the abstraction| R</pre>
+    H -.->|raise the abstraction| R</pre></div><h1 id="talk-notes-your-agents-are-in-solitary-confinement-why-mcp-a2a-arent-enough-vlad-luzin-band">Talk Notes: "Your Agents Are in Solitary Confinement: Why MCP &amp; A2A Aren't Enough" — Vlad Luzin, Band</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=UOcHfR3_tys">Your Agents Are in Solitary Confinement: Why MCP &amp; A2A Aren't Enough — Vlad Luzin, Band</a> · AI Engineer channel · Sep 30, 2026 · 17:33 · Recorded at AI Engineer World's Fair 2026</p>
+<p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary — treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.</p>
+<h2 id="thesis">Thesis</h2>
+<p>Agents live in "digital solitary confinement" — developers running parallel Claude/Codex sessions act as human routers between stateful processes that cannot talk to each other. MCP (stateless), A2A (client-server), chained calls, and messaging-platform integrations all fail to fix this because connecting agent processes is a <strong>distributed-systems problem</strong> (transport, persistence, identity mapping, governance) with non-deterministic microservices at every node. The fix is raising the abstraction to conversation-level primitives — rooms, channels, participants, deterministic routing — which is what Band pitches itself as: a global collaboration layer, with <strong>Gem</strong> as the desktop app giving developers and managers visibility into cost, attribution, and work state.</p>
+<h2 id="the-mental-model">The mental model</h2>
+<p>Today the developer is the router between isolated agents; the prescription is to raise the abstraction to conversation-level primitives, backed by a distributed-systems layer cake.</p>
+
 <pre class="mermaid">flowchart TD
     T[Transport ordered delivery and retries] --> C[Continuity persistence and hydration]
     C --> FB[Framework binding ID mapping]
@@ -36,7 +36,7 @@
     MCP[MCP is stateless] --> NO1[No sticky sessions]
     A2A[A2A is client server] --> NO2[Both sides must be client and server]
     CHAIN[Chained calls] --> NO3[REST timeouts need queues]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li>Opens with audience trivia — "Orc or C?" — resolving into a joke with two correct answers (LOTR vs Warhammer 40k), then a four-part agenda: Thesis's company beliefs, the evolution from adversarial agents to loop engineering, tomorrow's technical challenges, and Band.</li>
 <li><strong>Company thesis:</strong> the future is AI-to-AI communication within businesses, between businesses, and between consumers and businesses — agents written in different frameworks/languages/environments, fully autonomous, communicating without human intervention. Target picture: agents create conversational spaces, discover and add participant agents, collaborate, and report back to humans.</li>
@@ -56,14 +56,14 @@
 <li><strong>Platform view:</strong> traffic graphs between local and remote agents; his own figures — a full-stack developer agent at <strong>$2,000 in tokens</strong> (local Claude session), an architect at <strong>$600</strong> (local Codex). <strong>No hand-coded loops:</strong> "all current models... understand very well how to communicate through messaging platforms," so coordination needs no Python glue — demoed with real work from that morning (EM + developer + architect Claude Code instances reviewing PRDs/SRS/implementation: "They know how to do it natively"). Full attribution answers whether a human was involved in a PR or whether it's "all AI slop," per developer/team, in real time.</li>
 <li><strong>Closes:</strong> "if I want I can connect any of you to any of my agents in 30 seconds" — booth OG17, QR codes for Band and Gem; "let Salesforce, Slack, Databricks, Claude, and Codex work together."</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"Your agent is still alone, they cannot see each other, they cannot communicate with each other. They are in a digital solitary confinement."</li>
 <li>"Multi-agent system where every agent is remote is basically a distributed system of microservices where each microservice is non-deterministic. So it is hard."</li>
 <li>Messaging-platform onboarding friction: Telegram 5 steps, Discord 7, Slack 8, WhatsApp 11 — all manual, all yielding only human-to-agent chat.</li>
 <li>Per-agent token spend: $2,000 dev agent vs $600 architect.</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li><strong>Cost attribution is a first-class feature:</strong> per-agent token spend ($2,000 dev agent vs $600 architect), ticket-to-token attribution, full user-chain cost, real-time per-developer/per-team stats.</li>
 <li><strong>Deliberate compute saving:</strong> no hand-coded orchestration loops — models' native messaging-platform fluency is treated as free coordination capability.</li>
@@ -73,7 +73,7 @@
 <li><strong>Instrument per-agent token attribution before scaling agent counts</strong> — the $2,000/$600 split between roles shows different agent personas burn very different budgets; ticket-to-token attribution is the visibility layer that makes multi-agent spend governable.</li>
 <li><strong>Prefer conversation-level primitives over hand-coded orchestration glue:</strong> if models natively coordinate through messaging patterns, skip the Python/TypeScript orchestration layer and treat coordination capability as free — orchestration code is a tax, not an asset.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Instrument per-agent token attribution this week — by role, developer, and ticket — before adding any more agents; the $2,000 vs $600 split shows personas burn very differently.</li>
 <li>Kill one hand-coded orchestration script and replace it with a messaging-pattern handoff; treat the model's native coordination fluency as free.</li>
@@ -81,11 +81,11 @@
 <li>Require lateral consent for cross-boundary agent reach: an agent must get human approval before contacting another team's agent.</li>
 <li>Add a live view of which component each agent is touching in real time, plus per-PR attribution of human vs AI involvement.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>YouTube description/chapters: https://www.youtube.com/watch?v=UOcHfR3_tys</li>
 <li>BigGo AI talk summary: https://finance.biggo.com/podcast/c0ca1a8584126223</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

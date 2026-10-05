@@ -2,21 +2,21 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "The Death of the Code Review: What the Data Actually Says" — Laurie Voss, Arize AI · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-the-death-of-the-code-review-what-the-data-actually-says-laurie-voss-arize-ai">Talk Notes: "The Death of the Code Review: What the Data Actually Says" — Laurie Voss, Arize AI</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart LR
+  Gen[Agents write 741 percent more code] --> Bot[Human review bottleneck]
+  Bot --> Ship[Only 30 percent more shipped]</pre></div><h1 id="talk-notes-the-death-of-the-code-review-what-the-data-actually-says-laurie-voss-arize-ai">Talk Notes: "The Death of the Code Review: What the Data Actually Says" — Laurie Voss, Arize AI</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=_mi3alkqy4s">The Death of the Code Review: What the Data Actually Says — Laurie Voss, Arize AI</a> · AI Engineer channel · Sep 30, 2026 · 24:40 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> YouTube's transcript was unreadable in our environment, so this is distilled from the video's own description/chapters plus biggo.com's AI-generated talk summary — treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.</p>
 <h2 id="thesis">Thesis</h2>
 <p>Generation is now nearly free but verification isn't — developers with autonomous agents wrote <strong>741% more code yet shipped only 30% more</strong>, because human review is the bottleneck and humans cannot scale to agent output. Neither reviewing harder nor skipping review survives the evidence (Bun's 13,044 unsafe blocks; an 88%-vs-35% prompt-injection fool rate; a public six-month "don't review" retraction), so code review must be rebuilt as an engineered system: humans stop reviewing PRs line-by-line and instead design the review harness — rubrics, evals, definitions of mergeable — with production observability as the last reviewer standing.</p>
 <h2 id="the-mental-model">The mental model</h2>
-<pre class="mermaid">flowchart LR
-  Gen[Agents write 741 percent more code] --> Bot[Human review bottleneck]
-  Bot --> Ship[Only 30 percent more shipped]</pre>
+
 <pre class="mermaid">flowchart TD
   Humans[Humans design the harness] --> Rub[Rubrics evals mergeable definitions]
   Rub --> Auto[Automated review with tools]
   Auto --> Fix[Reviewer spawns fix agent]
   Fix --> Obs[Production observability last reviewer]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>The asymmetry.</strong> Three economists tracked <strong>100,000+ GitHub developers</strong> against telemetry of AI adoption — autonomous-agent users wrote <strong>741% more code but shipped only 30% more software</strong> (~8x writing, ~⅓ more shipping); the authors are explicit that review was the bottleneck.</li>
 <li><strong>Generation scale is settled.</strong> Stripe/Anthropic's Fable launch materials — <strong>50M-line Ruby migration in a single day</strong> (vs 2+ months for a team); Bun (now Anthropic) — <strong>1M+ lines of Zig→Rust in six days</strong>. The everyday version: "hitting the merge button and feeling guilty" about unread diffs.</li>
@@ -36,7 +36,7 @@
 <li><strong>The METR caveat, dismissed:</strong> agents got no chance to iterate on maintainer feedback — Voss's reply is that giving them that chance just puts a human back in the loop, which is what the experiment was testing the removal of.</li>
 <li><strong>Voss's 80% rule</strong> (separate interview, chainofthought.show): the best code-review AI tools he's seen have ~80% hit rate — "really good, but not enough to put stuff out into production." The working model: AI does the 80%, humans focus on the last 20% — which matters more than ever given the volume. Ops (deploy, hardware sizing, scaling) remains firmly human for now.</li>
 </ul>
-<h2 id="by-the-numbers">By the numbers</h2>
+</div></details><details class="sec"><summary>By the numbers</summary><div class="sec-body">
 <ul>
 <li><strong>741% / 30%</strong> — more code written vs more software shipped by autonomous-agent users (100,000+ GitHub developers, three economists); ~8x writing, ~⅓ more shipping; authors explicit that review is the bottleneck.</li>
 <li><strong>400 lines / 450 lines/hour</strong> — Cisco study (2,500 reviews, 3.2M lines, 10 months): defect-finding effectiveness collapses past 400 lines in one sitting, off a cliff past 450 lines/hour. One 10,000-line agent PR = 3–4 working days of genuine review.</li>
@@ -48,7 +48,7 @@
 <li><strong>88% vs 35%</strong> — prompt-injection-dressed vulnerable commits fooling autonomous reviewers vs human reviewers (Mar 2026 study).</li>
 <li><strong>~80%</strong> — hit rate of the best code-review AI tools per Voss: good, not shippable alone.</li>
 </ul>
-<h2 id="decision-framework">Decision framework</h2>
+</div></details><h2 id="decision-framework">Decision framework</h2>
 <ul>
 <li><strong>When automated review earns its place:</strong> high-volume, low-blast-radius changes where human acceptance is a workable proxy for quality — and where you budget verification compute deliberately (multi-pass, shuffled re-review, reviewer-with-tools).</li>
 <li><strong>When the human checkpoint is non-negotiable:</strong> correctness isn't cheaply checkable, blast radius is large, or security sign-off requires a name on the result. Prompt injection is the decisive argument: the reviewer can be talked out of its findings by the code it reviews (Anthropic's own README says so).</li>
@@ -56,13 +56,13 @@
 <li><strong>Traps:</strong> treating test passage as mergeability (the 88%-to-29% gap); letting a mergeability benchmark become a training signal without noticing (Sarah Guo's turning point cuts both ways — today's rubric becomes next year's gaming target); disagreeing about how to grade the graders (leaky scaffolds, no consensus on review-quality measurement); reviewing harder instead of rebuilding the system (the Cisco arithmetic doesn't budge).</li>
 <li><strong>The relocation rule:</strong> the human checkpoint moves, never vanishes — to harness design, rubric authorship, and production observability. Staff those three, not the review queue.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>741% more code written, 30% more shipped; Bun's 13,044 vs ~74 unsafe blocks; prompt injection fools review agents 88% vs 35% for humans.</li>
 <li>"Once the pre-merge review is all machines, watching what the code actually does becomes the last reviewer standing."</li>
 <li>"Humans are moving from being the engine that drives a code review, reading code line by line, to its pilots."</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li><strong>The core efficiency asymmetry:</strong> generation nearly free, verification/trust expensive — value migrates from code production to code certification.</li>
 <li><strong>Compute-for-quality tradeoffs are explicit:</strong> Cursor's 8-pass + shuffled re-review; multi-pass agreement <strong>+44% quality</strong> (Peking U) — spending compute deliberately to buy quality.</li>
@@ -73,7 +73,7 @@
 <li><strong>Budget verification compute explicitly:</strong> if review is the bottleneck, the spend profile flips — invest inference tokens in multi-pass review and reviewer-with-tools loops rather than generating more diffs per token.</li>
 <li><strong>Codify your review harness, not your review queue:</strong> write the rubrics, evals, and definitions of mergeable once as versioned artifacts (skills/eval sets), so every agent in the org inherits the same merge bar — judgment compounds, line-by-line review doesn't scale.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Measure your own asymmetry: pull PR data for the last quarter (lines generated vs lines shipped) and confirm whether review is the bottleneck before spending anything.</li>
 <li>Write the definition of mergeable as a versioned artifact: correctness, regression safety, scope discipline, test quality, maintainability — a rubric file every reviewer (human or agent) grades against, stored in the repo. Remember: whoever writes today's review standard is writing next year's default model behavior — write it deliberately.</li>
@@ -83,12 +83,12 @@
 <li>Keep humans on the last 20%: AI does the 80% pass, humans focus where correctness isn't cheaply checkable, blast radius is large, or a name must go on the result.</li>
 <li>Make production observability the last reviewer: wire deploys so runtime signals (errors, SLO drift) — and the trajectory of what the system did step by step — feed back into the merge bar, closing the loop the talk prescribes.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>YouTube description/chapters: https://www.youtube.com/watch?v=_mi3alkqy4s</li>
 <li>BigGo AI talk summary (full evidentiary chain): https://finance.biggo.com/podcast/6de2edbc9a704378</li>
 <li>Voss on the 80% review hit-rate rule and evals-as-tests (Chain of Thought interview): https://chainofthought.show/podcast/74-ai-codes-product-engineers-decide-what-to-build-laurie-voss/</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

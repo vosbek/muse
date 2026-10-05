@@ -2,17 +2,17 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "I Built a Personal AI Agent on a Raspberry Pi" — Jeremy Adams, Neo4j · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-i-built-a-personal-ai-agent-on-a-raspberry-pi-jeremy-adams-neo4j">Talk Notes: "I Built a Personal AI Agent on a Raspberry Pi" — Jeremy Adams, Neo4j</h1>
-<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=oUZEt4EiPbk">I Built a Personal AI Agent on a Raspberry Pi — Jeremy Adams, Neo4j</a> · AI Engineer channel · Oct 3, 2026 · 20:10 · Recorded at AI Engineer World's Fair 2026</p>
-<h2 id="thesis">Thesis</h2>
-<p>A useful, private personal AI agent doesn't need a laptop or a Mac Mini — it can run on a cheap old Raspberry Pi 4B using NanoClaw (a compact, hackable agent runtime), WhatsApp as the interface, Claude as the cloud brain, and a Neo4j knowledge-graph memory with a POLE schema — built for hackability and understanding over feature-completeness.</p>
-<h2 id="the-mental-model">The mental model</h2>
-<pre class="mermaid">flowchart LR
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart LR
     WA[WhatsApp on phone] --> NC[NanoClaw on Pi 4B]
     BT[GPIO voice button] --> NC
     NC --> CL[Claude cloud API - the big brain]
     NC --> MCP[Neo4j via MCP server]
-    MCP --> NG[Neo4j graph with POLE schema]</pre>
+    MCP --> NG[Neo4j graph with POLE schema]</pre></div><h1 id="talk-notes-i-built-a-personal-ai-agent-on-a-raspberry-pi-jeremy-adams-neo4j">Talk Notes: "I Built a Personal AI Agent on a Raspberry Pi" — Jeremy Adams, Neo4j</h1>
+<p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=oUZEt4EiPbk">I Built a Personal AI Agent on a Raspberry Pi — Jeremy Adams, Neo4j</a> · AI Engineer channel · Oct 3, 2026 · 20:10 · Recorded at AI Engineer World's Fair 2026</p>
+<h2 id="thesis">Thesis</h2>
+<p>A useful, private personal AI agent doesn't need a laptop or a Mac Mini — it can run on a cheap old Raspberry Pi 4B using NanoClaw (a compact, hackable agent runtime), WhatsApp as the interface, Claude as the cloud brain, and a Neo4j knowledge-graph memory with a POLE schema — built for hackability and understanding over feature-completeness.</p>
+<h2 id="the-mental-model">The mental model</h2>
+
 <pre class="mermaid">flowchart TD
     PO[POLE schema] --> P[Person]
     PO --> O[Object]
@@ -21,7 +21,7 @@
     PO --> ORG[Organization]</pre>
 <pre class="mermaid">flowchart LR
     CAP[Capture voice note offline] --> LG[Local Neo4j stores it] --> UP[Upload when online] --> CE[Cloud enrichment adds theme nodes]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Hardware</strong>: Raspberry Pi 4B (not the latest model), previously ran a 32-bit OS; originally used to measure dish weight in the sink — "Will it claw? It claws real good."</li>
 <li><strong>Wanted no laptop agent</strong> — wanted it open, hackable, understood more than feature-complete (sysadmin/devops background).</li>
@@ -36,24 +36,24 @@
 <li><strong>Upgraded to the Neo4j Agent Memory service</strong>: all historical WhatsApp messages distilled into memories — people, locations, concepts — accessible via MCP server.</li>
 <li><strong>Resources</strong>: Neo4j GraphAcademy free courses; Neo4j booth P3.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"I wanted to understand what was happening more than it being feature-complete. Understanding was more important to me."</li>
 <li>"Will it claw? It claws real good."</li>
 <li>NanoClaw = ~15 source files; POLE = Person, Object, Location, Event (+Organization).</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>Repurposed old hardware instead of buying a Mac Mini; no local inference cost — cloud brain only for reasoning, local graph for cheap storage/retrieval.</li>
 <li>Offline-first voice notes reduce dependence on conference Wi-Fi.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li><strong>The architecture is Matt's local-first pattern at pocket scale</strong>: cloud reasoning over the wire + local graph memory on-device. Enterprise version: local decision models with local RAG/memory, cloud frontier only for reasoning overflow.</li>
 <li><strong>POLE schema (Person, Object, Location, Event + Organization) is a ready-made memory ontology</strong> — steal it for the governed memory layer instead of inventing a custom schema.</li>
 <li><strong>Capture-local, enrich-cloud</strong> is the offline pattern: cheap local writes during capture, expensive enrichment later — directly analogous to batching retrieval/enrichment off the hot path.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li><strong>Steal the POLE schema</strong>: use Person, Object, Location, Event plus Organization as your governed memory ontology instead of inventing a custom schema.</li>
 <li><strong>Pilot a tiny agent runtime</strong>: stand up a NanoClaw-style compact runtime (~15 source files) on cheap hardware or a VM — hackable and understandable beats feature-complete for a memory pilot.</li>

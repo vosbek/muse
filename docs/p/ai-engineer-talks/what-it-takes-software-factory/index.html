@@ -2,10 +2,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "What It Actually Takes to Build a Software Factory" — Tereza Tížková, Factory · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-what-it-actually-takes-to-build-a-software-factory-tereza-tizkova-factory">Talk Notes: "What It Actually Takes to Build a Software Factory" — Tereza Tížková, Factory</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><p><img alt="Visual one-pager" src="onepager-software-factory.jpg" /></p></div><h1 id="talk-notes-what-it-actually-takes-to-build-a-software-factory-tereza-tizkova-factory">Talk Notes: "What It Actually Takes to Build a Software Factory" — Tereza Tížková, Factory</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=vGCJ7diEtrw">What It Actually Takes to Build a Software Factory — Tereza Tížková, Factory</a> · AI Engineer channel · Sep 27, 2026 · 22:49 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> distilled from the full spoken transcript (read in full via https://www.usetranscribe.io/yt/vGCJ7diEtrw/), cross-checked against Factory's own writing (research posts linked in Sources). Secondary/tertiary claims are marked where used.</p>
-<p><img alt="Visual one-pager" src="onepager-software-factory.jpg" /></p>
+
 <h2 id="thesis">Thesis</h2>
 <p>A software factory isn't a coding agent or even a swarm of agents — it's the whole autonomous software lifecycle (signals → feedback/logs → prioritization → orchestration → execution → validation → production testing → iteration + continuous learning). Building one takes three things — be agnostic, be truly autonomous, always improve — and requires rebuilding the organization from the ground up, not bolting on a consultancy. (In production for enterprises like EY and Adobe; Factory's own announcements add NVIDIA, Palo Alto Networks, Adyen, Blackstone, Wipro, Comarch.) She frames the talk around five questions: what a software factory is, whether to build your own or outsource it, what works in production, the main challenges — and how much it all costs (0:36).</p>
 <h2 id="the-mental-model">The mental model</h2>
@@ -34,7 +34,7 @@
     B --> D[User testing validator clicks through app]
     C --> E[Send back or ship]
     D --> E</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li><strong>Definition.</strong> The whole loop of developing software with autonomy: collecting signals, reacting to user feedback and logs, prioritizing, orchestrating, executing, validating, testing in production, iterating, continuously improving and gaining knowledge/skills. Factory's own 2.0 announcement phrases the same loop: signals (bug reports, internal conversations, customer feedback, business requirements) → triaged into planned changes → built, tested, reviewed, secured, shipped, monitored → monitoring generates more signals, "the entire system is a continuous feedback loop."</li>
 <li><strong>Why now.</strong> 2023-era attempts (AutoGPT, BabyAGI) failed — hallucinating LLMs, context length, reasoning quality, and no good isolated environments where agents can work in isolation. The tech has caught up, so the paradigm is becoming popular and actually useful.</li>
@@ -56,7 +56,7 @@
 <li><strong>Humans.</strong> Won't be obsoleted — "we just [keep] moving up levels to the cooler tasks": human computers → programming languages → coding agents → software factories. "We should be as humans deciding what to build in the software, not how to build it." Her "warning chart": AI will take the annoying stuff — enterprise alignment meetings, status syncs, the context-gathering "between the lines" — "and you could be just talking about the cool stuff." Close: "go touch some grass and let your agents build for you."</li>
 <li><strong>Production context.</strong> Per the talk, the factory is "possible to build... in production for enterprises like EY or Adobe." Factory's 2.0 announcement widens the list: NVIDIA, Palo Alto Networks, Adyen, Blackstone, Wipro, Comarch — and describes the graduated autonomy spectrum: well-defined tasks run as simple Droids/skills, recurring workflows as Automations, long-running or local execution on Droid Computers, multi-agent execution over hours/days as Missions — "not every process should use long-horizon autonomous tasks."</li>
 </ul>
-<h2 id="by-the-numbers">By the numbers</h2>
+</div></details><details class="sec"><summary>By the numbers</summary><div class="sec-body">
 <p>Every hard number from the talk and Factory's writing, with what it measures:</p>
 <ul>
 <li><strong>50%+ token savings</strong> — deferred context engine on tool-heavy enterprise setups; savings <em>grow</em> with tool count (talk; her phrasing: "you can save 50% of tokens or more").</li>
@@ -72,7 +72,7 @@
 <li><strong>56.7 → 89.3</strong> median (Fable, 73% of the gap closed), <strong>45.1 → 75.4</strong> (Kimi), <strong>48.6 → 66.2</strong> (GPT-5.6-sol) — single-agent vs system medians across the 24 hardest ProgramBench tasks (research).</li>
 <li><strong>Weeks</strong> — Factory missions already run for weeks (talk); predictions of a year or more without human in the loop.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+</div></details><details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"Software factory is not just coding agent and it's not even a swarm of coding agents even thousands of agents because generating code... that's the easy part."</li>
 <li>"You can save for example 25% but even more probably" (model routing); "you can save 50% of tokens or more" (deferred context engine)</li>
@@ -82,7 +82,7 @@
 <li>"Go touch some grass and let your agents build for you."</li>
 <li>Real mission: 16 hours, 40% of it validation; missions already run for weeks</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li><strong>Automatic model routing.</strong> Classify task difficulty → cheapest model above the capability threshold; ~25%+ cost savings plus reliability/speed (open models often faster, provider failover). The Coinbase "token maxing with flat spend" example is the enterprise playbook: per-role defaults, caching, visible results, smart routing.</li>
 <li><strong>Routing belongs in the harness.</strong> A gateway-level router is cache-blind and can make long sessions <em>cost more</em> (modeled 2.12× frontier baseline at turns 61–150); harness routing prices switches against warm prefix cache and task state, landing at 0.19–0.28× baseline. Production savings concentrate in the longest sessions — the same sessions that dominate inference spend.</li>
@@ -90,7 +90,7 @@
 <li><strong>Caching as pricing, not tech.</strong> Open models on dedicated compute capture the same prefill savings the labs do — a cost-structure argument for self-hosting.</li>
 <li><strong>Validation is a first-class budget line.</strong> 40% of a 16-hour mission went to validation — factory economics must price eval cost, not just generation cost. The GDAL result sharpens this: the system run cost 14× credits and 13× wall time to go from 36% to 90% parity — quality is bought with validation compute.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>Self-hosted open models on dedicated compute unlock the same caching/prefill savings API providers price in — a concrete cost case for local inference infra.</li>
 <li>The deferred context engine pattern (short tool list + lazy load) is directly implementable in a local harness to cut per-task token overhead.</li>
@@ -98,7 +98,7 @@
 <li>Copy the harness-level router design, not a gateway: route at request-construction time (per-role defaults, difficulty classification, cheapest-above-threshold, failover-only switching), keep the warm model warm, and default validators to a different model family than implementers — all of this is implementable in a local harness.</li>
 <li>Sovereignty is productized: Factory ships cloud, BYOK, self-hosted data plane, EU-specific, and fully air-gapped deployments with learning that stays inside the customer's walls (company announcement) — the local-first pattern has enterprise precedent.</li>
 </ul>
-<h2 id="decision-framework">Decision framework</h2>
+</div></details><h2 id="decision-framework">Decision framework</h2>
 <p>How the three rules read as build-vs-buy and org-design guidance:</p>
 <ol>
 <li><strong>Agnostic → buy agnosticism, not models.</strong> Don't bet on a model winner (frontier churn makes it unwinnable); buy or build the integration layer — BYO subscriptions, Slack/GitHub-native operation — and put routing <em>in the harness</em>, where the request is built and the cache is warm, never at a cache-blind gateway.</li>
@@ -116,14 +116,14 @@
 <li><strong>Split validators:</strong> scrutiny (linters, types, tests) and user-testing (computer-use agent clicking through the app in a persistent VM — catches the non-interactive dummies static checks miss). Default the two to different model families.</li>
 <li><strong>Package reusable knowledge</strong> as plugins/skills with auto-updating docs so the factory gains knowledge instead of re-learning it; treat validation instruments as durable assets, not session scratch.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>Video: https://www.youtube.com/watch?v=vGCJ7diEtrw</li>
 <li>Full spoken transcript (primary for the talk content above): https://www.usetranscribe.io/yt/vGCJ7diEtrw/</li>
 <li>Factory Research, "Why model routing must be in the harness" (Abhay Singhal, Aug 24, 2026) — Factory Router production numbers, harness-vs-gateway mechanics, cache-blindness analysis: https://factory.ai/news/model-routing-belongs-in-the-harness</li>
 <li>Factory Research, "What it Takes for Coding Agents to Complete Large Software Tasks" (Aug 27, 2026) — validation-contract/instrument experiment (GDAL 36%→90%), information wall, mission structure: https://factory.ai/news/what-it-takes-for-coding-agents-to-complete-large-software-tasks</li>
 <li>Factory, "Factory 2.0: From coding agents to software factories" (Matan Grinberg, Eno Reyes, Jun 15, 2026) — software-factory definition, model independence, sovereign intelligence, autonomy spectrum, production customer list: https://factory.ai/news/software-factory</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

@@ -2,22 +2,22 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Talk Notes: "Fixing the PR Bottleneck" — Matt Pocock, AIHero · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><h1 id="talk-notes-fixing-the-pr-bottleneck-matt-pocock-aihero">Talk Notes: "Fixing the PR Bottleneck" — Matt Pocock, AIHero</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#talks'>AI Engineer talks</a></div><article class='doc'><div class='badge'>AI Engineer talks</div><div class="hero-visual"><pre class="mermaid">flowchart TD
+  Factory[Software factory agents initiate work] --> Brake1[Automated checks cheap CPU]
+  Brake1 --> Brake2[Automated review lie detector]
+  Brake2 --> Brake3[Human review faster]
+  Brake3 --> Ship[Higher quality ships faster]</pre></div><h1 id="talk-notes-fixing-the-pr-bottleneck-matt-pocock-aihero">Talk Notes: "Fixing the PR Bottleneck" — Matt Pocock, AIHero</h1>
 <p><strong>Video:</strong> <a href="https://www.youtube.com/watch?v=LlgiOCmFG_w">Fixing the PR Bottleneck — Matt Pocock, AIHero</a> · AI Engineer channel · Sep 25, 2026 · 22:34 · Recorded at AI Engineer World's Fair 2026</p>
 <p><strong>Note:</strong> distilled from the full spoken transcript (read via usetranscribe.io); secondary sources are marked where used.</p>
 <h2 id="thesis">Thesis</h2>
 <p>AI agents massively increased PR volume — the "software factory," where agents rather than humans initiate work (classifiers turning bug reports into fixes, PlanetScale slow-query reports auto-triggering work) — which without brakes becomes a "slop cannon." The fix is three quality brakes — automated checks (cheap, deterministic), automated review (agents as lie detectors for the checks), and human review — arranged so that raising code quality counterintuitively speeds everything up: better code needs fewer human interventions. Key mechanisms: deep-module codebase design, coding standards enforced at review time rather than implementation time, one-way vs two-way door triage, human-friendly PR bodies, and a "retro" skill that compounds review learnings back into checks and standards.</p>
 <h2 id="the-mental-model">The mental model</h2>
-<pre class="mermaid">flowchart TD
-  Factory[Software factory agents initiate work] --> Brake1[Automated checks cheap CPU]
-  Brake1 --> Brake2[Automated review lie detector]
-  Brake2 --> Brake3[Human review faster]
-  Brake3 --> Ship[Higher quality ships faster]</pre>
+
 <pre class="mermaid">flowchart LR
   Impl[Implementer make it work overloaded] --> Diff[Diff]
   Diff --> Sub[Review subagent own context]
   Sub --> Fix[Commit fixes not comments]</pre>
-<h2 id="key-points">Key points</h2>
+<details class="sec"><summary>Key points</summary><div class="sec-body">
 <ul>
 <li>The PR bottleneck predates AI (piles of unreviewed PRs), but AI massively increased the strain. The central promise of AI: agents let us scale up — "do more with less."</li>
 <li><strong>The "software factory"</strong> (his "biggest buzzword of the day"): humans no longer initiate all work — agents do. Examples: a classifier turning bug reports into fixes/repros; PlanetScale slow-query reports triggering work; deterministic code (not humans) firing factory steps. Acceleration pushes more code through — but with only acceleration and no brakes, "you're going to end up with a slop cannon."</li>
@@ -44,7 +44,7 @@
 <li><strong>codebase-design</strong>: "Shared discipline and vocabulary for designing deep modules: a lot of behaviour behind a small interface, placed at a clean seam, testable through that interface."</li>
 <li>Supporting cast: <strong>tdd</strong> (red-green-refactor, one vertical slice at a time), <strong>diagnosing-bugs</strong> (red-on-this-bug → minimise → hypothesise → instrument → fix → regression-test), <strong>domain-modeling</strong> (glossary + ADRs), <strong>research</strong> (cited findings as Markdown, background agent), <strong>prototype</strong>, <strong>wizard</strong> (interactive bash for human-only steps), <strong>wayfinder</strong> (multi-session plans as decision tickets), <strong>resolving-merge-conflicts</strong>.</li>
 </ul>
-<h2 id="by-the-numbers">By the numbers</h2>
+</div></details><details class="sec"><summary>By the numbers</summary><div class="sec-body">
 <ul>
 <li><strong>3</strong> — the quality brakes (automated checks → automated review → human review) and the three lies checks tell (tautological tests; structure-sensitive tests; tests that cannot fail).</li>
 <li><strong>280</strong> — the X-post character limit in the tautological-test example: the test asserted the constant equaled 280, i.e. reasserted the implementation.</li>
@@ -52,7 +52,7 @@
 <li><strong>2</strong> — the axes of the code-review skill (Standards, Spec) run as parallel subagents; the two context windows of the red-green-refactor split (implement vs review).</li>
 <li><strong>v1.3</strong> — the skills release shipping the week of the talk, at aihero.dev/skills.</li>
 </ul>
-<h2 id="decision-framework">Decision framework</h2>
+</div></details><h2 id="decision-framework">Decision framework</h2>
 <ul>
 <li><strong>Build vs buy the reviewer:</strong> buy (Cursor bugbot, CodeRabbit) when you need generic coverage fast; build when false positives from generic rules cost more than maintaining your own — Pocock's rule is to build, because generic reviewers are either too general (irrelevant flags) or too specific (TypeScript-only, useless for Rust). The tiebreaker: do you have team-specific standards worth encoding? If yes, build.</li>
 <li><strong>When retro pays:</strong> once you have a week's worth of PRs+reviews to mine — retro needs volume to find patterns. Below that threshold, do the retrospective manually; the skill's value is compounding over repeated runs.</li>
@@ -60,7 +60,7 @@
 <li><strong>Traps the speaker names:</strong> green CI meaning "ready to merge" (the three lies); the reviewer commenting instead of committing (comments = more human triage work); coding standards in the implementer's context (drowns the overloaded agent — standards live in coding-standards.md for the reviewer only); misclassifying a one-way door as two-way (the 60,000-email change looked trivial); bloated steering files and skills silently degrading results (retro audits for this explicitly).</li>
 <li><strong>The one question that organizes human review:</strong> "is this a one-way or two-way door, and what's the blast radius?" — answer it in the PR body and the review effort allocates itself.</li>
 </ul>
-<h2 id="notable-quotes-data">Notable quotes &amp; data</h2>
+<details class="sec"><summary>Notable quotes &amp; data</summary><div class="sec-body">
 <ul>
 <li>"If you just have permanent acceleration pushing stuff through your factory, you're going to end up with a slop cannon."</li>
 <li>"Code is the environment your agent operates in. If you have bad code in your codebase, that is going to beget more bad code."</li>
@@ -69,19 +69,19 @@
 <li>"Stop trying to one-shot good code."</li>
 <li>"You never want to write the same comment twice."</li>
 </ul>
-<h2 id="tokenomics-efficiency-angle">Tokenomics / efficiency angle</h2>
+</div></details><details class="sec"><summary>Tokenomics / efficiency angle</summary><div class="sec-body">
 <ul>
 <li>Automated checks cost CPU cycles, not tokens or human effort — layer them aggressively; tokens spent fixing test-caught agent bugs are "tokens pretty well spent."</li>
 <li>The retro skill explicitly audits <strong>tool economy</strong> (token efficiency of tools used) and steering-file/skill bloat (bloated skills → reorganize).</li>
 <li>Reviewer commits fixes directly (saves human triage); one-way/two-way-door triage focuses scarce human attention where it matters; the underloaded reviewer subagent keeps the implementer's context window lean.</li>
 </ul>
-<h2 id="local-deploy-takeaways">Local-deploy takeaways</h2>
+</div></details><details class="sec"><summary>Local-deploy takeaways</summary><div class="sec-body">
 <ul>
 <li>The overloaded-implementer / underloaded-reviewer split is a context-management pattern to adopt everywhere: keep standards out of AGENTS.md (drowns the implementer), run review in a separate subagent with its own context window and budget.</li>
 <li>Checks-first is the cheapest quality spend: deterministic CPU-cycle checks before any token-burning review — build the check layer before the review layer.</li>
 <li>Run the retro loop locally: feed a week's PRs+reviews to a retrospective pass that proposes new checks and standards updates — each review compounds, and the retro explicitly audits token economy and steering-file bloat.</li>
 </ul>
-<h2 id="how-to-apply-it">How to apply it</h2>
+</div></details><h2 id="how-to-apply-it">How to apply it</h2>
 <ol>
 <li>Layer automated checks first: turn on the cheap deterministic checks (lint, type-check, tests, structure guards) before spending a single token on review — CPU cycles before tokens. Tokens spent fixing test-caught agent bugs are "tokens pretty well spent."</li>
 <li>Split implementer and reviewer contexts: keep coding standards out of AGENTS.md and the implementer's prompt (the implementer is overloaded: explore + change + debug in one window); run review in a subagent with its own context window that reads coding-standards.md and grades the diff — red-green-refactor across two context windows.</li>
@@ -92,12 +92,12 @@
 <li>Stand up the retro loop weekly: feed a week's PRs and reviews into a retrospective pass that proposes new automated checks and standards updates — and audits navigation pointers (AGENTS.md), tool economy (token efficiency of tools), and steering-file/skill bloat each round. Never write the same review comment twice.</li>
 <li>Require human-friendly PR bodies: "why" as pseudocode and mermaid sequence diagrams over prose (the show-me pattern), so the human reads intent in seconds.</li>
 </ol>
-<h2 id="sources">Sources</h2>
+<details class="sec"><summary>Sources</summary><div class="sec-body">
 <ul>
 <li>Video page: https://www.youtube.com/watch?v=LlgiOCmFG_w</li>
 <li>Full transcript: https://www.usetranscribe.io/yt/LlgiOCmFG_w/pr-bottleneck-fix</li>
 <li>The skills repo (retro, code-review, codebase-design, pr, tdd and the rest, as shipped): https://github.com/mattpocock/skills</li>
-</ul></article></div>
+</ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

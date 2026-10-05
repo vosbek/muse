@@ -35,15 +35,15 @@ Instead of raw MCP servers, Composio's gateway gives the agent two things native
 
 **Measured results (6:25).** Early unreleased numbers comparing Composio against each app's native MCP server on the same tasks with the same model show a clear gap in favor of the agent-designed interface.
 
-![Composio MCP gateway hero](dashboards-are-dead/01-hero.png)
+![Composio MCP gateway hero](dashboards-are-dead/01-hero.jpg)
 
-![How the gateway works](dashboards-are-dead/02-how-it-works.png)
+![How the gateway works](dashboards-are-dead/02-how-it-works.jpg)
 
-![Before Composio vs with the gateway](dashboards-are-dead/03-before-after.png)
+![Before Composio vs with the gateway](dashboards-are-dead/03-before-after.jpg)
 
-![Built for production scale](dashboards-are-dead/04-production-scale.png)
+![Built for production scale](dashboards-are-dead/04-production-scale.jpg)
 
-![Tool router: the right tool when you need it](dashboards-are-dead/05-tool-router.png)
+![Tool router: the right tool when you need it](dashboards-are-dead/05-tool-router.jpg)
 
 ## Why this matters for tokenomics + context management
 
