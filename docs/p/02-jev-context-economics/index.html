@@ -28,6 +28,14 @@
 <li><strong>Extractable skill:</strong> Two-tier model strategy — default narrow work to SLMs; require evidence (not habit) before spending frontier tokens.</li>
 <li><strong>Source:</strong> https://www.instagram.com/reel/DcY6Er0iuwy/</li>
 </ul>
+<h3 id="9-ways-to-cut-the-llm-bill-its-an-architecture-problem-not-a-model-problem">9 ways to cut the LLM bill — it's an architecture problem, not a model problem</h3>
+<ul>
+<li><strong>Creator:</strong> @hackproduct · <strong>Date:</strong> 2026-10-01</li>
+<li><strong>What it suggests:</strong> A merged checklist of 9 cost tactics (from 15): route by difficulty (tools first, small model next, big model only when needed); trim context (summarize old turns, drop irrelevant history); retrieve don't stuff (RAG sends a few chunks, not every document); prompt caching (pay a fraction for a long fixed prefix); semantic answer caching (skip the call entirely on near-duplicate questions); lean outputs (cap max_tokens, ask for JSON not essays); batch APIs (~half price for non-urgent work); agent guardrails (cap iterations, tool calls, tokens so one runaway loop can't burn the budget); track cost per request and per feature daily. The two lines most people miss: output tokens usually cost several times input tokens, and agents multiply every call — the cheapest token is the one you never generate. Every tactic maps onto this folder's existing entries (Jev routing, jevgrep retrieval-first, two-tier model strategy) and onto the tokenomics playbook's levers.</li>
+<li><strong>Repos/tools:</strong> None (checklist; batch APIs and caching are provider features).</li>
+<li><strong>Extractable skill:</strong> Bill-first architecture review — measure the biggest line on the bill (cost per request/feature), then apply routing, caching, and guardrails before touching model choice.</li>
+<li><strong>Source:</strong> https://www.instagram.com/p/Dd-Y4rZOSn3/</li>
+</ul>
 <details class="sec"><summary>From X bookmarks (Sep 2026)</summary><div class="sec-body">
 <p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>
 <h3 id="open-source-adapter-that-decouples-your-agent-from-any-single-llm-provider">Open-source adapter that decouples your agent from any single LLM provider</h3>
