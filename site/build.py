@@ -244,6 +244,8 @@ def main():
         with open(full, encoding="utf-8") as f:
             src = f.read()
         refs = set(re.findall(r"!\[[^\]]*\]\(([^)]+)\)", src))
+        # also copy linked PDFs (e.g. hosted whitepapers)
+        refs |= set(r for r in re.findall(r"(?<!!)\[[^\]]*\]\(([^)]+)\)", src) if r.lower().endswith(".pdf"))
         destdir = os.path.join(OUT, out_url(rel))
         os.makedirs(destdir, exist_ok=True)
         srcdir = os.path.dirname(full)
