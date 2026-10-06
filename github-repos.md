@@ -105,3 +105,17 @@ Framed as guardrails for safety and quality — the post opens with "one in four
 **Value prop:** The System One harness for System One models — run Jev and other decision models locally or via HarnessRouter.ai. The model picks one action from a strict list of options instead of generating text, tracks its own confidence, and refuses to act when unsure — producing a verifiable record of every decision. (The video's "never lies / perfect for banking" framing is the creator's; the mechanism is real, the guarantees are bounded by the option set you define.)
 **Score:** remit 4 + local 2 + maturity 0.5 + deploy 1.5. *Why it matters for us:* this is the harness half of the Jev thesis — OpenJev is the decision server, this is the runtime that runs it locally. Together they're the full local-first decision stack. Young repo (3 weeks), watch for hardening.
 **Source:** https://www.instagram.com/p/Ddnh350ijC7/
+
+## Oct 6 — Web find: chamnan (answer to the Oct 4 context-cost tooling ask)
+
+### 7.0 — [ArcticFox2029/chamnan](https://github.com/ArcticFox2029/chamnan) · 9 ⭐ · MIT · Python
+**Value prop:** A repo-local engineering-context index — commits an architecture index, impact map, session records, and decisions as Markdown beside the code, so an agent *reads* instead of re-scanning the repo every session. No network calls, no embedding model, no daemon: Python stdlib only. Ships a CLI plus adapters for 22 agents including Copilot. Measured: 11.56M tokens → 51,937-token index (28.8x on the published corpus).
+**Score:** remit 3 + local 2 + maturity 0.5 + deploy 1.5. *Why it matters for us:* this is the agent-side half of the context-cost answer — the tokenomics deep dive already covers the serving half (routing, caching, compression, observability). Honest caveats, straight from its README: the author's 223x figure is on an unpublished corpus (not independently reproducible); the README itself cites studies arguing *against* context files (it claims efficiency, not correctness: −29% runtime, −17% output tokens); 9 stars means you're an early adopter. Suggested pilot: run it on one repo and measure real Copilot savings with ccusage (already in the playbook stack).
+**Source:** web research, Oct 2026
+
+## Oct 3 — @meow.codes "openai/symphony" (GIT Dev)
+
+### 7.5 — [openai/symphony](https://github.com/openai/symphony) · 27.6k ⭐ · Apache-2.0 · Elixir
+**Value prop:** OpenAI's official harness for turning project work into isolated, autonomous implementation runs — connect it to Linear, it monitors incoming work and spawns agents per task. The standout is the automated proof-of-work pipeline: agents verify CI status, run complexity analyses, gather PR feedback, and produce walkthrough videos before anything merges. Ships a general spec plus an experimental Elixir reference implementation for teams practicing harness engineering.
+**Score:** remit 3 + local 1 + maturity 2 + deploy 1.5. *Why it matters for us:* "manage work instead of supervising coding agents" is the factory-talk thesis made official — and the proof-of-work pipeline (CI + complexity + PR feedback + video walkthrough as merge gates) is the verification pattern every enterprise agent deployment needs. Experimental status keeps deploy at 1.5.
+**Source:** https://www.instagram.com/p/DeD1oLtgbPy/
