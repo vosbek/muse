@@ -162,3 +162,32 @@ Framed as guardrails for safety and quality — the post opens with "one in four
 **Value prop:** The open-source CapCut alternative — videos stay on your machine.
 **Score:** remit 0.5 + local 2 + maturity 2 + deploy 1.5. *Why it matters for us:* minimal direct remit fit (video editing, not agent infra) — included for completeness of the roundup; the local-first distribution model is the only transferable lesson.
 **Source:** https://www.instagram.com/p/DduETr9iOkf/
+
+## Sep 25 — @entrenology "5 open-source AI projects exploding" (Entrenology)
+
+Framed for solo builders ("execution speed of an entire engineering team"); the caption also funnels toward a paid ebook, but all five repos are independently verified below — all MIT, all pushed within the last 3 days:
+
+### 9.5 — [diegosouzapw/OmniRoute](https://github.com/diegosouzapw/OmniRoute) · 73.7k ⭐ · MIT · TypeScript
+**Value prop:** Free MIT AI gateway: one endpoint, 359 providers (150+ free), 1200+ models. Route across the entire market from a single integration instead of wiring each provider.
+**Score:** remit 4 + local 1.5 + maturity 2 + deploy 2. *Why it matters for us:* this is the cheapest-model-routing lever as free infrastructure — 150+ free providers means the "route by difficulty" tactic can start at $0. Highest score on this page to date, and the most direct bill-cutter in the set.
+**Source:** https://www.instagram.com/p/DdtRDoSCll-/
+
+### 8.5 — [mattpocock/skills](https://github.com/mattpocock/skills) · 278k ⭐ · MIT · Shell
+**Value prop:** Portable engineering skills for AI coding agents, straight from Matt Pocock's own .agents directory — "Skills for Real Engineers."
+**Score:** remit 2.5 + local 2 + maturity 2 + deploy 2. *Why it matters for us:* the playbook's own skill-system thesis, from the practitioner who gave the "Fixing the PR Bottleneck" talk — a reference implementation of encoded team taste.
+**Source:** https://www.instagram.com/p/DdtRDoSCll-/
+
+### 8.0 — [deepseek-ai/deepseek-harness](https://github.com/deepseek-ai/deepseek-harness) · 244.6k ⭐ · MIT · TypeScript
+**Value prop:** "Everything is a Plugin" — a runtime that turns models into agents through a plugin architecture.
+**Score:** remit 2.5 + local 1.5 + maturity 2 + deploy 1.5. *Why it matters for us:* harness engineering is the factory-talk thesis; a 244k-star plugin runtime is the reference architecture to study before building your own.
+**Source:** https://www.instagram.com/p/DdtRDoSCll-/
+
+### 8.0 — [stablyai/orca](https://github.com/stablyai/orca) · 86.5k ⭐ · MIT · TypeScript
+**Value prop:** An ADE (agentic development environment) for working with a fleet of parallel agents — run any coding agent with your own subscription, in parallel workspaces.
+**Score:** remit 2.5 + local 1.5 + maturity 2 + deploy 2. *Why it matters for us:* parallel-agent fleets are where the next cost blowup lives; "use your own subscription" is the cost-control framing, and fleet management is the missing ops layer.
+**Source:** https://www.instagram.com/p/DdtRDoSCll-/
+
+### 7.5 — [tt-a1i/archify](https://github.com/tt-a1i/archify) · 78.7k ⭐ · MIT · JavaScript
+**Value prop:** Turns any idea, plan, or codebase into a beautiful interactive diagram — shipped as an agent skill for Claude Code, Codex, and more.
+**Score:** remit 2 + local 1.5 + maturity 2 + deploy 2. *Why it matters for us:* architecture diagrams are onboarding context — generated, visual, and agent-consumable, they cut the "read the whole repo to understand it" token tax for every new agent session.
+**Source:** https://www.instagram.com/p/DdtRDoSCll-/
