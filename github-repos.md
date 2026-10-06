@@ -126,3 +126,10 @@ Framed as guardrails for safety and quality — the post opens with "one in four
 **Value prop:** A human-vetted map of 840 open-source apps you can actually use — AI, chat, editors, media, productivity — with Windows/macOS/Linux/self-hosted lists, active-vs-abandoned tags, and security alerts. The anti-awesome-list: curated against dead repos, not a dump of them.
 **Score:** remit 1.5 + local 1.5 + maturity 2 + deploy 2. *Why it matters for us:* it's the discovery layer for the local-first stack — when the answer is "replace the paid cloud app with a self-hosted one," this is where you look first. A directory, not a tool, so it scores on usefulness rather than direct remit fit.
 **Source:** https://www.instagram.com/p/Dd_6oRisdsT/
+
+## Oct 2 — @liamjohnston.ai "SkillOpt-Sleep" (Liam Johnston)
+
+### 8.0 — [microsoft/SkillOpt](https://github.com/microsoft/SkillOpt) · 18.1k ⭐ · MIT · Python
+**Value prop:** Microsoft's text-space optimizer for agent skills: it reviews your past Claude Code sessions, finds recurring tasks and repeated corrections, and proposes edits to your skills and project instructions — validated on held-out examples before you accept, with human review and automatic backups. "Learn while you sleep": schedule runs overnight, review proposals in the morning. The mechanism is the GEPA pattern from the playbook (trajectory-driven edits, validation-gated updates), pointed at skills instead of prompts.
+**Score:** remit 3 + local 1.5 + maturity 2 + deploy 1.5. *Why it matters for us:* every repeated correction you make to Copilot is a skill edit you haven't written yet — this automates exactly that capture loop. Honest caveats from the author: preview software, real runs consume model allowance/budget, session-derived content goes to your configured provider — start with non-sensitive work.
+**Source:** https://www.instagram.com/p/DeAWXL3iACs/
