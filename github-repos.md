@@ -133,3 +133,32 @@ Framed as guardrails for safety and quality — the post opens with "one in four
 **Value prop:** Microsoft's text-space optimizer for agent skills: it reviews your past Claude Code sessions, finds recurring tasks and repeated corrections, and proposes edits to your skills and project instructions — validated on held-out examples before you accept, with human review and automatic backups. "Learn while you sleep": schedule runs overnight, review proposals in the morning. The mechanism is the GEPA pattern from the playbook (trajectory-driven edits, validation-gated updates), pointed at skills instead of prompts.
 **Score:** remit 3 + local 1.5 + maturity 2 + deploy 1.5. *Why it matters for us:* every repeated correction you make to Copilot is a skill edit you haven't written yet — this automates exactly that capture loop. Honest caveats from the author: preview software, real runs consume model allowance/budget, session-derived content goes to your configured provider — start with non-sensitive work.
 **Source:** https://www.instagram.com/p/DeAWXL3iACs/
+
+## Sep 25 — @qendresahhoti "5 infrastructure repos" (Qendresa Hoti)
+
+"Five GitHub repositories the AI builder community cannot stop talking about — and none of them is a model. This week it's all infrastructure, the stuff around the model that decides whether your agent is fast, honest, and yours. The harness is the story now."
+
+### 8.5 — [Asymptote-Labs/agent-beacon](https://github.com/Asymptote-Labs/agent-beacon) · 1.8k ⭐ · MIT · Go
+**Value prop:** The cross-harness, self-improving memory layer for AI agents — carries your corrections across Claude Code, Cursor, Codex, and 20+ more tools, instead of each tool forgetting everything.
+**Score:** remit 4 + local 2 + maturity 1 + deploy 1.5. *Why it matters for us:* cross-harness memory is the playbook's own thesis (Project Four, the memory-maps work) — this is the closest shipping implementation. Self-improving layer means corrections compound instead of repeating.
+**Source:** https://www.instagram.com/p/DduETr9iOkf/
+
+### 8.0 — [firecrawl/firecrawl](https://github.com/firecrawl/firecrawl) · 189k ⭐ · AGPL-3.0 · TypeScript
+**Value prop:** Turns any messy page or PDF into clean Markdown your agent can actually read — search, scrape, and interact with the web at scale. The ingestion front door, same category as MinerU.
+**Score:** remit 3 + local 1 + maturity 2 + deploy 2. *Why it matters for us:* "retrieve, don't stuff" needs clean input; this is the most adopted web→Markdown pipeline in existence. **AGPL-3.0 — legal review before enterprise use or modification.**
+**Source:** https://www.instagram.com/p/DduETr9iOkf/
+
+### 6.5 — [kitasota/jev-ultrafast](https://github.com/kitasota/jev-ultrafast) · 0 ⭐ · MIT · Python
+**Value prop:** A browser agent that *chooses* instead of generating — picks from what the page offers (Jev-style decision pattern applied to browsing), with seven-second searches as the demo claim.
+**Score:** remit 4 + local 1.5 + maturity 0 + deploy 1. *Why it matters for us:* the decision-instead-of-generation pattern is the cheapest tokenomics lever in the playbook, and browsing is where agents currently burn the most tokens guessing. Two weeks old, zero stars — pattern to watch, not code to adopt yet.
+**Source:** https://www.instagram.com/p/DduETr9iOkf/
+
+### 6.5 — [jamiepine/voicebox](https://github.com/jamiepine/voicebox) · 56.5k ⭐ · MIT · TypeScript
+**Value prop:** The open-source AI voice studio — clone, dictate, create. Hold a key, talk, it types; nothing leaves your laptop.
+**Score:** remit 1 + local 2 + maturity 2 + deploy 1.5. *Why it matters for us:* local-first voice input for the team's workflow; low remit fit beyond that, but the local-only posture is the pattern to note.
+**Source:** https://www.instagram.com/p/DduETr9iOkf/
+
+### 6.0 — [OpenCut-app/OpenCut](https://github.com/OpenCut-app/OpenCut) · 93k ⭐ · MIT · TypeScript
+**Value prop:** The open-source CapCut alternative — videos stay on your machine.
+**Score:** remit 0.5 + local 2 + maturity 2 + deploy 1.5. *Why it matters for us:* minimal direct remit fit (video editing, not agent infra) — included for completeness of the roundup; the local-first distribution model is the only transferable lesson.
+**Source:** https://www.instagram.com/p/DduETr9iOkf/

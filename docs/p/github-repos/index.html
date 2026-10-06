@@ -104,7 +104,29 @@
 <h3 id="80-microsoftskillopt-181k-mit-python">8.0 — <a href="https://github.com/microsoft/SkillOpt">microsoft/SkillOpt</a> · 18.1k ⭐ · MIT · Python</h3>
 <p><strong>Value prop:</strong> Microsoft's text-space optimizer for agent skills: it reviews your past Claude Code sessions, finds recurring tasks and repeated corrections, and proposes edits to your skills and project instructions — validated on held-out examples before you accept, with human review and automatic backups. "Learn while you sleep": schedule runs overnight, review proposals in the morning. The mechanism is the GEPA pattern from the playbook (trajectory-driven edits, validation-gated updates), pointed at skills instead of prompts.
 <strong>Score:</strong> remit 3 + local 1.5 + maturity 2 + deploy 1.5. <em>Why it matters for us:</em> every repeated correction you make to Copilot is a skill edit you haven't written yet — this automates exactly that capture loop. Honest caveats from the author: preview software, real runs consume model allowance/budget, session-derived content goes to your configured provider — start with non-sensitive work.
-<strong>Source:</strong> https://www.instagram.com/p/DeAWXL3iACs/</p></div></details></article></div>
+<strong>Source:</strong> https://www.instagram.com/p/DeAWXL3iACs/</p>
+</div></details><details class="sec"><summary>Sep 25 — @qendresahhoti "5 infrastructure repos" (Qendresa Hoti)</summary><div class="sec-body">
+<p>"Five GitHub repositories the AI builder community cannot stop talking about — and none of them is a model. This week it's all infrastructure, the stuff around the model that decides whether your agent is fast, honest, and yours. The harness is the story now."</p>
+<h3 id="85-asymptote-labsagent-beacon-18k-mit-go">8.5 — <a href="https://github.com/Asymptote-Labs/agent-beacon">Asymptote-Labs/agent-beacon</a> · 1.8k ⭐ · MIT · Go</h3>
+<p><strong>Value prop:</strong> The cross-harness, self-improving memory layer for AI agents — carries your corrections across Claude Code, Cursor, Codex, and 20+ more tools, instead of each tool forgetting everything.
+<strong>Score:</strong> remit 4 + local 2 + maturity 1 + deploy 1.5. <em>Why it matters for us:</em> cross-harness memory is the playbook's own thesis (Project Four, the memory-maps work) — this is the closest shipping implementation. Self-improving layer means corrections compound instead of repeating.
+<strong>Source:</strong> https://www.instagram.com/p/DduETr9iOkf/</p>
+<h3 id="80-firecrawlfirecrawl-189k-agpl-30-typescript">8.0 — <a href="https://github.com/firecrawl/firecrawl">firecrawl/firecrawl</a> · 189k ⭐ · AGPL-3.0 · TypeScript</h3>
+<p><strong>Value prop:</strong> Turns any messy page or PDF into clean Markdown your agent can actually read — search, scrape, and interact with the web at scale. The ingestion front door, same category as MinerU.
+<strong>Score:</strong> remit 3 + local 1 + maturity 2 + deploy 2. <em>Why it matters for us:</em> "retrieve, don't stuff" needs clean input; this is the most adopted web→Markdown pipeline in existence. <strong>AGPL-3.0 — legal review before enterprise use or modification.</strong>
+<strong>Source:</strong> https://www.instagram.com/p/DduETr9iOkf/</p>
+<h3 id="65-kitasotajev-ultrafast-0-mit-python">6.5 — <a href="https://github.com/kitasota/jev-ultrafast">kitasota/jev-ultrafast</a> · 0 ⭐ · MIT · Python</h3>
+<p><strong>Value prop:</strong> A browser agent that <em>chooses</em> instead of generating — picks from what the page offers (Jev-style decision pattern applied to browsing), with seven-second searches as the demo claim.
+<strong>Score:</strong> remit 4 + local 1.5 + maturity 0 + deploy 1. <em>Why it matters for us:</em> the decision-instead-of-generation pattern is the cheapest tokenomics lever in the playbook, and browsing is where agents currently burn the most tokens guessing. Two weeks old, zero stars — pattern to watch, not code to adopt yet.
+<strong>Source:</strong> https://www.instagram.com/p/DduETr9iOkf/</p>
+<h3 id="65-jamiepinevoicebox-565k-mit-typescript">6.5 — <a href="https://github.com/jamiepine/voicebox">jamiepine/voicebox</a> · 56.5k ⭐ · MIT · TypeScript</h3>
+<p><strong>Value prop:</strong> The open-source AI voice studio — clone, dictate, create. Hold a key, talk, it types; nothing leaves your laptop.
+<strong>Score:</strong> remit 1 + local 2 + maturity 2 + deploy 1.5. <em>Why it matters for us:</em> local-first voice input for the team's workflow; low remit fit beyond that, but the local-only posture is the pattern to note.
+<strong>Source:</strong> https://www.instagram.com/p/DduETr9iOkf/</p>
+<h3 id="60-opencut-appopencut-93k-mit-typescript">6.0 — <a href="https://github.com/OpenCut-app/OpenCut">OpenCut-app/OpenCut</a> · 93k ⭐ · MIT · TypeScript</h3>
+<p><strong>Value prop:</strong> The open-source CapCut alternative — videos stay on your machine.
+<strong>Score:</strong> remit 0.5 + local 2 + maturity 2 + deploy 1.5. <em>Why it matters for us:</em> minimal direct remit fit (video editing, not agent infra) — included for completeness of the roundup; the local-first distribution model is the only transferable lesson.
+<strong>Source:</strong> https://www.instagram.com/p/DduETr9iOkf/</p></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../";</script><script src="../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
