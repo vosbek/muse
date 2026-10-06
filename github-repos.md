@@ -119,3 +119,10 @@ Framed as guardrails for safety and quality — the post opens with "one in four
 **Value prop:** OpenAI's official harness for turning project work into isolated, autonomous implementation runs — connect it to Linear, it monitors incoming work and spawns agents per task. The standout is the automated proof-of-work pipeline: agents verify CI status, run complexity analyses, gather PR feedback, and produce walkthrough videos before anything merges. Ships a general spec plus an experimental Elixir reference implementation for teams practicing harness engineering.
 **Score:** remit 3 + local 1 + maturity 2 + deploy 1.5. *Why it matters for us:* "manage work instead of supervising coding agents" is the factory-talk thesis made official — and the proof-of-work pipeline (CI + complexity + PR feedback + video walkthrough as merge gates) is the verification pattern every enterprise agent deployment needs. Experimental status keeps deploy at 1.5.
 **Source:** https://www.instagram.com/p/DeD1oLtgbPy/
+
+## Oct 2 — @marc.kaz "definitive-opensource" (Marc Kaz)
+
+### 7.0 — [mustbeperfect/definitive-opensource](https://github.com/mustbeperfect/definitive-opensource) · 3.6k ⭐ · MIT
+**Value prop:** A human-vetted map of 840 open-source apps you can actually use — AI, chat, editors, media, productivity — with Windows/macOS/Linux/self-hosted lists, active-vs-abandoned tags, and security alerts. The anti-awesome-list: curated against dead repos, not a dump of them.
+**Score:** remit 1.5 + local 1.5 + maturity 2 + deploy 2. *Why it matters for us:* it's the discovery layer for the local-first stack — when the answer is "replace the paid cloud app with a self-hosted one," this is where you look first. A directory, not a tool, so it scores on usefulness rather than direct remit fit.
+**Source:** https://www.instagram.com/p/Dd_6oRisdsT/
