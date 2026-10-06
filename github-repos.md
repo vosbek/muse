@@ -69,3 +69,32 @@ Two of the eight (VoiceStudio, Hindsight) are already covered above. The other s
 **Value prop:** Analyzes a GitHub repo into actionable insights, visual diagrams, and exportable reports — AI breakdown of code quality, architecture, and health signals.
 **Score:** remit 1 + local 2 + maturity 0.5 + deploy 1.5. *Why it matters for us:* repo-health visibility is useful, but the project has been quiet since March — evaluate before adopting.
 **Source:** https://www.instagram.com/p/Dd30VfSD4nA/
+
+## Sep 27 — @sebastianhardy_ "5 guardrail repos before your agent writes another line" (Sebastian Hardy)
+
+Framed as guardrails for safety and quality — the post opens with "one in four AI skills people share online has a security hole." Links were DM-gated; repos identified from the video and verified on GitHub:
+
+### 9.0 — [NVIDIA/SkillSpector](https://github.com/NVIDIA/SkillSpector) · 19.5k ⭐ · Apache-2.0 · Python
+**Value prop:** NVIDIA's security scanner for AI agent skills — detects vulnerabilities, malicious patterns, prompt injection, and data exfiltration *before* you install a skill.
+**Score:** remit 3 + local 2 + maturity 2 + deploy 2. *Why it matters for us:* a team standardizing on Copilot + a skill library is building a software supply chain; this is the intake scanner for it. Highest-priority install of the five.
+**Source:** https://www.instagram.com/p/DdzSy8yxipJ/
+
+### 8.5 — [JayPokale/Chisle](https://github.com/JayPokale/Chisle) · 624 ⭐ · MIT · JavaScript
+**Value prop:** Cuts your AI coding agent's token bill on three axes: terse prose, YAGNI-first code, and tool-output compression. Stops the agent rambling and building things you never asked for.
+**Score:** remit 4 + local 2 + maturity 1 + deploy 1.5. *Why it matters for us:* pure tokenomics — output verbosity and unasked-for code are the two most taxable agent behaviors, and this attacks both at the source.
+**Source:** https://www.instagram.com/p/DdzSy8yxipJ/
+
+### 7.5 — [ibelick/ui-skills](https://github.com/ibelick/ui-skills) · 9.4k ⭐ · MIT · TypeScript
+**Value prop:** Skills for design engineers — the design rules pros follow (spacing, motion, accessibility) so agent-built apps stop looking like generic AI output.
+**Score:** remit 1.5 + local 2 + maturity 2 + deploy 2. *Why it matters for us:* same thesis as Impeccable — encoded taste cuts the design re-roll loop, which is token burn.
+**Source:** https://www.instagram.com/p/DdzSy8yxipJ/
+
+### 7.0 — [reticlehq/reticle](https://github.com/reticlehq/reticle) · 1.2k ⭐ · TypeScript
+**Value prop:** "Jev-style machine-native runtime perception" — opens your real app and verifies what the agent claims it built, instead of trusting "done."
+**Score:** remit 2.5 + local 1.5 + maturity 1 + deploy 1.5. *Why it matters for us:* closes the verification gap every agent demo hand-waves past. **License unasserted in the API — check before enterprise use.**
+**Source:** https://www.instagram.com/p/DdzSy8yxipJ/
+
+### 7.0 — [dmmulroy/anti-slop](https://github.com/dmmulroy/anti-slop) · 5.2k ⭐ · MIT · TypeScript
+**Value prop:** Opinionated Oxlint rules that reject low-evidence TypeScript/JavaScript patterns — catches the lazy shortcuts AI loves to write before they land.
+**Score:** remit 1.5 + local 2 + maturity 1.5 + deploy 2. *Why it matters for us:* a lint gate is the cheapest quality control on machine-written code; pairs with the reviewer-subagent pattern from the Pocock talk.
+**Source:** https://www.instagram.com/p/DdzSy8yxipJ/

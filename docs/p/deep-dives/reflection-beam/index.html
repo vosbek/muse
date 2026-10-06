@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reflection Beam — open-weight MoE at 3–4x less inference compute · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a><a href="../../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><div class="hero-visual"><pre class="mermaid">flowchart LR
+    A[Agentic workload] --> R{Jev router}
+    R -->|complex / ambiguous| F[Frontier closed model<br/>$ per token metered]
+    R -->|bulk coding / agents| B[Beam: 23B active MoE<br/>Apache 2.0, self-hosted<br/>~3-4x less inference compute<br/>than GLM-5.2 class]
+    B --> C[Zero marginal token cost<br/>on owned GPUs]</pre></div><h1 id="reflection-beam-open-weight-moe-at-34x-less-inference-compute">Reflection Beam — open-weight MoE at 3–4x less inference compute</h1>
+<p><strong>What it is.</strong> Reflection AI's first frontier open-weight model, unveiled Oct 5, 2026. Text-only mixture-of-experts trained with heavy RL for reasoning, coding, and agentic work — pitched explicitly as the Western answer to DeepSeek/Qwen/Z.ai. Reflection's headline claim is not benchmark supremacy; it's <strong>cost per token</strong>: parity with leading Chinese open models on advanced reasoning at a "fraction of the token cost and inference time compute."</p>
+<p><strong>Specs (Reflection-published, not independently verified).</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Beam</th>
+<th>Z.ai GLM-5.2 (for reference)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Total params</td>
+<td>501B</td>
+<td>~744B</td>
+</tr>
+<tr>
+<td>Active params/token</td>
+<td>23B</td>
+<td>40B</td>
+</tr>
+<tr>
+<td>Pretraining</td>
+<td>23.8T tokens</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Context window</td>
+<td>1M tokens</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Modality</td>
+<td>text-only</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>Reflection says Beam scores <strong>on par with GLM-5.2</strong> on advanced reasoning benchmarks at <strong>3–4x less inference compute</strong> (about 1/4 of GLM-5.3's in their reasoning-efficiency comparison), <strong>outperforms today's leading Western open models</strong>, and outscores Mira Murati's <strong>Inkling</strong> on four coding tests where both report results (Inkling is multimodal; Beam is text-only).</p>
+<p><strong>The tokenomics angle.</strong> This is a second, parallel cost lever to the local-first/hardware bet (RTX Spark): cheaper <em>weights</em>, not just cheaper <em>silicon</em>. The MoE arithmetic is what makes the claim plausible — with only 23B active per token (57% of GLM-5.2's), per-token FLOPs fall mechanically; the rest of the 3–4x comes from architecture/RL efficiency claims Reflection hasn't detailed. For an enterprise already routing workloads (Jev model router pattern), Beam is the model you'd route <em>coding/agent bulk work</em> to: frontier-adjacent reasoning at a per-token cost that undercuts both Chinese open weights and every closed metered API.</p>
+
+<p><strong>Deploy math.</strong> 501B total params means ~500GB at FP8 / ~250GB at INT4 — this is a <strong>multi-GPU server model</strong>, not a laptop one: expert-parallel serving across 8×H100/H200-class GPUs, or quantized/distilled variants for smaller estates. The 1M context window cuts per-token cost <em>per answer</em>, but KV-cache memory at 1M tokens is itself enormous — realistic enterprise configs will run shorter windows. It fits the playbook's "local complements" lever as <strong>fixed capex at zero marginal token cost</strong> for bulk workloads, complementing the per-call metered stack. Expect quantized/community checkpoints to make it runnable on smaller hardware within weeks of the weights drop.</p>
+<p><strong>What's real vs. pending.</strong> ✅ Specs, benchmark claims, Apache 2.0 license, founders ($4.7B raised, $25B valuation, ex-DeepMind Misha Laskin &amp; Ioannis Antonoglou, $7B+ compute commitments incl. SpaceX/Colossus and Nebius GB300 through 2029). ❌ <strong>Weights not yet released</strong> — Reflection says weights + full technical details ship this month (Oct 2026), distributed via hyperscalers/neoclouds with open-source library integrations. Independent verification of the 3–4x claim: none yet. Don't build production on it until weights land and your eval set runs against it.</p>
+<p><strong>Local watchlist.</strong> (1) Weights drop on reflection.ai / Hugging Face — build the eval path now with a downloadable MoE (Qwen/DeepSeek) so Beam swaps in day one. (2) Hosted inference pricing — the 3–4x claim only matters if providers price it that way. (3) Inkling vs Beam: multimodal vs text-only cost/performance for your actual workload mix.</p>
+<p><strong>Links.</strong> TechCrunch announcement: https://techcrunch.com/2026/10/05/reflection-debuts-beam-a-open-weight-ai-model-to-rival-chinese-models-at-lower-compute-cost/ · Founders interview: https://sources.news/p/reflection-founders-open-weight-beam-release</p></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>
