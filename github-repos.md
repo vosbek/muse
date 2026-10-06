@@ -98,3 +98,10 @@ Framed as guardrails for safety and quality — the post opens with "one in four
 **Value prop:** Opinionated Oxlint rules that reject low-evidence TypeScript/JavaScript patterns — catches the lazy shortcuts AI loves to write before they land.
 **Score:** remit 1.5 + local 2 + maturity 1.5 + deploy 2. *Why it matters for us:* a lint gate is the cheapest quality control on machine-written code; pairs with the reviewer-subagent pattern from the Pocock talk.
 **Source:** https://www.instagram.com/p/DdzSy8yxipJ/
+
+## Sep 22 — @githubsignals "System One Harness: AI That Never Lies" (Github Signals)
+
+### 8.0 — [HarnessRouter/SystemOneHarness](https://github.com/HarnessRouter/SystemOneHarness) · 202 ⭐ · Apache-2.0 · Python
+**Value prop:** The System One harness for System One models — run Jev and other decision models locally or via HarnessRouter.ai. The model picks one action from a strict list of options instead of generating text, tracks its own confidence, and refuses to act when unsure — producing a verifiable record of every decision. (The video's "never lies / perfect for banking" framing is the creator's; the mechanism is real, the guarantees are bounded by the option set you define.)
+**Score:** remit 4 + local 2 + maturity 0.5 + deploy 1.5. *Why it matters for us:* this is the harness half of the Jev thesis — OpenJev is the decision server, this is the runtime that runs it locally. Together they're the full local-first decision stack. Young repo (3 weeks), watch for hardening.
+**Source:** https://www.instagram.com/p/Ddnh350ijC7/
