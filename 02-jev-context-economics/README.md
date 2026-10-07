@@ -1,6 +1,6 @@
 # 02 — Jev Context Economics
 
-**Thesis:** The cheapest token is the one you never spend. These three reels form a coherent economic argument: small models should make the decisions, retrieval should happen before reasoning, and the whole LLM-centric cost structure is transitional. The Jev pattern (a tiny model deciding, a big model executing) and jevgrep's measured 30% cost cut are the deployable present; the SLM prediction is the direction of travel.
+**Thesis:** The cheapest token is the one you never spend. These five entries form a coherent economic argument: small models should make the decisions, retrieval should happen before reasoning, and the whole LLM-centric cost structure is transitional. The Jev pattern (a tiny model deciding, a big model executing) and jevgrep's measured 30% cost cut are the deployable present; the SLM prediction is the direction of travel.
 
 ### jevgrep: cut coding-agent cost ~30% with better file retrieval
 - **Creator:** @gittrend.io · **Date:** 2026-09-29
@@ -29,6 +29,13 @@
 - **Repos/tools:** None (checklist; batch APIs and caching are provider features).
 - **Extractable skill:** Bill-first architecture review — measure the biggest line on the bill (cost per request/feature), then apply routing, caching, and guardrails before touching model choice.
 - **Source:** https://www.instagram.com/p/Dd-Y4rZOSn3/
+
+### pg-jev: filter and rank Postgres rows with plain-language conditions
+- **Creator:** @gittrend.io · **Date:** 2026-10-05
+- **What it suggests:** pg-jev is a PostgreSQL extension that lets you filter, rank, and classify table rows with conditions you'd say out loud — "the customer is angry," "the name is European," "order products by how luxurious they are" — powered by TypeSafe's Jev System One model returning calibrated probabilities. No vector column, no embeddings, no indexes; it composes with normal SQL filters and runs inside Postgres (14–17; install via PGXN, from source, or Docker). The performance numbers shown: ~2,000 rows in ~3 seconds on first run, ~50ms on repeat. This is the Jev decision-instead-of-generation pattern applied to the database layer: semantic WHERE clauses as cheap calibrated decisions, replacing embedding pipelines or LLM post-processing. One caveat for a local-first posture: it requires a TypeSafe API key — the decision model is a hosted service, so the semantic layer isn't fully self-contained.
+- **Repos/tools:** [realZachi/pg-jev](https://github.com/realZachi/pg-jev) (1k stars, pushed this week)
+- **Extractable skill:** Semantic filtering at the data layer — push "does this row match?" decisions into a cheap decision model inside the database, before rows ever reach agent context.
+- **Source:** https://www.instagram.com/p/DeIQQzcE_J-/
 
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).

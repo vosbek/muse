@@ -3,7 +3,7 @@
 <title>02 — Jev Context Economics · AI Skills Playbook</title><link rel="stylesheet" href="../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
 <nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a><a href="../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><h1 id="02-jev-context-economics">02 — Jev Context Economics</h1>
-<p><strong>Thesis:</strong> The cheapest token is the one you never spend. These three reels form a coherent economic argument: small models should make the decisions, retrieval should happen before reasoning, and the whole LLM-centric cost structure is transitional. The Jev pattern (a tiny model deciding, a big model executing) and jevgrep's measured 30% cost cut are the deployable present; the SLM prediction is the direction of travel.</p>
+<p><strong>Thesis:</strong> The cheapest token is the one you never spend. These five entries form a coherent economic argument: small models should make the decisions, retrieval should happen before reasoning, and the whole LLM-centric cost structure is transitional. The Jev pattern (a tiny model deciding, a big model executing) and jevgrep's measured 30% cost cut are the deployable present; the SLM prediction is the direction of travel.</p>
 <h3 id="jevgrep-cut-coding-agent-cost-30-with-better-file-retrieval">jevgrep: cut coding-agent cost ~30% with better file retrieval</h3>
 <ul>
 <li><strong>Creator:</strong> @gittrend.io · <strong>Date:</strong> 2026-09-29</li>
@@ -35,6 +35,14 @@
 <li><strong>Repos/tools:</strong> None (checklist; batch APIs and caching are provider features).</li>
 <li><strong>Extractable skill:</strong> Bill-first architecture review — measure the biggest line on the bill (cost per request/feature), then apply routing, caching, and guardrails before touching model choice.</li>
 <li><strong>Source:</strong> https://www.instagram.com/p/Dd-Y4rZOSn3/</li>
+</ul>
+<h3 id="pg-jev-filter-and-rank-postgres-rows-with-plain-language-conditions">pg-jev: filter and rank Postgres rows with plain-language conditions</h3>
+<ul>
+<li><strong>Creator:</strong> @gittrend.io · <strong>Date:</strong> 2026-10-05</li>
+<li><strong>What it suggests:</strong> pg-jev is a PostgreSQL extension that lets you filter, rank, and classify table rows with conditions you'd say out loud — "the customer is angry," "the name is European," "order products by how luxurious they are" — powered by TypeSafe's Jev System One model returning calibrated probabilities. No vector column, no embeddings, no indexes; it composes with normal SQL filters and runs inside Postgres (14–17; install via PGXN, from source, or Docker). The performance numbers shown: ~2,000 rows in ~3 seconds on first run, ~50ms on repeat. This is the Jev decision-instead-of-generation pattern applied to the database layer: semantic WHERE clauses as cheap calibrated decisions, replacing embedding pipelines or LLM post-processing. One caveat for a local-first posture: it requires a TypeSafe API key — the decision model is a hosted service, so the semantic layer isn't fully self-contained.</li>
+<li><strong>Repos/tools:</strong> <a href="https://github.com/realZachi/pg-jev">realZachi/pg-jev</a> (1k stars, pushed this week)</li>
+<li><strong>Extractable skill:</strong> Semantic filtering at the data layer — push "does this row match?" decisions into a cheap decision model inside the database, before rows ever reach agent context.</li>
+<li><strong>Source:</strong> https://www.instagram.com/p/DeIQQzcE_J-/</li>
 </ul>
 <details class="sec"><summary>From X bookmarks (Sep 2026)</summary><div class="sec-body">
 <p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>
