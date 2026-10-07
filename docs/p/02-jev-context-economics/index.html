@@ -2,8 +2,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>02 — Jev Context Economics · AI Skills Playbook</title><link rel="stylesheet" href="../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a><a href="../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><h1 id="02-jev-context-economics">02 — Jev Context Economics</h1>
-<p><strong>Thesis:</strong> The cheapest token is the one you never spend. These five entries form a coherent economic argument: small models should make the decisions, retrieval should happen before reasoning, and the whole LLM-centric cost structure is transitional. The Jev pattern (a tiny model deciding, a big model executing) and jevgrep's measured 30% cost cut are the deployable present; the SLM prediction is the direction of travel.</p>
+<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a><a href="../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><div class="hero-visual"><p><img alt="Jev + Ontology: The Judge and the Law — the control layer that governs how the rules evolve" src="jev-ontology-judge-and-law.png" /></p></div><h1 id="02-jev-context-economics">02 — Jev Context Economics</h1>
+<p><strong>Thesis:</strong> The cheapest token is the one you never spend. These six entries form a coherent economic argument: small models should make the decisions, retrieval should happen before reasoning, and the whole LLM-centric cost structure is transitional. The Jev pattern (a tiny model deciding, a big model executing) and jevgrep's measured 30% cost cut are the deployable present; the SLM prediction is the direction of travel.</p>
 <h3 id="jevgrep-cut-coding-agent-cost-30-with-better-file-retrieval">jevgrep: cut coding-agent cost ~30% with better file retrieval</h3>
 <ul>
 <li><strong>Creator:</strong> @gittrend.io · <strong>Date:</strong> 2026-09-29</li>
@@ -44,6 +44,15 @@
 <li><strong>Extractable skill:</strong> Semantic filtering at the data layer — push "does this row match?" decisions into a cheap decision model inside the database, before rows ever reach agent context.</li>
 <li><strong>Source:</strong> https://www.instagram.com/p/DeIQQzcE_J-/</li>
 </ul>
+<h3 id="jev-ontology-the-judge-and-the-law-infographic">Jev + Ontology: The Judge and the Law (infographic)</h3>
+<ul>
+<li><strong>Creator:</strong> @rakeshgohel01 (same author as the Context Language Models infographic already in this playbook) · <strong>Date:</strong> 2026-10-07</li>
+<li><strong>What it suggests:</strong> The full decision architecture the Jev pattern implies, in five parts. The <strong>Ontology (The Law)</strong> defines what the options mean — classes and relations, disjoint boundaries, business constraints — i.e., it defines the <em>answer space</em> so the judge never faces an open-ended question. <strong>Jev (The Judge)</strong> evaluates each case and returns a typed decision with calibrated confidence (the example: same customer 0.91 / different 0.07 / unknown 0.02), emitting Choice, Score, or a Noul yes/no. <strong>Agent/Code (Takes action)</strong> routes on confidence thresholds you define: ≥0.90 acts automatically, 0.50–0.90 escalates to an LLM for more context, &lt;0.50 goes to a human. <strong>Execution Trajectories (Real-World Signal)</strong> mine escalation patterns to reveal where the ontology has gaps, and the <strong>Control layer (The Governance)</strong> closes the loop — observe usage gaps, propose new rules, validate and test, version and roll back (v1→v2→v3). The bottom strip restates the economic core: confidence decides who acts — high → code acts, medium → LLM reviews, low → person decides.</li>
+<li><strong>Repos/tools:</strong> None (architecture diagram; Jev = TypeSafe's decision model).</li>
+<li><strong>Extractable skill:</strong> Confidence-routed escalation — bound the action space with an ontology, judge with a cheap calibrated model, and spend frontier tokens only on the medium-confidence band; version the rules and let escalations teach the ontology.</li>
+<li><strong>Source:</strong> Infographic by @rakeshgohel01, shared via Facebook.</li>
+</ul>
+
 <details class="sec"><summary>From X bookmarks (Sep 2026)</summary><div class="sec-body">
 <p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>
 <h3 id="open-source-adapter-that-decouples-your-agent-from-any-single-llm-provider">Open-source adapter that decouples your agent from any single LLM provider</h3>
