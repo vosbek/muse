@@ -191,3 +191,12 @@ Framed for solo builders ("execution speed of an entire engineering team"); the 
 **Value prop:** Turns any idea, plan, or codebase into a beautiful interactive diagram — shipped as an agent skill for Claude Code, Codex, and more.
 **Score:** remit 2 + local 1.5 + maturity 2 + deploy 2. *Why it matters for us:* architecture diagrams are onboarding context — generated, visual, and agent-consumable, they cut the "read the whole repo to understand it" token tax for every new agent session.
 **Source:** https://www.instagram.com/p/DdtRDoSCll-/
+
+## Oct 7 — @justinmendez.ai "diagram-design" (Justin Mendez)
+
+A single repo, not a roundup — recommended for the jump in his agent's diagram quality ("visual diagrams that actually make sense to a human"). Trending on GitHub again this week on a 2.5.10 release:
+
+### 8.0 — [cathrynlavery/diagram-design](https://github.com/cathrynlavery/diagram-design) · 44.8k ⭐ · MIT · HTML
+**Value prop:** Editorial diagram design as an agent skill — 42 diagram types as self-contained HTML + SVG, no build step, no JS, no external images. Scrapes your website's style tokens and matches the brand in 60 seconds. New in 2.5.10: ten more layout grammars (Sankey, fishbone, Wardley map, kanban, user journey, deployment, dependency graph, UML class, story map, database schema). Works with Claude Code, Codex, **GitHub Copilot**, Factory Droid, and Pi — "No shadows. No Mermaid slop."
+**Score:** remit 2 + local 2 + maturity 2 + deploy 2. *Why it matters for us:* this playbook's standing bar is diagrams-or-infographics, not walls of text — and the failure mode this repo fixes (generic rounded-box Mermaid slop) is exactly the one we keep fighting. A Copilot-compatible skill the whole team can install, outputting brand-matched editorial diagrams; also redraws existing draw.io/Mermaid/Excalidraw sources. Project site: diagramdesign.dev.
+**Source:** https://www.instagram.com/reel/DeMvIM-IdSR/
