@@ -1,6 +1,6 @@
 # 06 — Design & Vibe Coding
 
-**Thesis:** AI-generated design converges on the mean — purple gradients, generic layouts, the look you can spot in two seconds — because models regress to their training data. These seven reels are the counter-system: reference libraries, locked style guides, curated skill sets, animation toolkits, and multi-agent divergence, all in service of one idea. Taste isn't a vibe; it's infrastructure. And the enterprise signal (@tory.trombley) says this is now how product work actually gets done inside big tech.
+**Thesis:** AI-generated design converges on the mean — purple gradients, generic layouts, the look you can spot in two seconds — because models regress to their training data. These seven reels plus the Karpathy talk are the counter-system: reference libraries, locked style guides, curated skill sets, animation toolkits, and multi-agent divergence, all in service of one idea. Taste isn't a vibe; it's infrastructure. And the enterprise signal (@tory.trombley) says this is now how product work actually gets done inside big tech.
 
 ### Free interface starter skins for AI-built UIs
 - **Creator:** @kem_glitch · **Date:** 2026-09-25
@@ -50,6 +50,13 @@
 - **Repos/tools:** Manus AI (manus.ai)
 - **Extractable skill:** Named-style vocabulary — encode design languages as named tokens in your design skill; one word replaces pages of prompt.
 - **Source:** https://www.instagram.com/reel/DbKrDR1IQ2v/
+
+### From Vibe Coding to Agentic Engineering (recommended watch)
+- **Creator:** @shareefico (recommending Andrej Karpathy's Sequoia AI Ascent 2026 talk, Apr 2026) · **Date:** 2026-10-03
+- **What it suggests:** Karpathy places the agentic-coding inflection in December 2025 — agent-written chunks "just came out fine" and he stopped correcting them — and argues the discipline going forward isn't vibe coding but **agentic engineering**: humans hold spec, taste, and oversight while agents do the implementation. He frames the stack as Software 3.0 (prompts as programs, LLMs as interpreters), warns capability is jagged because RL trains around verifiable circuits, and lands on the line that defines this whole folder: you can outsource thinking but never understanding. The enterprise read: vibe coding is the prototype tier; agentic engineering — specs, evals, verification — is the production tier.
+- **Repos/tools:** None (talk).
+- **Extractable skill:** Spec-first agent work — write the spec and the verification step before the agent writes code; hold taste and oversight as the human's job.
+- **Source:** https://www.instagram.com/p/DeCZn6JMmYf/ · Talk: https://www.youtube.com/watch?v=96jN2OCOfLs
 
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).

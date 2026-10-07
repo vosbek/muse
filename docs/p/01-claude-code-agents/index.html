@@ -3,7 +3,7 @@
 <title>01 — Claude Code & Agents · AI Skills Playbook</title><link rel="stylesheet" href="../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
 <nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a><a href="../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><h1 id="01-claude-code-agents">01 — Claude Code &amp; Agents</h1>
-<p><strong>Thesis:</strong> Claude Code's power isn't the model — it's the scaffolding around it. Taken together, these eight reels describe a complete operating system for the tool: skills that package repeatable behavior, subagents that keep the main context clean, dynamic workflows that let the agent write its own orchestration, and pipelines that offload heavy analysis to free external engines. The through-line is leverage — a small amount of setup (a skill file, a subagent definition, a slash command) that pays off on every subsequent session.</p>
+<p><strong>Thesis:</strong> Claude Code's power isn't the model — it's the scaffolding around it. Taken together, these ten entries describe a complete operating system for the tool: skills that package repeatable behavior, subagents that keep the main context clean, dynamic workflows that let the agent write its own orchestration, and pipelines that offload heavy analysis to free external engines. The through-line is leverage — a small amount of setup (a skill file, a subagent definition, a slash command) that pays off on every subsequent session.</p>
 <h3 id="turn-instagram-saves-into-a-notion-content-system">Turn Instagram Saves into a Notion content system</h3>
 <ul>
 <li><strong>Creator:</strong> @justyn.ai · <strong>Date:</strong> 2026-07-01</li>
@@ -67,6 +67,22 @@
 <li><strong>Repos/tools:</strong> Claude Code (subagents)</li>
 <li><strong>Extractable skill:</strong> Context-labor division — push discovery, parallel research, and checkpointing into subagents; keep the main thread for judgment and edits only.</li>
 <li><strong>Source:</strong> https://www.instagram.com/reel/DPxE0FDAe71/</li>
+</ul>
+<h3 id="building-great-agent-skills-the-missing-manual-recommended-watch">Building Great Agent Skills: The Missing Manual (recommended watch)</h3>
+<ul>
+<li><strong>Creator:</strong> @shareefico (recommending Matt Pocock's AI Engineer talk) · <strong>Date:</strong> 2026-10-03</li>
+<li><strong>What it suggests:</strong> Names the trap "skill hell" — consuming skills with no rubric for what makes one good, the agent-era version of tutorial hell. The fix is a four-part checklist: <strong>Trigger</strong> (user-invoked vs model-invoked — model-invoked is flexible but costs context and predictability), <strong>Structure</strong> (steps + reference as the two units; keep SKILL.md minimal and push reference material behind context pointers), <strong>Steering</strong> ("leading words" — dense terms that steer reasoning traces; force more "leg work" by splitting complex processes into smaller skills that hide future steps), <strong>Pruning</strong> (one source of truth; delete "sediment," "crud," and no-ops that don't change behavior). This 20-minute talk is the authoring manual behind his mattpocock/skills repo (278k stars, already on this repo's GitHub Repos page at 8.5/10).</li>
+<li><strong>Repos/tools:</strong> <a href="https://github.com/mattpocock/skills">mattpocock/skills</a></li>
+<li><strong>Extractable skill:</strong> Skill authoring rubric — run every skill through trigger/structure/steering/pruning; re-audit and prune on every model upgrade.</li>
+<li><strong>Source:</strong> https://www.instagram.com/p/DeCZn6JMmYf/ · Talk: https://www.youtube.com/watch?v=UNzCG3lw6O0</li>
+</ul>
+<h3 id="we-cut-80-of-claude-codes-system-prompts-boris-cherny-recommended-watch">"We Cut 80% of Claude Code's System Prompts" — Boris Cherny (recommended watch)</h3>
+<ul>
+<li><strong>Creator:</strong> @shareefico (recommending Boris Cherny's Y Combinator interview) · <strong>Date:</strong> 2026-10-03</li>
+<li><strong>What it suggests:</strong> The creator of Claude Code explains that every model generation, Anthropic deletes and rewrites the system prompt, tool prompts, and tool set — because every model is different, and instructions written for one generation don't transfer to the next. For Opus 5 they cut over 80%: most of the prompt was scaffolding correcting behaviors a weaker model got wrong, and Opus 5 "just does it." Their internal method was ablation — delete the entire system prompt, bring it back line by line, measuring each line's impact (there's even an undocumented CLAUDE_CODE_SIMPLE=1 mode that strips all prompts for exactly this test). His advice to users: every 6 months, delete your CLAUDE.md, skills, and hooks, and see what the new model does unassisted. The tokenomics read: prompt mass is mostly compensation for old-model weakness — on every model upgrade, every instruction must re-earn its token cost or be deleted.</li>
+<li><strong>Repos/tools:</strong> Claude Code (--system-prompt flag, CLAUDE_CODE_SIMPLE=1)</li>
+<li><strong>Extractable skill:</strong> Prompt ablation cadence — on each model upgrade, delete custom instructions and re-add only what measured failures prove necessary.</li>
+<li><strong>Source:</strong> https://www.instagram.com/p/DeCZn6JMmYf/ · Talk: https://www.youtube.com/watch?v=qyPCVqFUyDo</li>
 </ul>
 <details class="sec"><summary>From X bookmarks (Sep 2026)</summary><div class="sec-body">
 <p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>

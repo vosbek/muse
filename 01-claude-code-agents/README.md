@@ -1,6 +1,6 @@
 # 01 — Claude Code & Agents
 
-**Thesis:** Claude Code's power isn't the model — it's the scaffolding around it. Taken together, these eight reels describe a complete operating system for the tool: skills that package repeatable behavior, subagents that keep the main context clean, dynamic workflows that let the agent write its own orchestration, and pipelines that offload heavy analysis to free external engines. The through-line is leverage — a small amount of setup (a skill file, a subagent definition, a slash command) that pays off on every subsequent session.
+**Thesis:** Claude Code's power isn't the model — it's the scaffolding around it. Taken together, these ten entries describe a complete operating system for the tool: skills that package repeatable behavior, subagents that keep the main context clean, dynamic workflows that let the agent write its own orchestration, and pipelines that offload heavy analysis to free external engines. The through-line is leverage — a small amount of setup (a skill file, a subagent definition, a slash command) that pays off on every subsequent session.
 
 ### Turn Instagram Saves into a Notion content system
 - **Creator:** @justyn.ai · **Date:** 2026-07-01
@@ -57,6 +57,20 @@
 - **Repos/tools:** Claude Code (subagents)
 - **Extractable skill:** Context-labor division — push discovery, parallel research, and checkpointing into subagents; keep the main thread for judgment and edits only.
 - **Source:** https://www.instagram.com/reel/DPxE0FDAe71/
+
+### Building Great Agent Skills: The Missing Manual (recommended watch)
+- **Creator:** @shareefico (recommending Matt Pocock's AI Engineer talk) · **Date:** 2026-10-03
+- **What it suggests:** Names the trap "skill hell" — consuming skills with no rubric for what makes one good, the agent-era version of tutorial hell. The fix is a four-part checklist: **Trigger** (user-invoked vs model-invoked — model-invoked is flexible but costs context and predictability), **Structure** (steps + reference as the two units; keep SKILL.md minimal and push reference material behind context pointers), **Steering** ("leading words" — dense terms that steer reasoning traces; force more "leg work" by splitting complex processes into smaller skills that hide future steps), **Pruning** (one source of truth; delete "sediment," "crud," and no-ops that don't change behavior). This 20-minute talk is the authoring manual behind his mattpocock/skills repo (278k stars, already on this repo's GitHub Repos page at 8.5/10).
+- **Repos/tools:** [mattpocock/skills](https://github.com/mattpocock/skills)
+- **Extractable skill:** Skill authoring rubric — run every skill through trigger/structure/steering/pruning; re-audit and prune on every model upgrade.
+- **Source:** https://www.instagram.com/p/DeCZn6JMmYf/ · Talk: https://www.youtube.com/watch?v=UNzCG3lw6O0
+
+### "We Cut 80% of Claude Code's System Prompts" — Boris Cherny (recommended watch)
+- **Creator:** @shareefico (recommending Boris Cherny's Y Combinator interview) · **Date:** 2026-10-03
+- **What it suggests:** The creator of Claude Code explains that every model generation, Anthropic deletes and rewrites the system prompt, tool prompts, and tool set — because every model is different, and instructions written for one generation don't transfer to the next. For Opus 5 they cut over 80%: most of the prompt was scaffolding correcting behaviors a weaker model got wrong, and Opus 5 "just does it." Their internal method was ablation — delete the entire system prompt, bring it back line by line, measuring each line's impact (there's even an undocumented CLAUDE_CODE_SIMPLE=1 mode that strips all prompts for exactly this test). His advice to users: every 6 months, delete your CLAUDE.md, skills, and hooks, and see what the new model does unassisted. The tokenomics read: prompt mass is mostly compensation for old-model weakness — on every model upgrade, every instruction must re-earn its token cost or be deleted.
+- **Repos/tools:** Claude Code (--system-prompt flag, CLAUDE_CODE_SIMPLE=1)
+- **Extractable skill:** Prompt ablation cadence — on each model upgrade, delete custom instructions and re-add only what measured failures prove necessary.
+- **Source:** https://www.instagram.com/p/DeCZn6JMmYf/ · Talk: https://www.youtube.com/watch?v=qyPCVqFUyDo
 
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).

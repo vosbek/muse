@@ -4,6 +4,15 @@
 <body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
 <nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a><a href="../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><h1 id="07-ai-news">07 — AI News</h1>
 <p><strong>Thesis:</strong> Two data points, one argument between them. @edhonour's take — the model (Opus 4.5) is excellent, the coding tool (Claude Code) is the bottleneck, and the open Qwen-based alternative won on a real task — reinforces the collection's harness-first theme: evaluate the full stack, not the model in isolation. @leon.petrou's Gemini news shows the other axis that matters: proprietary data access (250M real-world locations) as a moat no parameter count can replicate. Read together: the tooling layer and the data layer are where differentiation now lives, not raw model quality.</p>
+<details class="sec"><summary>Oct 2026</summary><div class="sec-body">
+<h3 id="kolibri-78b-of-capacity-at-346b-active-per-token-sparsity-as-a-serving-economics-play">Kolibri: 78B of capacity at 3.46B active per token — sparsity as a serving-economics play</h3>
+<ul>
+<li><strong>Creator:</strong> Aleph Alpha · <strong>Date:</strong> 2026-10-03 (announced on German Unity Day; full weights on Hugging Face)</li>
+<li><strong>What it suggests:</strong> Aleph Alpha released Kolibri-1, an open-weight English–German MoE transformer — 78.1B total parameters, but the router activates only 3.46B per token (6 of 384 experts per token, plus one shared expert; 50 layers, sliding-window attention on 40 of them). The pitch is the serving-economics frontier: 78B-scale capacity at the compute cost of a ~3B model — Aleph Alpha claims Pareto-front quality-vs-operating-cost in both languages (71% on German benchmarks, decoding faster than GPT OSS A5B / Qwen 3.6 A3B / Gemma 4 A4B). The catch that matters for tokenomics: sparsity cuts compute, not memory — the full 78B still has to live somewhere (~78 GB in FP8/BF16), so Aleph Alpha's minimums are datacenter-class (2× A100 80 GB, 2× H100 SXM5, 1× H200, or 1× B200/B300); one report of ~170 tok/s on a single RTX Pro 6000 in FP8 is unverified. Supports up to 1,048,576 tokens of context, though Aleph Alpha recommends ≤262,144 for serving efficiency — long context is a KV-cache problem before it's an accuracy problem. License is Apache 2.0 (with patent grant), weights downloadable, runs on your own hardware — the "sovereign ops" profile: data stays local, no third-party inference service. Trained on 768 B200 GPUs in Germany and Finland, signed to the EU GPAI code of practice. Also ships a "Merlin-Arthur" behavior: refuses to answer when the provided context is insufficient to verify — a context-grounding discipline worth stealing for enterprise agents.</li>
+<li><strong>Repos/tools:</strong> Aleph Alpha Kolibri (Hugging Face, Apache 2.0; BF16 + FP8 weights), <code>aleph-alpha-inference</code> package for vLLM support</li>
+<li><strong>Extractable skill:</strong> When evaluating sparse models, separate the two cost axes — active-params-per-token sets compute cost per token, total params set the memory floor. And size long-context plans by KV-cache cost, not parameter count. Concrete fit note: at ~78 GB (FP8) this lands inside the 128 GB unified-memory envelope of the RTX Spark-class machines debuting at the Oct 7 Microsoft/NVIDIA keynote — a candidate for the local-vs-Copilot cost-per-task analysis.</li>
+<li><strong>Source:</strong> https://the-decoder.com/aleph-alpha-releases-kolibri-an-open-weight-model-that-makes-the-case-for-european-ai-sovereignty/</li>
+</ul>
 <h3 id="opus-45-is-amazing-claude-code-is-the-problem">Opus 4.5 is amazing — Claude Code is the problem</h3>
 <ul>
 <li><strong>Creator:</strong> @edhonour · <strong>Date:</strong> 2025-11-30</li>
@@ -20,7 +29,7 @@
 <li><strong>Extractable skill:</strong> Data-moat evaluation — when choosing platforms, score proprietary live-data access as heavily as model benchmarks.</li>
 <li><strong>Source:</strong> https://www.instagram.com/reel/DQ65_PejKYJ/</li>
 </ul>
-<details class="sec"><summary>From X bookmarks (Sep 2026)</summary><div class="sec-body">
+</div></details><details class="sec"><summary>From X bookmarks (Sep 2026)</summary><div class="sec-body">
 <p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>
 <h3 id="six-lessons-on-getting-the-most-out-of-bots-from-grok-bots-leads">Six lessons on getting the most out of bots, from Grok Bot's leads</h3>
 <ul>
