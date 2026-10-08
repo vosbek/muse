@@ -133,4 +133,4 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Extractable skill:** Shape-first retrieval routing — audit which memory layer each query type hits; deterministic paths (SQL) cost less than semantic re-retrieval loops. When an agent fails, check the retrieval layer before upgrading the model.
 - **Source:** https://www.instagram.com/p/Dd5aHuOmqya/
 
-**Deep dives:** [unreal-agent](../deep-dives/unreal-agent.md) (async-first harness) · [tangleml](../deep-dives/tangleml.md) (self-improving loop substrate).
+**Deep dives:** [unreal-agent](../deep-dives/unreal-agent.md) (async-first harness) · [tangleml](../deep-dives/tangleml.md) (self-improving loop substrate) · [wikiskill](../deep-dives/wikiskill.md) (Google's persistent-memory skill-evolution framework).
