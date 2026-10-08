@@ -82,6 +82,16 @@
 
 ![Anatomy of an Agent Harness — the eight boxes between a model and a merged PR](agent-harness-anatomy-codewithbrij.png)
 
+### Glitch Walk: a skill that shows how your vibe-coded project really works
+- **Creator:** @kem_glitch (Kem @ GlitchCatClub) · **Date:** 2026-10-08 · **Source:** Instagram reel
+- **What it suggests:** A free agent skill for the "black box" problem — coding agents write complex code the developer doesn't fully understand, and it gets worse as projects scale. You ask "what happens when I send the topic request form?" and get a page with three layers: **what you do** (the real visible UI), **what happens out of sight** (every hidden step in order — client validation, serverless calls, email sending), and **the code behind it** (each step linked to the actual file and line; clicking reveals the code), plus suggested follow-up questions. The skill's own rules: it only walks — never fixes, changes, or judges; never makes anything up (code comes from the file, screens are the real screens); plain words, no analogies. Implementation is a skill folder (SKILL.md + Python scripts run via `uv`) that builds a self-contained HTML page (story.css/story.js); install is copy-the-folder into your AI tool's skills directory. MIT licensed, but day-zero: 2 stars, created the same day, author says "not finished."
+- **Tokenomics angle:** codebase comprehension as context compression — a generated "how this works" page is onboarding context an agent (or a teammate) can consume instead of re-reading the whole repo every session. Same family as the diagram-design and archify skills on the repos page: visual, generated, agent-consumable context that cuts the per-session understanding tax.
+- **Repos/tools:** [Glitch-Cat-Club/glitch-skills](https://github.com/Glitch-Cat-Club/glitch-skills) (2 ⭐, MIT, Python — scored 4.5/10 on the GitHub Repos page; concept strong, maturity day-zero).
+- **Extractable skill:** For any vibe-coded or inherited codebase, generate the three-layer walk (UI → hidden steps → code) before assigning agent work on it — the walk becomes the shared context the agent reasons from instead of rediscovering the codebase per task.
+- **Source:** https://www.instagram.com/reel/DePJAUftlJD/
+
+![Glitch Walk — what you do, what happens out of sight, the code behind it](glitch-walk-kem-glitch.png)
+
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
 

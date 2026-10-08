@@ -200,3 +200,12 @@ A single repo, not a roundup — recommended for the jump in his agent's diagram
 **Value prop:** Editorial diagram design as an agent skill — 42 diagram types as self-contained HTML + SVG, no build step, no JS, no external images. Scrapes your website's style tokens and matches the brand in 60 seconds. New in 2.5.10: ten more layout grammars (Sankey, fishbone, Wardley map, kanban, user journey, deployment, dependency graph, UML class, story map, database schema). Works with Claude Code, Codex, **GitHub Copilot**, Factory Droid, and Pi — "No shadows. No Mermaid slop."
 **Score:** remit 2 + local 2 + maturity 2 + deploy 2. *Why it matters for us:* this playbook's standing bar is diagrams-or-infographics, not walls of text — and the failure mode this repo fixes (generic rounded-box Mermaid slop) is exactly the one we keep fighting. A Copilot-compatible skill the whole team can install, outputting brand-matched editorial diagrams; also redraws existing draw.io/Mermaid/Excalidraw sources. Project site: diagramdesign.dev.
 **Source:** https://www.instagram.com/reel/DeMvIM-IdSR/
+
+## Oct 8 — @kem_glitch "glitch-walk" (Kem @ GlitchCatClub)
+
+A single repo, not a roundup — a free skill that shows how your own project works, launched the same day as the reel ("not finished — just started working on it today"):
+
+### 4.5 — [Glitch-Cat-Club/glitch-skills](https://github.com/Glitch-Cat-Club/glitch-skills) · 2 ⭐ · MIT · Python
+**Value prop:** Ask "what happens when I…?" about your own project and get a page with the real screens, every hidden step in order, and the code behind each step (file + line, click to reveal) — aimed at the vibe-coded "black box" problem. Skill-folder install (SKILL.md + Python scripts via `uv`, builds a self-contained HTML page).
+**Score:** remit 2 + local 1 + maturity 0.5 + deploy 1. *Why it matters for us:* codebase comprehension as context compression — a generated "how this works" page cuts the per-session "read the whole repo" token tax, same family as diagram-design and archify. Scored honestly: the concept is strong and MIT-licensed, but it's day-zero (2 stars, author-flagged unfinished) and Copilot compatibility is undeclared — watch, don't deploy yet.
+**Source:** https://www.instagram.com/reel/DePJAUftlJD/
