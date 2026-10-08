@@ -46,6 +46,16 @@
 
 ![Jev + Ontology: The Judge and the Law — the control layer that governs how the rules evolve](jev-ontology-judge-and-law.png)
 
+### Inference Engineering: what happens between your prompt and the last token (infographic)
+- **Creator:** @techwith.ram (Ramakrushna Mohapatra) · **Date:** 2026-10-08 · **Source:** Instagram reel
+- **What it suggests:** Eight inference-optimization techniques in one panel. **Prefill, then decode** — prefill reads the whole prompt in one parallel pass (sets time-to-first-token); decode emits one token per step (sets time-per-output-token). **The KV cache** — keys and values of past tokens are stored, not recomputed (Llama 3 8B: 128 KB/token, 1 GB per 8K context). **Decode is memory-bound** — every decode step re-reads all the weights, so batching amortizes that read until compute becomes the limit (roofline ridge ~295 on an H100). **Continuous batching** — static batches idle waiting for the longest request; continuous batching refills a slot the instant a request finishes. **PagedAttention** — KV cache in fixed 16-token blocks placed anywhere in GPU memory, like OS virtual-memory pages; no big contiguous chunk needed. **Quantization** — fewer bits per weight means fewer bytes read per step; half the bytes ≈ 2× the decode speed ceiling. **Speculative decoding** — a small draft model guesses k tokens, the big model verifies them in one pass and keeps the correct prefix. **Prefix caching** — requests sharing a system prompt reuse its KV cache; only the new part needs prefill, so TTFT drops. The bottom strip names the serving stack — router → scheduler → engine (vLLM/SGLang) → kernels (FlashAttention) → GPU — and the five metrics to judge any of it: TTFT, TPOT, throughput, P99 latency, $ per 1M tokens.
+- **Tokenomics angle:** the supply-side companion to the playbook's demand-side routing. Three direct ties: (a) the KV-cache numbers ground the RTX Spark deep dive's context math — cache fills before compute does; (b) prefix caching is the serving-side twin of the prompt-caching policies in the token cost playbook — same lever, different layer; (c) the caption's "agents quietly turn one user request into 20 inference calls" is the mechanism behind agent mode billing ~1,000× single-turn — the cost event is decode steps, not prompts.
+- **Repos/tools:** None (architecture infographic; serving engines named: vLLM, SGLang, FlashAttention).
+- **Extractable skill:** When evaluating any inference/serving option, ask for the five metrics and which of the eight techniques it uses; never pay for a serving layer that can't name its batching and caching strategy.
+- **Source:** Infographic by @techwith.ram, via Instagram reel (Oct 8, 2026).
+
+![Inference Engineering — eight techniques between your prompt and the last token](inference-engineering-techwith-ram.png)
+
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
 
