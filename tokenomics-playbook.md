@@ -47,6 +47,24 @@ Every repeated failure your team pays tokens to rediscover is a tax. Two pattern
 - **The "retro" skill** (Pocock): after every human code review, compound the feedback into new automated checks and standards. Each review makes the next one cheaper.
 - **Eval sidecars** (Warp): run a cheap model alongside the expensive one per task type; promote the cheap model wherever it matches quality ([source](ai-engineer-talks/self-improving-factories.md)).
 
+## Lever 6 — Policy-driven governance (FinOps for tokens)
+
+You can route models (Lever 2) and measure cost-per-task — but until policy enforces both, they stay engineer-by-engineer habits. The governance half arrived Oct 6, 2026:
+
+**Stacklet Token Custodian** — launched Oct 6, 2026 — is the control plane that attributes every token across teams, agents, and projects, then governs spend with policies that *act* instead of blocking. When a team nears its limit, it automatically shifts to a lower-cost model or routes an approval, so work keeps moving and spend stays in check ([Business Wire launch release](https://www.businesswire.com/news/home/20261006377964/en/Stacklet-Launches-Token-Custodian-to-Turn-AI-Spend-into-More-Value)).
+
+Why it maps to this playbook:
+
+- **Routing as policy, not habit.** Lever 2's 70x model spread becomes an enforced default: budget exceeded → cheapest capable model, automatically. That's the Kimchi cost-per-task loop, productionized.
+- **Attribution, not just reporting.** Every token and agent run traced to team, project, app, and cost center, one view across providers. You can't govern what you can't attribute — this is the instrument-before-you-change step (page top) made vendor-supported.
+- **Trusted lineage.** Built by the creators of CNCF's Cloud Custodian — the policy engine enterprises have run for a decade against $10B+ in cloud spend. Stacklet is a Tokenomics Foundation member; their State of Tokenomics 2026 survey found 43% of respondents named *proving value* their biggest challenge, 5x those who named price.
+
+Honest caveats, kept from the research:
+
+- **Commercial, not open source.** Early preview now, GA planned Q4 2026; pricing undisclosed. Per the playbook's AI/tech-only + local-first lens: this is an enterprise control plane, cloud-hosted — it belongs in governance, not in your local stack.
+- **Vendor claims.** The auto-shift behavior and cost-reduction figures come from launch materials. Treat as roadmap until preview feedback lands; Avalara's Director of Cloud & AI Optimization is quoted as an early trial customer.
+- **Worth watching, not buying on day one.** The Token Governance Summit (Oct 27, 12–1:30 pm EDT) will demo it live — cheap reconnaissance before any pilot.
+
 ## What this repo already gives you
 
 - [Storage/memory maps](08-tools-apis/vscode-storage-memory-map.md) for VS Code and [Copilot](01-claude-code-agents/github-copilot-storage-memory-map.md) — exactly what leaves each machine, so you can see the cost surface.
@@ -59,3 +77,4 @@ Every repeated failure your team pays tokens to rediscover is a tax. Two pattern
 2. Stand up cost-per-task tracking for one repo for two weeks (the Kimchi metric) — you can't route what you don't measure.
 3. Run the model-routing eval: same tasks across Copilot's available models, score quality vs. tokens — expect a wide spread.
 4. Pilot a local memory sidecar (Qdrant pattern) on one project before buying any cloud memory product.
+5. Watch the Token Governance Summit (Oct 27) demo — decide then whether a Token Custodian preview pilot is worth it; meanwhile pilot routing-as-policy manually with per-surface Copilot model defaults (Lever 2).

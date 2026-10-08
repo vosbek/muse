@@ -1,0 +1,102 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RTX Spark keynote (Oct 7, 2026) — official pricing, what fits in 128GB, and the local-vs-metered math · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a><a href="../../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><div class="hero-visual"><pre class="mermaid">flowchart TB
+    subgraph BOX["128GB unified memory (S3 tier)"]
+        W["Model weights"]
+        KV["KV cache (working context)"]
+        SYS["OS + apps + CUDA overhead"]
+    end
+    W -->|120B @ FP4 ≈ 60GB| FIT["✓ fits: ~60GB weights<br/>+ tens of K tokens context"]
+    W -->|120B @ FP8 ≈ 120GB| TIGHT["✗ ~120GB — no room for context"]
+    W -->|1.05T @ FP4 ≈ 525GB| NO["✗ datacenter only"]
+    KV -.->|~0.39MB/token @ 120B/FP4| NOTE["1M-token context ≈ 390GB<br/>vendor claim doesn't fit"]</pre></div><h1 id="rtx-spark-keynote-oct-7-2026-official-pricing-what-fits-in-128gb-and-the-local-vs-metered-math">RTX Spark keynote (Oct 7, 2026) — official pricing, what fits in 128GB, and the local-vs-metered math</h1>
+<p><strong>What it is.</strong> The Microsoft/NVIDIA "local AI" keynote (Nadella, Huang, Pavan Davuluri on stage, Oct 7, 1 PM ET) made RTX Spark official: a 20-core Grace CPU + Blackwell GPU (6,144 CUDA cores) platform with up to <strong>128GB unified memory</strong>, ~1 petaflop at FP4 (theoretical, with sparsity), pitched at running 120B-parameter models locally. Six OEM laptops plus a Surface Laptop Ultra and an RTX Spark Dev Box. This is the distillation of the keynote into the numbers that matter for the tokenomics playbook: what was announced, what actually fits in 128GB at realistic quantization, and local cost-per-task vs metered Copilot credits.</p>
+<details class="sec"><summary>What was announced (official)</summary><div class="sec-body">
+<ul>
+<li><strong>Surface Laptop Ultra</strong> — starts <strong>$2,599.99</strong>, preorders open Oct 7, ships <strong>Oct 16</strong>. Two tiers: <strong>S2</strong> (18-core CPU, 5,120-core GPU, 24–32GB unified) and <strong>S3</strong> (20-core CPU, 6,144 CUDA cores, 32/48/64/128GB, ~1 petaflop FP4 theoretical). Top config <strong>$5,899</strong>; the 64→128GB step alone adds ~$1,600. (thurrott.com, techrepublic.com, gagadget.com)</li>
+<li><strong>Surface RTX Spark Dev Box</strong> — <strong>$5,999</strong>, preorders open, US-only via Microsoft.com, ships <strong>November</strong>. Monitor and keyboard sold separately. Ships the exact dev stack preinstalled: VS Code, GitHub Copilot, WSL2 + CUDA on 128GB unified. (unite.ai)</li>
+<li><strong>Other OEMs</strong> — HP OmniBook Ultra 16 from <strong>$3,199</strong>; Asus ProArt P14/P16 shipping Oct 16. Up to <strong>$1,000 MacBook Pro trade-in cash back</strong> on Laptop Ultra purchases Oct 7–Nov 23 (US/Canada Microsoft Store). (marketwatch.com, mobilesyrup.com)</li>
+<li><strong>Software</strong> — Microsoft's "Hybrid Intelligence" framing (local AI when possible, cloud when required); <strong>Execution Containers</strong> generally available; a new Copilot app that uses local files as context <strong>"at no cost"</strong>; <strong>MAI Code 1.1 Flash</strong> running on-device; Meta's <strong>Muse agent</strong> coming to Windows as a native app. (thurrott.com, marketwatch.com)</li>
+</ul>
+</div></details><details class="sec"><summary>What actually fits in 128GB — the quantization math</summary><div class="sec-body">
+<p>The honest headline first: <strong>the $2,599 base (S2, 24–32GB) cannot hold 120B-parameter models.</strong> The tier matching the local-LLM thesis is the S3 128GB. Here's the memory budget at realistic quantization:</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Params</th>
+<th>FP8 weights</th>
+<th>FP4 weights</th>
+<th>Fits 128GB?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>120B-class dense (e.g. GPT-OSS-style)</td>
+<td>120B</td>
+<td>~120GB — no room for context</td>
+<td><strong>~60GB</strong> — yes, with KV headroom</td>
+<td>FP4 only</td>
+</tr>
+<tr>
+<td>Kolibri (sparse MoE)</td>
+<td>78B total / 3.46B active</td>
+<td><strong>~78GB</strong> — comfortable, ~50GB left for KV</td>
+<td>~39GB</td>
+<td>Yes, easily</td>
+</tr>
+<tr>
+<td>Mistral Large 4 ("Le Chonk")</td>
+<td>1.05T total / 49B active</td>
+<td>~1TB</td>
+<td>~525GB</td>
+<td><strong>No — datacenter-class</strong></td>
+</tr>
+</tbody>
+</table>
+<p>And the KV-cache reality check the keynote glossed over: for a 120B-class model (~48 layers, 8192 hidden dim), per-token KV cache at FP4 is roughly 2 × 48 × 8192 × 0.5 bytes ≈ <strong>0.39MB/token</strong>. A "1M-token context" would need ~390GB of KV cache alone — so the vendor's 1M-token-context claim does not survive contact with 128GB. Realistic: <strong>tens of thousands of tokens</strong> of context alongside a 120B/FP4 model, not millions. The 128GB envelope is a genuine local-LLM machine at FP4 with working context windows — it is not a datacenter in a laptop.</p>
+
+</div></details><details class="sec"><summary>Local cost-per-task vs metered Copilot credits</summary><div class="sec-body">
+<p>The billing context: Copilot's metered <strong>AI Credits</strong> (1 credit = $0.01, plan fee ≈ credits allowance) replaced premium requests June 1, 2026; Business/Enterprise promo credits ended in August — so September was the first fully metered month. What the box displaces is not the seat license, it's the <strong>agentic/chat overage</strong>.</p>
+<p>Break-even on the ~$5,899 S3-128GB machine (Dev Box $5,999 is nearly identical):</p>
+<table>
+<thead>
+<tr>
+<th>Monthly displaced metered spend</th>
+<th>Payback</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$500/mo</td>
+<td>~12 months</td>
+</tr>
+<tr>
+<td>$1,000/mo</td>
+<td>~6 months</td>
+</tr>
+<tr>
+<td>$2,500/mo</td>
+<td>~2.4 months</td>
+</tr>
+</tbody>
+</table>
+<p>Worked example: a nightly batch agent run of 10M input + 2M output tokens at Claude Opus 4.8 rates ($6.25/$25 per 1M) ≈ <strong>$2,475/mo</strong> over 22 working days → the box pays back in ~2.4 months. A single heavy agentic session with 1M output tokens is $25 — nearly two-thirds of a Pro+ month's allowance in one sitting.</p>
+<pre class="mermaid">flowchart LR
+    W["Workload"] --> Q{"Fits local<br/>envelope?"}
+    Q -->|Yes: bulk processing,<br/>batch review, repo-scale tasks| L["Run local — fixed capex,<br/>zero marginal cost"]
+    Q -->|No: frontier reasoning,<br/>hardest problems| C["Route to cloud —<br/>metered, premium price"]
+    L -.->|Vercel frame| V["cheap models absorb bulk"]
+    C -.->|Vercel frame| V2["frontier keeps high-difficulty work"]</pre>
+<p>The caveat that keeps this honest: the local box runs <strong>open weights, not frontier-class models</strong>. The Vercel bifurcation holds — volume goes local/open, the hardest work still pays frontier prices. The box doesn't eliminate the metered bill; it moves the bulk tier off it.</p>
+</div></details><details class="sec"><summary>The tokenomics angle</summary><div class="sec-body">
+<p>This is the <strong>"local complements" lever</strong> made concrete: fixed hardware capex converting metered per-task spend to zero marginal cost for the workloads that fit. And the software announcements are the vendor version of the playbook's own patterns — "Hybrid Intelligence" (local when possible, cloud when required) is route-by-difficulty with Microsoft's branding, and a Copilot app using local files as context "at no cost" is free context expansion at the IDE layer. The pattern to steal isn't the hardware, it's the routing discipline: every workload gets classified local-vs-cloud by fit, not by habit.</p>
+<p><strong>What's real vs. pending.</strong> ✅ Official pricing, tiers, shipping dates, Dev Box, software announcements — all confirmed Oct 7. ❌ <strong>No independent benchmarks</strong>: only Microsoft's vendor claims (2.1x time-to-first-token, 4.3x image gen, 6.2x video gen vs MacBook Pro M5 Pro — AI workloads only, selected preproduction units) and one pre-release Clang test. The Fouquin prototype hands-on (TechPowerUp/TweakTown) showed immature drivers — CUDA didn't work on pre-release drivers, 100°C under load — but that's an engineering sample, not a review. ❌ The 1-petaflop figure is theoretical FP4-with-sparsity. ❌ Exact US price of a standalone 128GB S3 config not yet reported (only the $5,899 top config and the ~$1,600 64→128GB step).</p>
+<p><strong>Local watchlist.</strong> (1) Independent retail reviews — the embargo lift is the next real data point; watch for measured tokens/sec on 120B/FP4. (2) llama.cpp / Ollama support and real throughput numbers on RTX Spark — the difference between "runs" and "runs well." (3) European/UK availability and pricing. (4) Your own September Copilot bill — the first fully metered month is the baseline to hold every future capex decision against.</p>
+<p><strong>Links.</strong> Keynote livestream ("Something new is coming from Windows | October 7"): https://www.youtube.com/watch?v=ilmBGeGldrI · Dev Box details: https://www.unite.ai/surface-rtx-spark-dev-box-ships-in-november-at-5-999/ · Pricing/tiers: https://www.thurrott.com/windows/windows-11/342563/microsoft-surface-laptop-to-start-at-2599 · https://www.techrepublic.com/article/news-microsoft-surface-laptop-ultra-nvidia-rtx-spark/ · https://www.marketwatch.com/story/microsoft-and-nvidia-are-teaming-up-on-a-supercharged-ai-laptop-f58b28d8 · https://gagadget.com/en/729177-surface-laptop-ultra-2599-windows-laptop-with-nvidias-rtx-spark-chip/ · https://mobilesyrup.com/2026/10/07/microsoft-surface-laptop-ultra-reveal/</p></div></details></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>
