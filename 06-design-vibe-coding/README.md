@@ -58,6 +58,16 @@
 - **Extractable skill:** Spec-first agent work — write the spec and the verification step before the agent writes code; hold taste and oversight as the human's job.
 - **Source:** https://www.instagram.com/p/DeCZn6JMmYf/ · Talk: https://www.youtube.com/watch?v=96jN2OCOfLs
 
+### 7 Dashboard Design Rules (infographic)
+- **Creator:** @uiux.build (Darpan, product designer) · **Date:** 2026-09-25 · **Source:** Instagram post
+- **What it suggests:** Seven rules for dashboards that help users understand data faster: **prioritize key metrics** (most important numbers at top, scannable at a glance); **group related data** (cards, sections, whitespace so users find things fast); **use consistent cards** (one card style for stats, charts, lists — visual harmony); **avoid chart overload** (simple clear charts; too many visuals confuse and hide the key insights); **show trends over time** (line/area charts for patterns and progress); **use filters & search wisely** (drill down without scrolling or confusion); **keep actions obvious** (primary actions stand out — buttons, color, placement — to reduce friction).
+- **Why it's here:** Honest tension with this playbook's own [dashboards-are-dead deep dive](../deep-dives/dashboards-are-dead.md) — the agent-native argument is that static dashboards are the wrong interface. But agents still generate dashboards, admin panels, and status pages constantly (vibe-coded or otherwise), and when they do, these seven rules are the cheapest quality bar available. Rule 4 (avoid chart overload) is the one agent-generated dashboards violate most: agents love adding one more chart.
+- **Repos/tools:** None (design rules infographic).
+- **Extractable skill:** When an agent builds any data UI, pin these seven rules in the spec — especially key-metrics-first, one card style, and no chart overload. Review agent-generated dashboards against the seven before shipping.
+- **Source:** https://www.instagram.com/p/DdtcfHOt20t/
+
+![7 Dashboard Design Rules — for clearer data and better decisions](dashboard-design-rules-uiuxbuild.png)
+
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
 
