@@ -72,6 +72,16 @@
 - **Extractable skill:** Prompt ablation cadence — on each model upgrade, delete custom instructions and re-add only what measured failures prove necessary.
 - **Source:** https://www.instagram.com/p/DeCZn6JMmYf/ · Talk: https://www.youtube.com/watch?v=qyPCVqFUyDo
 
+### Anatomy of an Agent Harness (infographic)
+- **Creator:** @codewithbrij (Brij Kishore Pandey) · **Date:** 2026-10-08 · **Source:** Instagram reel
+- **What it suggests:** "Agent = Model + Harness. The model decides. The harness executes." Eight boxes mapped onto one worked task (fixing a failing checkout test): **Context Builder** — what the model sees (200K window, system/tools/AGENTS.md/memory/history/summary; rebuilt every turn, old turns summarized near the limit). **Model** — decides; returns text or a tool call; swappable across Claude/GPT/Gemini; never touches the system. **Tool Registry** — each tool is a name, a description, and a JSON schema. **Policy Gate** — permissions; reads run, risky writes ask, destructive commands blocked. **Sandbox** — filesystem scoped to the repo, network off, 120s timeout. **Observe & Trim** — 1,206 raw output lines cut to 9 before the next turn sees them. **Verifier** — defines "done" (tests pass, no new lint errors, turn budget); checks real state, not the model's claim. **Memory** — scratchpad for the turn, todo.md for the task, MEMORY.md across sessions. Supporting boxes: **Tracing & Cost** (the example run: 11.9K tokens · $0.07 · 4 spans), **Subagents** (fresh context each, short summaries back), **Result** (PR #482, 50/50 tests, 2 turns, one human-approved edit). The loop: THINK (context + model) → ACT (tools + policy + sandbox) → OBSERVE (trim + verify + remember). Named harnesses: Claude Code, Codex CLI, Cursor, OpenHands.
+- **Tokenomics angle:** the diagram is a token bill itemized — Observe & Trim (1,206 lines → 9) is the context-compression lever made visible; Tracing & Cost ($0.07 for the whole run) shows what a well-harnessed run costs; the turn budget and the verifier are spend controls. "Same model, better harness, better agent" is the playbook's thesis in one line: the harness, not the model, is where cost and quality get decided.
+- **Repos/tools:** None (architecture infographic; harnesses named: Claude Code, Codex CLI, Cursor, OpenHands).
+- **Extractable skill:** When two teams run the same model with very different results, audit the harness first — the eight boxes are the checklist: context builder, model, tool registry, policy gate, sandbox, observe & trim, verifier, memory, plus tracing/cost on every run.
+- **Source:** Infographic by @codewithbrij, via Instagram reel (Oct 8, 2026).
+
+![Anatomy of an Agent Harness — the eight boxes between a model and a merged PR](agent-harness-anatomy-codewithbrij.png)
+
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
 
