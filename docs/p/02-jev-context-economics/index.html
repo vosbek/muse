@@ -1,14 +1,19 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>02 — Jev Context Economics · AI Skills Playbook</title><link rel="stylesheet" href="../../assets/style.css"></head>
+<title>02 — Jev Context Economics · AI Skills Playbook</title>
+<meta name="description" content="02 — Jev Context Economics Thesis: The cheapest token is the one you never spend. These six entries form a coherent economic argument: small models should…">
+<meta property="og:title" content="02 — Jev Context Economics · AI Skills Playbook">
+<meta property="og:description" content="02 — Jev Context Economics Thesis: The cheapest token is the one you never spend. These six entries form a coherent economic argument: small models should…">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
 <nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a><a href="../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><div class="hero-visual"><p><img loading="lazy" alt="Jev + Ontology: The Judge and the Law — the control layer that governs how the rules evolve" src="jev-ontology-judge-and-law.png" /></p></div><h1 id="02-jev-context-economics">02 — Jev Context Economics</h1>
 <p><strong>Thesis:</strong> The cheapest token is the one you never spend. These six entries form a coherent economic argument: small models should make the decisions, retrieval should happen before reasoning, and the whole LLM-centric cost structure is transitional. The Jev pattern (a tiny model deciding, a big model executing) and jevgrep's measured 30% cost cut are the deployable present; the SLM prediction is the direction of travel.</p>
 <h3 id="jevgrep-cut-coding-agent-cost-30-with-better-file-retrieval">jevgrep: cut coding-agent cost ~30% with better file retrieval</h3>
 <ul>
 <li><strong>Creator:</strong> @gittrend.io · <strong>Date:</strong> 2026-09-29</li>
-<li><strong>What it suggests:</strong> jevgrep is an open-source tool that converts a plain-English repository question into targeted searches, returning the exact lines an AI coding agent needs — instead of the agent dumping whole files or directory trees into context to find them. The reel walks through the GitHub README (install via <code>npm install -g @dshng/jevgrep</code>, requires Node.js 22+, macOS/Linux, a Vercel AI Gateway key; usage like <code>jg auth</code> and <code>jg "How are telemetry events recorded and sent?"</code>, plus an installable agent skill). The money slide is the benchmark: on a ten-task SWE-bench test, jevgrep solved the same 8 of 10 tasks as the baseline but cut the bill from $7.62 to $5.44 — a 28.6% reduction. The principle generalizes beyond code: every agent workflow has a "finding" step and a "thinking" step, and most teams overpay on the first. Fix retrieval before you touch the model.</li>
-<li><strong>Repos/tools:</strong> <a href="https://github.com/dshng/jevgrep">dshng/jevgrep</a> (npm: <code>@dshng/jevgrep</code>)</li>
+<li><strong>What it suggests:</strong> jevgrep is an open-source tool that converts a plain-English repository question into targeted searches, returning the exact lines an AI coding agent needs — instead of the agent dumping whole files or directory trees into context to find them. The reel walks through the GitHub README (install via <code>npm install -g @dzhng/jevgrep</code>, requires Node.js 22+, macOS/Linux, a Vercel AI Gateway key; usage like <code>jg auth</code> and <code>jg "How are telemetry events recorded and sent?"</code>, plus an installable agent skill). The money slide is the benchmark: on a ten-task SWE-bench test, jevgrep solved the same 8 of 10 tasks as the baseline but cut the bill from $7.62 to $5.44 — a 28.6% reduction. The principle generalizes beyond code: every agent workflow has a "finding" step and a "thinking" step, and most teams overpay on the first. Fix retrieval before you touch the model.</li>
+<li><strong>Repos/tools:</strong> <a href="https://github.com/dzhng/jevgrep">dzhng/jevgrep</a> (npm: <code>@dzhng/jevgrep</code>)</li>
 <li><strong>Extractable skill:</strong> Retrieval-first cost control — instrument $/task, then optimize the finding step (targeted search returning exact lines) before upgrading models.</li>
 <li><strong>Source:</strong> https://www.instagram.com/reel/Dd5Z0k1FLO6/</li>
 </ul>
@@ -137,6 +142,15 @@
 <figure><img src="slm-gauntlet/card_gemma-e4b-q4_K_M.png" alt="Gemma 3n E4B — #13, 56.3%" loading="lazy"><figcaption><b>Gemma 3n E4B</b><br><span>#13, 56.3%</span></figcaption></figure>
 </div>
 
+<h3 id="7-wild-things-people-built-with-jev-in-48-hours">7 wild things people built with Jev in 48 hours</h3>
+<ul>
+<li><strong>Creator:</strong> @vibe_withkevin (Kevin Magnan) · <strong>Date:</strong> 2026-09-18 · <strong>Source:</strong> <a href="https://www.instagram.com/reel/DdbjduSDrxT/">Instagram reel</a> (1,702 likes)</li>
+<li><strong>What it suggests:</strong> A launch-week roundup (Jev launched Sep 15, 2026) of community builds, all exploiting the same shape: a decision point buried inside an app, handed to a ~100ms judge instead of a reasoning LLM. The builds: Marcel Pocciot's browser extension that hides X posts using plain-English rules; Neddes' "Sloppy Jev" Chrome extension that blurs ads and spam across websites; Marcus Lowe wiring Jev to Tetris so it picks moves and slams blocks; Sunil Pai's town simulator where a typed "terrible law" gets citizen reactions from Claude, Jev decides how 40 residents respond, and a mock newspaper front page prints; and the Browser-Use team's Jev UltraFast repo — web pages rendered as indexed tables of clickable elements, Jev picking operation and target in one request (e.g. booking Zürich–London flights in ~7 seconds).</li>
+<li><strong>Tokenomics angle:</strong> Jev UltraFast is the cost shape of the whole category made concrete: speculative fan-out (operation + compatible target heads in one request — two decisions, one round trip), no screenshots in the agent loop (Jev consumes structured state only), and a small LLM called <em>only</em> when the operation is TYPE_TEXT to write field text. The reel's takeaway doubles as an enterprise audit question: list every place in your product where an LLM is currently "deciding" from a small closed set, and ask which of them are really Jev-shaped.</li>
+<li><strong>Repos/tools:</strong> <a href="https://github.com/browser-use/jev-ultrafast">browser-use/jev-ultrafast</a> (16.6k ⭐ as of Oct 2026, MIT)</li>
+<li><strong>Extractable skill:</strong> The Jev UltraFast pattern — element tables + speculative fan-out + text-generation only on demand.</li>
+<li><strong>Source:</strong> <a href="https://www.instagram.com/reel/DdbjduSDrxT/">instagram.com/reel/DdbjduSDrxT</a></li>
+</ul>
 <details class="sec"><summary>From X bookmarks (Sep 2026)</summary><div class="sec-body">
 <p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>
 <h3 id="open-source-adapter-that-decouples-your-agent-from-any-single-llm-provider">Open-source adapter that decouples your agent from any single LLM provider</h3>

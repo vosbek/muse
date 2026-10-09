@@ -33,7 +33,7 @@ Everything below has a distilled write-up with usage instructions in the repo / 
 
 ## Jevons / Context Economics (37 items)
 
-- **jevgrep: cut coding-agent cost ~30% with better file retrieval** — tools: [dshng/jevgrep](https://github.com/dshng/jevgrep) (npm: `@dshng/jevgrep`) · skill: Retrieval-first cost control — instrument $/task, then optimize the finding step (targeted search returning exact lines) before upgrading models.
+- **jevgrep: cut coding-agent cost ~30% with better file retrieval** — tools: [dzhng/jevgrep](https://github.com/dzhng/jevgrep) (npm: `@dzhng/jevgrep`) · skill: Retrieval-first cost control — instrument $/task, then optimize the finding step (targeted search returning exact lines) before upgrading models.
 - **Jev: choose MCP tools without polluting the main context** — tools: MCP servers (pattern-level; no single repo) · skill: Decision-model isolation — route every selection problem (tools, models, next actions) through a small model in its own context; inject only outcomes into the main session.
 - **SLMs will replace LLMs — because the economics demand it** — tools: None (prediction/thesis) · skill: Two-tier model strategy — default narrow work to SLMs; require evidence (not habit) before spending frontier tokens.
 - **Open-source adapter that decouples your agent from any single LLM provider** — tools: None linked in post text (TypeSafe AI / @typesafeai mentioned). · skill: Decouple your routing layer from your generation provider so models become swappable commodities.

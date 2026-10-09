@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 """Build the static GitHub Pages site into docs/ from the repo's markdown."""
-import os, re, json, shutil, sys
+import os, re, json, shutil, sys, html as htmlmod
 sys.path.insert(0, os.path.expanduser("~/workspace/.pylibs"))
 import markdown
 
 REPO = os.path.expanduser("~/workspace/ai-skills-playbook")
 OUT = os.path.join(REPO, "docs")
 SITE_TITLE = "AI Skills Playbook"
+SITE_URL = "https://vosbek.github.io/muse/"
 
 SECTIONS = [
     ("start", "Start here", ["tokenomics-playbook.md", "COMBINED.md", "README.md"]),
@@ -92,7 +93,12 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
 
 TEMPLATE = """<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{title} · """ + SITE_TITLE + """</title><link rel="stylesheet" href="{root}assets/style.css"></head>
+<title>{title} · """ + SITE_TITLE + """</title>
+<meta name="description" content="{desc}">
+<meta property="og:title" content="{title} · """ + SITE_TITLE + """">
+<meta property="og:description" content="{desc}">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="{root}assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="{root}"><b>AI</b> Skills Playbook</a>
 <nav class="main">{nav}</nav></div></header><div class="wrap">{body}</div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
@@ -248,6 +254,9 @@ def main():
         refs = set(re.findall(r"!\[[^\]]*\]\(([^)]+)\)", src))
         # also catch raw-HTML <img> tags (e.g. gallery grids in READMEs)
         refs |= set(re.findall(r'<img\s+[^>]*src="([^"]+)"', src))
+        # and image files linked (not embedded) cross-folder, e.g. [infographic](../02-.../x.jpg)
+        refs |= set(r for r in re.findall(r"(?<!!)\[[^\]]*\]\(([^)]+)\)", src)
+                    if r.lower().split("?")[0].split("#")[0].endswith((".png", ".jpg", ".jpeg", ".gif", ".webp", ".svg")))
         # also copy linked PDFs (e.g. hosted whitepapers)
         refs |= set(r for r in re.findall(r"(?<!!)\[[^\]]*\]\(([^)]+)\)", src) if r.lower().endswith(".pdf"))
         destdir = os.path.join(OUT, out_url(rel))
@@ -287,14 +296,15 @@ def main():
         if not src.lstrip().startswith("#"):
             inner = f"<h1>{title}</h1>" + inner
         body = crumb + f"<article class='doc'><div class='badge'>{sname}</div>" + inner + "</article>"
-        page = TEMPLATE.format(title=title, root=root, nav=nav_tpl.format(root=root), body=body)
+        text = re.sub(r"<[^>]+>", " ", html)
+        text = re.sub(r"\s+", " ", text).strip()
+        desc = htmlmod.escape(text[:157].rsplit(" ", 1)[0] + "…" if len(text) > 160 else text)
+        page = TEMPLATE.format(title=title, root=root, nav=nav_tpl.format(root=root), body=body, desc=desc)
         dest = os.path.join(OUT, url, "index.html")
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         with open(dest, "w", encoding="utf-8") as f:
             f.write(page)
-        text = re.sub(r"<[^>]+>", " ", html)
-        text = re.sub(r"\s+", " ", text)[:600]
-        index.append({"t": title, "s": sname, "u": url, "x": text})
+        index.append({"t": title, "s": sname, "u": url, "x": text[:600]})
         rendered[rel] = (title, sid, sname, url)
 
     build_visual_index(nav_tpl, index, rendered)
@@ -318,9 +328,20 @@ def main():
 <p><a href="p/visual-index/">Browse the visual index →</a> every infographic, full-size.</p>
 <div class="searchbox"><input id="q" placeholder="Search the playbook…"></div><div id="results"></div></div>
 <div class="cards">""" + cards + "</div>" + sec_lists
-    home = TEMPLATE.format(title="Home", root="", nav=nav_tpl.format(root=""), body=hero)
+    home_desc = "Distilled talks, posts and docs on AI engineering — agents, context economics, memory, evals and tooling. Every entry keeps its thesis, key points and sources."
+    home = TEMPLATE.format(title="Home", root="", nav=nav_tpl.format(root=""), body=hero, desc=home_desc)
     with open(OUT + "/index.html", "w") as f:
         f.write(home)
+
+    # sitemap.xml for crawlers
+    urls = [SITE_URL] + [SITE_URL + e["u"] for e in index] + [SITE_URL + "p/visual-index/"]
+    sm = ['<?xml version="1.0" encoding="UTF-8"?>',
+          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for u in urls:
+        sm.append(f"  <url><loc>{htmlmod.escape(u)}</loc></url>")
+    sm.append("</urlset>")
+    with open(OUT + "/sitemap.xml", "w", encoding="utf-8") as f:
+        f.write("\n".join(sm))
     # search.js needs ROOT var per depth; patch: use relative fetch
     print(f"built {len(pages)} pages -> {OUT}")
 
@@ -381,7 +402,8 @@ def build_visual_index(nav_tpl, index, rendered):
             f"Tap one to open its page.</p>"
             + "".join(body_parts) + "</article>")
     page = TEMPLATE.format(title="Visual index", root="../../",
-                           nav=nav_tpl.format(root="../../"), body=body)
+                           nav=nav_tpl.format(root="../../"), body=body,
+                           desc="Every infographic in the AI Skills Playbook, full-size. Browse all diagrams and result cards by section.")
     with open(os.path.join(destdir, "index.html"), "w", encoding="utf-8") as f:
         f.write(page)
     index.append({"t": "Visual index", "s": "Galleries",

@@ -1,6 +1,11 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Context Language Models: the model edits its own memory · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<title>Context Language Models: the model edits its own memory · AI Skills Playbook</title>
+<meta name="description" content="Context Language Models: the model edits its own memory What it is. A Sep 29, 2026 paper (arXiv:2609.37725) from UW, Meta Superintelligence Labs, MIT, and…">
+<meta property="og:title" content="Context Language Models: the model edits its own memory · AI Skills Playbook">
+<meta property="og:description" content="Context Language Models: the model edits its own memory What it is. A Sep 29, 2026 paper (arXiv:2609.37725) from UW, Meta Superintelligence Labs, MIT, and…">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
 <nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a><a href="../../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><h1 id="context-language-models-the-model-edits-its-own-memory">Context Language Models: the model edits its own memory</h1>
 <p><strong>What it is.</strong> A Sep 29, 2026 paper (arXiv:2609.37725) from UW, Meta Superintelligence Labs, MIT, and Trillium Labs — Rulin Shao, Shannon Zejiang Shen, Pang Wei Koh, Luke Zettlemoyer, Mike Lewis and colleagues — plus an open repo (github.com/facebookresearch/context-language-models, CC BY-NC 4.0). The core move: stop treating context as an append-only transcript. The live context is mirrored into an editable <strong>file</strong>, and the model gets unrestricted write access to it via ordinary code tools. Edits sync into the next turn's input before generation continues.</p>

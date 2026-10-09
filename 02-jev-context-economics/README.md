@@ -4,8 +4,8 @@
 
 ### jevgrep: cut coding-agent cost ~30% with better file retrieval
 - **Creator:** @gittrend.io · **Date:** 2026-09-29
-- **What it suggests:** jevgrep is an open-source tool that converts a plain-English repository question into targeted searches, returning the exact lines an AI coding agent needs — instead of the agent dumping whole files or directory trees into context to find them. The reel walks through the GitHub README (install via `npm install -g @dshng/jevgrep`, requires Node.js 22+, macOS/Linux, a Vercel AI Gateway key; usage like `jg auth` and `jg "How are telemetry events recorded and sent?"`, plus an installable agent skill). The money slide is the benchmark: on a ten-task SWE-bench test, jevgrep solved the same 8 of 10 tasks as the baseline but cut the bill from $7.62 to $5.44 — a 28.6% reduction. The principle generalizes beyond code: every agent workflow has a "finding" step and a "thinking" step, and most teams overpay on the first. Fix retrieval before you touch the model.
-- **Repos/tools:** [dshng/jevgrep](https://github.com/dshng/jevgrep) (npm: `@dshng/jevgrep`)
+- **What it suggests:** jevgrep is an open-source tool that converts a plain-English repository question into targeted searches, returning the exact lines an AI coding agent needs — instead of the agent dumping whole files or directory trees into context to find them. The reel walks through the GitHub README (install via `npm install -g @dzhng/jevgrep`, requires Node.js 22+, macOS/Linux, a Vercel AI Gateway key; usage like `jg auth` and `jg "How are telemetry events recorded and sent?"`, plus an installable agent skill). The money slide is the benchmark: on a ten-task SWE-bench test, jevgrep solved the same 8 of 10 tasks as the baseline but cut the bill from $7.62 to $5.44 — a 28.6% reduction. The principle generalizes beyond code: every agent workflow has a "finding" step and a "thinking" step, and most teams overpay on the first. Fix retrieval before you touch the model.
+- **Repos/tools:** [dzhng/jevgrep](https://github.com/dzhng/jevgrep) (npm: `@dzhng/jevgrep`)
 - **Extractable skill:** Retrieval-first cost control — instrument $/task, then optimize the finding step (targeted search returning exact lines) before upgrading models.
 - **Source:** https://www.instagram.com/reel/Dd5Z0k1FLO6/
 
@@ -111,6 +111,15 @@ Per-model cards (all 13, from the repo's published results):
 <figure><img src="slm-gauntlet/card_sharp-spark-4b-q4_K_XL.png" alt="Sharp-Spark X2.5 4B — #12, 66.4%" loading="lazy"><figcaption><b>Sharp-Spark X2.5 4B</b><br><span>#12, 66.4%</span></figcaption></figure>
 <figure><img src="slm-gauntlet/card_gemma-e4b-q4_K_M.png" alt="Gemma 3n E4B — #13, 56.3%" loading="lazy"><figcaption><b>Gemma 3n E4B</b><br><span>#13, 56.3%</span></figcaption></figure>
 </div>
+
+
+### 7 wild things people built with Jev in 48 hours
+- **Creator:** @vibe_withkevin (Kevin Magnan) · **Date:** 2026-09-18 · **Source:** [Instagram reel](https://www.instagram.com/reel/DdbjduSDrxT/) (1,702 likes)
+- **What it suggests:** A launch-week roundup (Jev launched Sep 15, 2026) of community builds, all exploiting the same shape: a decision point buried inside an app, handed to a ~100ms judge instead of a reasoning LLM. The builds: Marcel Pocciot's browser extension that hides X posts using plain-English rules; Neddes' "Sloppy Jev" Chrome extension that blurs ads and spam across websites; Marcus Lowe wiring Jev to Tetris so it picks moves and slams blocks; Sunil Pai's town simulator where a typed "terrible law" gets citizen reactions from Claude, Jev decides how 40 residents respond, and a mock newspaper front page prints; and the Browser-Use team's Jev UltraFast repo — web pages rendered as indexed tables of clickable elements, Jev picking operation and target in one request (e.g. booking Zürich–London flights in ~7 seconds).
+- **Tokenomics angle:** Jev UltraFast is the cost shape of the whole category made concrete: speculative fan-out (operation + compatible target heads in one request — two decisions, one round trip), no screenshots in the agent loop (Jev consumes structured state only), and a small LLM called *only* when the operation is TYPE_TEXT to write field text. The reel's takeaway doubles as an enterprise audit question: list every place in your product where an LLM is currently "deciding" from a small closed set, and ask which of them are really Jev-shaped.
+- **Repos/tools:** [browser-use/jev-ultrafast](https://github.com/browser-use/jev-ultrafast) (16.6k ⭐ as of Oct 2026, MIT)
+- **Extractable skill:** The Jev UltraFast pattern — element tables + speculative fan-out + text-generation only on demand.
+- **Source:** [instagram.com/reel/DdbjduSDrxT](https://www.instagram.com/reel/DdbjduSDrxT/)
 
 
 ## From X bookmarks (Sep 2026)
