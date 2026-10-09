@@ -74,6 +74,42 @@
 
 ![Context Engineering — the next step after prompt engineering (10 panels)](context-engineering-codecraftman.jpg)
 
+### SLM Gauntlet: 13 small models benched for subagent work on a GTX 1070 Ti (infographics)
+- **Creator:** @tysn.dev (Ty) · **Date:** 2026-09-26 · **Source:** Instagram carousel (14 slides)
+- **What it suggests:** An open-source benchmark ([TysAIs/slm-gauntlet](https://github.com/TysAIs/slm-gauntlet), MIT, Python) for sub-12B models: 71 practical subagent tasks across 7 suites (tool use 19, adversarial 8, agent chains 6, structured 10, retrieval 8, coding 6, instruction 14) with deterministic scoring — zero LLM judging. Run September 2026 on an NVIDIA GTX 1070 Ti 8GB with no offloading to system RAM. The results, pass@1 / seed 1 / temp 0:
+  - #1 Gemma 4 E4B (Q4_K_M) — 87.9%, "A" Subagent Grade, accuracy king
+  - #2 MiniCPM-V 5 2B (Q8_0) — 87.7%, statistically tied with #1 at double the speed — the practical daily-driver pick
+  - #3 Ternary Bonsai-2 27B (PTQ1_0) — 86.2%, reasoning specialist but too slow
+  - #4 MiniCPM-V 5 2B Q4 — 85.6%, fastest useful speed
+  - #5 Ornith 1.5 9B — 75.7% · #6 MiMo V2.6 9B — 75.3%
+  - #7 Gemma 4 12B UD-Q2_K_XL — 72.6% (fits in 8GB, but Q2 costs accuracy)
+  - #8 LFM 2.5 2.6B Q8_0 — 69.9% · #9 LFM 2.5 2.6B Q4_K_M — 69.6%, fastest useful model tested
+  - #10 Qwen 3.5 4B — 68.2%, perfect coding score
+  - #11 Gemma 4 12B IQ3_XXS — 68.0% · #12 Sharp-Spark X2.5 4B — 66.4% · #13 Gemma 3n E4B — 56.3% (older architecture)
+- **Notes from the run:** Q4 quantization "really isn't much of a decrease" unless you want better coding; Q2 is the desperation zone — never go below Q4. Retrieval scores were weak across the board. The repo is reproducible (one command, same seed → identical results, cards generated from your run).
+- **Tokenomics angle:** this is the T0 local tier of the routing ladder with real numbers — subagent work (tool use, structured output, retrieval, coding) at **$0 marginal cost** on an 8GB consumer GPU from 2016. A 2B model statistically tied Google's flagship small model at double the speed. The playbook's "eval sidecars" pattern (cheap model alongside the expensive one, promote where it matches) gets its candidate shortlist here: MiniCPM-V 5 2B Q4 for speed, Gemma 4 E4B for accuracy.
+- **Repos/tools:** [TysAIs/slm-gauntlet](https://github.com/TysAIs/slm-gauntlet) (9 ⭐, MIT, Python).
+- **Extractable skill:** Before renting frontier tokens for subagent fleets, bench small models on your own task mix with deterministic scoring (no LLM judge). The 7-suite shape — tool use, adversarial, agent chains, structured, retrieval, coding, instruction — is the template.
+- **Source:** https://www.instagram.com/p/DdxTz3hEWoq/
+
+![SLM Gauntlet — 13 models, 71 tasks, 7 suites, zero LLM judging, on a GTX 1070 Ti](slm-gauntlet/announcement.png)
+
+Per-model cards (all 13, from the repo's published results):
+
+![Gemma 4 E4B — #1, 87.9%](slm-gauntlet/card_gemma4-e4b-q4_K_M.png)
+![MiniCPM-V 5 2B Q8_0 — #2, 87.7%](slm-gauntlet/card_minicpm5-2b-q8_0.png)
+![Ternary Bonsai-2 27B — #3, 86.2%](slm-gauntlet/card_bonsai2-ptq1_0.png)
+![MiniCPM-V 5 2B Q4 — #4, 85.6%](slm-gauntlet/card_minicpm5-2b-q4_K_M.png)
+![Ornith 1.5 9B — #5, 75.7%](slm-gauntlet/card_ornith-9b-q4_K_M.png)
+![MiMo V2.6 9B — #6, 75.3%](slm-gauntlet/card_mimo-9b-q4_K_M.png)
+![Gemma 4 12B UD-Q2_K_XL — #7, 72.6%](slm-gauntlet/card_gemma4-12b-ud-q2_K_XL.png)
+![LFM 2.5 2.6B Q8_0 — #8, 69.9%](slm-gauntlet/card_lfm2.5-2.6b-q8_0.png)
+![LFM 2.5 2.6B Q4_K_M — #9, 69.6%](slm-gauntlet/card_lfm2.5-2.6b-q4_K_M.png)
+![Qwen 3.5 4B — #10, 68.2%](slm-gauntlet/card_qwen3.5-4b-q4_K_M.png)
+![Gemma 4 12B IQ3_XXS — #11, 68.0%](slm-gauntlet/card_gemma4-12b-iq3_XXS.png)
+![Sharp-Spark X2.5 4B — #12, 66.4%](slm-gauntlet/card_sharp-spark-4b-q4_K_XL.png)
+![Gemma 3n E4B — #13, 56.3%](slm-gauntlet/card_gemma-e4b-q4_K_M.png)
+
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
 

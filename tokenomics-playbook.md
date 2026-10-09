@@ -24,6 +24,20 @@ On one identical eval (five character files, one model), token consumption varie
 - **Re-benchmark on a schedule.** Kimchi's autonomous re-benchmarking caught model drift within weeks — a model that's cheapest today isn't cheapest next quarter.
 - **Never hard-tie prompts to one model.** GitHub deprecated selected Copilot models on Oct 19, 2026 with routine notice ([source](07-ai-news/README.md)). Portable prompts, skills, and evals are cost infrastructure: they let you move to the cheapest capable model without rewriting anything.
 
+**Mistral Large 4 ("Le Chonk")** — launched Oct 6, 2026 — is the cleanest live example of the MoE cost principle behind this lever: 1.05T total parameters, but only ~49B active per token (sparse MoE), so serving cost tracks the 49B while capability claims sit at frontier class. Preview API: $0.68/M in, $0.07/M cached in, $2.09/M out (docs page; the model page shows $1.36/$0.14/$4.18 as crossed-out list prices — check the live page before estimating), 1M context, natively multimodal. Vendor-reported benchmarks: 38 on Artificial Analysis's Intelligence Index (vs 9 for Large 3; trails Claude Opus 5.5 by ~20), 61.7% on DeepSWE v1.1, 59.9% on AutomationBench across 657 workplace workflows, top-5 on the Artificial Analysis Cyber Index. Open weights land end of October (reports say Oct 27) — the one to watch for the local stack.
+
+Why it maps to this playbook:
+
+- **Cost tracks active params, not total.** The 70x routing spread in this lever is usually framed as model choice; MoE makes it architectural — the same checkpoint serves frontier-class work at mid-model inference cost. Route the hard stuff here, keep bulk work on the cheap tier.
+- **The Vercel frame, again.** Volume is flipping to open weights while revenue stays with frontier models. A 1T-class open-weight MoE at ~$2/M output is exactly the kind of checkpoint that accelerates that split.
+
+Honest caveats:
+
+- **Active-param figure disagrees across Mistral's own pages**: announcement says 49B, docs say 52B (plus a 1.6B vision encoder). Use 49–52B until the weights land and someone counts.
+- **License still unconfirmed** (Oct 8). Large 3 was Apache 2.0; Large 4's terms are unannounced — flag for legal before any enterprise use.
+- **Datacenter-class, not laptop-class.** 1.05T total params needs ~10x the RTX Spark 128GB envelope (120B at FP4 ≈ 60GB). Watch the Oct 27 weights for the ecosystem signal, not for local deploy.
+- **Vendor benchmarks.** The "best open-weights model outside China" claim and the cyber/finance/manufacturing SOTA claims cite no published third-party methodology beyond the Artificial Analysis indices — and the gap to Qwen3.8 Max / DeepSeek V4 Pro on coding-agent indices is within tenths of a point. Treat as directional until independent evals land.
+
 ## Lever 3 — Deferred and progressive context
 
 Don't load context speculatively — disclose it as the task demands it. Factory's **deferred context engine** (progressive tool disclosure) cut token usage **50%+** ([source](ai-engineer-talks/what-it-takes-software-factory.md)). For a Copilot team, the practical translations:
@@ -47,6 +61,8 @@ Every repeated failure your team pays tokens to rediscover is a tax. Two pattern
 - **The "retro" skill** (Pocock): after every human code review, compound the feedback into new automated checks and standards. Each review makes the next one cheaper.
 - **Eval sidecars** (Warp): run a cheap model alongside the expensive one per task type; promote the cheap model wherever it matches quality ([source](ai-engineer-talks/self-improving-factories.md)).
 
+*Cohere North 2 (Oct 5, 2026) ships this as a platform feature — cross-session agent memory as a cost control; see Lever 6. Caveat stands: stale memory is a tax with interest.*
+
 ## Lever 6 — Policy-driven governance (FinOps for tokens)
 
 You can route models (Lever 2) and measure cost-per-task — but until policy enforces both, they stay engineer-by-engineer habits. The governance half arrived Oct 6, 2026:
@@ -64,6 +80,20 @@ Honest caveats, kept from the research:
 - **Commercial, not open source.** Early preview now, GA planned Q4 2026; pricing undisclosed. Per the playbook's AI/tech-only + local-first lens: this is an enterprise control plane, cloud-hosted — it belongs in governance, not in your local stack.
 - **Vendor claims.** The auto-shift behavior and cost-reduction figures come from launch materials. Treat as roadmap until preview feedback lands; Avalara's Director of Cloud & AI Optimization is quoted as an early trial customer.
 - **Worth watching, not buying on day one.** The Token Governance Summit (Oct 27, 12–1:30 pm EDT) will demo it live — cheap reconnaissance before any pilot.
+
+**Cohere North 2** — shipped Oct 5, 2026 — is the first real "token spend as IT governance" product: not a model, an enterprise agent platform whose headline feature is cost control. North Admin tracks token spend per user and per agent, with quotas, rate limits, consumption tiers, org-wide spend caps, and alerts before a limit is hit. Cross-session agent memory means agents stop re-burning tokens re-learning context between sessions; reusable Skills and shared Libraries mean teams stop rebuilding the same agent logic. Model-agnostic (Cohere's models or your own); runs in Cohere's cloud, private cloud/VPC, on-prem, or fully air-gapped, under SOC 2 Type 2 / ISO 27001 / ISO 42001. Traction names: PwC Canada rollout partnership, Thales Canada / Royal Canadian Navy integration. (Context: launched weeks after Cohere signed to combine with Aleph Alpha.)
+
+Why it maps to this playbook:
+
+- **Governance as the product, not the plugin.** Stacklet (above) attributes and acts on spend across providers; North 2 bakes the same spend-cap pattern into the agent platform itself — quotas and caps at the point of use, not as an after-the-fact report. This is the Copilot-budgeting pattern from Lever 6's playbook section, shipped as a vendor control plane.
+- **Memory as a cost lever.** Cross-session memory is Lever 5 ("stop paying twice") productionized: every context an agent retains is tokens it never re-spends. Caveat carried over: stale memory is a tax with interest — retained context that goes wrong costs more than re-fetching it.
+- **Skills/Libraries as deduplication.** Reusable agent capabilities are the org-level version of Lever 1's context hygiene: write the good prompt once, every agent inherits it, nobody pays to reinvent it.
+
+Honest caveats:
+
+- **Managed vendor platform, closed pricing.** Cohere publishes no price; North is sold through sales. Per the playbook's local-first lens: this is the control plane the tokenomics playbook describes, not a local-first tool. Steal the pattern (spend caps at point of use, memory that compounds, shared skill libraries); don't buy the platform on pattern alone.
+- **Vendor claims.** The "biggest upgrade yet" framing, the year of production deployments across finance/healthcare/telecom/manufacturing/energy/public sector, and the security controls (PII screening, prompt-injection blocking, action authorization) all come from launch materials — treat as roadmap until customer references land beyond the two named traction deals.
+- **Worth watching, not buying on day one.** Same posture as Stacklet: the pattern is proven valuable, the product needs preview feedback.
 
 ## What this repo already gives you
 
