@@ -209,3 +209,12 @@ A single repo, not a roundup — a free skill that shows how your own project wo
 **Value prop:** Ask "what happens when I…?" about your own project and get a page with the real screens, every hidden step in order, and the code behind each step (file + line, click to reveal) — aimed at the vibe-coded "black box" problem. Skill-folder install (SKILL.md + Python scripts via `uv`, builds a self-contained HTML page).
 **Score:** remit 2 + local 1 + maturity 0.5 + deploy 1. *Why it matters for us:* codebase comprehension as context compression — a generated "how this works" page cuts the per-session "read the whole repo" token tax, same family as diagram-design and archify. Scored honestly: the concept is strong and MIT-licensed, but it's day-zero (2 stars, author-flagged unfinished) and Copilot compatibility is undeclared — watch, don't deploy yet.
 **Source:** https://www.instagram.com/reel/DePJAUftlJD/
+
+## Oct 9 — @git.radar "context-mode" (Git Radar)
+
+A single repo, not a roundup — an MCP server for context window optimization in AI coding agents, surfaced by @git.radar's repo roundup:
+
+### 8.5 — [mksglu/context-mode](https://github.com/mksglu/context-mode) · 25.9k ⭐ · Elastic-2.0 · TypeScript
+**Value prop:** Context window optimization for AI coding agents — sandboxes tool output (claimed 98% reduction), persists session memory in SQLite, "Think in Code" (the LLM programs its analysis instead of reading files), and enforces routing across 17 platforms via MCP + hooks. Slash commands (/ctx-stats, /ctx-index), works with Claude Code, VS Code, Cursor, JetBrains, OpenCode.
+**Score:** remit 3.5 + local 2 + maturity 1.5 + deploy 1.5. *Why it matters for us:* this is the context-layer thesis in a box — tool-output sandboxing is exactly the "select useful information, filter/compress" step from the Context Engineering pipeline in 02, and session memory is the 03 problem. Scored honestly: the 98%/99% savings claims are vendor marketing, unverified; **Elastic License 2.0 is source-available, not OSI open-source — no managed-service use, get legal review before enterprise deployment**; and Copilot compatibility is undeclared (VS Code is listed, but his team is Copilot-only). Still the strongest context-economics repo on the page — pilot before committing.
+**Source:** https://www.instagram.com/reel/Dd6qqdaAfpI/

@@ -92,6 +92,16 @@
 
 ![Glitch Walk — what you do, what happens out of sight, the code behind it](glitch-walk-kem-glitch.png)
 
+### Prompt / Context / Harness / Loop / Graph Engineering: five layers, zooming further out each time (infographic)
+- **Creator:** @dailydoseofds_ (Daily Dose of Data Science) · **Date:** 2026-10-05 · **Source:** Instagram post
+- **What it suggests:** The cleanest taxonomy of the five "engineerings" — each layer wraps the one before, and the way to tell them apart is what a single unit of work looks like. (1) **Prompt engineering — the message.** Inputs (role, instructions, examples, format) → prompt → LLM → raw output. Unit of work: one input. The model remembers nothing, so the prompt carries everything. (2) **Context engineering — the memory.** Inputs (query, docs, memory, prior turns, tool outputs) → a *curator* that selects, compresses, and drops → context window → LLM. Unit of work: what stays in the window. (3) **Harness engineering — the machine.** Gather (a context zone + a prompt zone — prompt and context live inside the gather step) → LLM → tools / sub-agents → verifier → final response. Unit of work: one pass through the machine. The verify step is the entire difference between calling an API and running an agent. (4) **Loop engineering — the run.** Goal + success criteria → one harness pass → brakes: max iterations, no-progress detection, budget & time caps, completion check. Unit of work: the whole run. (5) **Graph engineering — the topology.** Goal + topology (nodes, edges, state schema) → graph coordinates/routes/spawns → agent nodes, tool nodes, human approval → a reviewer node on a different model with fresh context. Unit of work: the graph run. A single loop is just a one-node graph with an edge pointing back at itself. Footer line: *"Each layer wraps the one before it. The model is the commodity. The engineering around it is the product."*
+- **Tokenomics angle:** this diagram is a cost map. The curator (layer 2) is where tokens get spent or saved; the loop brakes (layer 4) — budget caps, max iterations — are the spend controls; and the footer is his local-first thesis in one sentence: if the model is the commodity, the engineering around it is where his context-layer work lives. Debugging advice worth stealing: the prompt is the easiest layer to edit, so it keeps taking the blame for failures that live three layers up.
+- **Repos/tools:** None linked.
+- **Extractable skill:** When an agent fails, debug by layer — check the loop's goal/brakes and the harness's gather/verify before touching the prompt. The unit-of-work framing makes it mechanical: one input, what stays in the window, one pass, the whole run, the graph run.
+- **Source:** https://www.instagram.com/p/DeJJM5jDtLI/
+
+![Prompt, Context, Harness, Loop, Graph Engineering — five layers, zooming further out each time](five-layers-engineering-dailydoseofds.jpg)
+
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
 
