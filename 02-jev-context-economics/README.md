@@ -64,6 +64,16 @@
 - **Extractable skill:** For any repeated bounded decision in your workflows, the pattern is interview → define categories → generate from docs → eval against samples → auto-tune definitions → route on confidence. The skill pack is just this loop packaged so an agent can run it.
 - **Source:** https://www.instagram.com/reel/Ddskcyzjcdw/
 
+### Context Engineering: the next step after prompt engineering (infographic)
+- **Creator:** @codecraftman_ · **Date:** 2026-10-03 · **Source:** Instagram reel
+- **What it suggests:** A 10-panel explainer on context engineering as the discipline of designing and managing the information an LLM gets at runtime. The panels: (1) the shift — prompt engineering tells the model what to do, context engineering decides what it should know before it acts; (2) what goes into context — system instructions, conversation history, retrieved knowledge (RAG), tool results, user context, agent state; (3) prompt vs context engineering — instructions vs information, static vs dynamic, text-centric vs data+tools+memory+state; (4) the context engineering pipeline — user request → understand intent → retrieve relevant context → select useful information (filter + compress) → build final context within token limits → LLM → response/action; (5) context + RAG — question → embedding → vector search → rerank → context selection → LLM; (6) the five memory types — short-term, long-term, semantic, episodic, working memory; (7) context + tools — tool results feed back into context; (8) context window ≠ infinite memory — more context means higher latency, more tokens, higher inference cost, more noise, and less relevant responses; (9) eight techniques for better context — filtering, retrieval + reranking, summarization, compression, memory selection, tool-result filtering, structured state, token budgeting; (10) the modern AI stack — a context engineering layer sitting between sources (files, APIs, memory) and the LLM.
+- **Tokenomics angle:** panel 8 is the one-sentence thesis of this entire section — "maximum useful information with minimum unnecessary tokens." The pipeline's retrieve → select → filter/compress steps are where token spend is actually decided, and "token budgeting" is named outright as a technique. This is the canonical diagram for his context-layer work: every context decision is a cost decision.
+- **Repos/tools:** None linked.
+- **Extractable skill:** Run every agent call through the pipeline — retrieve broadly, select ruthlessly, compress what survives, build the final context inside a token budget. Never pass raw retrieval output to the model.
+- **Source:** https://www.instagram.com/reel/DeBisnos51Z/
+
+![Context Engineering — the next step after prompt engineering (10 panels)](context-engineering-codecraftman.jpg)
+
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
 
