@@ -96,19 +96,22 @@
 
 Per-model cards (all 13, from the repo's published results):
 
-![Gemma 4 E4B — #1, 87.9%](slm-gauntlet/card_gemma4-e4b-q4_K_M.png)
-![MiniCPM-V 5 2B Q8_0 — #2, 87.7%](slm-gauntlet/card_minicpm5-2b-q8_0.png)
-![Ternary Bonsai-2 27B — #3, 86.2%](slm-gauntlet/card_bonsai2-ptq1_0.png)
-![MiniCPM-V 5 2B Q4 — #4, 85.6%](slm-gauntlet/card_minicpm5-2b-q4_K_M.png)
-![Ornith 1.5 9B — #5, 75.7%](slm-gauntlet/card_ornith-9b-q4_K_M.png)
-![MiMo V2.6 9B — #6, 75.3%](slm-gauntlet/card_mimo-9b-q4_K_M.png)
-![Gemma 4 12B UD-Q2_K_XL — #7, 72.6%](slm-gauntlet/card_gemma4-12b-ud-q2_K_XL.png)
-![LFM 2.5 2.6B Q8_0 — #8, 69.9%](slm-gauntlet/card_lfm2.5-2.6b-q8_0.png)
-![LFM 2.5 2.6B Q4_K_M — #9, 69.6%](slm-gauntlet/card_lfm2.5-2.6b-q4_K_M.png)
-![Qwen 3.5 4B — #10, 68.2%](slm-gauntlet/card_qwen3.5-4b-q4_K_M.png)
-![Gemma 4 12B IQ3_XXS — #11, 68.0%](slm-gauntlet/card_gemma4-12b-iq3_XXS.png)
-![Sharp-Spark X2.5 4B — #12, 66.4%](slm-gauntlet/card_sharp-spark-4b-q4_K_XL.png)
-![Gemma 3n E4B — #13, 56.3%](slm-gauntlet/card_gemma-e4b-q4_K_M.png)
+<div class="gallery">
+<figure><img src="slm-gauntlet/card_gemma4-e4b-q4_K_M.png" alt="Gemma 4 E4B — #1, 87.9%" loading="lazy"><figcaption><b>Gemma 4 E4B</b><br><span>#1, 87.9%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_minicpm5-2b-q8_0.png" alt="MiniCPM-V 5 2B Q8_0 — #2, 87.7%" loading="lazy"><figcaption><b>MiniCPM-V 5 2B Q8_0</b><br><span>#2, 87.7%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_bonsai2-ptq1_0.png" alt="Ternary Bonsai-2 27B — #3, 86.2%" loading="lazy"><figcaption><b>Ternary Bonsai-2 27B</b><br><span>#3, 86.2%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_minicpm5-2b-q4_K_M.png" alt="MiniCPM-V 5 2B Q4 — #4, 85.6%" loading="lazy"><figcaption><b>MiniCPM-V 5 2B Q4</b><br><span>#4, 85.6%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_ornith-9b-q4_K_M.png" alt="Ornith 1.5 9B — #5, 75.7%" loading="lazy"><figcaption><b>Ornith 1.5 9B</b><br><span>#5, 75.7%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_mimo-9b-q4_K_M.png" alt="MiMo V2.6 9B — #6, 75.3%" loading="lazy"><figcaption><b>MiMo V2.6 9B</b><br><span>#6, 75.3%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_gemma4-12b-ud-q2_K_XL.png" alt="Gemma 4 12B UD-Q2_K_XL — #7, 72.6%" loading="lazy"><figcaption><b>Gemma 4 12B UD-Q2_K_XL</b><br><span>#7, 72.6%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_lfm2.5-2.6b-q8_0.png" alt="LFM 2.5 2.6B Q8_0 — #8, 69.9%" loading="lazy"><figcaption><b>LFM 2.5 2.6B Q8_0</b><br><span>#8, 69.9%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_lfm2.5-2.6b-q4_K_M.png" alt="LFM 2.5 2.6B Q4_K_M — #9, 69.6%" loading="lazy"><figcaption><b>LFM 2.5 2.6B Q4_K_M</b><br><span>#9, 69.6%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_qwen3.5-4b-q4_K_M.png" alt="Qwen 3.5 4B — #10, 68.2%" loading="lazy"><figcaption><b>Qwen 3.5 4B</b><br><span>#10, 68.2%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_gemma4-12b-iq3_XXS.png" alt="Gemma 4 12B IQ3_XXS — #11, 68.0%" loading="lazy"><figcaption><b>Gemma 4 12B IQ3_XXS</b><br><span>#11, 68.0%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_sharp-spark-4b-q4_K_XL.png" alt="Sharp-Spark X2.5 4B — #12, 66.4%" loading="lazy"><figcaption><b>Sharp-Spark X2.5 4B</b><br><span>#12, 66.4%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_gemma-e4b-q4_K_M.png" alt="Gemma 3n E4B — #13, 56.3%" loading="lazy"><figcaption><b>Gemma 3n E4B</b><br><span>#13, 56.3%</span></figcaption></figure>
+</div>
+
 
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).

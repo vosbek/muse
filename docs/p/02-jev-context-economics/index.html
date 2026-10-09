@@ -2,7 +2,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>02 — Jev Context Economics · AI Skills Playbook</title><link rel="stylesheet" href="../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a><a href="../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><div class="hero-visual"><p><img alt="Jev + Ontology: The Judge and the Law — the control layer that governs how the rules evolve" src="jev-ontology-judge-and-law.png" /></p></div><h1 id="02-jev-context-economics">02 — Jev Context Economics</h1>
+<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a><a href="../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><div class="hero-visual"><p><img loading="lazy" alt="Jev + Ontology: The Judge and the Law — the control layer that governs how the rules evolve" src="jev-ontology-judge-and-law.png" /></p></div><h1 id="02-jev-context-economics">02 — Jev Context Economics</h1>
 <p><strong>Thesis:</strong> The cheapest token is the one you never spend. These six entries form a coherent economic argument: small models should make the decisions, retrieval should happen before reasoning, and the whole LLM-centric cost structure is transitional. The Jev pattern (a tiny model deciding, a big model executing) and jevgrep's measured 30% cost cut are the deployable present; the SLM prediction is the direction of travel.</p>
 <h3 id="jevgrep-cut-coding-agent-cost-30-with-better-file-retrieval">jevgrep: cut coding-agent cost ~30% with better file retrieval</h3>
 <ul>
@@ -62,7 +62,7 @@
 <li><strong>Extractable skill:</strong> When evaluating any inference/serving option, ask for the five metrics and which of the eight techniques it uses; never pay for a serving layer that can't name its batching and caching strategy.</li>
 <li><strong>Source:</strong> Infographic by @techwith.ram, via Instagram reel (Oct 8, 2026).</li>
 </ul>
-<p><img alt="Inference Engineering — eight techniques between your prompt and the last token" src="inference-engineering-techwith-ram.png" /></p>
+<p><img loading="lazy" alt="Inference Engineering — eight techniques between your prompt and the last token" src="inference-engineering-techwith-ram.png" /></p>
 <h3 id="a-skill-pack-that-teaches-your-coding-agent-to-build-its-own-jev-decision-layer">A skill pack that teaches your coding agent to build its own JEV decision layer</h3>
 <ul>
 <li><strong>Creator:</strong> @agentic.james (James Goldbach) · <strong>Date:</strong> 2026-09-24 · <strong>Source:</strong> Instagram reel</li>
@@ -81,7 +81,7 @@
 <li><strong>Extractable skill:</strong> Run every agent call through the pipeline — retrieve broadly, select ruthlessly, compress what survives, build the final context inside a token budget. Never pass raw retrieval output to the model.</li>
 <li><strong>Source:</strong> https://www.instagram.com/reel/DeBisnos51Z/</li>
 </ul>
-<p><img alt="Context Engineering — the next step after prompt engineering (10 panels)" src="context-engineering-codecraftman.jpg" /></p>
+<p><img loading="lazy" alt="Context Engineering — the next step after prompt engineering (10 panels)" src="context-engineering-codecraftman.jpg" /></p>
 <h3 id="slm-gauntlet-13-small-models-benched-for-subagent-work-on-a-gtx-1070-ti-infographics">SLM Gauntlet: 13 small models benched for subagent work on a GTX 1070 Ti (infographics)</h3>
 <ul>
 <li><strong>Creator:</strong> @tysn.dev (Ty) · <strong>Date:</strong> 2026-09-26 · <strong>Source:</strong> Instagram carousel (14 slides)</li>
@@ -119,21 +119,24 @@
 <li><strong>Extractable skill:</strong> Before renting frontier tokens for subagent fleets, bench small models on your own task mix with deterministic scoring (no LLM judge). The 7-suite shape — tool use, adversarial, agent chains, structured, retrieval, coding, instruction — is the template.</li>
 <li><strong>Source:</strong> https://www.instagram.com/p/DdxTz3hEWoq/</li>
 </ul>
-<p><img alt="SLM Gauntlet — 13 models, 71 tasks, 7 suites, zero LLM judging, on a GTX 1070 Ti" src="slm-gauntlet/announcement.png" /></p>
+<p><img loading="lazy" alt="SLM Gauntlet — 13 models, 71 tasks, 7 suites, zero LLM judging, on a GTX 1070 Ti" src="slm-gauntlet/announcement.png" /></p>
 <p>Per-model cards (all 13, from the repo's published results):</p>
-<p><img alt="Gemma 4 E4B — #1, 87.9%" src="slm-gauntlet/card_gemma4-e4b-q4_K_M.png" />
-<img alt="MiniCPM-V 5 2B Q8_0 — #2, 87.7%" src="slm-gauntlet/card_minicpm5-2b-q8_0.png" />
-<img alt="Ternary Bonsai-2 27B — #3, 86.2%" src="slm-gauntlet/card_bonsai2-ptq1_0.png" />
-<img alt="MiniCPM-V 5 2B Q4 — #4, 85.6%" src="slm-gauntlet/card_minicpm5-2b-q4_K_M.png" />
-<img alt="Ornith 1.5 9B — #5, 75.7%" src="slm-gauntlet/card_ornith-9b-q4_K_M.png" />
-<img alt="MiMo V2.6 9B — #6, 75.3%" src="slm-gauntlet/card_mimo-9b-q4_K_M.png" />
-<img alt="Gemma 4 12B UD-Q2_K_XL — #7, 72.6%" src="slm-gauntlet/card_gemma4-12b-ud-q2_K_XL.png" />
-<img alt="LFM 2.5 2.6B Q8_0 — #8, 69.9%" src="slm-gauntlet/card_lfm2.5-2.6b-q8_0.png" />
-<img alt="LFM 2.5 2.6B Q4_K_M — #9, 69.6%" src="slm-gauntlet/card_lfm2.5-2.6b-q4_K_M.png" />
-<img alt="Qwen 3.5 4B — #10, 68.2%" src="slm-gauntlet/card_qwen3.5-4b-q4_K_M.png" />
-<img alt="Gemma 4 12B IQ3_XXS — #11, 68.0%" src="slm-gauntlet/card_gemma4-12b-iq3_XXS.png" />
-<img alt="Sharp-Spark X2.5 4B — #12, 66.4%" src="slm-gauntlet/card_sharp-spark-4b-q4_K_XL.png" />
-<img alt="Gemma 3n E4B — #13, 56.3%" src="slm-gauntlet/card_gemma-e4b-q4_K_M.png" /></p>
+<div class="gallery">
+<figure><img src="slm-gauntlet/card_gemma4-e4b-q4_K_M.png" alt="Gemma 4 E4B — #1, 87.9%" loading="lazy"><figcaption><b>Gemma 4 E4B</b><br><span>#1, 87.9%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_minicpm5-2b-q8_0.png" alt="MiniCPM-V 5 2B Q8_0 — #2, 87.7%" loading="lazy"><figcaption><b>MiniCPM-V 5 2B Q8_0</b><br><span>#2, 87.7%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_bonsai2-ptq1_0.png" alt="Ternary Bonsai-2 27B — #3, 86.2%" loading="lazy"><figcaption><b>Ternary Bonsai-2 27B</b><br><span>#3, 86.2%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_minicpm5-2b-q4_K_M.png" alt="MiniCPM-V 5 2B Q4 — #4, 85.6%" loading="lazy"><figcaption><b>MiniCPM-V 5 2B Q4</b><br><span>#4, 85.6%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_ornith-9b-q4_K_M.png" alt="Ornith 1.5 9B — #5, 75.7%" loading="lazy"><figcaption><b>Ornith 1.5 9B</b><br><span>#5, 75.7%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_mimo-9b-q4_K_M.png" alt="MiMo V2.6 9B — #6, 75.3%" loading="lazy"><figcaption><b>MiMo V2.6 9B</b><br><span>#6, 75.3%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_gemma4-12b-ud-q2_K_XL.png" alt="Gemma 4 12B UD-Q2_K_XL — #7, 72.6%" loading="lazy"><figcaption><b>Gemma 4 12B UD-Q2_K_XL</b><br><span>#7, 72.6%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_lfm2.5-2.6b-q8_0.png" alt="LFM 2.5 2.6B Q8_0 — #8, 69.9%" loading="lazy"><figcaption><b>LFM 2.5 2.6B Q8_0</b><br><span>#8, 69.9%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_lfm2.5-2.6b-q4_K_M.png" alt="LFM 2.5 2.6B Q4_K_M — #9, 69.6%" loading="lazy"><figcaption><b>LFM 2.5 2.6B Q4_K_M</b><br><span>#9, 69.6%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_qwen3.5-4b-q4_K_M.png" alt="Qwen 3.5 4B — #10, 68.2%" loading="lazy"><figcaption><b>Qwen 3.5 4B</b><br><span>#10, 68.2%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_gemma4-12b-iq3_XXS.png" alt="Gemma 4 12B IQ3_XXS — #11, 68.0%" loading="lazy"><figcaption><b>Gemma 4 12B IQ3_XXS</b><br><span>#11, 68.0%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_sharp-spark-4b-q4_K_XL.png" alt="Sharp-Spark X2.5 4B — #12, 66.4%" loading="lazy"><figcaption><b>Sharp-Spark X2.5 4B</b><br><span>#12, 66.4%</span></figcaption></figure>
+<figure><img src="slm-gauntlet/card_gemma-e4b-q4_K_M.png" alt="Gemma 3n E4B — #13, 56.3%" loading="lazy"><figcaption><b>Gemma 3n E4B</b><br><span>#13, 56.3%</span></figcaption></figure>
+</div>
+
 <details class="sec"><summary>From X bookmarks (Sep 2026)</summary><div class="sec-body">
 <p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>
 <h3 id="open-source-adapter-that-decouples-your-agent-from-any-single-llm-provider">Open-source adapter that decouples your agent from any single LLM provider</h3>
@@ -406,7 +409,7 @@
 </ul>
 <p><strong>Deep dives:</strong> <a href="../deep-dives/jev-myth-vs-reality">jev-myth-vs-reality</a> ("200x faster, 400x cheaper" — the talk prep: five myths, verified numbers) · <a href="../deep-dives/jevgrep">jevgrep</a> (28.6% measured cut) · <a href="../deep-dives/jev-thesis">jev-thesis</a> (System One Models) · <a href="../deep-dives/jev-model-router">jev-model-router</a> (routing Claude Code with Jev) · <a href="../deep-dives/github-cost-efficiency">github-cost-efficiency</a> (Copilot harness) · <a href="../deep-dives/claude-cost-optimization">claude-cost-optimization</a> (Anthropic's ranked levers) · <a href="../deep-dives/context-language-models">context-language-models</a> (the model edits its own memory).</p>
 <h3 id="context-language-models-the-model-edits-its-own-memory">Context Language Models: the model edits its own memory</h3>
-<p><img alt="CLM infographic" src="context-language-models-infographic.jpg" />
+<p><img loading="lazy" alt="CLM infographic" src="context-language-models-infographic.jpg" />
 - <strong>Creator:</strong> @rakeshgohel01 (infographic) · underlying paper: Rulin Shao et al., UW / Meta Superintelligence Labs / MIT / Trillium Labs · <strong>Date:</strong> 2026-09-29 (paper)
 - <strong>What it suggests:</strong> The infographic distills the Sep 2026 "Context Language Models" paper (arXiv:2609.37725): stop treating context as an append-only transcript — mirror it into a file the model can edit directly (rewrite, delete, reorder, compact), synced into the next turn. Four learned behaviors emerge: delete stale results, track live state, rewrite history compactly, and write reusable helper functions for context management. The paper's numbers: +11.4% accuracy with 21.5% fewer FLOPs on BrowseComp-Plus, +5% score with 59% fewer FLOPs on 12-hour EdgeBench-10, and a co-designed Suffix Cache Reuse serving layer (editing breaks prefix caching; SCR reuses the unaffected suffix, −35% server compute vs SGLang). Context management becomes learned model behavior instead of hand-engineered harness rules — and it keeps improving with RL (Qwen3.5-9B: 28.8% → 42.5%).
 - <strong>Repos/tools:</strong> https://github.com/facebookresearch/context-language-models (CC BY-NC 4.0) · paper: https://arxiv.org/html/2609.37725v1

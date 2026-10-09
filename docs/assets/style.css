@@ -33,6 +33,7 @@ article.doc p{margin:12px 0;color:#d5d5d5}
 article.doc ul,article.doc ol{margin:10px 0 10px 26px;color:#d5d5d5}
 article.doc li{margin:6px 0}
 article.doc table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px}
+article.doc table{display:block;width:max-content;min-width:100%;max-width:100%;overflow-x:auto}
 article.doc th,article.doc td{border:1px solid var(--line);padding:8px 10px;text-align:left}
 article.doc th{background:var(--panel);color:#fff}
 article.doc img{max-width:100%;border-radius:10px;margin:14px 0}
