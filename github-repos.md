@@ -218,3 +218,32 @@ A single repo, not a roundup — an MCP server for context window optimization i
 **Value prop:** Context window optimization for AI coding agents — sandboxes tool output (claimed 98% reduction), persists session memory in SQLite, "Think in Code" (the LLM programs its analysis instead of reading files), and enforces routing across 17 platforms via MCP + hooks. Slash commands (/ctx-stats, /ctx-index), works with Claude Code, VS Code, Cursor, JetBrains, OpenCode.
 **Score:** remit 3.5 + local 2 + maturity 1.5 + deploy 1.5. *Why it matters for us:* this is the context-layer thesis in a box — tool-output sandboxing is exactly the "select useful information, filter/compress" step from the Context Engineering pipeline in 02, and session memory is the 03 problem. Scored honestly: the 98%/99% savings claims are vendor marketing, unverified; **Elastic License 2.0 is source-available, not OSI open-source — no managed-service use, get legal review before enterprise deployment**; and Copilot compatibility is undeclared (VS Code is listed, but his team is Copilot-only). Still the strongest context-economics repo on the page — pilot before committing.
 **Source:** https://www.instagram.com/reel/Dd6qqdaAfpI/
+
+## Oct 9 — @replace.so "9 repos worth trying" (Replace.so)
+
+Eight named in the caption (despite the "9" title) — three already scored on this page (vectorize-io/hindsight 9.0, paperclipai/paperclip 7.0, stablyai/orca 8.0), five new:
+
+### 8.5 — [yetone/magpie](https://github.com/yetone/magpie) · 7.4k ⭐ · MIT · Go
+**Value prop:** Every agent's model in one place — a local gateway (127.0.0.1:3425) speaking OpenAI Chat/Responses, Anthropic Messages, and Gemini, translating between them with streaming and tool calls. One screen lists 45+ agents and their models; routing groups fail over to the next provider when a quota runs dry; per-key usage and cost tracking with limits.
+**Score:** remit 3.5 + local 2 + maturity 1.5 + deploy 1.5. *Why it matters for us:* model routing plus cost tracking in one local box — this is the playbook's routing ladder and budget math as a running tool. Scored honestly: two weeks old (Sep 23), but MIT, active, and Copilot CLI is in its agent list — the closest thing on this page to a team-wide model-routing control plane. Pilot it.
+**Source:** https://www.instagram.com/p/Dd63tpUgBhU/
+
+### 8.0 — [VectifyAI/PageIndex](https://github.com/VectifyAI/PageIndex) · 39.0k ⭐ · MIT · Python
+**Value prop:** Vectorless, reasoning-based RAG — replaces the vector index with a hierarchical tree index and lets an LLM reason its way through it, the way a human turns to the right section of a long report. No vector DBs, no chunking; traceable, explainable retrieval. Built for financial reports, legal docs, filings, manuals.
+**Score:** remit 3 + local 1.5 + maturity 2 + deploy 1.5. *Why it matters for us:* "similarity ≠ relevance" is the curation problem from the Context Engineering pipeline in 02 — PageIndex is that curator as infrastructure. 39k stars and MIT make it the safest retrieval bet on the page; the retrieval step itself still costs LLM calls, so it's a quality play more than a cost play.
+**Source:** https://www.instagram.com/p/Dd63tpUgBhU/
+
+### 7.0 — [spinabot/brigade](https://github.com/spinabot/brigade) · 11.3k ⭐ · MIT · TypeScript
+**Value prop:** Your personal intelligence, self-hosted — a crew of agents on an org chart sharing one long-term memory (Tideline), delegating to each other, switching models mid-task, acting inside 1,000+ apps. No account, no SaaS in the middle; keys and data never leave your machine; runs on a Raspberry Pi or a server.
+**Score:** remit 2.5 + local 2 + maturity 1.5 + deploy 1. *Why it matters for us:* shared long-term memory across agents is the 03 problem, and the self-hosted/no-telemetry posture fits the local-first rule. Scored honestly: it's a separate ecosystem (terminal/chat apps), not a VS Code + Copilot native — evaluate as the memory-layer reference, not a team deploy.
+**Source:** https://www.instagram.com/p/Dd63tpUgBhU/
+
+### 6.0 — [ifixai-ai/iFixAi](https://github.com/ifixai-ai/iFixAi) · 23.0k ⭐ · Apache-2.0 · Python
+**Value prop:** Independent auditing for AI agents — 45 inspections (32 core across fabrication, manipulation, deception, unpredictability, opacity + 13 extended for sabotage, sandbagging, oversight evasion), returning a letter grade in under 5 minutes. Repeatable in CI, judged by independent providers, every run writes an auditable manifest.
+**Score:** remit 2 + local 1 + maturity 1.5 + deploy 1.5. *Why it matters for us:* the evals family (05) — a CI-repeatable agent audit is the missing gate before agents touch production. Note: two fork/renamed copies (momich112233/ifixai, yapaybaba/ifixai) no longer resolve; ifixai-ai/iFixAi is the canonical repo. Apache-2.0 is enterprise-friendly.
+**Source:** https://www.instagram.com/p/Dd63tpUgBhU/
+
+### 5.0 — [dmtrKovalenko/fframes](https://github.com/dmtrKovalenko/fframes) · 2.5k ⭐ · MIT · Rust
+**Value prop:** Video vibe-coding framework — write video in Rust and SVG, render on the GPU (Skia + FFmpeg). Ships an agent skill (`npx skills add`) that takes the agent from empty folder to rendered .mp4; explicit verbose API that agents handle well.
+**Score:** remit 1 + local 2 + maturity 1 + deploy 1. *Why it matters for us:* off-remit for tokenomics, but notable as the agent-skill distribution pattern done right — a skill that turns a verbose deterministic API into agent leverage. If the team ever needs programmatic video (demos, explainers), this is the one. Watch the GPL feature gate on H.264.
+**Source:** https://www.instagram.com/p/Dd63tpUgBhU/

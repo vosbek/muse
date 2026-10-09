@@ -1,0 +1,66 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jev: Myth vs Reality — "200x faster, 400x cheaper" · AI Skills Playbook</title><link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a><a href="../../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><h1 id="jev-myth-vs-reality-200x-faster-400x-cheaper">Jev: Myth vs Reality — "200x faster, 400x cheaper"</h1>
+<p>Talk prep distilled Oct 9, 2026. The full slide deck (13 slides) is the talk artifact; this is the substance in repo form. All figures verified against TypeSafe's own materials, the Wikipedia Jev article, and the independent AI/ML API evaluation (Sept 26, 2026).</p>
+<details class="sec"><summary>The claim, as quoted</summary><div class="sec-body">
+<p>TypeSafe's official claim: <strong>20–200x faster and 40–400x cheaper than frontier LLMs</strong>. The viral headline quotes the ceiling. Price: <strong>$0.042 per 1M input tokens, output free</strong>. Latency: 70–500ms (server-side, self-reported; one independent end-to-end test via OpenRouter measured 309–1077ms).</p>
+</div></details><details class="sec"><summary>Myth 1: "200x / 400x" is one number</summary><div class="sec-body">
+<p><strong>Reality:</strong> it's a range, and the headline takes the ceiling. The peak figures (up to ~193.6x faster, ~444.6x cheaper) come from TypeSafe's own 4-workflow internal eval — designed by TypeSafe, run by TypeSafe, on workflows built by its own model-capabilities team. TypeSafe itself notes this may be biased vs real-world tasks. Quote the range, never the ceiling alone.</p>
+</div></details><details class="sec"><summary>Myth 2: faster and cheaper than everything</summary><div class="sec-body">
+<p><strong>Reality:</strong> the comparator is everything. Independent numbers (AI/ML API, Sept 26, 2026, 900 examples, 3 tasks — Banking77 routing, TweetEval moderation, HelpSteer2 rating):</p>
+<table>
+<thead>
+<tr>
+<th>Cost per 1M decisions</th>
+<th>Routing</th>
+<th>Moderation</th>
+<th>Rating</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Opus 5.5</td>
+<td>$8,243</td>
+<td>$1,621</td>
+<td>$1,411</td>
+</tr>
+<tr>
+<td>Jev 1.13</td>
+<td>$98</td>
+<td>$19</td>
+<td>$47</td>
+</tr>
+<tr>
+<td>DeepSeek V4 Flash</td>
+<td>$77</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<p>vs frontier: dramatic. vs cheap LLMs: <strong>roughly even</strong> (DeepSeek Flash $77 vs Jev $98 on routing). Against Haiku 5.5 ($0.10/$0.50, launched Oct 7, 2026), the per-decision cost lands in the same ballpark — the 400x figure evaporates against modern cheap models. Accuracy: Jev routing 78.3% vs Opus 5.5 85.7% / GPT-6 Sol 85.3% (not significantly different from the cheap LLMs); moderation F1 0.696 — best of six; answer-rating weakest (Spearman 0.39 vs 0.48).</p>
+</div></details><details class="sec"><summary>Myth 3: proven by benchmark</summary><div class="sec-body">
+<p><strong>Reality:</strong> the 4-workflow eval scored Jev 67.8%, level with GPT-5.6 Terra (67.9%) and Claude Sonnet 5 (67.8%) — but it measured <strong>agreement with consensus labels averaged from GPT-6 Astra + Claude Fable 5.1</strong>, not human ground truth. No human labels, vendor-designed tasks, vendor-run harness, not independently reproduced. It biases toward OpenAI/Anthropic models by construction.</p>
+</div></details><details class="sec"><summary>Myth 4: "Jev can't hallucinate"</summary><div class="sec-body">
+<p><strong>Reality:</strong> it can't break <em>format</em>. Output is schema-locked, so 0% structured-output error is true by definition — it says nothing about whether the judgment is right. Jev can pick the wrong option with high confidence: in the independent eval, <strong>12 of 197 high-confidence (≥0.9) routing answers were wrong</strong>, even though 94–96% of ≥0.9-confidence answers were correct overall. Calibration is good on classification, poor on answer-rating (ECE 0.284). A probability is a routing signal, not a finding.</p>
+</div></details><details class="sec"><summary>Myth 5: Jev replaces the LLM</summary><div class="sec-body">
+<p><strong>Reality:</strong> the winning pattern is <strong>LLM + Jev, never LLM vs Jev</strong>. Jev as first-pass filter in front of Opus 5.5 matched Opus accuracy on both classification tasks at <strong>38–45% of the cost</strong>. That's the deployable result: Jev takes the bounded decisions, the frontier model takes the escalations.</p>
+</div></details><details class="sec"><summary>The honest architecture</summary><div class="sec-body">
+<p>The confidence-routed escalation ladder (this repo's 02 pattern): ≥0.90 auto-act, 0.50–0.90 escalate to LLM, &lt;0.50 escalate to human. Jev sits at the bottom of the routing ladder — below even Haiku 5.5 — reserved for pure bounded decisions (classify, route, score, yes/no gates) where the decision space is known in advance.</p>
+<p>Kem's Oct 9 corollary (@kem_glitch reel): 10 Haiku agents led by Haiku solved a testable task in ~2 min for $0.13 vs Opus alone at $0.34 — but for reasoning-heavy tasks Opus alone was faster AND cheaper. Orchestration isn't universal: cheap models for testable tasks, frontier for reasoning, Jev for decisions.</p>
+</div></details><details class="sec"><summary>Verdict</summary><div class="sec-body">
+<p><strong>Directionally true, numerically a ceiling.</strong> Jev is a genuine new primitive — typed, calibrated, parallel decisions that collapse the classify→parse→validate loop — and the filter pattern is the real enterprise win. The 200x/400x figures are best-case ratios vs frontier models generating paragraphs, measured by the vendor on its own tasks. Against cheap classifiers the cost edge disappears; what remains is the format guarantee, the calibration, and the parallelism.</p>
+</div></details><details class="sec"><summary>Sources</summary><div class="sec-body">
+<ul>
+<li>TypeSafe docs (typesafe.ai, docs.typesafe.ai) — pricing, latency, RLCD training</li>
+<li>Wikipedia: Jev (AI model) — architecture notes, eval caveats</li>
+<li>AI/ML API, "What Is Jev? TypeSafe's Decision Model, Tested Against LLMs" (Sept 26, 2026) — independent 6-model head-to-head</li>
+<li>@kem_glitch Instagram reel (Oct 9, 2026) — Haiku 5.5 orchestration data</li>
+<li>Talk deck: 13 slides, <code>~/workspace/your_files/jev-myth-vs-reality/jev-myth-vs-reality.pptx</code></li>
+</ul></div></details></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

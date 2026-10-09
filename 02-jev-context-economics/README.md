@@ -312,7 +312,7 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Extractable skill:** The big three cost levers — prompt caching, instruction hygiene, effort routing — applied systematically.
 - **Source:** https://x.com/ClaudeDevs/status/2097369738968195513
 
-**Deep dives:** [jevgrep](../deep-dives/jevgrep.md) (28.6% measured cut) · [jev-thesis](../deep-dives/jev-thesis.md) (System One Models) · [jev-model-router](../deep-dives/jev-model-router.md) (routing Claude Code with Jev) · [github-cost-efficiency](../deep-dives/github-cost-efficiency.md) (Copilot harness) · [claude-cost-optimization](../deep-dives/claude-cost-optimization.md) (Anthropic's ranked levers) · [context-language-models](../deep-dives/context-language-models.md) (the model edits its own memory).
+**Deep dives:** [jev-myth-vs-reality](../deep-dives/jev-myth-vs-reality.md) ("200x faster, 400x cheaper" — the talk prep: five myths, verified numbers) · [jevgrep](../deep-dives/jevgrep.md) (28.6% measured cut) · [jev-thesis](../deep-dives/jev-thesis.md) (System One Models) · [jev-model-router](../deep-dives/jev-model-router.md) (routing Claude Code with Jev) · [github-cost-efficiency](../deep-dives/github-cost-efficiency.md) (Copilot harness) · [claude-cost-optimization](../deep-dives/claude-cost-optimization.md) (Anthropic's ranked levers) · [context-language-models](../deep-dives/context-language-models.md) (the model edits its own memory).
 
 ### Context Language Models: the model edits its own memory
 ![CLM infographic](context-language-models-infographic.jpg)
