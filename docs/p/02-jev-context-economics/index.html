@@ -63,6 +63,15 @@
 <li><strong>Source:</strong> Infographic by @techwith.ram, via Instagram reel (Oct 8, 2026).</li>
 </ul>
 <p><img alt="Inference Engineering — eight techniques between your prompt and the last token" src="inference-engineering-techwith-ram.png" /></p>
+<h3 id="a-skill-pack-that-teaches-your-coding-agent-to-build-its-own-jev-decision-layer">A skill pack that teaches your coding agent to build its own JEV decision layer</h3>
+<ul>
+<li><strong>Creator:</strong> @agentic.james (James Goldbach) · <strong>Date:</strong> 2026-09-24 · <strong>Source:</strong> Instagram reel</li>
+<li><strong>What it suggests:</strong> A skill pack for "the small bounded stuff" — classifying, routing, scoring, yes/no gates; the decisions you don't want eating a full model call every time. The pack walks a coding agent through designing, building, testing, and tuning a JEV decision layer for a real workflow. Shown contents: SKILL.md, jev-docs.md, setup.ts, eval.ts, optimize.md. The workflow in the video: (1) Jev interviews you to define what to classify (example: incoming support tickets → Billing / Bug / Feature / Refund), reads the relevant docs, generates the code; (2) tests the setup against sample data, finds the mistakes, and auto-corrects the category definitions — the on-screen accuracy climbs 88% → 99.1% → 99.7%.</li>
+<li><strong>Tokenomics angle:</strong> this is the build-your-own-Jev-layer pattern — the economic core of this entire section. Bounded decisions shouldn't cost frontier calls, and the eval→optimize loop (test against samples, auto-tune definitions until accuracy plateaus) is the calibration step that makes a ≥0.90 auto-act threshold trustworthy. Pairs directly with the "Jev + Ontology: The Judge and the Law" entry above: that one is the architecture, this one is how an agent builds it.</li>
+<li><strong>Repos/tools:</strong> None public — the pack is DM-gated ("comment JEV and I'll send it"), same distribution as the Prateek bundle. No repo to score yet; if it goes public, it belongs on the GitHub Repos page.</li>
+<li><strong>Extractable skill:</strong> For any repeated bounded decision in your workflows, the pattern is interview → define categories → generate from docs → eval against samples → auto-tune definitions → route on confidence. The skill pack is just this loop packaged so an agent can run it.</li>
+<li><strong>Source:</strong> https://www.instagram.com/reel/Ddskcyzjcdw/</li>
+</ul>
 <details class="sec"><summary>From X bookmarks (Sep 2026)</summary><div class="sec-body">
 <p>Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).</p>
 <h3 id="open-source-adapter-that-decouples-your-agent-from-any-single-llm-provider">Open-source adapter that decouples your agent from any single LLM provider</h3>

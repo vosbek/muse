@@ -56,6 +56,14 @@
 
 ![Inference Engineering — eight techniques between your prompt and the last token](inference-engineering-techwith-ram.png)
 
+### A skill pack that teaches your coding agent to build its own JEV decision layer
+- **Creator:** @agentic.james (James Goldbach) · **Date:** 2026-09-24 · **Source:** Instagram reel
+- **What it suggests:** A skill pack for "the small bounded stuff" — classifying, routing, scoring, yes/no gates; the decisions you don't want eating a full model call every time. The pack walks a coding agent through designing, building, testing, and tuning a JEV decision layer for a real workflow. Shown contents: SKILL.md, jev-docs.md, setup.ts, eval.ts, optimize.md. The workflow in the video: (1) Jev interviews you to define what to classify (example: incoming support tickets → Billing / Bug / Feature / Refund), reads the relevant docs, generates the code; (2) tests the setup against sample data, finds the mistakes, and auto-corrects the category definitions — the on-screen accuracy climbs 88% → 99.1% → 99.7%.
+- **Tokenomics angle:** this is the build-your-own-Jev-layer pattern — the economic core of this entire section. Bounded decisions shouldn't cost frontier calls, and the eval→optimize loop (test against samples, auto-tune definitions until accuracy plateaus) is the calibration step that makes a ≥0.90 auto-act threshold trustworthy. Pairs directly with the "Jev + Ontology: The Judge and the Law" entry above: that one is the architecture, this one is how an agent builds it.
+- **Repos/tools:** None public — the pack is DM-gated ("comment JEV and I'll send it"), same distribution as the Prateek bundle. No repo to score yet; if it goes public, it belongs on the GitHub Repos page.
+- **Extractable skill:** For any repeated bounded decision in your workflows, the pattern is interview → define categories → generate from docs → eval against samples → auto-tune definitions → route on confidence. The skill pack is just this loop packaged so an agent can run it.
+- **Source:** https://www.instagram.com/reel/Ddskcyzjcdw/
+
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
 
