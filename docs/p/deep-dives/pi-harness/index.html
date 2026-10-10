@@ -29,6 +29,65 @@
 <li><strong>Packages:</strong> bundle extensions + skills + prompts + themes, install from npm or git (<code>pi install npm:@foo/pi-tools</code>). 50+ examples in the repo.</li>
 <li><strong>Pi 1.0 / Pi Durable</strong> (just shipped, Oct 2026): durable agents that survive a crashed process and resume exactly where they left off — the "effect sandwich" (record intent, run effect, persist result), idempotency keys for tool calls, versioned documents for agent state; runs on Node, Bun, Cloudflare Durable Objects, E2B, even a phone. Notably, Pi is also landing <strong>Codemode, MCP, and the Jev classifier</strong> (per Ronacher's Oct 2026 post) — the decision-model pattern from this playbook's Jev section, inside the harness.</li>
 </ul>
+</div></details><details class="sec"><summary>Pi 1.0: the October 2026 update</summary><div class="sec-body">
+<p>Pi hit <strong>1.0 on Oct 1, 2026</strong> and went to <strong>#1 on Hacker News</strong> (1,200+ points; Pi Durable also charted). The headline was the 180: Pi — whose creator spent a year dismissing MCP as unnecessary — <strong>shipped native MCP support</strong>. Earendil's rationale: MCP improved, and their own MCP changes made other integrations easier — "the changes we have made to MCP also enable the use of Jev more easily within Pi." What else shipped:</p>
+<ul>
+<li><strong>Codemode</strong>: a harness-side sandbox for tool calls, with MCP, decision models, and image models pluggable.</li>
+<li><strong>Deferred tool loading</strong>: tools aren't stuffed into context up front (a direct tokenomics win — smaller prefix, less cache-write cost).</li>
+<li><strong>Cache warming</strong> for Anthropic models; <strong>mid-conversation system messages</strong>; extension support for <strong>virtual models</strong>.</li>
+<li><strong>Pi Durable</strong> (separate package, same MIT): the orchestration layer for long-running, multi-surface agentic applications — SQLite + JSONL storage, kept distinct from core to preserve the minimalism.</li>
+<li>The governing quote from the 1.0 post: "We wait until something has proven itself, and only then do we consider adopting it; weighing its true functionality against its inherent added complexity." The "things we said no to" list is longer than the feature list — which is why the MCP reversal mattered.</li>
+</ul>
+<p>For enterprises: 1.0 is the stability signal. A hardened, MIT-licensed harness with hundreds of thousands of weekly users is now a safe dependency to standardize on.</p>
+</div></details><details class="sec"><summary>The Pi ecosystem: who builds on it</summary><div class="sec-body">
+<p>Pi's extension/SDK design means adoption compounds — products, not just users:</p>
+<ul>
+<li><strong>OpenClaw</strong> (145k+ ⭐): the breakout agent product built on Pi — the proof that Pi works as a substrate, not just a CLI.</li>
+<li><strong>oh-my-pi</strong> (28.9k ⭐ in 8 months, ~114k npm downloads/week): a hard fork by Stencil Labs that ships the batteries Pi deliberately omits — the "feature-complete" pole to upstream Pi's "minimal-core" pole. (Enterprise note: extreme release velocity — ~1.6 releases/day — with a latest-only security policy; upstream is the safer-lifecycle choice.)</li>
+<li><strong>Domi</strong>: a desktop coding agent powered by Pi (git worktrees per task, local-first sessions).</li>
+<li><strong>Bunny Agent</strong>: "the oh-my-zsh of coding agents" — pre-wired Pi with harness-ready tools, multi-model CLI.</li>
+<li><strong>Forage</strong>: built on Pi's philosophy of small, inspectable systems — explicit skills, user-owned model access.</li>
+<li><strong>Fusion</strong> (runfusion.ai): multi-node orchestrator (kanban + worktrees + approval gates) powered by Pi.</li>
+<li><strong>PiJ / PiJev</strong>: Pi with <strong>Jev in the loop</strong> — Jev ranks repo files before the first call, picks skills, triages failures; the coding model writes the code. The Jev+harness fusion this playbook has been tracking, now shipping in the wild.</li>
+</ul>
+</div></details><details class="sec"><summary>More companies building their own harness</summary><div class="sec-body">
+<p>Coinbase and Shopify aren't alone. The pattern — own the harness, rent the model — is now the enterprise default:</p>
+<h3 id="stripe-minions-the-benchmark">Stripe: Minions (the benchmark)</h3>
+<p>The industry reference for unattended one-shot coding at scale: <strong><a href="https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents">stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents</a></strong> (two parts, by the Leverage team).</p>
+<ul>
+<li><strong>Scale:</strong> 1,300+ PRs merged per week (~185/day), human-reviewed, <strong>zero human-written code</strong> in agent PRs.</li>
+<li><strong>Harness:</strong> an internal <strong>fork of Block's Goose</strong> (forked late 2024), customized with one policy: <strong>remove everything that assumes a human is watching</strong> — no interruptibility, no confirmation dialogs, no interactive prompts. Safety comes from isolation, not permission popups: each run gets a <strong>pre-warmed devbox</strong> (the same machines engineers use, spun up in ~10 seconds, isolated from prod and the internet), so the agent runs with full permissions inside a limited blast radius.</li>
+<li><strong>Blueprints:</strong> the architectural heart — workflow templates that <strong>interleave deterministic nodes</strong> (git ops, linters, tests — same output every time) <strong>with agentic nodes</strong> (LLM reasoning). Deterministic steps are guardrails; agentic steps are intelligence. When models improve, the improvement drops in without touching the scaffolding.</li>
+<li><strong>Toolshed:</strong> a centralized <strong>MCP server with ~500 curated tools</strong>; relevant MCP tools are run deterministically over likely links <em>before</em> the run starts, to hydrate context.</li>
+<li><strong>Rules:</strong> minions read the same agent rule files as Cursor/Claude Code, but almost all rules are <strong>conditionally applied by subdirectory</strong> — a global rule file doesn't scale.</li>
+<li>Engineers invoke minions from <strong>Slack, CLI, or web</strong> and get back a complete PR. Stripe keeps the headless Goose fork for autonomous work <em>and</em> gives engineers Cursor/Claude Code for interactive work — different tools for different modes, coexisting.</li>
+</ul>
+<h3 id="ramp-inspect-the-open-blueprint">Ramp: Inspect (the open blueprint)</h3>
+<p><strong><a href="https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal">modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal</a></strong> — and Ramp open-sourced the blueprint so anyone can replicate it.</p>
+<ul>
+<li><strong>Stack:</strong> <strong>OpenCode</strong> as the agent runtime on <strong>Modal sandboxes</strong> — each session gets a full dev stack (Postgres, Redis, Temporal, RabbitMQ, Vite, Chromium), with filesystem snapshots every 30 minutes for near-instant startup.</li>
+<li><strong>Scale:</strong> ~50% of merged PRs started by Inspect (Ramp's claim); <strong>80%+ of Inspect's own codebase is written by Inspect itself</strong>.</li>
+<li><strong>The differentiator is context, not the model:</strong> "Inspect is never limited by missing context or tools, but only by model intelligence itself." Multiplayer sessions (state via Cloudflare Durable Objects) let several engineers watch and guide simultaneously.</li>
+<li><strong>Radical visibility:</strong> all Inspect sessions are <strong>public with no opt-out</strong> — 150+ Ramp employees have contributed. (Same instinct as Shopify's River public-channel rule: a visible agent teaches the org.)</li>
+<li><strong>Why build:</strong> local machines can't run agents in parallel at the scale they wanted, and "the only way you're going to ensure that it is the best, most productive, most efficient for your organization is to build it yourself."</li>
+<li>Three clients: Slack bot, web UI (hosted VS Code), Chrome extension for visual React editing.</li>
+</ul>
+<h3 id="the-rest-of-the-field-brief">The rest of the field (brief)</h3>
+<ul>
+<li><strong>Spotify — Honk</strong> (Claude Code + Agent SDK): 650+ PRs/month, 60–90% time savings on migrations; nested verification loops (deterministic checks → LLM judge vetoing ~25% of sessions → CI).</li>
+<li><strong>Uber</strong>: Claude Code + internal Minion/Shepherd/uReview tooling; 84% of developers, 65–72% of code AI-generated.</li>
+<li><strong>Nubank + Devin</strong>: 8-year-old ETL monolith migration — 12× engineering efficiency, 20× cost savings vs the 1,000-engineer plan.</li>
+</ul>
+<h3 id="the-convergence-five-stages-every-company-rediscovers">The convergence: five stages every company rediscovers</h3>
+<p>Independent builds keep landing on the same skeleton — <strong>intake → isolation → tools → verification</strong> (plus the gateway underneath):</p>
+<ol>
+<li><strong>Intake</strong> decides what work is worth starting (Sentry's Seer scores errors; Shopify routes through public Slack).</li>
+<li><strong>Isolation</strong> prevents collisions: git worktrees (cheapest), containers, or cloud sandboxes (Stripe's 10-second devboxes, Modal, K8s pods).</li>
+<li><strong>Tools</strong> give agents hands: one curated MCP surface (Stripe's 500-tool Toolshed; Cloudflare's generated AGENTS.md across 3,900 repos).</li>
+<li><strong>Verification</strong> is where designs diverge — and where the money is: deterministic checks first, then LLM judges, then CI. (Faire's lesson: filtering review comments by model confidence failed; better context + a second model asking "is this worth a human's time" worked.)</li>
+<li><strong>The gateway underneath it all</strong>: one proxy, one billing relationship, one observability pipe — the difference between "our org uses AI" and "every team has a different vendor and exposure surface."</li>
+</ol>
+<p>The lavx synthesis puts the business point bluntly: "the moat of software companies will shift from 'the code they wrote' to the 'means of production' of that code. The alpha is in your factory."</p>
 </div></details><details class="sec"><summary>Why enterprises pick it: Wilson's argument</summary><div class="sec-body">
 <p>Wilson's claim, stripped of hype: a CTO cannot build the company's entire engineering future on a proprietary model endpoint. The reasons are the ones this playbook has been documenting all along — <strong>model churn</strong> (the model you tuned for gets replaced), <strong>pricing power</strong> (rate limits in 2025 taught enterprises this), <strong>evolvability</strong> (you can't change what you can't see). Pi inverts the dependency: the harness is yours (MIT, forkable, hackable), the model is a commodity you swap. When Claude 6 or GPT-7 or a local distilled model wins, you change one line in <code>models.json</code>, not your whole platform.</p>
 </div></details><details class="sec"><summary>The companies</summary><div class="sec-body">
@@ -86,6 +145,11 @@
 <li>Shopify Helix: <a href="https://shopify.engineering/helix">shopify.engineering/helix</a></li>
 <li>The Information via <a href="https://www.webpronews.com/coinbase-shopify-bet-big-on-custom-ai-coding-agents-to-supercharge-claude/">webpronews</a> (Aug 2026, paywalled original)</li>
 <li>Related in this playbook: <a href="scaling-custom-agents-copilot-palafox.md">Palafox talk</a> (the GitHub-side mirror: marketplace → pipeline → cost observability)</li>
+<li>Stripe Minions: <a href="https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents">stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents</a> (parts 1–2)</li>
+<li>Ramp Inspect: <a href="https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal">modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal</a></li>
+<li>Pi 1.0: <a href="https://www.theregister.com/ai-and-ml/2026/10/02/pi-coding-agent-pulls-a-180-and-adds-mcp-support/5300678">The Register</a> · Zechner's acquisition post: <a href="https://github.com/badlogic/mariozechner.at/blob/HEAD/src/posts/2026-04-08-ive-sold-out/index.md">mariozechner.at</a></li>
+<li>Pi ecosystem: <a href="https://github.com/openclaw/openclaw">OpenClaw</a> · <a href="https://github.com/can1357/oh-my-pi">oh-my-pi</a> · <a href="https://github.com/restflux/domi">Domi</a> · <a href="https://github.com/buda-ai/bunny-agent">Bunny Agent</a> · <a href="https://github.com/tenzki/forage">Forage</a> · <a href="https://github.com/Runfusion/Fusion">Fusion</a></li>
+<li>Enterprise field notes: <a href="https://github.com/chipagosfinest/software-factory/blob/HEAD/docs/enterprise-adoption.md">software-factory enterprise adoption</a> · <a href="https://github.com/steel-experiments/internal-agents-map">internal-agents-map</a></li>
 </ul></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
