@@ -1,13 +1,14 @@
-# AI Engineer Talks — World's Fair 2026 (Sep 25 – Oct 3)
+# AI Engineer Talks — World's Fair 2026 (Sep 25 – Oct 10)
 
-37 talks from the AI Engineer channel's World's Fair 2026 run, each distilled into thesis, key points, notable quotes/data, and a tokenomics/efficiency angle with local-deploy takeaways where relevant. Three more videos from the same window were already covered elsewhere in the repo (see bottom).
+38 talks from the AI Engineer channel's World's Fair 2026 run, each distilled into thesis, key points, notable quotes/data, and a tokenomics/efficiency angle with local-deploy takeaways where relevant. Three more videos from the same window were already covered elsewhere in the repo (see bottom).
 
-Provenance: 21 notes are transcript-based (full spoken transcripts via usetranscribe.io); the rest are distilled from video descriptions/chapters plus biggo.com's AI-generated talk summaries — each file carries an exact provenance note at the top. Treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.
+Provenance: 22 notes are transcript-based (full spoken transcripts — 21 via usetranscribe.io, 1 via YouTube auto-captions cleaned against the video); the rest are distilled from video descriptions/chapters plus biggo.com's AI-generated talk summaries — each file carries an exact provenance note at the top. Treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.
 
 ## The talks
 
 | Talk | Speaker | Date | Sharpest takeaway |
 |---|---|---|---|
+| [From Your Laptop to the Pipeline: Scaling Custom Agents with GitHub Copilot](scaling-custom-agents-copilot-palafox.md) | José Palafox, GitHub | Oct 10 | Local → marketplace → CI: pipeline agents are observable, budgeted, and reviewable — including agents that investigate other agents' cost overruns. |
 | [Stop Fine-Tuning to Fix Retrieval Problems](stop-fine-tuning-retrieval.md) | Anant Srivastava | Oct 3 | Fine-tune only what has stopped changing; the rest belongs in retrieval or the prompt. |
 | [What Makes Open Models Fast in Production](open-models-fast-production.md) | Sujee Maniyam, Nebius | Oct 3 | KV-cache prefix reuse → up to 10x speedup; custom draft models → 30%+ on speculative decoding. |
 | [GPU Died. Training Didn't: Self-Healing Training at Scale](self-healing-training.md) | Connor Guerrero & Young Jeong, Crusoe | Oct 3 | XID 79 → drain, replace, resume from checkpoint in under 15 min, no human action. |
