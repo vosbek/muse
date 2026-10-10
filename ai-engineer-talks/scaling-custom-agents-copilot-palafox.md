@@ -24,6 +24,8 @@ flowchart LR
     B --> C[PIPELINE<br/>headless CLI in Actions<br/>repo's budget, repo's identity]
 ```
 
+![From laptop to pipeline: shared agents in, observable metered spend out](palafox-assets/palafox-pipeline.svg)
+
 ## Every step, in order
 
 ### 1. Two modes of agents (0:00–1:32)
@@ -119,6 +121,8 @@ Palafox's cheapest-token line ("the cheapest way to use them is to get cache hit
 
 **What breaks it (harness rules worth stealing):** keep system prompt and instruction blocks byte-identical across turns; put stable context (instructions, project summary) before dynamic context (file contents, user query); never reorder tool definitions between calls. These are the same rules that keep any agent's cache hot — Copilot just enforces them in the runtime so every product (CLI, VS Code, coding agent, code review) inherits them.
 
+![How shared cache hits work: byte-identical prefixes on an always-warm cache](palafox-assets/palafox-cache-hits.svg)
+
 ## Deeper: marketplace mechanics
 
 The "little extra JSON" Palafox mentions makes a repo a plugin marketplace. The CLI surface:
@@ -152,7 +156,6 @@ gh-aw's numbers make the "agents watching their own cost" step concrete (from th
 This talk is a cost-control talk wearing an adoption talk's clothes, and it maps directly onto the playbook's levers:
 
 - **Shared agents = cache hits.** Palafox's cheapest-token argument is the serving-side twin of the playbook's prompt-caching policies: standardization across the org raises exact-match rates on shared data. One changelog-summarizer agent used by 200 engineers caches; 200 hand-rolled prompts don't. GitHub's own number: 96.22% prompt-cache hit rate on the Rust port, because the runtime preserves a long stable prefix (system prompt → tool definitions → conversation). See the deep dive above for the full mechanism and the harness rules.
-- **Small models for bounded steps.** The research subagent runs Haiku-class; Rubber Duck deliberately uses a *different* model's weights to check a plan. That's the routing ladder (Lever 4): match the model to the decision, don't default to the flagship.
 - **Small models for bounded steps.** The research subagent runs Haiku-class; Rubber Duck deliberately uses a *different* model's weights to check a plan. That's the routing ladder (Lever 4): match the model to the decision, don't default to the flagship.
 - **Pipeline = metered, observable spend.** Laptop agents are invisible spend; pipeline agents are Otel-instrumented line items with P90 alerts and A/B-tested model selection. The "agents that investigate their own cost overruns" pattern is the escalation-trajectory idea turned inward: mine your own runs for the expensive ones.
 - **Human-in-the-loop as a spend gate.** The slash-command approval between pipeline stages is a budget control disguised as a workflow step — you only pay for stage N+1 after a human says the artifact from stage N is worth it.

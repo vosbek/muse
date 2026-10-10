@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="660" viewBox="0 0 1200 660" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<defs>
+<marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d49036"/></marker>
+</defs>
+<rect width="1200" height="660" fill="#141414"/>
+<text x="600" y="54" text-anchor="middle" font-size="30" fill="#e8e8e8" font-weight="600">Five stages every company rediscovers</text>
+<text x="600" y="82" text-anchor="middle" font-size="15" fill="#a8a8a8">independent builds, same skeleton — Stripe · Ramp · Coinbase · Shopify · Spotify</text>
+
+<g>
+<!-- stage 1 -->
+<rect x="40" y="120" width="262" height="380" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<circle cx="72" cy="158" r="16" fill="#d49036"/><text x="72" y="164" text-anchor="middle" font-size="15" fill="#141414" font-weight="700">1</text>
+<text x="100" y="164" font-size="16" fill="#e8e8e8" font-weight="600">INTAKE</text>
+<text x="64" y="196" font-size="13" fill="#a8a8a8">decide what's worth starting</text>
+<line x1="64" y1="210" x2="278" y2="210" stroke="#2e2e2e"/>
+<text x="64" y="240" font-size="13" fill="#e8e8e8">Sentry Seer — scores errors</text>
+<text x="64" y="262" font-size="13" fill="#e8e8e8">for actionability</text>
+<text x="64" y="292" font-size="13" fill="#e8e8e8">Shopify — public Slack</text>
+<text x="64" y="314" font-size="13" fill="#e8e8e8">channels only</text>
+<line x1="64" y1="340" x2="278" y2="340" stroke="#2e2e2e"/>
+<text x="64" y="368" font-size="12" fill="#8f8f8f">size filtering matters —</text>
+<text x="64" y="386" font-size="12" fill="#8f8f8f">Microsoft: 1–50-line agent</text>
+<text x="64" y="404" font-size="12" fill="#8f8f8f">PRs succeed 76–80%</text>
+
+<!-- stage 2 -->
+<rect x="326" y="120" width="262" height="380" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<circle cx="358" cy="158" r="16" fill="#d49036"/><text x="358" y="164" text-anchor="middle" font-size="15" fill="#141414" font-weight="700">2</text>
+<text x="386" y="164" font-size="16" fill="#e8e8e8" font-weight="600">ISOLATION</text>
+<text x="350" y="196" font-size="13" fill="#a8a8a8">agents can't collide</text>
+<line x1="350" y1="210" x2="564" y2="210" stroke="#2e2e2e"/>
+<text x="350" y="240" font-size="13" fill="#e8e8e8">Stripe — pre-warmed</text>
+<text x="350" y="262" font-size="13" fill="#e8e8e8">devboxes in ~10 seconds</text>
+<text x="350" y="292" font-size="13" fill="#e8e8e8">Ramp — Modal sandboxes</text>
+<text x="350" y="322" font-size="13" fill="#e8e8e8">Coinbase — git worktrees</text>
+<line x1="350" y1="348" x2="564" y2="348" stroke="#2e2e2e"/>
+<text x="350" y="376" font-size="12" fill="#8f8f8f">parallelism is</text>
+<text x="350" y="394" font-size="12" fill="#8f8f8f">infrastructure, not luck</text>
+
+<!-- stage 3 -->
+<rect x="612" y="120" width="262" height="380" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<circle cx="644" cy="158" r="16" fill="#d49036"/><text x="644" y="164" text-anchor="middle" font-size="15" fill="#141414" font-weight="700">3</text>
+<text x="672" y="164" font-size="16" fill="#e8e8e8" font-weight="600">TOOLS</text>
+<text x="636" y="196" font-size="13" fill="#a8a8a8">agents need hands</text>
+<line x1="636" y1="210" x2="850" y2="210" stroke="#2e2e2e"/>
+<text x="636" y="240" font-size="13" fill="#e8e8e8">Stripe Toolshed — ~500</text>
+<text x="636" y="262" font-size="13" fill="#e8e8e8">curated MCP tools</text>
+<text x="636" y="292" font-size="13" fill="#e8e8e8">Cloudflare — AGENTS.md</text>
+<text x="636" y="314" font-size="13" fill="#e8e8e8">across 3,900 repos</text>
+<line x1="636" y1="340" x2="850" y2="340" stroke="#2e2e2e"/>
+<text x="636" y="368" font-size="12" fill="#8f8f8f">one curated surface,</text>
+<text x="636" y="386" font-size="12" fill="#8f8f8f">not 50 ad-hoc ones</text>
+
+<!-- stage 4 -->
+<rect x="898" y="120" width="262" height="380" rx="12" fill="#1c1c1c" stroke="#d49036" stroke-width="1.5"/>
+<circle cx="930" cy="158" r="16" fill="#d49036"/><text x="930" y="164" text-anchor="middle" font-size="15" fill="#141414" font-weight="700">4</text>
+<text x="958" y="164" font-size="16" fill="#e8e8e8" font-weight="600">VERIFICATION</text>
+<text x="922" y="196" font-size="13" fill="#a8a8a8">where factories diverge</text>
+<line x1="922" y1="210" x2="1136" y2="210" stroke="#2e2e2e"/>
+<text x="922" y="240" font-size="13" fill="#e8e8e8">Spotify — LLM judge vetoes</text>
+<text x="922" y="262" font-size="13" fill="#e8e8e8">~25% of sessions</text>
+<text x="922" y="292" font-size="13" fill="#e8e8e8">Helix — 4 gates before</text>
+<text x="922" y="314" font-size="13" fill="#e8e8e8">anything ships</text>
+<text x="922" y="344" font-size="13" fill="#e8e8e8">Faire — confidence filters</text>
+<text x="922" y="366" font-size="13" fill="#e8e8e8">failed; better context won</text>
+<line x1="922" y1="392" x2="1136" y2="392" stroke="#2e2e2e"/>
+<text x="922" y="418" font-size="12" fill="#8f8f8f">deterministic checks first,</text>
+<text x="922" y="436" font-size="12" fill="#8f8f8f">then judges, then CI</text>
+
+<!-- arrows -->
+<line x1="310" y1="310" x2="322" y2="310" stroke="#d49036" stroke-width="2" marker-end="url(#arr2)"/>
+<line x1="596" y1="310" x2="608" y2="310" stroke="#d49036" stroke-width="2" marker-end="url(#arr2)"/>
+<line x1="882" y1="310" x2="894" y2="310" stroke="#d49036" stroke-width="2" marker-end="url(#arr2)"/>
+</g>
+
+<rect x="40" y="540" width="1120" height="72" rx="10" fill="#1c1c1c" stroke="#d49036" stroke-width="1.5"/>
+<text x="600" y="568" text-anchor="middle" font-size="14" fill="#e8e8e8" font-weight="600">underneath it all: the internal LLM gateway</text>
+<text x="600" y="592" text-anchor="middle" font-size="13" fill="#a8a8a8">one proxy · one bill · one observability pipe — without it, "our org uses AI" is a rumor</text>
+</svg>

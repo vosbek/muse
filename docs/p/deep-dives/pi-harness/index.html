@@ -7,7 +7,7 @@
 <meta property="og:type" content="article">
 <link rel="stylesheet" href="../../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a><a href="../../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><h1 id="pi-the-minimal-agent-harness-coinbase-and-shopify-are-betting-on">Pi: The Minimal Agent Harness Coinbase and Shopify Are Betting On</h1>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a><a href="../../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><div class="hero-visual"><p><img loading="lazy" alt="Pi anatomy: the minimal agent harness" src="pi-harness-assets/pi-anatomy.svg" /></p></div><h1 id="pi-the-minimal-agent-harness-coinbase-and-shopify-are-betting-on">Pi: The Minimal Agent Harness Coinbase and Shopify Are Betting On</h1>
 <p><strong>Trigger:</strong> <a href="https://www.instagram.com/reel/DeRBnnilHgX/">@sourcerypod reel</a> (Oct 9, 2026, 694 likes) — USV's Fred Wilson: Coinbase and Shopify "dumped Claude" and built their own coding-agent harness on the open-source <strong>Pi</strong>. "The CTO and engineering leaders look at it and say, we can't just build everything on top of Claude. We have to have something more flexible that we can evolve with our needs." Wilson identifies himself as an investor in the company behind Pi.</p>
 <p><strong>Note:</strong> this dossier assembles the Pi project (pi.dev, GitHub), the companies' own engineering writing (Coinbase's Mux and Forge posts, Shopify's Helix post), and contemporaneous reporting. Where claims conflict (notably "layers on Claude" vs "dumped Claude"), both are presented with dates.</p>
 <details class="sec"><summary>What Pi is</summary><div class="sec-body">
@@ -27,8 +27,16 @@
 <li><strong>Tree-structured sessions.</strong> <code>/tree</code> navigates to any previous point and continues from there; all branches in one file; <code>/export</code> to HTML, <code>/share</code> to a gist URL.</li>
 <li><strong>Four modes:</strong> interactive TUI, print/JSON (<code>pi -p "query"</code>, <code>--mode json</code> event streams), <strong>RPC</strong> (JSON over stdin/stdout), and an <strong>SDK</strong> for embedding. <strong>OpenClaw</strong> — the 145k-star agent project — is built on Pi.</li>
 <li><strong>Packages:</strong> bundle extensions + skills + prompts + themes, install from npm or git (<code>pi install npm:@foo/pi-tools</code>). 50+ examples in the repo.</li>
-<li><strong>Pi 1.0 / Pi Durable</strong> (just shipped, Oct 2026): durable agents that survive a crashed process and resume exactly where they left off — the "effect sandwich" (record intent, run effect, persist result), idempotency keys for tool calls, versioned documents for agent state; runs on Node, Bun, Cloudflare Durable Objects, E2B, even a phone. Notably, Pi is also landing <strong>Codemode, MCP, and the Jev classifier</strong> (per Ronacher's Oct 2026 post) — the decision-model pattern from this playbook's Jev section, inside the harness.</li>
 </ul>
+
+</div></details><details class="sec"><summary>Under the hood: the extension points</summary><div class="sec-body">
+<p>The "build it yourself" promise is concrete, not marketing. Three integration depths, from cheapest to deepest (distilled from the Pi docs and community research):</p>
+<ol>
+<li><strong>Extension</strong> (stay on upstream): <code>pi.registerTool()</code> + <code>pi.setActiveTools()</code> to add tools, plus event hooks — inject messages before each turn, filter conversation history, swap the compaction summarizer or its model, add path protection and sandboxing. Upstream Pi keeps shipping; you keep your customizations.</li>
+<li><strong>SDK consumer</strong> (embed Pi): <code>createAgentSession()</code>, <code>defineTool()</code> — build your own product on Pi's loop. This is the OpenClaw route.</li>
+<li><strong>Hard fork</strong> (own everything): legal under MIT, but upstream's velocity (dozens of releases, 2.65M npm downloads/week as of Sep 2026) makes this the costliest option — you inherit the merge treadmill.</li>
+</ol>
+<p>The PiJ/PiJev experiments show what depth-1 looks like in practice: Jev ranks the repo's files before the first call, picks which skills to load, and triages failures — the coding model just writes code. Classifier in the loop, minimal core untouched.</p>
 </div></details><details class="sec"><summary>Pi 1.0: the October 2026 update</summary><div class="sec-body">
 <p>Pi hit <strong>1.0 on Oct 1, 2026</strong> and went to <strong>#1 on Hacker News</strong> (1,200+ points; Pi Durable also charted). The headline was the 180: Pi — whose creator spent a year dismissing MCP as unnecessary — <strong>shipped native MCP support</strong>. Earendil's rationale: MCP improved, and their own MCP changes made other integrations easier — "the changes we have made to MCP also enable the use of Jev more easily within Pi." What else shipped:</p>
 <ul>
@@ -50,6 +58,7 @@
 <li><strong>Fusion</strong> (runfusion.ai): multi-node orchestrator (kanban + worktrees + approval gates) powered by Pi.</li>
 <li><strong>PiJ / PiJev</strong>: Pi with <strong>Jev in the loop</strong> — Jev ranks repo files before the first call, picks skills, triages failures; the coding model writes the code. The Jev+harness fusion this playbook has been tracking, now shipping in the wild.</li>
 </ul>
+<p><img loading="lazy" alt="The Pi ecosystem: products, forks, and hybrids built on the core" src="pi-harness-assets/pi-ecosystem.svg" /></p>
 </div></details><details class="sec"><summary>More companies building their own harness</summary><div class="sec-body">
 <p>Coinbase and Shopify aren't alone. The pattern — own the harness, rent the model — is now the enterprise default:</p>
 <h3 id="stripe-minions-the-benchmark">Stripe: Minions (the benchmark)</h3>
@@ -88,8 +97,66 @@
 <li><strong>The gateway underneath it all</strong>: one proxy, one billing relationship, one observability pipe — the difference between "our org uses AI" and "every team has a different vendor and exposure surface."</li>
 </ol>
 <p>The lavx synthesis puts the business point bluntly: "the moat of software companies will shift from 'the code they wrote' to the 'means of production' of that code. The alpha is in your factory."</p>
+<p><img loading="lazy" alt="Five stages every company rediscovers: intake → isolation → tools → verification" src="pi-harness-assets/pi-five-stages.svg" /></p>
 </div></details><details class="sec"><summary>Why enterprises pick it: Wilson's argument</summary><div class="sec-body">
 <p>Wilson's claim, stripped of hype: a CTO cannot build the company's entire engineering future on a proprietary model endpoint. The reasons are the ones this playbook has been documenting all along — <strong>model churn</strong> (the model you tuned for gets replaced), <strong>pricing power</strong> (rate limits in 2025 taught enterprises this), <strong>evolvability</strong> (you can't change what you can't see). Pi inverts the dependency: the harness is yours (MIT, forkable, hackable), the model is a commodity you swap. When Claude 6 or GPT-7 or a local distilled model wins, you change one line in <code>models.json</code>, not your whole platform.</p>
+</div></details><details class="sec"><summary>Pi vs the alternatives</summary><div class="sec-body">
+<table>
+<thead>
+<tr>
+<th>Harness</th>
+<th>License</th>
+<th>Model lock-in</th>
+<th>Minimal core?</th>
+<th>The one-liner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pi</strong></td>
+<td>MIT</td>
+<td>none (15+ providers)</td>
+<td>yes — 4 tools, sub-1k prompt</td>
+<td>the harness you own; model is a plug-in</td>
+</tr>
+<tr>
+<td><strong>oh-my-pi</strong></td>
+<td>MIT</td>
+<td>none</td>
+<td>no — batteries included</td>
+<td>Pi's maximalist fork (29k★, ~1.6 releases/day)</td>
+</tr>
+<tr>
+<td><strong>OpenCode</strong></td>
+<td>MIT</td>
+<td>none</td>
+<td>moderate</td>
+<td>terminal agent, similar spirit, different API</td>
+</tr>
+<tr>
+<td><strong>Goose</strong> (Block)</td>
+<td>Apache-2.0</td>
+<td>none</td>
+<td>moderate</td>
+<td>the fork Stripe built Minions on</td>
+</tr>
+<tr>
+<td><strong>Claude Code</strong></td>
+<td>proprietary</td>
+<td>Anthropic</td>
+<td>no</td>
+<td>what Coinbase/Shopify scaffolded first — and may be leaving</td>
+</tr>
+<tr>
+<td><strong>Codex</strong></td>
+<td>proprietary</td>
+<td>OpenAI</td>
+<td>no</td>
+<td>same lock-in shape, different vendor</td>
+</tr>
+</tbody>
+</table>
+<p>The honest read: Pi doesn't win on features — oh-my-pi and Claude Code ship more out of the box. It wins on <strong>ownability</strong>: MIT, tiny auditable core, model-agnostic by construction. For an enterprise, that's the difference between a dependency and a foundation.</p>
 </div></details><details class="sec"><summary>The companies</summary><div class="sec-body">
 <h3 id="coinbase-forge-and-mux">Coinbase: Forge and Mux</h3>
 <p>Coinbase's trajectory is the most documented enterprise agent build-out:</p>
@@ -118,6 +185,7 @@
 <li><strong>Orchestrate, don't just chat.</strong> The Mux pattern: one worktree/branch/terminal per agent, many agents per engineer. The engineer's job moves up the stack to scoping, review, and exception-handling.</li>
 <li><strong>Instrument cost from day one.</strong> Per-run budgets, per-team dashboards, P90-overrun investigation (the Palafox pattern from this playbook's talk notes). Model-agnosticism lets you A/B models per task and pick the cheapest that clears the gate.</li>
 </ol>
+<p><img loading="lazy" alt="The enterprise harness stack: own the factory, rent the model" src="pi-harness-assets/pi-enterprise-stack.svg" /></p>
 </div></details><details class="sec"><summary>Best ways for a company to do it: the short playbook</summary><div class="sec-body">
 <ul>
 <li><strong>Harness is the product; the model is the commodity.</strong> Own the harness (open-source, forkable). Rent the model (routable, replaceable). This is the single decision everything else follows.</li>

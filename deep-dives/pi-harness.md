@@ -23,7 +23,18 @@ Pi's tagline is "a minimal agent harness": **adapt Pi to your workflows, not the
 - **Tree-structured sessions.** `/tree` navigates to any previous point and continues from there; all branches in one file; `/export` to HTML, `/share` to a gist URL.
 - **Four modes:** interactive TUI, print/JSON (`pi -p "query"`, `--mode json` event streams), **RPC** (JSON over stdin/stdout), and an **SDK** for embedding. **OpenClaw** — the 145k-star agent project — is built on Pi.
 - **Packages:** bundle extensions + skills + prompts + themes, install from npm or git (`pi install npm:@foo/pi-tools`). 50+ examples in the repo.
-- **Pi 1.0 / Pi Durable** (just shipped, Oct 2026): durable agents that survive a crashed process and resume exactly where they left off — the "effect sandwich" (record intent, run effect, persist result), idempotency keys for tool calls, versioned documents for agent state; runs on Node, Bun, Cloudflare Durable Objects, E2B, even a phone. Notably, Pi is also landing **Codemode, MCP, and the Jev classifier** (per Ronacher's Oct 2026 post) — the decision-model pattern from this playbook's Jev section, inside the harness.
+
+![Pi anatomy: the minimal agent harness](pi-harness-assets/pi-anatomy.svg)
+
+## Under the hood: the extension points
+
+The "build it yourself" promise is concrete, not marketing. Three integration depths, from cheapest to deepest (distilled from the Pi docs and community research):
+
+1. **Extension** (stay on upstream): `pi.registerTool()` + `pi.setActiveTools()` to add tools, plus event hooks — inject messages before each turn, filter conversation history, swap the compaction summarizer or its model, add path protection and sandboxing. Upstream Pi keeps shipping; you keep your customizations.
+2. **SDK consumer** (embed Pi): `createAgentSession()`, `defineTool()` — build your own product on Pi's loop. This is the OpenClaw route.
+3. **Hard fork** (own everything): legal under MIT, but upstream's velocity (dozens of releases, 2.65M npm downloads/week as of Sep 2026) makes this the costliest option — you inherit the merge treadmill.
+
+The PiJ/PiJev experiments show what depth-1 looks like in practice: Jev ranks the repo's files before the first call, picks which skills to load, and triages failures — the coding model just writes code. Classifier in the loop, minimal core untouched.
 
 ## Pi 1.0: the October 2026 update
 
@@ -48,6 +59,8 @@ Pi's extension/SDK design means adoption compounds — products, not just users:
 - **Forage**: built on Pi's philosophy of small, inspectable systems — explicit skills, user-owned model access.
 - **Fusion** (runfusion.ai): multi-node orchestrator (kanban + worktrees + approval gates) powered by Pi.
 - **PiJ / PiJev**: Pi with **Jev in the loop** — Jev ranks repo files before the first call, picks skills, triages failures; the coding model writes the code. The Jev+harness fusion this playbook has been tracking, now shipping in the wild.
+
+![The Pi ecosystem: products, forks, and hybrids built on the core](pi-harness-assets/pi-ecosystem.svg)
 
 ## More companies building their own harness
 
@@ -93,9 +106,24 @@ Independent builds keep landing on the same skeleton — **intake → isolation 
 
 The lavx synthesis puts the business point bluntly: "the moat of software companies will shift from 'the code they wrote' to the 'means of production' of that code. The alpha is in your factory."
 
+![Five stages every company rediscovers: intake → isolation → tools → verification](pi-harness-assets/pi-five-stages.svg)
+
 ## Why enterprises pick it: Wilson's argument
 
 Wilson's claim, stripped of hype: a CTO cannot build the company's entire engineering future on a proprietary model endpoint. The reasons are the ones this playbook has been documenting all along — **model churn** (the model you tuned for gets replaced), **pricing power** (rate limits in 2025 taught enterprises this), **evolvability** (you can't change what you can't see). Pi inverts the dependency: the harness is yours (MIT, forkable, hackable), the model is a commodity you swap. When Claude 6 or GPT-7 or a local distilled model wins, you change one line in `models.json`, not your whole platform.
+
+## Pi vs the alternatives
+
+| Harness | License | Model lock-in | Minimal core? | The one-liner |
+|---|---|---|---|---|
+| **Pi** | MIT | none (15+ providers) | yes — 4 tools, sub-1k prompt | the harness you own; model is a plug-in |
+| **oh-my-pi** | MIT | none | no — batteries included | Pi's maximalist fork (29k★, ~1.6 releases/day) |
+| **OpenCode** | MIT | none | moderate | terminal agent, similar spirit, different API |
+| **Goose** (Block) | Apache-2.0 | none | moderate | the fork Stripe built Minions on |
+| **Claude Code** | proprietary | Anthropic | no | what Coinbase/Shopify scaffolded first — and may be leaving |
+| **Codex** | proprietary | OpenAI | no | same lock-in shape, different vendor |
+
+The honest read: Pi doesn't win on features — oh-my-pi and Claude Code ship more out of the box. It wins on **ownability**: MIT, tiny auditable core, model-agnostic by construction. For an enterprise, that's the difference between a dependency and a foundation.
 
 ## The companies
 
@@ -130,6 +158,8 @@ Distilled from what Coinbase and Shopify actually did, mapped onto Pi's surfaces
 5. **Make agent work visible.** Shopify's River rule — public channels only — or the equivalent: shared session trees (`/share`), public dashboards. A private agent teaches one person; a public one teaches the org, and visibility is a quality control.
 6. **Orchestrate, don't just chat.** The Mux pattern: one worktree/branch/terminal per agent, many agents per engineer. The engineer's job moves up the stack to scoping, review, and exception-handling.
 7. **Instrument cost from day one.** Per-run budgets, per-team dashboards, P90-overrun investigation (the Palafox pattern from this playbook's talk notes). Model-agnosticism lets you A/B models per task and pick the cheapest that clears the gate.
+
+![The enterprise harness stack: own the factory, rent the model](pi-harness-assets/pi-enterprise-stack.svg)
 
 ## Best ways for a company to do it: the short playbook
 

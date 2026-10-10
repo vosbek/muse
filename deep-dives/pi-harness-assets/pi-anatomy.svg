@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<defs>
+<marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8f8f8f"/></marker>
+<marker id="arrB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5b8dd9"/></marker>
+<marker id="arrG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#2e9e77"/></marker>
+</defs>
+<rect width="1200" height="720" fill="#141414"/>
+<text x="600" y="54" text-anchor="middle" font-size="30" fill="#e8e8e8" font-weight="600">Pi: anatomy of a minimal agent harness</text>
+<text x="600" y="82" text-anchor="middle" font-size="15" fill="#a8a8a8">four tools in the core · everything else is a TypeScript extension · MIT · 114k GitHub stars</text>
+
+<!-- CORE -->
+<rect x="440" y="130" width="320" height="300" rx="12" fill="#1c1c1c" stroke="#d49036" stroke-width="2"/>
+<text x="600" y="162" text-anchor="middle" font-size="13" fill="#d49036" letter-spacing="2">PI CORE — THE LOOP</text>
+<text x="600" y="202" text-anchor="middle" font-size="20" fill="#e8e8e8">model ⇄ tools ⇄ model</text>
+<line x1="470" y1="222" x2="730" y2="222" stroke="#2e2e2e"/>
+<text x="600" y="250" text-anchor="middle" font-size="14" fill="#a8a8a8">4 built-in tools</text>
+<rect x="461" y="264" width="62" height="32" rx="8" fill="#262626" stroke="#2e2e2e"/><text x="492" y="285" text-anchor="middle" font-size="14" fill="#e8e8e8">read</text>
+<rect x="533" y="264" width="62" height="32" rx="8" fill="#262626" stroke="#2e2e2e"/><text x="564" y="285" text-anchor="middle" font-size="14" fill="#e8e8e8">write</text>
+<rect x="605" y="264" width="62" height="32" rx="8" fill="#262626" stroke="#2e2e2e"/><text x="636" y="285" text-anchor="middle" font-size="14" fill="#e8e8e8">edit</text>
+<rect x="677" y="264" width="62" height="32" rx="8" fill="#262626" stroke="#2e2e2e"/><text x="708" y="285" text-anchor="middle" font-size="14" fill="#e8e8e8">bash</text>
+<text x="600" y="330" text-anchor="middle" font-size="14" fill="#e8e8e8">system prompt &lt; 1,000 tokens</text>
+<text x="600" y="352" text-anchor="middle" font-size="12" fill="#8f8f8f">the shortest system prompt of any major agent</text>
+<line x1="470" y1="370" x2="730" y2="370" stroke="#2e2e2e"/>
+<text x="600" y="392" text-anchor="middle" font-size="12" fill="#8f8f8f">deliberately missing in core:</text>
+<text x="600" y="410" text-anchor="middle" font-size="12" fill="#8f8f8f">subagents · plan mode · permission popups</text>
+
+<!-- PROVIDERS -->
+<rect x="40" y="170" width="300" height="220" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<text x="190" y="200" text-anchor="middle" font-size="13" fill="#5b8dd9" letter-spacing="2">15+ MODEL PROVIDERS</text>
+<g font-size="13" fill="#e8e8e8">
+<rect x="56" y="216" width="132" height="30" rx="8" fill="#262626"/><text x="122" y="236" text-anchor="middle">Anthropic</text>
+<rect x="196" y="216" width="132" height="30" rx="8" fill="#262626"/><text x="262" y="236" text-anchor="middle">OpenAI</text>
+<rect x="56" y="254" width="132" height="30" rx="8" fill="#262626"/><text x="122" y="274" text-anchor="middle">Google</text>
+<rect x="196" y="254" width="132" height="30" rx="8" fill="#262626"/><text x="262" y="274" text-anchor="middle">Mistral</text>
+<rect x="56" y="292" width="132" height="30" rx="8" fill="#262626"/><text x="122" y="312" text-anchor="middle">Groq</text>
+<rect x="196" y="292" width="132" height="30" rx="8" fill="#262626"/><text x="262" y="312" text-anchor="middle">Cerebras</text>
+<rect x="56" y="330" width="132" height="30" rx="8" fill="#262626"/><text x="122" y="350" text-anchor="middle">xAI</text>
+<rect x="196" y="330" width="132" height="30" rx="8" fill="#262626"/><text x="262" y="350" text-anchor="middle">Ollama</text>
+</g>
+<line x1="348" y1="280" x2="428" y2="280" stroke="#5b8dd9" stroke-width="2" marker-end="url(#arrB)"/>
+<text x="388" y="266" text-anchor="middle" font-size="11" fill="#8f8f8f">models.json</text>
+<text x="388" y="298" text-anchor="middle" font-size="11" fill="#8f8f8f">swap any time</text>
+
+<!-- EXTENSIONS -->
+<rect x="860" y="170" width="300" height="220" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<text x="1010" y="200" text-anchor="middle" font-size="13" fill="#2e9e77" letter-spacing="2">EXTENSIONS — TYPESCRIPT</text>
+<g font-size="14" fill="#e8e8e8">
+<text x="884" y="234">skills</text>
+<text x="884" y="262">sub-agents</text>
+<text x="884" y="290">plan mode</text>
+<text x="884" y="318">permission gates</text>
+<text x="884" y="346">MCP · Codemode</text>
+<text x="884" y="374">virtual models</text>
+</g>
+<line x1="852" y1="280" x2="772" y2="280" stroke="#2e9e77" stroke-width="2" marker-end="url(#arrG)"/>
+<text x="812" y="266" text-anchor="middle" font-size="11" fill="#8f8f8f">you build</text>
+<text x="812" y="298" text-anchor="middle" font-size="11" fill="#8f8f8f">what Pi didn't</text>
+
+<!-- BOTTOM ROW -->
+<rect x="40" y="480" width="340" height="170" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<text x="210" y="510" text-anchor="middle" font-size="13" fill="#d49036" letter-spacing="2">CONTEXT ENGINEERING</text>
+<g font-size="14" fill="#e8e8e8">
+<text x="64" y="542">AGENTS.md — project instructions</text>
+<text x="64" y="568">SYSTEM.md — per-project prompt</text>
+<text x="64" y="594">customizable compaction</text>
+<text x="64" y="620">skills · progressive disclosure</text>
+</g>
+
+<rect x="430" y="480" width="340" height="170" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<text x="600" y="510" text-anchor="middle" font-size="13" fill="#d49036" letter-spacing="2">TREE SESSIONS</text>
+<g font-size="14" fill="#e8e8e8">
+<text x="454" y="542">/tree — branch &amp; resume anywhere</text>
+<text x="454" y="568">/export — session to HTML</text>
+<text x="454" y="594">/share — session to a gist URL</text>
+<text x="454" y="620" font-size="12" fill="#8f8f8f">all branches in one file</text>
+</g>
+
+<rect x="820" y="480" width="340" height="170" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<text x="990" y="510" text-anchor="middle" font-size="13" fill="#d49036" letter-spacing="2">FOUR MODES</text>
+<g font-size="14" fill="#e8e8e8">
+<text x="844" y="542">interactive TUI</text>
+<text x="844" y="568">print / JSON — pi -p</text>
+<text x="844" y="594">RPC — JSON over stdin/stdout</text>
+<text x="844" y="620">SDK — embed in your app</text>
+</g>
+
+<text x="600" y="692" text-anchor="middle" font-size="12" fill="#8f8f8f">pi.dev · github.com/earendil-works/pi · MIT · Pi 1.0 shipped Oct 2026</text>
+</svg>
