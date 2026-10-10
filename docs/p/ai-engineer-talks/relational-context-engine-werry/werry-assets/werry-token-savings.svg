@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<rect width="1200" height="600" fill="#141414"/>
+<text x="600" y="54" text-anchor="middle" font-size="30" fill="#e8e8e8" font-weight="600">Grounded context: the measured payoff</text>
+<text x="600" y="82" text-anchor="middle" font-size="15" fill="#a8a8a8">cost down and quality up — because the savings come from context, not a weaker model</text>
+
+<rect x="40" y="120" width="540" height="340" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<text x="310" y="156" text-anchor="middle" font-size="14" fill="#a8a8a8" letter-spacing="2">LIVE DEMO — OPTIMIZATION TASK</text>
+<g font-size="14">
+<text x="80" y="210" fill="#8f8f8f">Without context engine</text>
+<text x="80" y="244" font-size="30" fill="#e8e8e8" font-weight="600">$2.60</text>
+<text x="180" y="244" font-size="14" fill="#8f8f8f">/ ~3 min — agent rips around</text>
+<text x="180" y="264" font-size="14" fill="#8f8f8f">the codebase like a new hire</text>
+<text x="80" y="310" fill="#2e9e77">With context engine</text>
+<text x="80" y="344" font-size="30" fill="#2e9e77" font-weight="600">$1.29</text>
+<text x="180" y="344" font-size="14" fill="#8f8f8f">/ ~1.5 min — one call, tight</text>
+<text x="180" y="364" font-size="14" fill="#8f8f8f">task-specific bundle with links</text>
+</g>
+<text x="310" y="428" text-anchor="middle" font-size="22" fill="#e8e8e8" font-weight="600">≈ 50% cheaper</text>
+
+<rect x="620" y="120" width="540" height="340" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<text x="890" y="156" text-anchor="middle" font-size="14" fill="#a8a8a8" letter-spacing="2">SIMULATOR A/B — SAME TASKS</text>
+<g>
+<text x="660" y="220" font-size="14" fill="#8f8f8f">Quality score</text>
+<text x="660" y="258" font-size="30" fill="#e8e8e8" font-weight="600">77 → 84</text>
+<text x="800" y="258" font-size="16" fill="#2e9e77" font-weight="600">+7</text>
+<text x="660" y="320" font-size="14" fill="#8f8f8f">Token cost</text>
+<text x="660" y="358" font-size="30" fill="#2e9e77" font-weight="600">−33%</text>
+<text x="780" y="358" font-size="14" fill="#8f8f8f">with quality up, not down</text>
+</g>
+<text x="890" y="428" text-anchor="middle" font-size="14" fill="#8f8f8f">open-source, runs fully local — the on-ramp</text>
+
+<rect x="40" y="492" width="1120" height="72" rx="10" fill="#1c1c1c" stroke="#d49036" stroke-width="1.5"/>
+<text x="600" y="520" text-anchor="middle" font-size="14" fill="#e8e8e8" font-weight="600">Where the savings come from</text>
+<text x="600" y="546" text-anchor="middle" font-size="13" fill="#a8a8a8">kill the discovery phase (precomputed bundles) · deterministic scaffolding (no LLM for schema/matching/validation) · cheap model for synthesis (Haiku 4.5)</text>
+</svg>

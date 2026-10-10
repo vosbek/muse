@@ -1,12 +1,13 @@
 # AI Engineer Talks — World's Fair 2026 (Sep 25 – Oct 10)
 
-38 talks from the AI Engineer channel's World's Fair 2026 run, each distilled into thesis, key points, notable quotes/data, and a tokenomics/efficiency angle with local-deploy takeaways where relevant. Three more videos from the same window were already covered elsewhere in the repo (see bottom).
+39 talks from the AI Engineer channel's World's Fair 2026 run, each distilled into thesis, key points, notable quotes/data, and a tokenomics/efficiency angle with local-deploy takeaways where relevant. Three more videos from the same window were already covered elsewhere in the repo (see bottom).
 
 Provenance: 22 notes are transcript-based (full spoken transcripts — 21 via usetranscribe.io, 1 via YouTube auto-captions cleaned against the video); the rest are distilled from video descriptions/chapters plus biggo.com's AI-generated talk summaries — each file carries an exact provenance note at the top. Treat secondary-derived points as the speaker's arguments per those summaries, not verbatim transcript.
 
 ## The talks
 
 | Talk | Speaker | Date | Sharpest takeaway |
+| [Beyond RAG: A Relational Context Engine That Cuts Token Burn](relational-context-engine-werry.md) | Peter Werry, Unblocked | Oct 10 | Scattered context in, grounded context out: the 5-step deterministic pipeline (schema → identity → synthesis → validation → retry); -33% tokens, +7 quality. |
 |---|---|---|---|
 | [From Your Laptop to the Pipeline: Scaling Custom Agents with GitHub Copilot](scaling-custom-agents-copilot-palafox.md) | José Palafox, GitHub | Oct 10 | Local → marketplace → CI: pipeline agents are observable, budgeted, and reviewable — including agents that investigate other agents' cost overruns. |
 | [Stop Fine-Tuning to Fix Retrieval Problems](stop-fine-tuning-retrieval.md) | Anant Srivastava | Oct 3 | Fine-tune only what has stopped changing; the rest belongs in retrieval or the prompt. |
