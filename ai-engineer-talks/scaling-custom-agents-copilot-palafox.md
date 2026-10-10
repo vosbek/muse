@@ -105,11 +105,54 @@ The payoff of moving work off laptops is **observability**: every pipeline agent
 - gh-aw's Repo Assist: running in 13 open-source repos, closed 578 issues, median 8× faster close time (from the gh-aw site, Oct 2026).
 - Jose Palafox: 6.5 years at GitHub; [github.com/josepalafox](https://github.com/josepalafox).
 
+## Deep dive: shared cache hits — the mechanism
+
+Palafox's cheapest-token line ("the cheapest way to use them is to get cache hits — exact matches between queries on shared data") is the talk's most actionable cost claim. Here's how it actually works, assembled from GitHub's own engineering writing (the [Copilot runtime Rust port post](https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/), Sep 2026):
+
+**The physics.** LLM providers cache the key-value tensors computed for a prompt prefix. When a new request arrives with an identical prefix, the provider reuses the cached tensors instead of recomputing them — typically billed at a ~90% discount (the post's example: $2.00 vs $0.20 per 1M input tokens). The cache key is the exact token prefix; anything that changes the prefix — reordered tools, edited system prompt, dynamic content shuffled before stable content — breaks the hit.
+
+**Copilot's design.** "GitHub Copilot shapes the agent loop specifically to preserve a long and stable prefix (the system prompt, then the tool definitions, then the accumulated conversation), so each turn appends to context the model has already processed." The expensive part of the context is paid once, then re-read at an order of magnitude less on every subsequent call. Their measured result on the Rust port: **96.22% prompt-cache hit rate** (cache reads ÷ all input-side token volume; writes 3.07%, fresh input 0.71%). The post is explicit that this is why long autonomous sessions are economical at all — a 300-hour port re-reading its full context from scratch on every call would cost "a different order of magnitude."
+
+**Why *shared* agents raise the hit rate.** Within one session, the stable prefix explains the 96%. Across users, the sharing comes from standardization: when 200 engineers invoke the *same* marketplace agent, the harness constructs byte-identical prefixes (same system prompt + same tool definitions + same agent instructions) for every one of them. At Copilot's request volume, the system prompt's KV cache is effectively always warm — infrastructure-level prefix sharing in the inference engine (vLLM/TensorRT-LLM class), not just a 5-minute API TTL — so identical prefixes from *different users* hit the same cached blocks. That's the "exact matches between queries on shared data": one changelog-summarizer agent used org-wide caches; 200 hand-rolled prompts don't.
+
+**The enterprise lever.** Standardize the agents (marketplace, pinned versions) and you standardize the prefixes; standardize the prefixes and the cache-hit rate becomes an org-level property you can measure and raise. Conversely, every "helpful" customization — per-team system prompt tweaks, reordered tool lists — is a cache fragmentation event. Treat agent definitions like you'd treat a CDN cache key: stable, versioned, shared.
+
+**What breaks it (harness rules worth stealing):** keep system prompt and instruction blocks byte-identical across turns; put stable context (instructions, project summary) before dynamic context (file contents, user query); never reorder tool definitions between calls. These are the same rules that keep any agent's cache hot — Copilot just enforces them in the runtime so every product (CLI, VS Code, coding agent, code review) inherits them.
+
+## Deeper: marketplace mechanics
+
+The "little extra JSON" Palafox mentions makes a repo a plugin marketplace. The CLI surface:
+
+```bash
+copilot plugin marketplace add github/awesome-copilot
+copilot plugin install <plugin-name>@awesome-copilot
+```
+
+GitHub's `awesome-copilot` repo ships pre-registered in current CLI/VS Code builds, so `copilot plugin install <name>@awesome-copilot` works out of the box. The marketplace gives you what Palafox listed: subscribe once, update all agents at once, version management, and a channel for security-vulnerability notifications to downstream users. For an enterprise, the marketplace repo (Palafox's `.github-private` convention) is the distribution point that makes the cache-hit story above real — one versioned agent definition, identical prefixes, org-wide.
+
+## Deeper: the gh-aw security model
+
+Pipeline agents run unattended with repo credentials, so the talk's CI vision only flies with guardrails. GitHub Agentic Workflows defends in six layers (from [github.github.com/gh-aw](https://github.github.com/gh-aw/)):
+
+1. **Compile-time validation** — schema validation, expression allowlisting, pinned actions, checked before a workflow can ever run.
+2. **Sandboxed agent** — read-only by default, with optional microVMs (Cloud Hypervisor) for stronger isolation.
+3. **Credential isolation** — an API proxy holds the tokens; the agent never sees them and can't leak them.
+4. **Integrity filtering** — untrusted GitHub content is filtered before the agent sees it.
+5. **Threat detection** — a separate job scans proposed outputs and blocks suspicious ones.
+6. **Safe outputs** — only declared writes are applied, by a separate job with its own permissions.
+
+The design target is the "lethal trifecta" (private data + untrusted content + outbound access in one agent). For the cost story: `staged: true` previews every output without writing anything — a dry-run mode for new pipeline agents.
+
+## Deeper: cost controls in practice
+
+gh-aw's numbers make the "agents watching their own cost" step concrete (from the gh-aw site, Oct 2026): budgets are denominated in **AI Credits (1 AIC = $0.01)**. Defaults: **1,000 AIC per run** (`max-ai-credits` + `max-turns` stop a runaway), **5,000 AIC per day** (`max-daily-ai-credits`; over budget, the agent is skipped). `gh aw logs` lists tokens, AIC and turns per run; `gh aw audit` breaks a single run down; traces go to any OTLP backend so cost can be compared against outcomes. The site's example snapshot: 256.9 AIC ≈ $2.57 across 6 runs, 2.0M tokens, 17.3 avg turns. Palafox's P90-overrun investigator agent is the pattern that closes the loop on these numbers.
+
 ## Tokenomics angle
 
 This talk is a cost-control talk wearing an adoption talk's clothes, and it maps directly onto the playbook's levers:
 
-- **Shared agents = cache hits.** Palafox's cheapest-token argument is the serving-side twin of the playbook's prompt-caching policies: standardization across the org raises exact-match rates on shared data. One changelog-summarizer agent used by 200 engineers caches; 200 hand-rolled prompts don't.
+- **Shared agents = cache hits.** Palafox's cheapest-token argument is the serving-side twin of the playbook's prompt-caching policies: standardization across the org raises exact-match rates on shared data. One changelog-summarizer agent used by 200 engineers caches; 200 hand-rolled prompts don't. GitHub's own number: 96.22% prompt-cache hit rate on the Rust port, because the runtime preserves a long stable prefix (system prompt → tool definitions → conversation). See the deep dive above for the full mechanism and the harness rules.
+- **Small models for bounded steps.** The research subagent runs Haiku-class; Rubber Duck deliberately uses a *different* model's weights to check a plan. That's the routing ladder (Lever 4): match the model to the decision, don't default to the flagship.
 - **Small models for bounded steps.** The research subagent runs Haiku-class; Rubber Duck deliberately uses a *different* model's weights to check a plan. That's the routing ladder (Lever 4): match the model to the decision, don't default to the flagship.
 - **Pipeline = metered, observable spend.** Laptop agents are invisible spend; pipeline agents are Otel-instrumented line items with P90 alerts and A/B-tested model selection. The "agents that investigate their own cost overruns" pattern is the escalation-trajectory idea turned inward: mine your own runs for the expensive ones.
 - **Human-in-the-loop as a spend gate.** The slash-command approval between pipeline stages is a budget control disguised as a workflow step — you only pay for stage N+1 after a human says the artifact from stage N is worth it.
