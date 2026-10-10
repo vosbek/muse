@@ -160,11 +160,27 @@ This talk is a cost-control talk wearing an adoption talk's clothes, and it maps
 - **Pipeline = metered, observable spend.** Laptop agents are invisible spend; pipeline agents are Otel-instrumented line items with P90 alerts and A/B-tested model selection. The "agents that investigate their own cost overruns" pattern is the escalation-trajectory idea turned inward: mine your own runs for the expensive ones.
 - **Human-in-the-loop as a spend gate.** The slash-command approval between pipeline stages is a budget control disguised as a workflow step — you only pay for stage N+1 after a human says the artifact from stage N is worth it.
 
-## Links
+## Links & resources
 
-- Talk: [youtube.com/watch?v=b9UhZkKjX_A](https://www.youtube.com/watch?v=b9UhZkKjX_A)
-- GitHub Agentic Workflows: [github.github.com/gh-aw](https://github.github.com/gh-aw/) · repo/docs: [github.com/github/gh-aw](https://github.com/github/gh-aw)
-- Copilot coding agent docs: [docs.github.com/en/copilot/concepts/agents/coding-agent](https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent)
-- GitHub Copilot: [github.com/features/copilot](https://github.com/features/copilot)
-- Agentics (GitHub Next, ~30 pipeline agents): via the gh-aw ecosystem
-- Speaker: [github.com/josepalafox](https://github.com/josepalafox)
+**The talk**
+- Video: [youtube.com/watch?v=b9UhZkKjX_A](https://www.youtube.com/watch?v=b9UhZkKjX_A) · Speaker: [github.com/josepalafox](https://github.com/josepalafox) (Field Copilot Specialist, GitHub, 6.5 yrs, ex-Semmle)
+
+**gh-aw (GitHub Agentic Workflows)**
+- Repo: [github.com/github/gh-aw](https://github.com/github/gh-aw) — markdown workflows compiled to Actions
+- [Docs](https://github.github.com/gh-aw/) · [blog](https://github.github.com/gh-aw/blog/) (weekly release notes + agent spotlights) · [gallery](https://github.github.com/gh-aw/gallery/) (examples by task) · [agent-factory-status](https://github.github.com/gh-aw/agent-factory-status/) (the workflows the gh-aw team runs on itself) · [llms.txt](https://github.github.com/gh-aw/llms.txt) (agent-facing prompt index)
+- [Threat-detection reference](https://github.github.com/gh-aw/reference/threat-detection/) — scanning agent output for injected content
+- [githubnext/agentics](https://github.com/githubnext/agentics) — ~30 ready-made pipeline agents, install with `gh aw add`
+- [awesome-copilot workflows](https://github.com/github/awesome-copilot/blob/main/docs/README.workflows.md) — community workflows
+- [awesome-agentic-workflows](https://github.com/ianwieds/awesome-agentic-workflows) — curated list of agents that run inside GitHub
+- [gh-aw-wizard](https://github.com/githubnext/gh-aw-wizard) — UI for authoring workflows
+- GitHub Next research page: [githubnext.com/projects/agentic-workflows](https://githubnext.com/projects/agentic-workflows/)
+
+**Marketplace & Copilot**
+- [awesome-copilot](https://github.com/github/awesome-copilot) (pre-registered in CLI/VS Code) · Copilot coding agent: [docs.github.com](https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent) · [github.com/features/copilot](https://github.com/features/copilot)
+
+**The mechanism sources**
+- [Migrating the GitHub Copilot runtime to Rust](https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/) (Sep 2026) — the 96.22% cache-hit number and stable-prefix design
+
+**The bridge**
+- [nomansland](https://github.com/matagus/nomansland/blob/HEAD/docs/agentic-workflows.md) — runs **Pi through gh-aw** in GitHub Actions; the two dossiers meet here
+- Pi harness deep dive: [deep-dives/pi-harness.md](../deep-dives/pi-harness.md)

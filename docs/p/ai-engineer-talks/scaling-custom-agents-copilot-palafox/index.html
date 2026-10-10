@@ -102,15 +102,25 @@ copilot plugin install &lt;plugin-name&gt;@awesome-copilot
 <li><strong>Pipeline = metered, observable spend.</strong> Laptop agents are invisible spend; pipeline agents are Otel-instrumented line items with P90 alerts and A/B-tested model selection. The "agents that investigate their own cost overruns" pattern is the escalation-trajectory idea turned inward: mine your own runs for the expensive ones.</li>
 <li><strong>Human-in-the-loop as a spend gate.</strong> The slash-command approval between pipeline stages is a budget control disguised as a workflow step — you only pay for stage N+1 after a human says the artifact from stage N is worth it.</li>
 </ul>
-</div></details><details class="sec"><summary>Links</summary><div class="sec-body">
-<ul>
-<li>Talk: <a href="https://www.youtube.com/watch?v=b9UhZkKjX_A">youtube.com/watch?v=b9UhZkKjX_A</a></li>
-<li>GitHub Agentic Workflows: <a href="https://github.github.com/gh-aw/">github.github.com/gh-aw</a> · repo/docs: <a href="https://github.com/github/gh-aw">github.com/github/gh-aw</a></li>
-<li>Copilot coding agent docs: <a href="https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent">docs.github.com/en/copilot/concepts/agents/coding-agent</a></li>
-<li>GitHub Copilot: <a href="https://github.com/features/copilot">github.com/features/copilot</a></li>
-<li>Agentics (GitHub Next, ~30 pipeline agents): via the gh-aw ecosystem</li>
-<li>Speaker: <a href="https://github.com/josepalafox">github.com/josepalafox</a></li>
-</ul></div></details></article></div>
+</div></details><details class="sec"><summary>Links &amp; resources</summary><div class="sec-body">
+<p><strong>The talk</strong>
+- Video: <a href="https://www.youtube.com/watch?v=b9UhZkKjX_A">youtube.com/watch?v=b9UhZkKjX_A</a> · Speaker: <a href="https://github.com/josepalafox">github.com/josepalafox</a> (Field Copilot Specialist, GitHub, 6.5 yrs, ex-Semmle)</p>
+<p><strong>gh-aw (GitHub Agentic Workflows)</strong>
+- Repo: <a href="https://github.com/github/gh-aw">github.com/github/gh-aw</a> — markdown workflows compiled to Actions
+- <a href="https://github.github.com/gh-aw/">Docs</a> · <a href="https://github.github.com/gh-aw/blog/">blog</a> (weekly release notes + agent spotlights) · <a href="https://github.github.com/gh-aw/gallery/">gallery</a> (examples by task) · <a href="https://github.github.com/gh-aw/agent-factory-status/">agent-factory-status</a> (the workflows the gh-aw team runs on itself) · <a href="https://github.github.com/gh-aw/llms.txt">llms.txt</a> (agent-facing prompt index)
+- <a href="https://github.github.com/gh-aw/reference/threat-detection/">Threat-detection reference</a> — scanning agent output for injected content
+- <a href="https://github.com/githubnext/agentics">githubnext/agentics</a> — ~30 ready-made pipeline agents, install with <code>gh aw add</code>
+- <a href="https://github.com/github/awesome-copilot/blob/main/docs/README.workflows.md">awesome-copilot workflows</a> — community workflows
+- <a href="https://github.com/ianwieds/awesome-agentic-workflows">awesome-agentic-workflows</a> — curated list of agents that run inside GitHub
+- <a href="https://github.com/githubnext/gh-aw-wizard">gh-aw-wizard</a> — UI for authoring workflows
+- GitHub Next research page: <a href="https://githubnext.com/projects/agentic-workflows/">githubnext.com/projects/agentic-workflows</a></p>
+<p><strong>Marketplace &amp; Copilot</strong>
+- <a href="https://github.com/github/awesome-copilot">awesome-copilot</a> (pre-registered in CLI/VS Code) · Copilot coding agent: <a href="https://docs.github.com/en/copilot/concepts/agents/coding-agent/about-coding-agent">docs.github.com</a> · <a href="https://github.com/features/copilot">github.com/features/copilot</a></p>
+<p><strong>The mechanism sources</strong>
+- <a href="https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/">Migrating the GitHub Copilot runtime to Rust</a> (Sep 2026) — the 96.22% cache-hit number and stable-prefix design</p>
+<p><strong>The bridge</strong>
+- <a href="https://github.com/matagus/nomansland/blob/HEAD/docs/agentic-workflows.md">nomansland</a> — runs <strong>Pi through gh-aw</strong> in GitHub Actions; the two dossiers meet here
+- Pi harness deep dive: <a href="../../deep-dives/pi-harness">deep-dives/pi-harness.md</a></p></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>

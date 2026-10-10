@@ -202,23 +202,35 @@
 <li><strong>The minimal core is a smaller bill.</strong> A sub-1k-token system prompt and four default tools mean every turn's cached prefix is smaller; skills load on-demand with progressive disclosure instead of front-loading context. Less prefix → less cache-write cost → cheaper turns.</li>
 <li><strong>The gateway is the meter.</strong> One proxy sees every token from every team — the precondition for chargeback, budgets, and the P90-overrun pattern. Without it, "AI spend" is a rumor; with it, it's a line item.</li>
 </ul>
-</div></details><details class="sec"><summary>Links</summary><div class="sec-body">
-<ul>
-<li>Pi: <a href="https://pi.dev">pi.dev</a> · repo: <a href="https://github.com/earendil-works/pi">github.com/earendil-works/pi</a> (114k ⭐, MIT) · docs: <a href="https://pi.dev/docs">pi.dev/docs</a></li>
-<li>Earendil: <a href="https://earendil.com">earendil.com</a> · Pi acquisition + Lefos announcement</li>
-<li>Pi 1.0 / Pi Durable: <a href="https://earendil.com/posts/pi-durable/">earendil.com/posts/pi-durable</a></li>
-<li>Trigger reel: <a href="https://www.instagram.com/reel/DeRBnnilHgX/">instagram.com/reel/DeRBnnilHgX</a> (@sourcerypod, Oct 9, 2026)</li>
-<li>Coinbase Mux: <a href="https://www.coinbase.com/blog/coding-had-a-concurrency-problem-how-mux-helped-solve-it">coinbase.com/blog/coding-had-a-concurrency-problem-how-mux-helped-solve-it</a></li>
-<li>Coinbase Forge (95% AI code, 1,200 agents): via ainvest summary; original Coinbase engineering channels</li>
-<li>Shopify Helix: <a href="https://shopify.engineering/helix">shopify.engineering/helix</a></li>
-<li>The Information via <a href="https://www.webpronews.com/coinbase-shopify-bet-big-on-custom-ai-coding-agents-to-supercharge-claude/">webpronews</a> (Aug 2026, paywalled original)</li>
-<li>Related in this playbook: <a href="scaling-custom-agents-copilot-palafox.md">Palafox talk</a> (the GitHub-side mirror: marketplace → pipeline → cost observability)</li>
-<li>Stripe Minions: <a href="https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents">stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents</a> (parts 1–2)</li>
-<li>Ramp Inspect: <a href="https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal">modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal</a></li>
-<li>Pi 1.0: <a href="https://www.theregister.com/ai-and-ml/2026/10/02/pi-coding-agent-pulls-a-180-and-adds-mcp-support/5300678">The Register</a> · Zechner's acquisition post: <a href="https://github.com/badlogic/mariozechner.at/blob/HEAD/src/posts/2026-04-08-ive-sold-out/index.md">mariozechner.at</a></li>
-<li>Pi ecosystem: <a href="https://github.com/openclaw/openclaw">OpenClaw</a> · <a href="https://github.com/can1357/oh-my-pi">oh-my-pi</a> · <a href="https://github.com/restflux/domi">Domi</a> · <a href="https://github.com/buda-ai/bunny-agent">Bunny Agent</a> · <a href="https://github.com/tenzki/forage">Forage</a> · <a href="https://github.com/Runfusion/Fusion">Fusion</a></li>
-<li>Enterprise field notes: <a href="https://github.com/chipagosfinest/software-factory/blob/HEAD/docs/enterprise-adoption.md">software-factory enterprise adoption</a> · <a href="https://github.com/steel-experiments/internal-agents-map">internal-agents-map</a></li>
-</ul></div></details></article></div>
+</div></details><details class="sec"><summary>Further reading &amp; resources</summary><div class="sec-body">
+<p><strong>Official</strong>
+- <a href="https://pi.dev">pi.dev</a> — install: <code>curl -fsSL https://pi.dev/install.sh | sh</code> · <a href="https://pi.dev/docs">docs</a> (extensions, SDK, sessions, compaction, packages, MCP, Codemode) · <a href="https://pi.dev/changelog">changelog</a> · Pi Discord (linked from pi.dev)
+- Repo: <a href="https://github.com/earendil-works/pi">github.com/earendil-works/pi</a> (114k ⭐, MIT) — including the <a href="https://github.com/earendil-works/pi/blob/main/packages/coding-agent/src/core/system-prompt.ts">minimal system prompt source</a> itself and 50+ extension examples
+- <a href="https://pi.dev/session/#0ea51497613daf7e1de28ee99950b074">Example shared session</a> — what <code>/share</code> produces</p>
+<p><strong>Earendil</strong>
+- <a href="https://github.com/earendil-works/website/blob/HEAD/posts/announcing-pi-and-lefos.md">Pi acquisition + Lefos announcement</a> · <a href="https://earendil.com/posts/pi-1-0/">Pi 1.0</a> · <a href="https://earendil.com/posts/pi-durable/">Pi Durable</a>
+- Zechner's own account of the acquisition: <a href="https://github.com/badlogic/mariozechner.at/blob/HEAD/src/posts/2026-04-08-ive-sold-out/index.md">"I've sold out"</a> (Apr 2026) — governance, trademark-not-license-tricks, no CLA</p>
+<p><strong>Voices</strong>
+- <a href="https://www.youtube.com/watch?v=b0SYAChbOlc">State of Agentic Coding</a> — Ronacher + Ben Vinegar's monthly podcast (practitioner-level: model dynamics, token economics, quality crises); <a href="https://github.com/colmarius/with-agents/blob/HEAD/src/content/transcripts/coding-with-agents/state-of-agentic-coding-episode-7.md">episode transcripts</a>; <a href="https://www.youtube.com/watch?v=_lfpEy_9vf0">ep. 8 with Zechner</a>
+- <a href="https://www.youtube.com/watch?v=GhjU-KvXtT0">"Code Isn't Free" — Zechner interview</a> — spec-driven dev as hyper-waterfall, local AI on a MacBook, token prices and budgets
+- <a href="https://www.youtube.com/watch?v=AEmHcFH1UgQ">Syntax.fm: "Claude Code is overkill — Pi is all you need"</a> — Zechner + Ronacher on the harness philosophy
+- <a href="https://www.youtube.com/watch?v=SxuQs9GGYbk">Ronacher's agentic workflow</a> — how he actually works day to day · his blog: <a href="https://lucumr.pocoo.org">lucumr.pocoo.org</a></p>
+<p><strong>Companies building their own</strong>
+- Stripe Minions: <a href="https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents">part 1</a> + <a href="https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents-part-2">part 2</a> (1,300+ PRs/week, Goose fork, Blueprints)
+- Ramp Inspect: <a href="https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal">Modal's build story</a> (~50% of PRs, open blueprint)
+- Shopify Helix: <a href="https://shopify.engineering/helix">shopify.engineering/helix</a> (checkpoints + 4 gates)
+- Coinbase Mux: <a href="https://www.coinbase.com/blog/coding-had-a-concurrency-problem-how-mux-helped-solve-it">the concurrency problem</a> · Forge (95% AI code, 1,200 agents): via ainvest summary
+- The Information via <a href="https://www.webpronews.com/coinbase-shopify-bet-big-on-custom-ai-coding-agents-to-supercharge-claude/">webpronews</a> (Aug 2026 — "layers on Claude", the before to Wilson's after)
+- Trigger reel: <a href="https://www.instagram.com/reel/DeRBnnilHgX/">instagram.com/reel/DeRBnnilHgX</a> (@sourcerypod, Oct 9, 2026)</p>
+<p><strong>Community &amp; builds</strong>
+- <a href="https://github.com/matagus/nomansland/blob/HEAD/docs/agentic-workflows.md">nomansland</a> — runs <strong>Pi through gh-aw</strong> in GitHub Actions: the bridge between this dossier and the Palafox talk page
+- <a href="https://github.com/can1357/oh-my-pi">oh-my-pi</a> (29k ⭐) · <a href="https://github.com/openclaw/openclaw">OpenClaw</a> (145k ⭐) · <a href="https://github.com/restflux/domi">Domi</a> · <a href="https://github.com/buda-ai/bunny-agent">Bunny Agent</a> · <a href="https://github.com/tenzki/forage">Forage</a> · <a href="https://github.com/Runfusion/Fusion">Fusion</a>
+- <a href="https://github.com/kuanpak/enterprise-harness-agents/blob/HEAD/research/omp-public-assessment.md">Enterprise supply-chain assessment of Pi/oh-my-pi</a> — release velocity, telemetry, installer risks (Sep 2026)
+- <a href="https://github.com/x0retnop/pi-extensions/blob/HEAD/docs/off-doc-llm/INDEX.md">LLM-optimized Pi docs mirror</a> — every doc page as tables and type signatures
+- Field notes: <a href="https://github.com/chipagosfinest/software-factory/blob/HEAD/docs/enterprise-adoption.md">software-factory enterprise adoption</a> · <a href="https://github.com/steel-experiments/internal-agents-map">internal-agents-map</a></p>
+<p><strong>In this playbook</strong>
+- <a href="scaling-custom-agents-copilot-palafox.md">Palafox talk</a> — the GitHub-side mirror: marketplace → pipeline → cost observability
+- The <a href="../../02-jev-context-economics">Jev section</a> — the decision-model pattern Pi is now absorbing (Codemode, PiJev)</p></div></details></article></div>
 <footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
 <script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
