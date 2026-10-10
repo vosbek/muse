@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Build the static GitHub Pages site into docs/ from the repo's markdown."""
-import os, re, json, shutil, sys, html as htmlmod
+import os, re, json, shutil, sys, html as htmlmod, datetime
 sys.path.insert(0, os.path.expanduser("~/workspace/.pylibs"))
 import markdown
 
@@ -48,6 +48,22 @@ nav.main a{color:var(--mut)}nav.main a:hover{color:#fff}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}
 .card h3{font-size:18px;color:#fff;margin-bottom:6px}.card p{font-size:14px;color:var(--mut)}
 .card .n{font-size:13px;color:var(--amb)}
+.card h3 a{color:#fff;text-decoration:none}.card h3 a:hover{color:var(--grn)}
+.card-preview{list-style:none;margin:12px 0 0;padding:0}
+.card-preview li{font-size:13px;margin:7px 0;line-height:1.35}
+.card-preview a{color:var(--mut);text-decoration:none}.card-preview a:hover{color:var(--grn)}
+.card .more{margin:12px 0 0;font-size:13px}.card .more a{color:var(--grn);text-decoration:none}
+h2.band{font-size:20px;margin:34px 0 4px;color:#fff}h2.band small{font-size:13px;font-weight:normal}
+.latest{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px;margin:16px 0 6px}
+.latest-item{display:block;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;text-decoration:none}
+.latest-item:hover{border-color:var(--grn)}
+.latest-item b{display:block;color:#fff;font-size:14px;margin-bottom:4px;line-height:1.35}
+.latest-item span{font-size:12px;color:var(--dim)}
+.vstrip{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:16px 0 6px}
+.strip-item{display:block;text-decoration:none}
+.strip-item img{width:100%;border-radius:8px;border:1px solid var(--line);aspect-ratio:1;object-fit:cover}
+.strip-item span{display:block;font-size:12px;color:var(--dim);margin-top:6px;line-height:1.3}
+@media(max-width:640px){.vstrip{grid-template-columns:repeat(2,1fr)}}
 h2.sec{font-size:26px;color:#fff;margin:44px 0 6px}h2.sec small{color:var(--dim);font-weight:400;font-size:16px}
 ul.idx{list-style:none;margin:12px 0 30px}
 ul.idx li{padding:9px 0;border-bottom:1px solid var(--line);font-size:16px}
@@ -313,21 +329,73 @@ def main():
         json.dump(index, f)
 
     # home page
+    def rel_date(ts):
+        days = (datetime.date.today() - datetime.date.fromtimestamp(ts)).days
+        if days <= 0:
+            return "today"
+        if days == 1:
+            return "yesterday"
+        if days < 14:
+            return f"{days} days ago"
+        return datetime.date.fromtimestamp(ts).strftime("%b %-d")
+
+    # recency per page from source-file mtime (section READMEs get touched on every new entry)
+    page_meta = []  # (mtime, rel, title, sid, sname, url)
+    for rel, (t, s, sn, u) in rendered.items():
+        try:
+            mt = os.path.getmtime(os.path.join(REPO, rel))
+        except OSError:
+            mt = 0
+        page_meta.append((mt, rel, t, s, sn, u))
+    page_meta.sort(reverse=True)
+
+    # "latest additions" band: 6 freshest pages across the site
+    latest = "".join(
+        f"<a class='latest-item' href='{u}'><b>{htmlmod.escape(t)}</b>"
+        f"<span>{sn} · {rel_date(mt)}</span></a>"
+        for mt, rel, t, s, sn, u in page_meta[:6])
+
+    # section cards: each links to its index and previews its 3 freshest entries
     cards = ""
     sec_lists = ""
     for sid, sname, members in SECTIONS:
-        items = [(t, u) for rel, (t, s, sn, u) in rendered.items() if s == sid]
-        # order: keep repo order (sorted), but put section index first
-        items.sort(key=lambda x: (0 if "readme" in x[1].lower() or x[1].endswith("/ai-engineer-talks/") else 1, x[0]))
-        cards += f"<div class='card'><h3>{sname}</h3><p class='n'>{len(items)} pages</p><p>{blurb(sid)}</p></div>"
-        lis = "".join(f"<li><a href='{u}'>{t}</a></li>" for t, u in items)
+        items = [(mt, t, u) for mt, rel, t, s, sn, u in page_meta if s == sid]
+        items.sort(reverse=True)
+        preview = "".join(
+            f"<li><a href='{u}'>{htmlmod.escape(t)}</a></li>" for mt, t, u in items[:3])
+        cards += (f"<div class='card'><h3><a href='#{sid}'>{sname}</a></h3>"
+                  f"<p class='n'>{len(items)} pages</p><p>{blurb(sid)}</p>"
+                  f"<ul class='card-preview'>{preview}</ul>"
+                  f"<p class='more'><a href='#{sid}'>All {len(items)} pages →</a></p></div>")
+        full = sorted([(t, u) for _, t, u in items],
+                      key=lambda x: (0 if "readme" in x[1].lower() or x[1].endswith("/ai-engineer-talks/") else 1, x[0]))
+        lis = "".join(f"<li><a href='{u}'>{htmlmod.escape(t)}</a></li>" for t, u in full)
         sec_lists += f"<h2 class='sec' id='{sid}'>{sname} <small>{len(items)}</small></h2><ul class='idx'>{lis}</ul>"
+
+    # visual strip: infographics from the freshest pages, one per section, max 6
+    groups = scan_figures(rendered)
+    strip = ""
+    for mt, rel, t, s, sn, u in page_meta:
+        if strip.count("strip-item") >= 6:
+            break
+        figs = groups.get(s)
+        if not figs:
+            continue
+        rel_src, page_href, alt, ptitle = figs.pop(0)
+        # scan_figures paths are relative to p/visual-index/; homepage sits at root
+        strip += (f"<a class='strip-item' href='p/{page_href[3:]}'>"
+                  f"<img src='p/{rel_src[3:]}' alt='{htmlmod.escape(alt)}' loading='lazy'>"
+                  f"<span>{htmlmod.escape(alt)}</span></a>")
 
     hero = """<div class="hero"><h1><span class="g">AI</span> Skills <span class="a">Playbook</span></h1>
 <p>Distilled talks, posts and docs on AI engineering — agents, context economics, memory, evals and tooling. Every entry keeps its thesis, key points and sources.</p>
-<p><a href="p/visual-index/">Browse the visual index →</a> every infographic, full-size.</p>
 <div class="searchbox"><input id="q" placeholder="Search the playbook…"></div><div id="results"></div></div>
-<div class="cards">""" + cards + "</div>" + sec_lists
+<h2 class="band">Latest additions</h2><div class="latest">""" + latest + """</div>
+<h2 class="band">Browse by section</h2>
+<div class="cards">""" + cards + """</div>
+<h2 class="band">From the visual index <small><a href="p/visual-index/">all →</a></small></h2>
+<div class="vstrip">""" + strip + """</div>
+<h2 class="band">Full index</h2>""" + sec_lists
     home_desc = "Distilled talks, posts and docs on AI engineering — agents, context economics, memory, evals and tooling. Every entry keeps its thesis, key points and sources."
     home = TEMPLATE.format(title="Home", root="", nav=nav_tpl.format(root=""), body=hero, desc=home_desc)
     with open(OUT + "/index.html", "w") as f:
@@ -346,14 +414,13 @@ def main():
     print(f"built {len(pages)} pages -> {OUT}")
 
 
-def build_visual_index(nav_tpl, index, rendered):
-    """Gallery page: every infographic across the playbook, each linking to its page.
+def scan_figures(rendered):
+    """Scan built pages for <img> tags; return {sid: [(rel_src, page_href, alt, title)]}.
 
-    Auto-generated by scanning the built pages for <img> tags, so it never goes
-    stale when new infographics are added. Grouped by section, in SECTIONS order.
+    Paths are relative to p/visual-index/ (the gallery page). Shared by the
+    visual-index page and the homepage strip so both stay in sync.
     """
     # rendered: rel -> (title, sid, sname, url); url looks like "p/02-jev-context-economics/"
-    sid_order = [sid for sid, _, _ in SECTIONS]
     groups = {}
     for rel, (title, sid, sname, url) in rendered.items():
         page_file = os.path.join(OUT, url, "index.html")
@@ -378,6 +445,17 @@ def build_visual_index(nav_tpl, index, rendered):
             rel_src = "../" + url[len("p/"):] + src
             page_href = "../" + url[len("p/"):]
             groups.setdefault(sid, []).append((rel_src, page_href, alt, title))
+    return groups
+
+
+def build_visual_index(nav_tpl, index, rendered):
+    """Gallery page: every infographic across the playbook, each linking to its page.
+
+    Auto-generated by scanning the built pages for <img> tags, so it never goes
+    stale when new infographics are added. Grouped by section, in SECTIONS order.
+    """
+    groups = scan_figures(rendered)
+    sid_order = [sid for sid, _, _ in SECTIONS]
     destdir = os.path.join(OUT, "p", "visual-index")
     os.makedirs(destdir, exist_ok=True)
     body_parts = []
@@ -418,6 +496,7 @@ def blurb(sid):
         "maps": "What's local vs cloud, in the bensimon.dev visual language.",
         "categories": "Distilled Instagram reels and X bookmarks, organized by topic.",
         "resources": "Reusable templates and project setups.",
+        "repos": "36 open-source repos scored /10 on his tokenomics remit — routing, RAG, memory, evals.",
     }.get(sid, "")
 
 

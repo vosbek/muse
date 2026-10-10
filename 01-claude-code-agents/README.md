@@ -102,6 +102,14 @@
 
 ![Prompt, Context, Harness, Loop, Graph Engineering — five layers, zooming further out each time](five-layers-engineering-dailydoseofds.jpg)
 
+### Matt Pocock × Lauren Tan: verification and the Michelin-star setup
+- **Creator:** @artofthepossible.ai (Richard Eve) · **Date:** 2026-10-08 · **Source:** [Instagram reel](https://www.instagram.com/reel/DeOWWyHCofX/) (1,581 likes)
+- **What it suggests:** A summary of a conversation between Matt Pocock and Lauren Tan (@poteto, React Compiler core team; Member of Technical Staff at Cursor, now Principal Engineer at SpaceXAI working on Grok Bot and Cursor — SpaceXAI, not the rocket company). Two practices worth stealing. **(1) Verification:** agents must test apps like a user, not via manual copy-paste — a standing rule that the agent drives the app through the Playwright browser tool and provides screenshot proof before declaring work done. **(2) Level up your setup:** Tan blocks time weekly to treat her coding environment like a Michelin-star kitchen — analyze where time goes (e.g. code review), then use Recall/Reflect skills to have an agent propose environment improvements based on past conversations. The reel's "comment eng" CTA for their skill libraries is DM-gated; the two practices are the distillable part.
+- **Tokenomics angle:** Verification-as-a-standing-rule is a spend control in disguise — a screenshot-proved "done" costs a browser-tool call now and prevents the 10x rework loop later. The weekly setup review is the human version of the escalation-trajectory mining in the Jev + Ontology entry: mine your own bottlenecks, version the environment.
+- **Repos/tools:** Tan's pstack workflow is open-source (MIT; original Cursor plugin, mirrored e.g. at joshueosuna/pstack); Pocock's skills repo is already on this playbook's GitHub Repos page.
+- **Extractable skill:** Add a "verify like a user with screenshot proof" standing rule to your agent setup; calendar a weekly environment review where an agent mines your past conversations for bottlenecks.
+- **Source:** [instagram.com/reel/DeOWWyHCofX](https://www.instagram.com/reel/DeOWWyHCofX/)
+
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
 
