@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Anatomy of a Cloud Agent · AI Skills Playbook</title>
+<meta name="description" content="Anatomy of a Cloud Agent What this is: the distributed-systems anatomy of agents that live in the cloud — not a CLI on your laptop, but an agent invoked…">
+<meta property="og:title" content="Anatomy of a Cloud Agent · AI Skills Playbook">
+<meta property="og:description" content="Anatomy of a Cloud Agent What this is: the distributed-systems anatomy of agents that live in the cloud — not a CLI on your laptop, but an agent invoked…">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a><a href="../../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><div class="hero-visual"><p><img loading="lazy" alt="Anatomy of a cloud agent: the eight planes" src="cloud-agent-anatomy-assets/cloud-agent-anatomy.svg" /></p></div><h1 id="anatomy-of-a-cloud-agent">Anatomy of a Cloud Agent</h1>
+<p><strong>What this is:</strong> the distributed-systems anatomy of agents that live in the cloud — not a CLI on your laptop, but an agent invoked from Slack, executing in an isolated sandbox, persisting beyond any single device, and serving hundreds of concurrent sessions. The reference implementation is Ramp's Inspect on Modal; the primitives come from Cloudflare, Stripe, Coinbase, and Pi Durable. This dossier maps every layer, the request lifecycle, and the build recipe.</p>
+<p><strong>Related:</strong> <a href="../pi-harness">Pi harness dossier</a> (the runtime layer) · <a href="scaling-custom-agents-copilot-palafox.md">Palafox talk</a> (the pipeline/cost layer)</p>
+<details class="sec"><summary>What a cloud agent is</summary><div class="sec-body">
+<p>A local agent (Pi, Claude Code on your laptop) is a process you start and watch. A <strong>cloud agent</strong> is infrastructure:</p>
+<ul>
+<li><strong>Invoked remotely</strong> — Slack message, web UI, Chrome extension, cron schedule, webhook — not a terminal you babysit.</li>
+<li><strong>Executes in isolated compute</strong> — its own sandbox/VM/container per session, not your laptop's filesystem.</li>
+<li><strong>Persists beyond devices</strong> — kick it off at night from your phone; check the PR in the morning. Laptop sleep is irrelevant.</li>
+<li><strong>Serves many</strong> — hundreds of concurrent sessions, multiplayer collaboration on one session, zero local setup for non-engineers.</li>
+</ul>
+<p>Ramp's Inspect is the canonical example: an internal background coding agent that now starts <strong>~50% of all merged PRs</strong> at Ramp, with <strong>80%+ of Inspect's own codebase written by Inspect itself</strong>. Nobody mandated it; it won on merit in a couple of months.</p>
+</div></details><details class="sec"><summary>Why cloud: the four unlocks</summary><div class="sec-body">
+<p>Local agents hit four walls. Cloud removes all four:</p>
+<ol>
+<li><strong>Unlimited parallelism.</strong> A laptop runs a few agents; Ramp's builders get "effectively hundreds of computers that they can work on simultaneously." Stripe's 10-second devboxes, Modal's infinite sandboxes — concurrency becomes an infrastructure property, not a laptop constraint. This was Ramp's explicit reason for building: engineers wanted more parallel agents than local machines support.</li>
+<li><strong>Persistence.</strong> Sessions outlive the device. Modal's queues decouple input from execution; Cloudflare's Durable Object alarms are a built-in "resume work later" primitive. The workflow becomes: prompt at night, PR in the morning.</li>
+<li><strong>Multiplayer.</strong> Several engineers watch and guide one session simultaneously (Ramp: session state coordinated through shared locks; all sessions public, 150+ contributors). A local agent is a solo instrument; a cloud agent is an ensemble.</li>
+<li><strong>Full-stack environments, zero setup.</strong> Each Inspect session is a complete dev stack — Postgres, Redis, Temporal, RabbitMQ, Vite, Chromium via VNC — identical to an engineer's machine. A PM or designer gets the exact same setup without installing anything. "The only thing stopping them is this 12 pixel tall wall of code in the editor" — the cloud agent removes the wall.</li>
+</ol>
+<p>The bottleneck shift, in Ramp's words: from <strong>"can the agent write correct code"</strong> to <strong>"how many agents can you run in parallel."</strong></p>
+
+</div></details><details class="sec"><summary>The eight planes</summary><div class="sec-body">
+<p>Every production cloud agent — Ramp's, Stripe's, Coinbase's, Cloudflare's reference architectures — decomposes into the same eight planes. Own more planes, buy fewer; but know which plane you're standing on.</p>
+<h3 id="1-invocation-meet-builders-where-they-work">1 · Invocation — meet builders where they work</h3>
+<p>Slack bot, web UI (hosted VS Code, streamed desktop), CLI, Chrome extension (visual element selection for non-engineers), cron schedules, webhooks (Sentry alerts, GitHub events). Ramp's rule: the agent must be reachable from everywhere work already happens. The Chrome extension is the telling one — it lets a designer point at a UI element and describe the change, no code literacy required.</p>
+<h3 id="2-session-state-input-decoupled-from-execution">2 · Session / state — input decoupled from execution</h3>
+<p>The hard distributed-systems problem: many clients, one session, no conflicts. The patterns:
+- <strong>Queues</strong> route prompts from any client into the right session (Modal Queues) — input and execution are separate concerns.
+- <strong>Locks + metadata</strong> coordinate multiplayer (Modal Dicts hold session locks and image metadata).
+- <strong>Durable Objects</strong> (Cloudflare): one object ID → one active single-threaded instance, globally addressable, with private SQLite-backed storage and <strong>alarms</strong> — at-least-once "resume work later" timers with backoff. An agent becomes an actor with durable identity, scheduled work, and recoverable execution (the Cloudflare Agents SDK formalizes exactly this).
+- <strong>Trees</strong> (Pi): sessions as branchable trees; <code>/tree</code> to resume anywhere.</p>
+<h3 id="3-isolation-one-sandbox-per-session">3 · Isolation — one sandbox per session</h3>
+<p>The blast-radius plane. Options, cheapest to heaviest:
+- <strong>Git worktrees</strong> (Coinbase Mux) — cheapest, shares the repo; no real isolation.
+- <strong>Containers</strong> (Cloudflare Sandbox/Containers, Modal Sandboxes) — real filesystem/process/network isolation; the cloud-agent default.
+- <strong>MicroVMs</strong> (Vercel Sandbox on Firecracker; E2B; Daytona) — strongest isolation; E2B/Daytona add <strong>RAM-preserving pause</strong> (true suspend/resume).
+- <strong>Cloud devboxes</strong> (Stripe's EC2) — full machines, pre-warmed, ~10s spin-up, isolated from prod and the internet.</p>
+<p>Cloudflare just rebuilt Containers around how agents actually use them: the new <code>durable_object</code> scheduling policy lets <strong>code choose the sandbox's image and compute size at runtime</strong> (an <code>if</code> statement, not a deployment), and median startup fell <strong>4.049s → 648ms (6.2×)</strong>. The sandbox is evolving from "something developers deploy ahead of time" into "something an agent creates, configures, pauses, restores, and discards as part of its workflow."</p>
+<h3 id="4-agent-runtime-the-harness-loop">4 · Agent runtime — the harness loop</h3>
+<p>The model↔tools loop itself: OpenCode (Ramp), Stripe's Goose fork, Pi (via SDK/RPC), <code>codex exec-server</code> (Cloudflare's OpenAI template — OpenAI webhooks → Worker → Durable Object per session → container; files never leave your Cloudflare account). The harness is interchangeable; everything around it is the product. (See the <a href="../pi-harness">Pi dossier</a> for the runtime deep dive.)</p>
+<h3 id="5-tools-context-never-limited-by-missing-context">5 · Tools / context — never limited by missing context</h3>
+<p>Ramp's design rule: the agent should be "never limited by missing context or tools, but only by model intelligence itself." Two mechanisms:
+- <strong>Everything local to the sandbox.</strong> No network hop between the agent and the test suite, no remote filesystem to sync. Services, files, tools at localhost latency — this is why "as fast as local" was the adoption requirement.
+- <strong>Deterministic pre-hydration.</strong> Stripe runs relevant MCP tools over likely-looking links <em>before</em> the agent loop starts. Context is assembled by code, not hoped for by the model.
+- <strong>One curated tool surface</strong> — Stripe's 500-tool Toolshed MCP; Cloudflare's generated AGENTS.md across 3,900 repos.</p>
+<h3 id="6-verification-close-the-loop-like-a-human-would">6 · Verification — close the loop like a human would</h3>
+<p>Inspect's VNC/Chromium stack takes <strong>before-and-after screenshots</strong> and navigates the app in a real browser — visual verification, not just <code>tests pass</code>. Then the nested loops from the Pi dossier: deterministic checks → LLM judges → CI. The sandbox makes verification honest: the agent tests against the real stack, not a mock.</p>
+<h3 id="7-gateway-the-meter">7 · Gateway — the meter</h3>
+<p>One internal LLM proxy: one billing relationship, one credential store, one policy enforcement point, one observability pipe. Unchanged from the Pi dossier — but in cloud agents it's load-bearing: hundreds of concurrent sessions × per-session token burn, with no human watching, <em>requires</em> centralized metering and budgets.</p>
+<h3 id="8-observability-every-run-a-line-item">8 · Observability — every run a line item</h3>
+<p>OTLP traces, per-run token/AIC accounting (<code>gh aw logs</code>), P90-overrun investigators, cost-vs-outcome comparisons. The Palafox pattern, applied to a fleet.</p>
+</div></details><details class="sec"><summary>The request lifecycle</summary><div class="sec-body">
+<p>What actually happens between "Slack message" and "merged PR":</p>
+<p><img loading="lazy" alt="A cloud agent request, end to end" src="cloud-agent-anatomy-assets/cloud-agent-lifecycle.svg" /></p>
+<ol>
+<li><strong>Prompt</strong> arrives from any client (Slack thread, web UI, Chrome extension, cron).</li>
+<li><strong>Queue</strong> routes it to the right session — input decoupled from execution; multiple clients can feed one session.</li>
+<li><strong>Session lock</strong> acquired (Dicts / Durable Object) — multiplayer-safe; colleagues can watch and steer.</li>
+<li><strong>Sandbox restored</strong> from the latest filesystem snapshot (≤30 min old) — near-instant sync to repo head, deps pre-installed.</li>
+<li><strong>Deterministic pre-hydration</strong> — MCP tools run over likely links; context assembled before the model sees anything.</li>
+<li><strong>Agent loop</strong> runs in-sandbox (OpenCode / Goose fork / Pi) with localhost access to the full stack.</li>
+<li><strong>Verification</strong> — tests, real-browser screenshots, LLM judge, CI.</li>
+<li><strong>PR opened</strong> under the user's GitHub token (Ramp's rule: the bot must never be a path to unreviewed self-approval) → human review → merge.</li>
+</ol>
+<p>The whole cycle is measured in seconds-to-minutes of wall clock, most of it agent runtime — the human's involvement is the prompt and the review.</p>
+</div></details><details class="sec"><summary>Sandbox persistence: three models</summary><div class="sec-body">
+<p>The deepest cloud/sandbox design decision: what survives when the sandbox sleeps.</p>
+<p><img loading="lazy" alt="Three sandbox persistence models" src="cloud-agent-anatomy-assets/cloud-agent-persistence.svg" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Filesystem snapshots</th>
+<th>RAM-preserving pause</th>
+<th>Fresh + externalized</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>How</strong></td>
+<td><code>stop()</code> auto-snapshots the filesystem as diffs; restore mounts as overlay</td>
+<td>True suspend: RAM + process state frozen</td>
+<td>Sleep wipes the container; state must live outside (R2/KV/D1/SQLite)</td>
+</tr>
+<tr>
+<td><strong>Resume</strong></td>
+<td>Filesystem only, near-instant</td>
+<td>Everything, instant</td>
+<td>Fresh container; rehydrate from external state</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Cheap (diffs only)</td>
+<td>Expensive (RAM billed)</td>
+<td>Cheapest (pay only when active)</td>
+</tr>
+<tr>
+<td><strong>Who</strong></td>
+<td>Modal, Vercel Sandbox, Cloudflare (beta)</td>
+<td>E2B, Daytona</td>
+<td>Cloudflare default</td>
+</tr>
+<tr>
+<td><strong>Wins when</strong></td>
+<td>Coding agents: repo + deps dominate; RAM is expendable</td>
+<td>Long-running processes, open editors, debuggers</td>
+<td>Many small agents; hibernation is free (Durable Objects)</td>
+</tr>
+</tbody>
+</table>
+<p>Cloudflare's trajectory is instructive: default is fresh+externalized (cheapest at scale), with snapshots now in public beta for the coding-agent case — because for coding agents, rebuilding the filesystem (clone + install + build) is the expensive part, and diffs make it cheap.</p>
+</div></details><details class="sec"><summary>The players, mapped</summary><div class="sec-body">
+<ul>
+<li><strong>Ramp / Modal</strong> — the reference: full-stack sandboxes, 30-min snapshots, Dicts+Queues coordination, multiplayer, zero-setup clients. Prototype in days → hundreds of concurrent sessions, no rewrite.</li>
+<li><strong>Stripe</strong> — EC2 devboxes (10s warm), Goose fork, Blueprints (deterministic × agentic), 500-tool Toolshed. The unattended extreme: 1,300+ PRs/week, zero human-written code.</li>
+<li><strong>Coinbase</strong> — internal cloud agent fleet + Mux (worktrees) for orchestration; Forge at 95% AI-generated code.</li>
+<li><strong>Cloudflare</strong> — the primitives vendor: Durable Objects + Sandbox + Agents SDK + AI Gateway; the Codex-in-your-account template; 648ms sandbox starts.</li>
+<li><strong>Pi Durable</strong> — the portable substrate: the "effect sandwich" (record intent → run effect → persist result), idempotency keys for tool calls, versioned documents for state. Runs on Node, Bun, Cloudflare DO, E2B, or a phone — durability without marrying one cloud.</li>
+<li><strong>Vercel / E2B / Daytona</strong> — sandbox primitives with different persistence bets (see the table above).</li>
+</ul>
+</div></details><details class="sec"><summary>Build your own: the recipe</summary><div class="sec-body">
+<p>Distilled from the builds above, cheapest-first:</p>
+<ol>
+<li><strong>Sandbox primitive</strong> — Modal (fastest path: sandboxes + cron + dicts + queues in one API), Cloudflare (cheapest at scale, DO coordination), E2B/Daytona (RAM-preserving pause), or Fly/EC2 (full control).</li>
+<li><strong>Harness</strong> — Pi (SDK/RPC, MIT, minimal) or OpenCode; keep the runtime interchangeable.</li>
+<li><strong>Session coordination</strong> — a queue feeding session locks; Durable Objects if on Cloudflare, Redis/Modal Dicts elsewhere. Decouple input from execution on day one — multiplayer is a feature you'll want later.</li>
+<li><strong>Snapshot pipeline</strong> — cron every 30 min: clone, install, build, snapshot. This single job is what makes startup feel local.</li>
+<li><strong>Invocation</strong> — Slack first (where work happens), web UI second, cron/webhooks third.</li>
+<li><strong>Gateway + budgets</strong> — before the fleet grows: one proxy, per-run caps, P90 alerts. Hundreds of unattended sessions × token burn with no meter is how you get a surprise bill.</li>
+<li><strong>Verification</strong> — real-browser screenshots if you touch UI; deterministic checks → judge → CI otherwise. And Ramp's auth rule: PRs open under the <em>user's</em> token, never the bot's.</li>
+</ol>
+</div></details><details class="sec"><summary>Tokenomics angle</summary><div class="sec-body">
+<p>Cloud agents change the shape of the bill, not just its size:</p>
+<ul>
+<li><strong>Two meters, not one.</strong> Sandbox-compute (billed per active CPU-second; idle sleep policies are a cost control) <strong>plus</strong> tokens. A fleet of 100 idle-but-awake sandboxes is infra burn with zero output — the sleep-after and keep-alive settings are budget decisions.</li>
+<li><strong>Snapshots amortize cold starts.</strong> Clone + install + build on every session is token-cheap but time-expensive; 30-min snapshot diffs convert it to near-zero marginal cost. The snapshot cron is the cheapest performance engineering in the stack.</li>
+<li><strong>Parallelism multiplies token burn.</strong> "Hundreds of computers simultaneously" × per-run token cost is the new budget equation — which is why per-run caps (1,000 AIC) and daily caps (5,000 AIC) exist, and why the gateway stays the single meter.</li>
+<li><strong>Model arbitrage still applies.</strong> The harness is swappable; route per task at the gateway. A cloud fleet makes this <em>more</em> valuable, not less — the spread applies to every one of those hundreds of parallel sessions.</li>
+<li><strong>The local-first counterpoint.</strong> For Matt's setup: the cloud anatomy is worth studying even if you don't deploy it — the planes (invocation, session, isolation, verification, gateway) are the same; only the isolation plane changes (local containers instead of Modal/CF). Pi Durable is the bridge: durable agents that run on a laptop today and a cloud tomorrow.</li>
+</ul>
+</div></details><details class="sec"><summary>Further reading &amp; resources</summary><div class="sec-body">
+<p><strong>Reference builds</strong>
+- <a href="https://modal.com/blog/how-ramp-built-a-full-context-background-coding-agent-on-modal">How Ramp built Inspect on Modal</a> — the canonical build story (snapshots, Dicts, Queues, multiplayer)
+- <a href="https://developers.cloudflare.com/sandbox/coding-agents/openai-agents-api/">Run Codex with the OpenAI Agents API in a Cloudflare sandbox</a> — webhooks → Worker → Durable Object → container, files stay in your account
+- <a href="https://stripe.dev/blog/minions-stripes-one-shot-end-to-end-coding-agents">Stripe Minions</a> (parts 1–2) · <a href="https://www.coinbase.com/blog/coding-had-a-concurrency-problem-how-mux-helped-solve-it">Coinbase Mux</a> · <a href="https://shopify.engineering/helix">Shopify Helix</a></p>
+<p><strong>Primitives</strong>
+- <a href="https://github.com/championswimmer/sites.arnavg.in/blob/HEAD/learning/cloud-coding-agents/research/07-cloudflare-primitives.md">Cloudflare Sandbox lifecycle</a> — getSandbox, sleep/keepAlive, backup/restore, mountBucket (community research notes, Sep 2026)
+- <a href="https://github.com/championswimmer/sites.arnavg.in/blob/HEAD/learning/cloud-coding-agents/research/05-sandbox-primitives.md">Sandbox primitives compared: Vercel, Cloudflare, E2B, Daytona, Fly, Modal</a>
+- <a href="https://techscoop.substack.com/p/cloudflare-just-made-ai-agent-sandboxes">Cloudflare rebuilt Containers for agents (648ms starts)</a> · <a href="https://devops-daily.com/posts/managed-agent-runtimes-compared-2026">8 managed agent runtimes compared</a>
+- <a href="https://earendil.com/posts/pi-durable/">Pi Durable</a> — the effect sandwich, idempotency keys, versioned documents</p>
+<p><strong>In this playbook</strong>
+- <a href="../pi-harness">Pi harness dossier</a> — the runtime plane, the companies, the enterprise stack
+- <a href="scaling-custom-agents-copilot-palafox.md">Palafox talk</a> — pipeline, cache hits, cost controls</p></div></details></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>
