@@ -7,7 +7,7 @@
 <meta property="og:type" content="article">
 <link rel="stylesheet" href="../../assets/style.css"></head>
 <body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
-<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a><a href="../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><div class="hero-visual"><p><img loading="lazy" alt="Jev + Ontology: The Judge and the Law — the control layer that governs how the rules evolve" src="jev-ontology-judge-and-law.png" /></p></div><h1 id="02-jev-context-economics">02 — Jev Context Economics</h1>
+<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a><a href="../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><div class="hero-visual"><p><img loading="lazy" alt="Semantic cache: the 53% playbook — MiniLM + ChromaDB at a swept 0.82 threshold" src="semantic-cache-datasciencebrain.svg" /></p></div><h1 id="02-jev-context-economics">02 — Jev Context Economics</h1>
 <p><strong>Thesis:</strong> The cheapest token is the one you never spend. These six entries form a coherent economic argument: small models should make the decisions, retrieval should happen before reasoning, and the whole LLM-centric cost structure is transitional. The Jev pattern (a tiny model deciding, a big model executing) and jevgrep's measured 30% cost cut are the deployable present; the SLM prediction is the direction of travel.</p>
 <h3 id="jevgrep-cut-coding-agent-cost-30-with-better-file-retrieval">jevgrep: cut coding-agent cost ~30% with better file retrieval</h3>
 <ul>
@@ -41,6 +41,17 @@
 <li><strong>Extractable skill:</strong> Bill-first architecture review — measure the biggest line on the bill (cost per request/feature), then apply routing, caching, and guardrails before touching model choice.</li>
 <li><strong>Source:</strong> https://www.instagram.com/p/Dd-Y4rZOSn3/</li>
 </ul>
+<h3 id="build-a-semantic-cache-that-cut-an-agents-llm-bill-53-in-50-minutes">Build a semantic cache that cut an agent's LLM bill 53% — in 50 minutes</h3>
+<ul>
+<li><strong>Creator:</strong> @datasciencebrain (Deepak Jose | Data Science &amp; Gen AI, 484k followers) · <strong>Date:</strong> 2026-10-10 · <strong>Source:</strong> Instagram carousel (20 slides)</li>
+<li><strong>What it suggests:</strong> A complete build-it-yourself semantic cache, framed as the answer to the interview question "your LLM bill doubled — what do you do?" The architecture: embed each incoming question locally with MiniLM (free, CPU), check similarity in ChromaDB at a 0.82 threshold; on a hit, return the cached answer in ~6ms; on a miss, call Gemini 3.5 Flash Lite (~900ms, paid) and store the pair. The demo replays 60 customer-support questions: 32 cache hits, cost falls $0.0095 → $0.0045 — a 53% cut. Seven small Python files: a SemanticCache class (lookup / store / invalidate / clear), an agent that checks the cache before calling the LLM, a sweep script that replays traffic to pick the threshold from data instead of guessing, and a report module plotting cumulative cost and latency. Three ways to clear stale answers; free Gemini key; ~50 minutes end to end.</li>
+<li><strong>Caveats:</strong> the 53% is a self-run demo on 60 simulated support questions — one narrow scenario, not production traffic. Real hit rates depend on how repetitive your query mix is; treat the number as the shape of the win, not a guarantee.</li>
+<li><strong>Tokenomics angle:</strong> this is the executable version of the "semantic answer caching" line in the 9-ways checklist above — the cheapest token is the one you never generate, and a cache hit costs ~6ms of local compute against ~900ms of paid API. Two details worth stealing: (1) the threshold is <em>swept from replayed traffic</em>, never guessed — every semantic-cache rollout should ship that script; (2) the report module plots cumulative cost and latency — the cache pays for itself in a chart you can show the team. It stacks with the token cost playbook's caching policies: prompt caching saves on repeated prefixes, semantic caching saves on repeated <em>questions</em>. Local-first bonus: MiniLM + ChromaDB run on CPU at $0 marginal cost, so the caching layer itself adds nothing to the bill.</li>
+<li><strong>Repos/tools:</strong> none named — ChromaDB, MiniLM, Gemini API, all off-the-shelf.</li>
+<li><strong>Extractable skill:</strong> the cache-first agent pattern — embed locally → similarity check at a swept threshold → serve from cache → call the LLM only on miss → store the pair. Ship the sweep script and the cost/latency report with every deployment.</li>
+<li><strong>Source:</strong> https://www.instagram.com/p/DeVz6IUmNBq/</li>
+</ul>
+
 <h3 id="pg-jev-filter-and-rank-postgres-rows-with-plain-language-conditions">pg-jev: filter and rank Postgres rows with plain-language conditions</h3>
 <ul>
 <li><strong>Creator:</strong> @gittrend.io · <strong>Date:</strong> 2026-10-05</li>
@@ -57,7 +68,7 @@
 <li><strong>Extractable skill:</strong> Confidence-routed escalation — bound the action space with an ontology, judge with a cheap calibrated model, and spend frontier tokens only on the medium-confidence band; version the rules and let escalations teach the ontology.</li>
 <li><strong>Source:</strong> Infographic by @rakeshgohel01, shared via Facebook.</li>
 </ul>
-
+<p><img loading="lazy" alt="Jev + Ontology: The Judge and the Law — the control layer that governs how the rules evolve" src="jev-ontology-judge-and-law.png" /></p>
 <h3 id="inference-engineering-what-happens-between-your-prompt-and-the-last-token-infographic">Inference Engineering: what happens between your prompt and the last token (infographic)</h3>
 <ul>
 <li><strong>Creator:</strong> @techwith.ram (Ramakrushna Mohapatra) · <strong>Date:</strong> 2026-10-08 · <strong>Source:</strong> Instagram reel</li>

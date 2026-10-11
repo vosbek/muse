@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<defs>
+<marker id="arr7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8f8f8f"/></marker>
+</defs>
+<rect width="1200" height="620" fill="#141414"/>
+<text x="600" y="52" text-anchor="middle" font-size="30" fill="#e8e8e8" font-weight="600">Semantic cache: the 53% playbook</text>
+<text x="600" y="80" text-anchor="middle" font-size="15" fill="#a8a8a8">cache-first agent — the cheapest token is the one you never generate</text>
+
+<rect x="30" y="120" width="170" height="90" rx="10" fill="#1c1c1c" stroke="#8f8f8f"/>
+<text x="115" y="158" text-anchor="middle" font-size="14" fill="#e8e8e8" font-weight="600">User question</text>
+<text x="115" y="180" text-anchor="middle" font-size="12" fill="#8f8f8f">support query</text>
+
+<rect x="240" y="120" width="190" height="90" rx="10" fill="#1c1c1c" stroke="#2e9e77"/>
+<text x="335" y="152" text-anchor="middle" font-size="14" fill="#e8e8e8" font-weight="600">MiniLM embed</text>
+<text x="335" y="174" text-anchor="middle" font-size="12" fill="#2e9e77">local · CPU · $0</text>
+
+<rect x="470" y="120" width="220" height="90" rx="10" fill="#1c1c1c" stroke="#8f8f8f"/>
+<text x="580" y="152" text-anchor="middle" font-size="14" fill="#e8e8e8" font-weight="600">ChromaDB similarity</text>
+<text x="580" y="174" text-anchor="middle" font-size="12" fill="#8f8f8f">threshold 0.82 — swept</text>
+<text x="580" y="192" text-anchor="middle" font-size="12" fill="#8f8f8f">from traffic, not guessed</text>
+
+<g stroke="#8f8f8f" stroke-width="2">
+<line x1="200" y1="165" x2="236" y2="165" marker-end="url(#arr7)"/>
+<line x1="430" y1="165" x2="466" y2="165" marker-end="url(#arr7)"/>
+</g>
+
+<rect x="240" y="280" width="280" height="130" rx="12" fill="#1c1c1c" stroke="#2e9e77" stroke-width="2"/>
+<text x="380" y="312" text-anchor="middle" font-size="13" fill="#2e9e77" letter-spacing="2">HIT</text>
+<text x="380" y="344" text-anchor="middle" font-size="26" fill="#e8e8e8" font-weight="600">~6 ms</text>
+<text x="380" y="370" text-anchor="middle" font-size="12" fill="#8f8f8f">serve cached answer — no LLM call</text>
+
+<rect x="600" y="280" width="280" height="130" rx="12" fill="#1c1c1c" stroke="#d49036" stroke-width="1.5"/>
+<text x="740" y="312" text-anchor="middle" font-size="13" fill="#d49036" letter-spacing="2">MISS</text>
+<text x="740" y="344" text-anchor="middle" font-size="26" fill="#e8e8e8" font-weight="600">~900 ms</text>
+<text x="740" y="370" text-anchor="middle" font-size="12" fill="#8f8f8f">Gemini 3.5 Flash Lite (paid) → store pair</text>
+
+<g stroke="#8f8f8f" stroke-width="2">
+<line x1="580" y1="210" x2="580" y2="262" marker-end="url(#arr7)"/>
+<line x1="380" y1="210" x2="380" y2="276" marker-end="url(#arr7)" opacity="0.0"/>
+<path d="M 470 250 C 430 250, 400 262, 390 276" fill="none" stroke="#2e9e77" stroke-width="2" marker-end="url(#arr7)"/>
+<path d="M 690 250 C 720 250, 732 262, 736 276" fill="none" stroke="#d49036" stroke-width="2" marker-end="url(#arr7)"/>
+</g>
+
+<rect x="920" y="280" width="250" height="130" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<text x="1045" y="312" text-anchor="middle" font-size="13" fill="#a8a8a8" letter-spacing="2">DEMO RESULT</text>
+<text x="1045" y="344" text-anchor="middle" font-size="15" fill="#e8e8e8">60 questions · <tspan fill="#2e9e77" font-weight="600">32 hits</tspan></text>
+<text x="1045" y="372" text-anchor="middle" font-size="15" fill="#e8e8e8">$0.0095 → <tspan fill="#2e9e77" font-weight="600">$0.0045</tspan></text>
+<text x="1045" y="396" text-anchor="middle" font-size="12" fill="#8f8f8f">−53% on simulated support traffic</text>
+
+<rect x="30" y="452" width="1140" height="130" rx="10" fill="#1c1c1c" stroke="#d49036" stroke-width="1.5"/>
+<text x="600" y="482" text-anchor="middle" font-size="14" fill="#e8e8e8" font-weight="600">Three rules that make it work</text>
+<g font-size="13" fill="#a8a8a8">
+<text x="80" y="514"><tspan fill="#d49036" font-weight="600">1.</tspan> Sweep the threshold from replayed traffic — never guess 0.82</text>
+<text x="80" y="540"><tspan fill="#d49036" font-weight="600">2.</tspan> Clear stale answers (invalidate / clear) — a cache is a liability without it</text>
+<text x="80" y="566"><tspan fill="#d49036" font-weight="600">3.</tspan> Plot cumulative cost + latency — the report module is the proof the cache pays for itself</text>
+</g>
+</svg>
