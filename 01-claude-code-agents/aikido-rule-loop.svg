@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<defs>
+<marker id="arr8" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8f8f8f"/></marker>
+</defs>
+<rect width="1200" height="600" fill="#141414"/>
+<text x="600" y="52" text-anchor="middle" font-size="30" fill="#e8e8e8" font-weight="600">Tribal knowledge → enforceable rules</text>
+<text x="600" y="80" text-anchor="middle" font-size="15" fill="#a8a8a8">how Aikido (via Trag) turns past PR comments into review policy</text>
+
+<g font-size="13">
+<rect x="20" y="130" width="205" height="300" rx="12" fill="#1c1c1c" stroke="#8f8f8f"/>
+<circle cx="52" cy="168" r="16" fill="#8f8f8f"/><text x="52" y="174" text-anchor="middle" font-size="15" fill="#141414" font-weight="700">1</text>
+<text x="80" y="174" font-size="15" fill="#e8e8e8" font-weight="600">INGEST</text>
+<text x="44" y="208" fill="#a8a8a8">past PRs: diffs +</text>
+<text x="44" y="228" fill="#a8a8a8">human review comments</text>
+<text x="44" y="248" fill="#a8a8a8">+ which comments</text>
+<text x="44" y="268" fill="#a8a8a8">led to changes</text>
+<line x1="44" y1="290" x2="201" y2="290" stroke="#2e2e2e"/>
+<text x="44" y="318" font-size="12" fill="#8f8f8f">read-only API access;</text>
+<text x="44" y="336" font-size="12" fill="#8f8f8f">code never stored,</text>
+<text x="44" y="354" font-size="12" fill="#8f8f8f">never trains models</text>
+
+<rect x="257" y="130" width="205" height="300" rx="12" fill="#1c1c1c" stroke="#8f8f8f"/>
+<circle cx="289" cy="168" r="16" fill="#8f8f8f"/><text x="289" y="174" text-anchor="middle" font-size="15" fill="#141414" font-weight="700">2</text>
+<text x="317" y="174" font-size="15" fill="#e8e8e8" font-weight="600">MINE</text>
+<text x="281" y="208" fill="#a8a8a8">spot repeat patterns</text>
+<text x="281" y="228" fill="#a8a8a8">in what reviewers</text>
+<text x="281" y="248" fill="#a8a8a8">keep flagging</text>
+<line x1="281" y1="290" x2="438" y2="290" stroke="#2e2e2e"/>
+<text x="281" y="318" font-size="12" fill="#d49036">"9 similar comments</text>
+<text x="281" y="336" font-size="12" fill="#d49036">in the last 30 days"</text>
+<text x="281" y="354" font-size="12" fill="#8f8f8f">— the evidence line</text>
+
+<rect x="494" y="130" width="205" height="300" rx="12" fill="#1c1c1c" stroke="#d49036" stroke-width="1.5"/>
+<circle cx="526" cy="168" r="16" fill="#d49036"/><text x="526" y="174" text-anchor="middle" font-size="15" fill="#141414" font-weight="700">3</text>
+<text x="554" y="174" font-size="15" fill="#e8e8e8" font-weight="600">DRAFT</text>
+<text x="518" y="208" fill="#a8a8a8">plain-English rule +</text>
+<text x="518" y="228" fill="#a8a8a8">the evidence,</text>
+<text x="518" y="248" fill="#a8a8a8">human approves</text>
+<line x1="518" y1="290" x2="675" y2="290" stroke="#2e2e2e"/>
+<text x="518" y="318" font-size="12" fill="#8f8f8f">"extract magic numbers</text>
+<text x="518" y="336" font-size="12" fill="#8f8f8f">into named constants"</text>
+<text x="518" y="364" font-size="12" fill="#8f8f8f">20,000 regex rules →</text>
+<text x="518" y="382" font-size="12" fill="#d49036">~50 English rules</text>
+
+<rect x="731" y="130" width="205" height="300" rx="12" fill="#1c1c1c" stroke="#2e9e77" stroke-width="1.5"/>
+<circle cx="763" cy="168" r="16" fill="#2e9e77"/><text x="763" y="174" text-anchor="middle" font-size="15" fill="#141414" font-weight="700">4</text>
+<text x="791" y="174" font-size="15" fill="#e8e8e8" font-weight="600">ENFORCE</text>
+<text x="755" y="208" fill="#a8a8a8">rule runs on every</text>
+<text x="755" y="228" fill="#a8a8a8">new PR: inline</text>
+<text x="755" y="248" fill="#a8a8a8">comment + 1-click fix</text>
+<line x1="755" y1="290" x2="912" y2="290" stroke="#2e2e2e"/>
+<text x="755" y="318" font-size="12" fill="#8f8f8f">agent reads repo-wide,</text>
+<text x="755" y="336" font-size="12" fill="#8f8f8f">not just the diff —</text>
+<text x="755" y="354" font-size="12" fill="#8f8f8f">like a senior reviewer</text>
+
+<rect x="968" y="130" width="205" height="300" rx="12" fill="#1c1c1c" stroke="#5b8dd9" stroke-width="1.5"/>
+<circle cx="1000" cy="168" r="16" fill="#5b8dd9"/><text x="1000" y="174" text-anchor="middle" font-size="15" fill="#141414" font-weight="700">5</text>
+<text x="1028" y="174" font-size="15" fill="#e8e8e8" font-weight="600">REASON</text>
+<text x="992" y="208" fill="#a8a8a8">Deep PR Review:</text>
+<text x="992" y="228" fill="#a8a8a8">whole codebase +</text>
+<text x="992" y="248" fill="#a8a8a8">related repos + prior</text>
+<text x="992" y="268" fill="#a8a8a8">comments on the PR</text>
+<line x1="992" y1="290" x2="1149" y2="290" stroke="#2e2e2e"/>
+<text x="992" y="318" font-size="12" fill="#8f8f8f">catches business-logic</text>
+<text x="992" y="336" font-size="12" fill="#8f8f8f">bugs (IDORs, broken</text>
+<text x="992" y="354" font-size="12" fill="#8f8f8f">auth) pre-merge</text>
+
+<g stroke="#8f8f8f" stroke-width="2">
+<line x1="229" y1="280" x2="253" y2="280" marker-end="url(#arr8)"/>
+<line x1="466" y1="280" x2="490" y2="280" marker-end="url(#arr8)"/>
+<line x1="703" y1="280" x2="727" y2="280" marker-end="url(#arr8)"/>
+<line x1="940" y1="280" x2="964" y2="280" marker-end="url(#arr8)"/>
+</g>
+<path d="M 1070 430 C 1070 520, 130 520, 122 434" fill="none" stroke="#5b8dd9" stroke-width="1.5" stroke-dasharray="6,4" marker-end="url(#arr8)"/>
+<text x="600" y="545" text-anchor="middle" font-size="12" fill="#8f8f8f">every new review feeds the history — the rule set compounds</text>
+</g>
+<text x="600" y="585" text-anchor="middle" font-size="13" fill="#8f8f8f">the stealable pattern: mine review history → draft rules in English → human approves → enforce in CI</text>
+</svg>
