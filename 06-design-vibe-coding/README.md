@@ -68,6 +68,15 @@
 
 ![7 Dashboard Design Rules — for clearer data and better decisions](dashboard-design-rules-uiuxbuild.png)
 
+### 15 UI design styles every designer should know (infographic)
+- **Creator:** @uiux.build (Darpan, product designer) · **Date:** 2026-09-02 · **Source:** Instagram reel (~24s, 9.3k likes)
+- **What it suggests:** A numbered rundown of 15 UI design styles, each shown with a live example and a one-line tagline: **1. Minimalism** ("simplicity, whitespace, focus on content" — whitespace-heavy landing page); **2. Maximalism**; **3. Glassmorphism**; **4. Neumorphism** ("soft shadows, subtle depth, light & dark" — soft-shadowed media panel); **5. Claymorphism**; **6. Brutalism**; **7. Neo-Brutalism**; **8. Skeuomorphism** ("designs that mimic real-world objects" — vintage-camera app UI); **9. Flat Design** ("no shadows, simple, no effects" — stats dashboard); **10. Material Design**; **11. Bento UI**; **12. Y2K Design** ("early 2000s vibes, bold colors, flashy elements"); **13. Retro Design**; **14. Cyberpunk** ("dark, neon colors, futuristic & edgy" — neon "Night City" dashboard); **15.** (unnamed — the reel loops before its label appears).
+- **Why it's here:** the companion to the "Nine UI design languages" entry above — same thesis, larger vocabulary. Named styles are compression: one word ("neo-brutalism," "claymorphism") transmits pages of visual specification to a model or an agent. This 15-style list extends the named-style vocabulary the playbook recommends pinning in the design skill — and it comes from the same creator as the dashboard-rules infographic, so the two entries read as one style system.
+- **Extractable skill:** style-picker vocabulary — paste the 15 named styles into the agent's spec and have it propose 3 candidate styles before generating any UI. Choosing from names beats describing from scratch.
+- **Source:** https://www.instagram.com/reel/DcyO-o1NiO4/
+
+![15 UI design styles every designer should know — the reel's numbered list](ui-design-styles/ui-design-styles-list.png)
+
 ## From X bookmarks (Sep 2026)
 Distilled from Matt's X bookmarks, newest first. Full post text at each permalink (X truncates long posts in timelines).
 
