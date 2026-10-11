@@ -9,6 +9,30 @@ Every repo that surfaces in the playbook's intake, with its value prop and a sco
 - **Maturity (0–2):** stars, forks, active development, license.
 - **Team deploy (0–2):** can a VS Code + Copilot team use it this quarter?
 
+## Oct 11 — @seymourofdevin reel: free GitHub tools that replace paid AI subscriptions
+
+Four tools from Devin Seymour's reel ("GitHub is full of free tools that do what people are paying eighty dollars a month for"), verified via the GitHub API on 2026-10-11 and scored. Note the overlap: spec-kit and task-master both do spec/PRD → tasks — spec-kit is the fresher, GitHub-official, MIT-clean pick; task-master adds guided step-by-step execution but is ~6 months stale.
+
+### 8.5 — [Mintplex-Labs/anything-llm](https://github.com/Mintplex-Labs/anything-llm) · 66.9k ⭐ · MIT · JavaScript
+**Value prop:** "Stop renting your intelligence." All-in-one desktop app for a local-first AI experience — drop in PDFs and SOPs, chat with them (RAG), run agents, multi-user mode. The reel's #1: the free chat-with-your-docs app.
+**Score:** remit 3 + local 2 + maturity 2 + deploy 1.5. *Why it matters for us:* the local-first knowledge-context tool — SOPs and docs become queryable context on the engineer's own machine, with local models at $0 marginal token cost. This is the "knowledge context, local-first" preference made into a product.
+**Source:** https://www.instagram.com/reel/DeSOG7ngGHu/
+
+### 8.5 — [github/spec-kit](https://github.com/github/spec-kit) · 140.8k ⭐ · MIT · Python
+**Value prop:** GitHub's spec-driven development toolkit — specify → plan → tasks, *then* the agent builds. Turns the human-owned artifact (the spec — see the dark-factory entry) into structured tasks before any code gets written.
+**Score:** remit 3 + local 1.5 + maturity 2 + deploy 2. *Why it matters for us:* structured specs are token savings — every ambiguity resolved in the spec is an agent iteration that never burns. GitHub-official, MIT, works with Copilot; a VS Code team can adopt this quarter. Pairs with the playbook's spec-first theme.
+**Source:** https://www.instagram.com/reel/DeSOG7ngGHu/
+
+### 7.5 — [danielmiessler/fabric](https://github.com/danielmiessler/fabric) · 44.2k ⭐ · MIT · Go
+**Value prop:** 200+ crowdsourced, tested prompt patterns (summarize, extract wisdom, rate content, write…) as a Go CLI — pipe stdin through a pattern, or copy patterns into Claude/Copilot. Community-tested prompts as versioned artifacts.
+**Score:** remit 2 + local 2 + maturity 2 + deploy 1.5. *Why it matters for us:* tested patterns cut the re-roll loop — a pattern that works first time is tokens not burned. Skill-adjacent: the playbook's skill system is the team-curated version of this; fabric is the public corpus to mine.
+**Source:** https://www.instagram.com/reel/DeSOG7ngGHu/
+
+### 6.0 — [eyaltoledano/claude-task-master](https://github.com/eyaltoledano/claude-task-master) · 28.2k ⭐ · MIT-text (custom header) · JavaScript
+**Value prop:** AI task management for coding agents — PRD in, decomposed task list out, then it walks the agent through tasks one by one with status tracking. MCP server for Cursor, Windsurf, Roo, Lovable.
+**Score:** remit 3 + local 1 + maturity 1 + deploy 1. *Why it matters for us:* task decomposition before the agent loop is the "plan" step that prevents expensive flailing — but spec-kit now covers the same ground, fresher and officially. Two flags: last push ~6 months ago (Apr 2026, 213 open issues) and Copilot isn't in the supported-IDE list; the LICENSE is the MIT text under a custom "Task Master License" header, so have legal glance at it before enterprise use.
+**Source:** https://www.instagram.com/reel/DeSOG7ngGHu/
+
 ## Oct 11 — direct share: morluto/rea (deep dive)
 
 ### 8.0 — [morluto/rea](https://github.com/morluto/rea) · 95.1k ⭐ · MIT · TypeScript
