@@ -9,6 +9,33 @@ Every repo that surfaces in the playbook's intake, with its value prop and a sco
 - **Maturity (0–2):** stars, forks, active development, license.
 - **Team deploy (0–2):** can a VS Code + Copilot team use it this quarter?
 
+## Oct 11 — direct share: morluto/rea (deep dive)
+
+### 8.0 — [morluto/rea](https://github.com/morluto/rea) · 95.1k ⭐ · MIT · TypeScript
+**Value prop:** "Reverse engineer anything with agents, from app behavior down to native binaries." One local MCP server (+ CLI + agent skill) that gives any MCP-capable coding agent RE superpowers: native binaries via Hopper/Ghidra/IDA/JEB, JS/Electron app graphs, .NET assemblies, Android APKs, WASM, EVM bytecode, firmware, websites, HAR captures, process behavior. Ask "how does search work in the Notes app" — the agent inspects, shows evidence, and rebuilds the feature for your project. v6.4.0 released today; 21.2k forks; rea.tools.
+**Score:** remit 2.5 + local 2 + maturity 2 + deploy 1.5. *Why it matters for us:* the most serious agent-skills project on this page — and its evidence-first design (every finding is a claim with confidence, authority, sha256 provenance, and stated limitations) is a context-*quality* pattern directly relevant to the context-layer work. Niche for daily feature work, but unmatched for understanding closed-source deps, debugging native crashes, and competitive teardown.
+**Source:** direct share (https://github.com/morluto/rea)
+
+**Pros:**
+- **Evidence-first architecture.** Every tool returns a canonical Evidence record — claim + confidence + authority + sha256 of the analyzed subject + reported limitations. Unknowns are retained explicitly, not silently dropped. Comparison tools (`compare_functions`, `compare_artifacts`) take Evidence directly. This is "show me the evidence" made structural — the anti-hallucination pattern the context layer needs.
+- **Serious evals in-tree.** Known-answer evaluation fixtures assert not just values but confidence/authority/source-operation match — they test whether the agent's findings are *justified*, not just correct.
+- **Breadth without cloud.** ~30 tool domains behind one MCP: native (Hopper/Ghidra/IDA/JEB bridges), JS/Electron module+IPC graphs, .NET CIL, APK/Android (JADX, Apktool, ADB), WASM, EVM, firmware (binwalk/unblob), websites, network captures. Analysis runs on your machine — $0 infra marginal cost.
+- **Velocity + hygiene.** v6.4.0 shipped today with a changelog that credits every contributor; 166 open issues (active triage, not abandonment); per-domain docs; 19 localized READMEs; release-please automation.
+- **Agent-agnostic.** Any agent that speaks local MCP — setup script registers Claude Code, Codex, Cursor, Gemini CLI, Pi, Hermes, Qwen Code and more; skills.sh skill for the investigation instructions.
+
+**Cons:**
+- **Pseudonymous maintainer.** morluto ("member of technically staff") is a pseudonym with no company behind it. 95k stars and a real contributor community mitigate it, but it's a bus-factor/trust question for enterprise adoption — pin versions, don't auto-update prod tooling.
+- **Deep native work isn't free.** The impressive native-binary demos assume Hopper (commercial) or IDA (commercial); Ghidra is free but heavy. The genuinely $0 story is JS/.NET/static analysis.
+- **Niche for this team.** His engineers build enterprise software in VS Code + Copilot — REA shines for RE/security/competitive teardown, not daily feature work. The realistic team uses: understanding vendored/minified deps, debugging native crashes, tracing Electron IPC.
+- **Token-hungry by nature.** Agentic RE investigations are long-horizon, tool-heavy loops — exactly the "one request becomes 20 inference calls" cost pattern from the inference-engineering entry. The 10 MiB MCP transport budgets and summary modes exist because full evidence bundles don't fit in context. Deploy with iteration/token guardrails or it will eat the savings it creates.
+- **Legal/ethical surface.** Reversing apps and binaries needs a usage policy — the project frames itself as lawful research (disclaimer + SECURITY.md), and even disavows scam crypto tokens using the REA name. Enterprise use wants written authorization rules before anyone points it at a competitor's app.
+- **Fast-moving target.** "REA changes quickly" per its own README; v6.4.0 today. Anything built on its tool contracts should pin the version.
+
+**Tokenomics angle:** two-sided. The evidence-first design is the takeaway for the context layer — claims that carry confidence + provenance + stated limits are how you get *quality* context instead of *volume* context, and the "retain unknowns explicitly" rule ports directly to any agent harness. The caution is the burn: unguided RE investigations are the most token-intensive agent workload in this playbook — evidence bundles are big by design, so the summary/budget machinery (and hard iteration caps) isn't optional, it's the deployment.
+**Source:** https://github.com/morluto/rea · https://rea.tools
+
+![REA anatomy — one local MCP server, ~30 tool domains, every finding an evidence record](rea-anatomy.svg)
+
 ## This week — @lasthumannode "GitHub's Most Starred" (Sep 28 – Oct 4)
 
 ### 9.0 — [vectorize-io/hindsight](https://github.com/vectorize-io/hindsight) · 45.8k ⭐ · MIT · Python

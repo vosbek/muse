@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+<defs>
+<marker id="arr9" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8f8f8f"/></marker>
+</defs>
+<rect width="1200" height="600" fill="#141414"/>
+<text x="600" y="52" text-anchor="middle" font-size="30" fill="#e8e8e8" font-weight="600">REA: reverse engineer anything</text>
+<text x="600" y="80" text-anchor="middle" font-size="15" fill="#a8a8a8">one local MCP server — your agent asks, REA inspects, every finding carries its evidence</text>
+
+<rect x="30" y="130" width="200" height="110" rx="10" fill="#1c1c1c" stroke="#8f8f8f"/>
+<text x="130" y="168" text-anchor="middle" font-size="14" fill="#e8e8e8" font-weight="600">Your agent</text>
+<text x="130" y="192" text-anchor="middle" font-size="12" fill="#8f8f8f">Claude Code · Codex</text>
+<text x="130" y="210" text-anchor="middle" font-size="12" fill="#8f8f8f">Cursor · Copilot · Pi</text>
+
+<rect x="280" y="110" width="240" height="150" rx="12" fill="#1c1c1c" stroke="#d49036" stroke-width="2"/>
+<text x="400" y="142" text-anchor="middle" font-size="14" fill="#e8e8e8" font-weight="600">REA MCP server</text>
+<text x="400" y="164" text-anchor="middle" font-size="12" fill="#a8a8a8">~30 tool domains · 60 modules</text>
+<text x="400" y="186" text-anchor="middle" font-size="12" fill="#a8a8a8">CLI + skills.sh skill</text>
+<text x="400" y="208" text-anchor="middle" font-size="12" fill="#2e9e77">runs 100% local · MIT</text>
+<text x="400" y="230" text-anchor="middle" font-size="12" fill="#8f8f8f">v6.4.0 · 95k ⭐</text>
+
+<rect x="570" y="110" width="600" height="150" rx="12" fill="#1c1c1c" stroke="#2e2e2e"/>
+<text x="870" y="142" text-anchor="middle" font-size="13" fill="#a8a8a8" letter-spacing="2">ANALYSIS PROVIDERS</text>
+<g font-size="12" fill="#a8a8a8">
+<text x="600" y="172">Native binaries → <tspan fill="#e8e8e8">Hopper / Ghidra / IDA / JEB</tspan></text>
+<text x="600" y="194">JS / Electron → <tspan fill="#e8e8e8">module graphs, IPC, source maps</tspan></text>
+<text x="600" y="216">.NET · APK / Android · <tspan fill="#e8e8e8">WASM · EVM bytecode · firmware</tspan></text>
+<text x="600" y="238">Websites · <tspan fill="#e8e8e8">HAR captures · processes · crashes</tspan></text>
+</g>
+
+<g stroke="#8f8f8f" stroke-width="2">
+<line x1="230" y1="185" x2="276" y2="185" marker-end="url(#arr9)"/>
+<line x1="520" y1="185" x2="566" y2="185" marker-end="url(#arr9)"/>
+</g>
+
+<rect x="280" y="320" width="640" height="180" rx="12" fill="#1c1c1c" stroke="#2e9e77" stroke-width="1.5"/>
+<text x="600" y="352" text-anchor="middle" font-size="13" fill="#2e9e77" letter-spacing="2">EVERY FINDING IS AN EVIDENCE RECORD</text>
+<g font-size="13" fill="#a8a8a8">
+<text x="320" y="388"><tspan fill="#e8e8e8">claim</tspan> + <tspan fill="#e8e8e8">confidence</tspan> + <tspan fill="#e8e8e8">authority</tspan> + <tspan fill="#e8e8e8">sha256</tspan> of subject</text>
+<text x="320" y="414">reported <tspan fill="#e8e8e8">limitations</tspan> and explicit <tspan fill="#e8e8e8">unknowns</tspan> — not silent gaps</text>
+<text x="320" y="440">evidence feeds <tspan fill="#e8e8e8">compare_*</tspan> tools directly · known-answer evals in-tree</text>
+<text x="320" y="466">10 MiB transport budgets · summaries when bundles don't fit</text>
+</g>
+
+<rect x="960" y="320" width="210" height="180" rx="12" fill="#1c1c1c" stroke="#8f8f8f"/>
+<text x="1065" y="352" text-anchor="middle" font-size="13" fill="#a8a8a8" letter-spacing="2">AGENT THEN</text>
+<g font-size="13" fill="#a8a8a8">
+<text x="990" y="390">explains the feature,</text>
+<text x="990" y="412">shows the evidence,</text>
+<text x="990" y="434">rebuilds it for</text>
+<text x="990" y="456">your project</text>
+</g>
+
+<g stroke="#8f8f8f" stroke-width="2">
+<line x1="600" y1="260" x2="600" y2="316" marker-end="url(#arr9)"/>
+<line x1="920" y1="410" x2="956" y2="410" marker-end="url(#arr9)"/>
+</g>
+
+<text x="600" y="548" text-anchor="middle" font-size="13" fill="#8f8f8f">the pattern worth stealing: claims carry confidence + provenance + stated limits — context quality, not just context volume</text>
+</svg>
