@@ -9,6 +9,15 @@ Every repo that surfaces in the playbook's intake, with its value prop and a sco
 - **Maturity (0–2):** stars, forks, active development, license.
 - **Team deploy (0–2):** can a VS Code + Copilot team use it this quarter?
 
+## Oct 11 — direct share: dzhng/jevgrep
+
+Already covered conceptually in [02 — Jev Context Economics](../02-jev-context-economics/README.md) (the ~30% cost-cut entry from the @gittrend.io reel); scored here for the repos index.
+
+### 6.0 — [dzhng/jevgrep](https://github.com/dzhng/jevgrep) · 2.6k ⭐ · MIT · TypeScript
+**Value prop:** "Find code by asking what it does" — a CLI for coding agents that uses Jev to discover relevant files and source context, returning exact lines instead of whole files dumped into context. `npm install -g @dzhng/jevgrep` (Node 22+), `jg auth`, then `jg "How are telemetry events recorded and sent?"`; ships an installable agent skill. The benchmark from the 02 entry: 8/10 SWE-bench tasks solved at $5.44 vs $7.62 baseline — a 28.6% cut.
+**Score:** remit 3 + local 0.5 + maturity 1 + deploy 1.5. *Why it matters for us:* retrieval-first cost control in a runnable tool — the "finding" step is where most agent runs overpay, and this fixes it with a Jev-powered search instead of a bigger model. Two caveats: it needs a Vercel AI Gateway key (the Jev calls aren't local — the one non-local-first dependency in an otherwise local CLI), and it's two weeks old (created Sep 26, 2026; 29 open issues) — young but fast-growing and MIT-licensed.
+**Source:** https://github.com/dzhng/jevgrep
+
 ## Oct 11 — @seymourofdevin reel: free GitHub tools that replace paid AI subscriptions
 
 Four tools from Devin Seymour's reel ("GitHub is full of free tools that do what people are paying eighty dollars a month for"), verified via the GitHub API on 2026-10-11 and scored. Note the overlap: spec-kit and task-master both do spec/PRD → tasks — spec-kit is the fresher, GitHub-official, MIT-clean pick; task-master adds guided step-by-step execution but is ~6 months stale.

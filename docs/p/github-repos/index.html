@@ -16,6 +16,12 @@
 <li><strong>Maturity (0–2):</strong> stars, forks, active development, license.</li>
 <li><strong>Team deploy (0–2):</strong> can a VS Code + Copilot team use it this quarter?</li>
 </ul>
+</div></details><details class="sec"><summary>Oct 11 — direct share: dzhng/jevgrep</summary><div class="sec-body">
+<p>Already covered conceptually in <a href="../02-jev-context-economics/README.md">02 — Jev Context Economics</a> (the ~30% cost-cut entry from the @gittrend.io reel); scored here for the repos index.</p>
+<h3 id="60-dzhngjevgrep-26k-mit-typescript">6.0 — <a href="https://github.com/dzhng/jevgrep">dzhng/jevgrep</a> · 2.6k ⭐ · MIT · TypeScript</h3>
+<p><strong>Value prop:</strong> "Find code by asking what it does" — a CLI for coding agents that uses Jev to discover relevant files and source context, returning exact lines instead of whole files dumped into context. <code>npm install -g @dzhng/jevgrep</code> (Node 22+), <code>jg auth</code>, then <code>jg "How are telemetry events recorded and sent?"</code>; ships an installable agent skill. The benchmark from the 02 entry: 8/10 SWE-bench tasks solved at $5.44 vs $7.62 baseline — a 28.6% cut.
+<strong>Score:</strong> remit 3 + local 0.5 + maturity 1 + deploy 1.5. <em>Why it matters for us:</em> retrieval-first cost control in a runnable tool — the "finding" step is where most agent runs overpay, and this fixes it with a Jev-powered search instead of a bigger model. Two caveats: it needs a Vercel AI Gateway key (the Jev calls aren't local — the one non-local-first dependency in an otherwise local CLI), and it's two weeks old (created Sep 26, 2026; 29 open issues) — young but fast-growing and MIT-licensed.
+<strong>Source:</strong> https://github.com/dzhng/jevgrep</p>
 </div></details><details class="sec"><summary>Oct 11 — @seymourofdevin reel: free GitHub tools that replace paid AI subscriptions</summary><div class="sec-body">
 <p>Four tools from Devin Seymour's reel ("GitHub is full of free tools that do what people are paying eighty dollars a month for"), verified via the GitHub API on 2026-10-11 and scored. Note the overlap: spec-kit and task-master both do spec/PRD → tasks — spec-kit is the fresher, GitHub-official, MIT-clean pick; task-master adds guided step-by-step execution but is ~6 months stale.</p>
 <h3 id="85-mintplex-labsanything-llm-669k-mit-javascript">8.5 — <a href="https://github.com/Mintplex-Labs/anything-llm">Mintplex-Labs/anything-llm</a> · 66.9k ⭐ · MIT · JavaScript</h3>
