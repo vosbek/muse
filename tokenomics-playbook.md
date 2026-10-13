@@ -100,6 +100,7 @@ Honest caveats:
 - [Storage/memory maps](08-tools-apis/vscode-storage-memory-map.md) for VS Code and [Copilot](01-claude-code-agents/github-copilot-storage-memory-map.md) — exactly what leaves each machine, so you can see the cost surface.
 - [37 AI Engineer talk distillations](ai-engineer-talks/README.md), most with a tokenomics angle — the evidence base behind every lever above.
 - [COMBINED.md](COMBINED.md) — cross-item patterns: the harness-not-model consensus, skills replacing prompts, vendors publishing real cost numbers.
+- [20 AI inference engineering concepts](deep-dives/inference-engineering-concepts.md) — the provider-side companion to this playbook: prefill vs decode, the KV-cache stack, quantization picks by GPU, and the $0.30/M-tokens math that explains what your price board negotiates against.
 
 ## Suggested next steps for your team
 
