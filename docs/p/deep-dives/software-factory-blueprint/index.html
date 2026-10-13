@@ -1,0 +1,108 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Agent Software Factory Blueprint · AI Skills Playbook</title>
+<meta name="description" content="The Agent Software Factory Blueprint What this is: a 10-slide infographic carousel by @agentic.james (James Goldbach, Oct 12, 2026) — the operational…">
+<meta property="og:title" content="The Agent Software Factory Blueprint · AI Skills Playbook">
+<meta property="og:description" content="The Agent Software Factory Blueprint What this is: a 10-slide infographic carousel by @agentic.james (James Goldbach, Oct 12, 2026) — the operational…">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a><a href="../../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><div class="hero-visual"><p><img loading="lazy" alt="01 · The pitch: verification you trust, at the scale of thousands of agents and PRs" src="software-factory-blueprint-assets/factory-01.jpg" /></p></div><h1 id="the-agent-software-factory-blueprint">The Agent Software Factory Blueprint</h1>
+<p><strong>What this is:</strong> a 10-slide infographic carousel by @agentic.james (James Goldbach, Oct 12, 2026) — the operational companion to the dark-factory concept. Where the dark-factory reel sketched the <em>idea</em> (humans write only the spec; agents run write → run → break → fix), this carousel is the <em>build manual</em>: seven stations from bug report to production watch, a twelve-box pipeline map, an explicit model-tier table, and a gate agent that wrote none of the code. All ten infographics are saved below, in carousel order.</p>
+<p><strong>Related:</strong> <a href="../dark-factory">The dark factory</a> (the concept this operationalizes) · <a href="../cloud-agent-anatomy">Cloud agent anatomy</a> (the infrastructure a factory like this runs on) · <a href="../pi-harness">Pi harness dossier</a> (the runtime layer) · <a href="../uber-software-factory">Uber's software factory</a> (the Fortune-500 measured version)</p>
+<p><strong>Thesis:</strong> the trick isn't more agents — it's checks good enough that the number of agents stops mattering. The human appears exactly twice in the whole pipeline: GO and ship.</p>
+
+<details class="sec"><summary>The whole factory on one page</summary><div class="sec-body">
+<p>The carousel's second slide compresses the factory into a twelve-box line, with two human touchpoints marked. Paraphrased, the flow runs: <strong>Trigger</strong> (a user bug or feature idea lands) → <strong>Tracker agent</strong> (assigns a ticket ID, owns the ledger) → <strong>Coordinator</strong> (writes briefs, launches sessions, merges) → <strong>Sessions 1…N</strong> (dozens of parallel agent sessions, each with its own brief and base commit) → <strong>Integration</strong> (one branch, revertible merges) → <strong>Gate agent</strong> (independent, runs its own checks, wrote no code) → <strong>Staging</strong> (build + soak) → <strong>Ready to ship?</strong> (one message, one tap — the human's second appearance) → <strong>Promote to prod</strong> (auto-rollback armed) → <strong>Production</strong> (post-promote soak) → <strong>Watch</strong> (read-only monitoring) → <strong>Anomaly</strong> (anything odd becomes a new fail-first ticket, closing the loop).</p>
+<p>Two design rules run under the whole line: every role gets its own session, its own memory, and its own inbox — and every handoff between roles carries the same three artifacts: briefs, commits, evidence.</p>
+<p><img loading="lazy" alt="02 · The whole factory on one page" src="software-factory-blueprint-assets/factory-02.jpg" /></p>
+</div></details><details class="sec"><summary>Station 1 · Intake: one agent owns the ledger</summary><div class="sec-body">
+<p>A single tracker agent is the <em>only writer</em> of the bug-and-feature ledger, and it runs on a fast model — the reasoning being that intake is high-volume, low-ambiguity work where speed matters more than depth. Every request gets a unique ID, gets checked against the ledger for duplicates, and gets logged with <em>no owner</em>. The slide's rule, quoted because it's the whole station in one line: "Logging is not dispatching."</p>
+<p>Tickets move through four states — logged, promoted, shipped, verified — and related tickets link both ways. Nothing gets an owner until the human taps GO, which is the first of the two human appearances.</p>
+<p><img loading="lazy" alt="03 · Step 1: one agent owns the ledger" src="software-factory-blueprint-assets/factory-03.jpg" /></p>
+</div></details><details class="sec"><summary>Station 2 · The brief: write the brief, not the code</summary><div class="sec-body">
+<p>The coordinator — running on the strongest model at high reasoning effort, on the argument that the brief is the hard part and has to hold the whole system in mind — writes every job down before any code exists. Each brief names four things: the exact base commit every session branches from, the acceptance checks, the test that must fail first (on the base), and the forbidden moves (weakening assertions, lengthening timeouts, deploying, pushing).</p>
+<p>Two more mechanisms worth stealing: when two sessions split one feature, they agree on a written API contract <em>before</em> either writes code; and scripts arrive as authenticated, owner-verified messages — the session checks "did she actually ask for this?" before acting.</p>
+<p><img loading="lazy" alt="04 · Step 2: write the brief, not the code" src="software-factory-blueprint-assets/factory-04.jpg" /></p>
+</div></details><details class="sec"><summary>Station 3 · Fan out: dozens of agents in parallel</summary><div class="sec-body">
+<p>Sessions fan out across tools by cost and weight class — Claude Code and Codex take the heavy work (the slide notes flat-rate plans), OpenCode takes the cheap high-volume jobs, and the same gate applies to all of them. Each session gets its own git worktree, its own branch, and its own inbox, so they never collide; a coordinator keeps a fresh session per job (the slide shows 18 live). Every ten minutes an idle check reads each session's last activity and wakes any that went quiet without delivering.</p>
+<h3 id="the-model-tier-table">The model-tier table</h3>
+<p>This is the slide's centerpiece and the most directly reusable artifact — a six-row routing table mapping task type to model tier:</p>
+<table>
+<thead>
+<tr>
+<th>Task type</th>
+<th>Model tier</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Coordination, code review, release decisions</td>
+<td>Strongest · high effort</td>
+</tr>
+<tr>
+<td>Architecture, profiling, concurrency, security</td>
+<td>Strongest · either vendor</td>
+</tr>
+<tr>
+<td>Gate runs + failure analysis</td>
+<td>Strong reasoning</td>
+</tr>
+<tr>
+<td>UI work, focused fixes, test infrastructure</td>
+<td>Strong coding, plan with headroom</td>
+</tr>
+<tr>
+<td>Mechanical edits, docs, log summaries</td>
+<td>Low-cost via OpenCode</td>
+</tr>
+<tr>
+<td>Ticket triage + ledger keeping</td>
+<td>Fast model</td>
+</tr>
+</tbody>
+</table>
+<p>The shape is the playbook's routing ladder made explicit: spend the frontier where ambiguity is highest, spend nearly nothing where it isn't.</p>
+<p><img loading="lazy" alt="05 · Step 3: run dozens of agents in parallel" src="software-factory-blueprint-assets/factory-05.jpg" /></p>
+</div></details><details class="sec"><summary>Station 4 · Fail first: every fix starts with a red test</summary><div class="sec-body">
+<p>The discipline: show the test failing on the base commit, fix it, then prove it passes on the tip — all inside a private worktree, never the live checkout. Then the mutation check: deliberately remove your own safety guards and confirm the tests go red, which proves the tests actually test something. The slide cites a real run where disabling two safety checks turned eleven tests red.</p>
+<p>Every session hands back the same final package: the branch, the tip commit, the commit list, measured numbers, evidence paths — and, notably, an explicit statement of what is <em>not</em> claimed.</p>
+<p><img loading="lazy" alt="06 · Step 4: every fix starts with a red test" src="software-factory-blueprint-assets/factory-06.jpg" /></p>
+</div></details><details class="sec"><summary>Station 5 · The gate: let a different agent try to break it</summary><div class="sec-body">
+<p>The gate agent wrote none of the code and never edits it — it checks out the exact commit and runs five checks:</p>
+<ol>
+<li><strong>Type-check + release build</strong>, with outside network blocked so the build can't quietly depend on the internet.</li>
+<li><strong>Full unit suite</strong>, with known failures named in advance (and zero-assertion files counted separately — a quiet anti-gaming rule).</li>
+<li><strong>Every touched browser test file</strong>, run whole — not just the new cases.</li>
+<li><strong>Full remote run on a second machine</strong>, plus a secret-leak guard, with frozen priority-zero cases and canaries.</li>
+<li><strong>A 600-second resource soak</strong>: file handles, memory, restarts, shutdown time.</li>
+</ol>
+<p>The flake protocol handles the ambiguous middle: an unexpected failure gets rerun alone, three or more times per commit (five-plus if results are mixed). If both old and new fail, it's a flake ticket; if only the new fails, it's a blocking regression.</p>
+<p>The slide's proof point: in one release the gate caught two regressions both authors had passed — a keyboard shortcut dead on a cold phone, and a page 16 KB over its budget. Each went back with a signature, got fixed fail-first, and was re-gated.</p>
+<p><img loading="lazy" alt="07 · Step 5: let a different agent try to break it" src="software-factory-blueprint-assets/factory-07.jpg" /></p>
+</div></details><details class="sec"><summary>Station 6 · Use it like a human</summary><div class="sec-body">
+<p>Agents click through the built release the way a user would — open, type, send, back, swipe, rotate, reload, drop network — on phone and desktop, with server logs, console, and network tailing the whole time. The key rule: evidence ships with the verdict. Screenshots at every step, in light and dark mode, on phone and desktop, as a frame-capture filmstrip attached to the result.</p>
+<p><img loading="lazy" alt="08 · Step 6: agents click through the app" src="software-factory-blueprint-assets/factory-08.jpg" /></p>
+</div></details><details class="sec"><summary>Station 7 · Soak it, then one tap</summary><div class="sec-body">
+<p>Nothing reaches production without a soak and one human thumbs-up. The sequence: build on staging, verify the API against the exact build commit, run a ten-minute live soak (watching file handles, restarts, stream errors), then the human gets one message — what changed, what passed — and one tap promotes staging to prod with auto-rollback armed. A five-minute production soak follows, then read-only watching every ten minutes.</p>
+<p>The slide's real example: after one ship, a health ping came back at 0.9 seconds instead of 2 milliseconds. The response wasn't a hotfix — it was a new ticket with a fail-first test, and the release that caused it wasn't the one that shipped. The loop feeds itself.</p>
+<p><img loading="lazy" alt="09 · Step 7: soak it, then one tap" src="software-factory-blueprint-assets/factory-09.jpg" /></p>
+</div></details><details class="sec"><summary>The full blueprint (gated)</summary><div class="sec-body">
+<p>The closing slide offers the complete blueprint — all seven stations, seven verification layers, the model-tier table, the toolbox (isolation, tests, release, diagnosis), and "what still breaks" — in exchange for commenting FACTORY. That material is DM-gated and isn't evaluated here.</p>
+<p><img loading="lazy" alt="10 · The full blueprint offer" src="software-factory-blueprint-assets/factory-10.jpg" /></p>
+</div></details><details class="sec"><summary>Tokenomics / enterprise angle</summary><div class="sec-body">
+<p>Five things worth stealing, in cost order:</p>
+<ol>
+<li><strong>The model-tier table is the harness lever made explicit.</strong> Strongest-model tokens go only to briefs, coordination, and gate analysis — the high-ambiguity work. Everything else (triage, mechanical edits, docs) runs on fast or cheap models. This is the same routing ladder as the playbook's Jev entries, but for the coding-agent stack: the table is a deployable policy, not a metaphor.</li>
+<li><strong>Verification is the token furnace, and it's mostly not tokens.</strong> The gate re-runs everything — builds, full suites, a second-machine run, a ten-minute soak — but that verification is deterministic compute, not LLM generation. The expensive tokens concentrate in three places: the brief, the coordination, and the gate's failure analysis. Budget those; the rest is compute.</li>
+<li><strong>Fail-first makes trust cheap to produce.</strong> A red test is a cheap-model task written against a strong-model brief, and the mutation check (remove your guard, watch tests go red) is pure compute. The most expensive artifact — justified confidence — gets manufactured at the lowest cost tier.</li>
+<li><strong>The gate agent is the anti-Goodhart device.</strong> A different agent that wrote none of the code and can't edit it is the same shape as the dark factory's hidden holdout: trust comes from <em>separation</em>, not from a bigger model. The zero-assertion-file rule and the flake protocol are the details that make it real.</li>
+<li><strong>Clones and worktrees move verification off the API bill.</strong> Private worktrees per session and a second machine for the gate run mean verification iterations cost compute, not per-call API spend — the same economics as the dark factory's clone-sandbox point.</li>
+</ol>
+</div></details><details class="sec"><summary>Honest scoring</summary><div class="sec-body">
+<p>This is one operator's blueprint, not a measured production system — contrast it with Uber's software-factory writeup in this repo (3,600+ skills, 30K+ executions a day, spend stabilized while usage grew 9.4×), which ships actual numbers. The "caught two regressions" story is a single anecdote from one release. The model-tier table's depth ratings are qualitative, no cost figures are attached to any station, and the flat-rate plans named for the heavy tools aren't priced. The full blueprint — the seven verification layers in detail, the toolbox, the honest weak spots — sits behind a comment CTA and isn't public, so the carousel is the complete public artifact. Treat it as a well-specified design to steal from, not as evidence.</p>
+<p><strong>Source:</strong> https://www.instagram.com/p/DeaLRbYj7fk/ (@agentic.james, Oct 12, 2026)</p></div></details></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

@@ -2,7 +2,7 @@
 
 **What this is:** a beat-by-beat capture of @romippatel's 79-second animated reel (Oct 11, 2026) making the lights-out case for software engineering: the human writes only the spec, and AI agents handle the write → run → break → fix loop until the code ships. The caption's thesis: "No human writes this code. No human even reads it." The 12 frames below are the reel's own text cards, in narrative order, each with a plain-English rundown of what it shows.
 
-**Related:** [Cloud agent anatomy](cloud-agent-anatomy.md) (the infrastructure a factory like this runs on) · [Pi harness dossier](pi-harness.md) (the runtime layer) · [Aikido review-mining entry](../01-claude-code-agents/README.md) (review history → rules → enforcement — the factory's QA department)
+**Related:** [Cloud agent anatomy](cloud-agent-anatomy.md) (the infrastructure a factory like this runs on) · [Pi harness dossier](pi-harness.md) (the runtime layer) · [Aikido review-mining entry](../01-claude-code-agents/README.md) (review history → rules → enforcement — the factory's QA department) · [The agent software factory blueprint](software-factory-blueprint.md) (the operational build manual: 7 stations, model-tier table, gate agent)
 
 ![The dark factory loop: spec, agent loop, hidden holdout, clones, score](dark-factory-assets/dark-factory-loop.svg)
 
