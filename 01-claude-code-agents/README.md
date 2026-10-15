@@ -279,4 +279,4 @@ Distilled from Matt's X bookmarks, newest first. Full post text at each permalin
 - **Extractable skill:** Learn tools through their agent workflows; that's where vendors now put the leverage.
 - **Source:** https://x.com/code/status/2093449548437786828
 
-**Deep dives:** [spotify-shunt](../deep-dives/spotify-shunt.md) (routing I/O to cheap models) · [show-me-skill](../deep-dives/show-me-skill.md) (visual-explanation skill).
+**Deep dives:** [spotify-shunt](../deep-dives/spotify-shunt.md) (routing I/O to cheap models) · [show-me-skill](../deep-dives/show-me-skill.md) (visual-explanation skill) · [uber-ai-infra-inside](../deep-dives/uber-ai-infra-inside.md) (Uber's full agent stack — Model Gateway, AIFX, Minion, Slate, Capri — from a 94-min inside tour).

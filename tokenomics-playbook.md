@@ -87,6 +87,7 @@ Honest caveats, kept from the research:
 Why it maps to this playbook:
 
 - **Governance as the product, not the plugin.** Stacklet (above) attributes and acts on spend across providers; North 2 bakes the same spend-cap pattern into the agent platform itself — quotas and caps at the point of use, not as an after-the-fact report. This is the Copilot-budgeting pattern from Lever 6's playbook section, shipped as a vendor control plane.
+- **The enterprise-proven version: Uber's spend tiers + CostCheck.** No vendor product — just policy plus tooling: engineers get a default spend tier, a lightweight manager conversation unlocks the next one, separate tiers for interactive vs background agents, and a CostCheck plugin that coaches cost hygiene across sessions in real time. Token costs fell ~50% in a few months. The meter is Uber's Model Gateway (per-user/per-caller attribution on every model call, no side doors). Full treatment: [deep-dives/uber-ai-infra-inside.md](deep-dives/uber-ai-infra-inside.md).
 - **Memory as a cost lever.** Cross-session memory is Lever 5 ("stop paying twice") productionized: every context an agent retains is tokens it never re-spends. Caveat carried over: stale memory is a tax with interest — retained context that goes wrong costs more than re-fetching it.
 - **Skills/Libraries as deduplication.** Reusable agent capabilities are the org-level version of Lever 1's context hygiene: write the good prompt once, every agent inherits it, nobody pays to reinvent it.
 

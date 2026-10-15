@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="980" viewBox="0 0 1200 980" font-family="Inter, system-ui, sans-serif">
+  <rect width="1200" height="980" fill="#141414" rx="16"/>
+  <text x="600" y="52" text-anchor="middle" fill="#f5f0e6" font-size="30" font-weight="700">Uber's AI infra stack — as described Oct 2026</text>
+  <text x="600" y="80" text-anchor="middle" fill="#8a8a8a" font-size="15">pre-AI foundations (2015–2022) below · AI-era systems above · governance across all layers</text>
+
+  <!-- Governance rail (right side) -->
+  <rect x="990" y="120" width="170" height="780" fill="#1e1e1e" stroke="#d49036" stroke-width="2" rx="10"/>
+  <text x="1075" y="152" text-anchor="middle" fill="#d49036" font-size="16" font-weight="700">GOVERNANCE</text>
+  <text x="1075" y="185" text-anchor="middle" fill="#c9c9c9" font-size="13">spend tiers</text>
+  <text x="1075" y="212" text-anchor="middle" fill="#c9c9c9" font-size="13">CostCheck plugin</text>
+  <text x="1075" y="239" text-anchor="middle" fill="#c9c9c9" font-size="13">per-user attribution</text>
+  <text x="1075" y="266" text-anchor="middle" fill="#c9c9c9" font-size="13">audit logs</text>
+  <text x="1075" y="293" text-anchor="middle" fill="#c9c9c9" font-size="13">session traces</text>
+  <text x="1075" y="320" text-anchor="middle" fill="#c9c9c9" font-size="13">human merges</text>
+  <text x="1075" y="347" text-anchor="middle" fill="#c9c9c9" font-size="13">every PR</text>
+  <text x="1075" y="390" text-anchor="middle" fill="#8a8a8a" font-size="12">token costs −50%</text>
+  <text x="1075" y="410" text-anchor="middle" fill="#8a8a8a" font-size="12">in recent months</text>
+
+  <!-- Layer 5: Spec -->
+  <rect x="40" y="120" width="920" height="120" fill="#1e1e1e" stroke="#2e9e77" stroke-width="2" rx="10"/>
+  <text x="70" y="152" fill="#2e9e77" font-size="16" font-weight="700">SPEC</text>
+  <g font-size="14" fill="#e8e8e8">
+    <rect x="200" y="168" width="180" height="46" rx="8" fill="#2a2a2a" stroke="#2e9e77"/><text x="290" y="196" text-anchor="middle">PRD / ERD tool</text>
+    <rect x="400" y="168" width="200" height="46" rx="8" fill="#2a2a2a" stroke="#2e9e77"/><text x="500" y="196" text-anchor="middle">design docs + reviews</text>
+    <rect x="620" y="168" width="220" height="46" rx="8" fill="#2a2a2a" stroke="#2e9e77"/><text x="730" y="196" text-anchor="middle">Jira / Linear linkage</text>
+  </g>
+
+  <!-- Layer 4: Agents -->
+  <rect x="40" y="262" width="920" height="150" fill="#1e1e1e" stroke="#d49036" stroke-width="2" rx="10"/>
+  <text x="70" y="294" fill="#d49036" font-size="16" font-weight="700">AGENTS</text>
+  <g font-size="14" fill="#e8e8e8">
+    <rect x="200" y="312" width="130" height="46" rx="8" fill="#2a2a2a" stroke="#d49036"/><text x="265" y="340" text-anchor="middle">Minion</text>
+    <rect x="345" y="312" width="130" height="46" rx="8" fill="#2a2a2a" stroke="#d49036"/><text x="410" y="340" text-anchor="middle">Cortana</text>
+    <rect x="490" y="312" width="150" height="46" rx="8" fill="#2a2a2a" stroke="#d49036"/><text x="565" y="340" text-anchor="middle">DebugAssist</text>
+    <rect x="655" y="312" width="100" height="46" rx="8" fill="#2a2a2a" stroke="#d49036"/><text x="705" y="340" text-anchor="middle">Fox</text>
+    <rect x="200" y="368" width="330" height="30" rx="8" fill="#2a2a2a"/><text x="365" y="389" text-anchor="middle" font-size="12" fill="#a9a9a9">Claude Code · Codex · OpenCode (via AIFX)</text>
+    <rect x="545" y="368" width="330" height="30" rx="8" fill="#2a2a2a"/><text x="710" y="389" text-anchor="middle" font-size="12" fill="#a9a9a9">~15% of prod PRs via Minion</text>
+  </g>
+
+  <!-- Layer 3: Verification -->
+  <rect x="40" y="434" width="920" height="150" fill="#1e1e1e" stroke="#2e9e77" stroke-width="2" rx="10"/>
+  <text x="70" y="466" fill="#2e9e77" font-size="16" font-weight="700">VERIFY</text>
+  <g font-size="14" fill="#e8e8e8">
+    <rect x="200" y="484" width="140" height="46" rx="8" fill="#2a2a2a" stroke="#2e9e77"/><text x="270" y="512" text-anchor="middle">afx validate</text>
+    <rect x="355" y="484" width="150" height="46" rx="8" fill="#2a2a2a" stroke="#2e9e77"/><text x="430" y="512" text-anchor="middle">self-healing CI</text>
+    <rect x="520" y="484" width="100" height="46" rx="8" fill="#2a2a2a" stroke="#2e9e77"/><text x="570" y="512" text-anchor="middle">Slate</text>
+    <rect x="635" y="484" width="190" height="46" rx="8" fill="#2a2a2a" stroke="#2e9e77"/><text x="730" y="512" text-anchor="middle">Capri / MatchGuard</text>
+    <rect x="200" y="538" width="220" height="30" rx="8" fill="#2a2a2a"/><text x="310" y="559" text-anchor="middle" font-size="12" fill="#a9a9a9">Code Inbox · risk scores · blast radius</text>
+    <rect x="435" y="538" width="260" height="30" rx="8" fill="#2a2a2a"/><text x="565" y="559" text-anchor="middle" font-size="12" fill="#a9a9a9">CI jobs 2× YoY → internal "code red"</text>
+  </g>
+
+  <!-- Layer 2: AI foundations -->
+  <rect x="40" y="606" width="920" height="150" fill="#1e1e1e" stroke="#d49036" stroke-width="2" rx="10"/>
+  <text x="70" y="638" fill="#d49036" font-size="16" font-weight="700">AI FDN</text>
+  <g font-size="14" fill="#e8e8e8">
+    <rect x="200" y="656" width="170" height="46" rx="8" fill="#2a2a2a" stroke="#d49036"/><text x="285" y="684" text-anchor="middle">Model Gateway</text>
+    <rect x="385" y="656" width="120" height="46" rx="8" fill="#2a2a2a" stroke="#d49036"/><text x="445" y="684" text-anchor="middle">AI Guard</text>
+    <rect x="520" y="656" width="140" height="46" rx="8" fill="#2a2a2a" stroke="#d49036"/><text x="590" y="684" text-anchor="middle">AIFX</text>
+    <rect x="675" y="656" width="150" height="46" rx="8" fill="#2a2a2a" stroke="#d49036"/><text x="750" y="684" text-anchor="middle">MCP Gateway</text>
+    <rect x="200" y="710" width="200" height="30" rx="8" fill="#2a2a2a"/><text x="300" y="731" text-anchor="middle" font-size="12" fill="#a9a9a9">Skills repo · 30k runs/day</text>
+    <rect x="415" y="710" width="280" height="30" rx="8" fill="#2a2a2a"/><text x="555" y="731" text-anchor="middle" font-size="12" fill="#a9a9a9">Context graph · 100+ node / 130+ edge types</text>
+  </g>
+
+  <!-- Layer 1: Pre-AI foundations -->
+  <rect x="40" y="778" width="920" height="122" fill="#1e1e1e" stroke="#5a5a5a" stroke-width="2" rx="10"/>
+  <text x="70" y="810" fill="#9a9a9a" font-size="16" font-weight="700">PRE-AI</text>
+  <g font-size="13" fill="#c9c9c9">
+    <rect x="200" y="828" width="120" height="40" rx="8" fill="#242424" stroke="#5a5a5a"/><text x="260" y="853" text-anchor="middle">DevPods</text>
+    <rect x="330" y="828" width="110" height="40" rx="8" fill="#242424" stroke="#5a5a5a"/><text x="385" y="853" text-anchor="middle">Bazel</text>
+    <rect x="450" y="828" width="130" height="40" rx="8" fill="#242424" stroke="#5a5a5a"/><text x="515" y="853" text-anchor="middle">Monorepos</text>
+    <rect x="590" y="828" width="110" height="40" rx="8" fill="#242424" stroke="#5a5a5a"/><text x="645" y="853" text-anchor="middle">Jaeger</text>
+    <rect x="710" y="828" width="150" height="40" rx="8" fill="#242424" stroke="#5a5a5a"/><text x="785" y="853" text-anchor="middle">Edge Gateway</text>
+    <rect x="200" y="824" width="0" height="0"/>
+  </g>
+  <text x="70" y="888" fill="#6a6a6a" font-size="12">+ uOwn · M3DB · Michelangelo · Cadence · Morpheus · cities-as-primitive</text>
+
+  <!-- Flow arrows between layers -->
+  <g stroke="#8a8a8a" stroke-width="2" marker-end="url(#arr)">
+    <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 z" fill="#8a8a8a"/></marker></defs>
+    <line x1="480" y1="240" x2="480" y2="258"/>
+    <line x1="480" y1="412" x2="480" y2="430"/>
+    <line x1="480" y1="584" x2="480" y2="602"/>
+    <line x1="480" y1="756" x2="480" y2="774"/>
+  </g>
+  <text x="940" y="940" text-anchor="end" fill="#6a6a6a" font-size="12">the harness is the easy part — the stack around it is the product</text>
+</svg>
