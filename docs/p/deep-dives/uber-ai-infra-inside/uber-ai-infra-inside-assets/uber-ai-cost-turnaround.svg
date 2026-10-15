@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 640" font-family="-apple-system, 'Segoe UI', Inter, Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bgc" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14161c"/><stop offset="1" stop-color="#1d212b"/>
+    </linearGradient>
+    <linearGradient id="barr" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff5d5d"/><stop offset="1" stop-color="#b23b3b"/>
+    </linearGradient>
+    <linearGradient id="barg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3ddc84"/><stop offset="1" stop-color="#1f9e58"/>
+    </linearGradient>
+    <linearGradient id="barb" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4da3ff"/><stop offset="1" stop-color="#2b6fd6"/>
+    </linearGradient>
+  </defs>
+  <rect width="1100" height="640" rx="18" fill="url(#bgc)"/>
+  <text x="550" y="52" text-anchor="middle" fill="#f2f4f8" font-size="30" font-weight="700">Uber's AI cost turnaround, 2026</text>
+  <text x="550" y="82" text-anchor="middle" fill="#9aa3b2" font-size="16">Annual AI budget burned in Q1 → per-request cost −34%, per-session cost −52%, total spend flat</text>
+
+  <g font-size="15" fill="#c9d1dc">
+    <text x="80" y="150">Cost per AI request</text>
+    <text x="80" y="170" fill="#8b93a3" font-size="12">−34% from April peak</text>
+    <rect x="80" y="185" width="700" height="34" rx="8" fill="#2a2f3a"/>
+    <rect x="80" y="185" width="700" height="34" rx="8" fill="url(#barr)" opacity="0.55"/>
+    <rect x="80" y="225" width="462" height="34" rx="8" fill="url(#barg)"/>
+    <text x="80" y="252" fill="#0d1117" font-size="13" font-weight="700" dx="12">now</text>
+
+    <text x="80" y="310">Cost per AI session</text>
+    <text x="80" y="330" fill="#8b93a3" font-size="12">−52% from June peak</text>
+    <rect x="80" y="345" width="700" height="34" rx="8" fill="#2a2f3a"/>
+    <rect x="80" y="345" width="700" height="34" rx="8" fill="url(#barr)" opacity="0.55"/>
+    <rect x="80" y="385" width="336" height="34" rx="8" fill="url(#barg)"/>
+    <text x="80" y="412" fill="#0d1117" font-size="13" font-weight="700" dx="12">now</text>
+
+    <text x="80" y="470">Total AI spend</text>
+    <text x="80" y="490" fill="#8b93a3" font-size="12">flat since March/April — while usage exploded</text>
+    <rect x="80" y="505" width="700" height="34" rx="8" fill="#2a2f3a"/>
+    <rect x="80" y="505" width="700" height="34" rx="8" fill="url(#barb)"/>
+    <text x="80" y="532" fill="#0d1117" font-size="13" font-weight="700" dx="12">flat</text>
+  </g>
+
+  <g font-size="15" fill="#c9d1dc">
+    <text x="840" y="150" font-weight="700" fill="#f2f4f8">Meanwhile…</text>
+    <text x="840" y="190">Weekly active users</text>
+    <text x="840" y="218" fill="#3ddc84" font-size="34" font-weight="800">7×</text>
+    <text x="840" y="270">Weekly agentic requests</text>
+    <text x="840" y="298" fill="#3ddc84" font-size="34" font-weight="800">9.4×</text>
+    <text x="840" y="330" fill="#8b93a3" font-size="12">(Feb–Aug 2026)</text>
+  </g>
+
+  <line x1="60" y1="580" x2="1040" y2="580" stroke="#2a2f3a"/>
+  <text x="60" y="606" fill="#8b93a3" font-size="12">The levers: open-weight models on own inference · weekly benchmark-driven model selection · cheaper subagent models · reasoning "Medium" default · auto-compaction above 400K tokens · prompt caching on Minion</text>
+  <text x="1040" y="606" text-anchor="end" fill="#5b6472" font-size="11">Source: U. Medisetty, Uber Eng, Aug 2026</text>
+</svg>

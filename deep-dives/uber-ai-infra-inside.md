@@ -52,6 +52,18 @@ Every system below predates the LLM era. Each one became a load-bearing wall for
 
 The through-line Uday keeps returning to: *"All the things that we built to make life easier for engineers — it makes it easier for our agents as well."*
 
+### DevPods, up close (the 2017 bet that powers 2026's agents)
+
+The episode spends real time here because DevPods are the clearest "decade-old investment paying off" story. The backstory: microservices meant micro-repos, each with its own build and test system — two or three of each — so central library upgrades were nearly impossible. Around 2017–18 Uber consolidated to **one monorepo per language** (Go, Java, iOS, Android…), but then the repos got so big that laptop builds and setup became the bottleneck. The answer: cloud developer boxes.
+
+How they work, from the episode:
+- **One DevPod per monorepo flavor.** A Java engineer spins up the Java flavor; it arrives with the build system cached and all tooling in place. The machines are beefier than laptops, so Uber can hold real **SLAs on build and test time** — and setup issues disappear as a category.
+- **Agents needed the same thing.** When the agentic era arrived, the team built a **mega DevPod with every repository checked out** — all the tools to work in any repo, full cross-repo context. That's what lets Minion open PRs spanning multiple repositories from one session.
+- **Standardization compounds.** Because builds and testing are standardized, Uber puts `AGENTS.md` / `CLAUDE.md` at the top folder once, and most teams get value immediately without per-module setup. All AI tools (Claude Code, Codex, OpenCode) are **pre-installed on every DevPod** — even non-engineers can create one and start experimenting with zero setup.
+- **Seconds to a working environment.** DevPods run on a Kubernetes cluster across multiple clouds; everything is warmed — pre-built images, build caches, repos pre-cloned — so creating one takes seconds. One command builds any module in any repo (`bazel` everywhere), and agents learn the exact same commands humans use.
+
+Gergely's summary line: Uber built cloud dev environments in 2017, "really early," and got to reuse almost all of that infrastructure for Minion.
+
 ## The AI-era stack
 
 ### 1. Model Gateway + AI Guard (2023)
@@ -68,13 +80,13 @@ Tokenomics read: this is the meter. One choke point means one place to enforce p
 
 ### 2. AIFX — the harness wrapper
 
-Models churn; harnesses churn faster. AIFX (AI Foundations) wraps Claude Code, Codex, and OpenCode so an engineer switching harnesses keeps their settings, skills, and plugins. It's preinstalled on DevPods (and installable locally), ships **personas** — bundles of default plugins and skills so a new engineer is productive immediately — and syncs settings centrally across all of a user's environments. A status line surfaces tips and live spend tracking across harnesses and within the session.
+Models churn; harnesses churn faster. AIFX (AI Foundations) wraps Claude Code, Codex, and OpenCode so an engineer switching harnesses keeps their settings, skills, and plugins. It's preinstalled on DevPods (and installable locally), ships **personas** — bundles of default plugins and skills so a new engineer is productive immediately — and syncs settings centrally across all of a user's environments: one managed set of settings propagates to everyone, while user-specific settings follow the user across machines and DevPods. A **status line** in the harness surfaces tips and live spend tracking — across harnesses and within the session — with zero engineer setup.
 
 The enterprise pattern: treat the harness as a replaceable shell and own the layer above it (settings, skills, spend, audit). When the next harness arrives, you port a wrapper, not a workflow.
 
 ### 3. MCP Gateway (April 2025)
 
-As Cursor and MCP took off in early 2025, Uber realized agents needed its *internal* tools — and that every service already had a Thrift or Protobuf IDL in a single registry. The same team that builds the API Edge Gateway built the MCP Gateway: it **auto-generates MCP specs from the IDL registry**, so every internal service API becomes an MCP tool with request/response packs and descriptions. Two refinements matter:
+As Cursor and MCP took off in early 2025, Uber realized agents needed its *internal* tools — and that every service already had a Thrift or Protobuf IDL in a single registry. The same team that builds the API Edge Gateway built the MCP Gateway (they're in the business of protocol transformation), so it came together fast: it **auto-generates MCP specs from the IDL registry**, so every internal service API becomes an MCP tool with request/response packs and descriptions. Once Google Workspace and Slack tools landed in the gateway too, it unlocked what Uday calls "amazing agency workflows" — automating across Slack, Google, Jira, Linear, and any internal service, all a CLI call away. Two refinements matter:
 - **LLM-optimized descriptions** — some generated tools ran 3,000–4,000 tokens of schema; the team generates condensed descriptions so tool definitions don't eat the context window.
 - **CLI projection** — every MCP is also exposed as a CLI. This turned out to be a major token win: with pure MCP, installing two skills could pin six always-on MCP servers into context; the CLI pattern loads nothing until invoked. A couple of engineers converted the whole skills repo to the CLI pattern and moved token efficiency materially.
 
@@ -84,7 +96,9 @@ Vendor tools (Google Workspace, Slack, Jira, Linear) are proxied through the sam
 
 ### 4. The Agent Skills repo
 
-Uber runs a **skills monorepo**: core skills built by platform teams plus team-specific skills, all portable across harnesses (one quality gate runs everywhere), installed via the same AIFX tooling — `plugin add` updates configs across all harnesses at once, even ones the engineer isn't currently using. The marketplace is auto-installed for everyone, which solves discoverability.
+Uber runs a **skills monorepo**: core skills built by platform teams plus team-specific skills, all portable across harnesses (one quality gate runs everywhere), installed via the same AIFX tooling — `plugin add` updates configs across all harnesses at once, even ones the engineer isn't currently using. The marketplace is auto-installed for everyone, which solves discoverability. Teams can still keep their own repos, but the majority of skills flow through the central one.
+
+Uday's framing of why this needs to be a platform: with current models, a V0 skill is trivial to generate — making it *great* across all use cases is the hard part, and that requires evals, iteration, and one place to update. The token-efficiency win came from an unexpected direction: once MCPs were projected as CLIs, **a couple of engineers using AI converted the entire skills repo to the CLI pattern** — because every skill declaring "I want MCP ABC, MCP DEF" was pinning half a dozen always-on MCP servers into context. Replacing those with CLI invocations cut context load across every skill at once.
 
 The part most teams skip: **skills are a lifecycle, not a folder.** Uber is building eval pipelines and discoverability tooling around the repo, plus a coaching tool that reviews a skill and suggests improvements. In flight: collecting harness traces to auto-generate improvement patches for skills — continuous skill evolution from production traces. Scale, per Uber's August 2026 engineering post: **3,600+ agent skills built by engineers, 30,000+ skill executions per day** — and a Warp roundtable with Uber's team describes governing the resulting sprawl with golden skills, quality scores, and self-improving skills.
 
@@ -96,21 +110,33 @@ Cortana now uses the graph as default grounding: a question first resolves to a 
 
 The technical-leader takeaway: retrieval quality is a data-modeling problem. Uber's graph team (which runs a production graph with billions of nodes for the business) built this one, and at internal scale it wasn't even a hard scaling problem.
 
+![The Uber Context Graph schema visualization, as shown in the episode](uber-ai-infra-inside-assets/shot-context-graph.jpg)
+*The context graph's schema visualization from the episode — 100+ node types, 130+ edge types, live. Every person, PR, asset, design doc, and incident is a node; agents navigate it the way they navigate a filesystem.*
+
 ### 6. PRD/ERD tooling — the spec layer
 
 Uber is pushing product and engineering design docs, launch reviews, experiment reviews, and production-readiness reviews into one system with owners, status, and Jira/Linear links — a source of truth for specs that both humans and agents can read. The traceability matters downstream: it's what makes end-to-end *feature* cycle time measurable (see the productivity section). Everything feeds the context graph, so the full history of a project's source-of-truth docs is queryable.
+
+Uday's larger point: agents can now "truly uplevel each lifecycle" of the SDLC — but only if the lifecycle is machine-readable first. The PRD/ERD system is the spec end of that contract; Slate/Capri are the verification end. (The episode's demo filters to his own old projects to show history depth — this system has years of institutional memory in it.)
 
 ### 7. Minion — the background coding agent
 
 Minion is Uber's background coding agent: hand it a spec or a Slack thread (`@minion`, follow this thread) and it works in plan mode or fire-and-forget, on a **mega DevPod** with all repos checked out, creating one or many PRs across repositories. It has self-validation skills (spin up web/mobile/backend and test). Currently ~**15% of all production PRs** go through Minion (a Background Agents summit talk put agent-opened PRs at 11%); it started on maintenance tasks and the task range keeps widening as validation tooling improves. Two design decisions worth noting: Minion **stops at a draft PR without pushing to CI** — autonomous coding is for toil reduction, but end-to-end features need validation before consuming CI resources — and prompt caching is part of its cost optimization. The support-channel loop is the killer demo: on-call pastes a bug report, Minion finds the root cause, fixes it, opens the PR — no backlog, no sprint planning.
 
+![Minion in Slack — steering a background agent from a thread](uber-ai-infra-inside-assets/shot-minion-slack.jpg)
+*Minion at work in Slack, as shown in the episode: the agent picks up a thread ("Minion Worker README Updated"), reports progress, and completes — steering happens in the thread, no web UI needed.*
+
+![Minion's web view](uber-ai-infra-inside-assets/shot-minion-web.jpg)
+*The Minion web view from the episode's demo — the same agent session, tracked outside Slack.*
+
 ### 8. The verification pipeline — CI, self-healing, and Code Inbox
 
-PR volume exploded, so Uber attacked every stage:
+Uday's framing: a developer's job was never really *writing* code — it's *verifying* the code works. AI makes generation cheap; the bottleneck is trust. Uber attacked every stage of PR volume:
+
 - **`afx validate`** — the inner loop, one command: linter, coverage rules, build rules, template rules. Simple CI jobs that used to run post-PR moved *before* PR creation, so agents self-check before opening.
 - **Visual/self validation** — agents spin up emulators, web, or staging environments, deploy the change, run APIs, and verify. A/B browser tests produce before/after reports attached to the PR.
 - **Self-healing CI** — when CI still fails post-PR, agents retry and fix; applicable per-PR or repo-wide.
-- **Code Inbox** — the review surface: every PR waiting on you in one place, with AI code review already run, screenshots/videos attached, **risk scores and blast radius** computed. The engineer's job shifts from "read everything" to "decide where attention goes."
+- **Code Inbox** — the review surface: every PR waiting on you in one place, with AI code review already run, screenshots/videos attached, **risk scores and blast radius** computed. The engineer's job shifts from "read everything" to "decide where attention goes." (The episode shows a mock version of the Inbox — the design target, not yet the production UI.)
 
 The load forced the issue: CI jobs **more than doubled year-over-year**, and Uber had to declare an internal "code red" on CI in early 2026 to keep build speeds up.
 
@@ -120,15 +146,21 @@ Slate gives every engineer personal staging environments: deploy your branch, th
 
 Gergely's point, worth repeating: this took *years* to retrofit across thousands of services. Without it, agents couldn't self-validate, and the whole automation story would stall at "trust me."
 
+![Slate — deploy a personal staging instance, replay a production session](uber-ai-infra-inside-assets/shot-slate-docs.jpg)
+*Slate's documentation page, shown in the episode: "Deploy a personal staging instance, replay a production session, see the before and after diff of your branch." Agents use the same page's CLI/MCP surface to do it autonomously.*
+
 ### 10. Capri — capture/replay + MatchGuard
 
 Uber's rider app has hundreds of screens × product lines × cities × configurations — combinatorial explosion no test suite can cover. **Capri** captures real production traffic through a middleware hook (standardized language frameworks make this a one-line integration): full inbound request/response *plus* all downstream API calls. Captured sessions get tagged with dimensions (marketplace type, line of business, terminal state…), and the system derives the full set of live dimension combinations — **MatchGuard** — which runs pre-deploy in CI/CD against every PR in the deploy, showing before/after deltas. The canonical example: catching a regression that only breaks *cash trips in Brazil*.
 
 For debugging, Capri composes with Slate beautifully: take a failing production request, replay it against your Slate environment, and iterate the fix in a loop — agents do this autonomously now. (Predecessors: Deputy and Cerberus, which could route production traffic to test instances but were hard to use; Slate made them unnecessary.)
 
+![Capri — capture production traffic, replay against any build](uber-ai-infra-inside-assets/shot-capri-ui.jpg)
+*The Capri UI from the episode: "Capture production traffic. Replay against any build. Ship with confidence." — with Capture, Replay, MatchGuard, and Analytics as the four surfaces. The tab structure is the product: capture is only half the system.*
+
 ### 11. Edge Gateway
 
-The renamed, Go-based RT API: every client API — REST, gRPC, webhooks, GraphQL — enters through one gateway with monitoring, alerting, and reliability features built around it. It has its own capture/replay (Capri under the hood) and rich dependency metadata (required vs. optional per service), which feeds both human debugging and agent-driven incident response.
+The renamed, Go-based RT API: every client API — REST, gRPC, webhooks, GraphQL — enters through one gateway with monitoring, alerting, and reliability features built around it. The episode shows its endpoint-type taxonomy (the API surface organized by kind), its own capture/replay (Capri under the hood — capture a production request, replay it against any build), and rich dependency metadata: for every service, which dependencies are required vs. optional. Uday's point for the AI era: with capture/replay and dependency metadata in place, *no agent needs help figuring out how to use an endpoint* — the gateway is machine-readable infrastructure, which feeds both human debugging and agent-driven incident response.
 
 ### 12. Shepherd + Fox — migrations and self-improving codebases
 
@@ -136,11 +168,17 @@ Moving to monorepos solved the "upgrade libraries everywhere" problem in theory;
 
 **Fox** is the continuous version: services enroll in skills (dead-code cleanup, performance analysis, noisy-log fixes), and every Sunday — when CI load is low — Fox opens improvement PRs. Still opt-in while skills mature; the plan is opt-out. The operating principle: continuously convert maintenance-PR categories into automated loops, freeing engineers for feature work.
 
+![Fawkes — Uber Shepherd's self-improving-codebase enrollment UI](uber-ai-infra-inside-assets/shot-fawkes-ui.jpg)
+*The Fox enrollment UI, shown in the episode under the "Uber Shepherd" header as "Fawkes" — "Create self-improving codebases… powered by Shepherd & AI." Teams enroll a codebase by type, service, and repository; the counters show enrollments climbing. This is what "continuous" looks like as a product surface, not a cron job someone set up once.*
+
 ### 13. Wisdom + DebugAssist — dogfood bugs to RCA to PR
 
 Every Uber employee dogfoods the rider/earner apps. **Wisdom** lets them report a bug from the app; it auto-routes to the owning team and captures the full telemetry bundle (logs, analytics, network requests, feature flags, screen journey) plus location mocking for country-specific features. Reproduction — historically the hardest part — becomes "replay the employee's session." **DebugAssist**, a managed agent, then produces root-cause analysis with impact and an evidence timeline; a human confirms, and it hands off to Minion, which opens the PR *with the RCA attached to the Jira task*. The loop is instrumented: bad RCAs and bad PRs feed back into improving both agents.
 
 The Wisdom UI (visible in the episode's infographic): issue view with tabs for Summary, Reproduce the Issue, Root Cause Analysis, Fix with an Agent, and Log Explorer — expected vs. observed behavior compared side by side.
+
+![Wisdom — a dogfooded bug with generated repro steps](uber-ai-infra-inside-assets/shot-wisdom-ui.jpg)
+*The Wisdom issue view from the episode: "Cannot mock location on my device anymore" with generated reproduction steps ("Open the Uber Driver app", "Observe the home dashboard loads with the map, feed cards, and the 'Go Online' button") — the telemetry bundle that used to take engineers hours to assemble, now attached to the report automatically.*
 
 ![DevPods, Code Inbox, Slate, and Wisdom — internal screenshots](uber-ai-infra-inside-assets/uber-ai-tools-map.png)
 *Four of Uber's 20+ internal tools, as shown in the episode: DevPods (remote dev environments for devs + agents), Code Inbox (every code change after AI review), Slate (replay production sessions in personal staging), Wisdom (aggregated logs → repro steps → root cause analysis). Via The Pragmatic Engineer.*
@@ -157,6 +195,9 @@ This is the section most directly relevant to anyone running token budgets — a
 - **CostCheck plugin + anti-pattern dashboards.** CostCheck coaches cost hygiene across sessions in real time; behind it sits a session-analysis dashboard flagging **16 wasted-spend anti-patterns** (suboptimal model routing, MCP context bloat, and friends).
 - **The meter is the Model Gateway.** Per-user/per-caller attribution plus audit logs means spend is observable by construction, not by after-the-fact log scraping.
 - **Token efficiency as architecture:** the MCP→CLI projection (avoiding always-on MCP servers in context), LLM-optimized tool descriptions (3–4k tokens → condensed), and the context graph (fewer grounding turns) are all cost controls disguised as architecture choices.
+
+![Uber's AI cost turnaround, 2026](uber-ai-infra-inside-assets/uber-ai-cost-turnaround.svg)
+*The turnaround in one chart: per-request and per-session costs fell by a third and a half while usage multiplied — total spend flat. Source: Uday Medisetty, Uber Engineering, Aug 2026.*
 
 ## Code review: where it's headed
 
