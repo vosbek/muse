@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>7 LLM Optimization Techniques Every AI Engineer Should Know · AI Skills Playbook</title>
+<meta name="description" content="7 LLM Optimization Techniques Every AI Engineer Should Know Source: Instagram carousel by @ai.with.harika (Harika Satti | Gen AI, ML, Tech &amp;amp; Careers,…">
+<meta property="og:title" content="7 LLM Optimization Techniques Every AI Engineer Should Know · AI Skills Playbook">
+<meta property="og:description" content="7 LLM Optimization Techniques Every AI Engineer Should Know Source: Instagram carousel by @ai.with.harika (Harika Satti | Gen AI, ML, Tech &amp;amp; Careers,…">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a><a href="../../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><div class="hero-visual"><p><img loading="lazy" alt="The 7 techniques at a glance — original diagram" src="llm-optimization-techniques-assets/llm-optimization-7-techniques.svg" /></p></div><h1 id="7-llm-optimization-techniques-every-ai-engineer-should-know">7 LLM Optimization Techniques Every AI Engineer Should Know</h1>
+<p><strong>Source:</strong> Instagram carousel by <a href="https://www.instagram.com/ai.with.harika/">@ai.with.harika</a> (Harika Satti | Gen AI, ML, Tech &amp; Careers, ~28k followers) — <a href="https://www.instagram.com/p/DemU7U7meZc/">the post</a> (published Oct 17, 2026, 9 slides: cover, one per technique, and a "comment LLM" CTA card).
+<strong>The "helping out" part:</strong> each slide ends with a "learn more" resource box, but the actual links are gated behind commenting "LLM" for a DM. Every one of the 7 was tracked down independently and verified against its official page — the full list is below, no comment required.</p>
+
+<blockquote>
+<p>Note on method: Instagram's CDN blocked retrieval of the carousel's original images, so the infographic above is an original diagram, not the creator's slides. This is a deep-dive <em>distillation</em> — the techniques explained in original prose, the resource links verified, the composition logic added. Short paraphrases only; nothing copied.</p>
+</blockquote>
+<details class="sec"><summary>TL;DR for technical leaders</summary><div class="sec-body">
+<ol>
+<li><strong>Seven techniques, three jobs.</strong> Quantization and distillation shrink the model (training-time levers). KV caching, continuous batching, and speculative decoding make serving faster and cheaper (serving-time levers). Tensor and pipeline parallelism let a model too big for one GPU run at all (scale-out levers).</li>
+<li><strong>They compose into a stack, not a menu.</strong> The real-world order: distill the teacher into a student, quantize the student, shard it across GPUs with tensor/pipeline parallel, serve it with continuous batching over a PagedAttention KV cache, and accelerate decode with speculative drafting. Each layer attacks a different cost: size, memory, throughput, latency.</li>
+<li><strong>These are the provider-side levers behind your token bill.</strong> When a vendor's price per million tokens drops, it's usually one of these seven doing the work. Understanding them is how you read a price cut — and how you reproduce it on your own infrastructure.</li>
+<li><strong>The carousel is a map, not a manual.</strong> One line per technique, no numbers, no trade-offs. The value here is the verified resource list: the official guides behind each "learn more" box, checked link by link.</li>
+</ol>
+</div></details><details class="sec"><summary>The seven, with their real resources</summary><div class="sec-body">
+<h3 id="1-quantization-fewer-bits-per-weight">1. Quantization — fewer bits per weight</h3>
+<p>Represent weights in INT8 or INT4 instead of FP32/FP16. The model gets several times smaller, needs less VRAM, and runs cheaper — with a small, measurable quality trade-off you evaluate per use case. This is the single most common reason a model that "needed an A100" suddenly runs on a cheaper card.
+<strong>Resource:</strong> <a href="https://huggingface.co/docs/transformers/quantization/overview">Hugging Face Quantization Guide</a> — the official Transformers hub: what quantization is, a compatibility table across ~24 methods (bitsandbytes, AWQ, GPTQ, GGUF, torchao…), and a picker for model + hardware.</p>
+<h3 id="2-knowledge-distillation-the-student-learns-from-the-teacher">2. Knowledge Distillation — the student learns from the teacher</h3>
+<p>Train a small model to mimic a large model's outputs (or its full next-token distribution). You keep most of the capability at a fraction of the serving cost. The modern LLM flavor is on-policy distillation: the student learns from the teacher's judgments on the student's <em>own</em> generations.
+<strong>Resource:</strong> <a href="https://huggingface.co/docs/trl/main/en/distillation_trainer">Hugging Face TRL DistillationTrainer</a> — the LLM-focused distillation guide (GKD), with a worked Qwen2.5-1.5B → 0.5B example, vLLM-accelerated generation, and LoRA support.</p>
+<h3 id="3-kv-caching-never-recompute-the-past">3. KV Caching — never recompute the past</h3>
+<p>During generation, each new token attends to all previous ones. The key/value projections of past tokens don't change, so you cache them instead of recomputing them every step. Naive caching wastes memory on fragmentation; PagedAttention (vLLM's innovation) manages the cache in fixed-size blocks like OS virtual memory, nearly eliminating the waste.
+<strong>Resource:</strong> <a href="https://docs.vllm.ai/en/stable/design/paged_attention/">vLLM PagedAttention design doc</a> — the official step-by-step walkthrough of blocks, block tables, and the Q/K/V memory layout. (Flagged on the page itself as historical — it follows the original paper, not current code.)</p>
+<h3 id="4-continuous-batching-the-gpu-never-idles">4. Continuous Batching — the GPU never idles</h3>
+<p>Classic batching waits for the slowest request in the batch to finish before starting the next batch. Continuous (iteration-level) batching slots finished requests out and pulls new ones in after <em>every</em> generation step, keeping the GPU saturated. This is the throughput lever behind most modern serving stacks.
+<strong>Resource:</strong> <a href="https://arxiv.org/abs/2309.06180">the vLLM paper</a> — "Efficient Memory Management for Large Language Model Serving with PagedAttention," the canonical vLLM-team explanation of the iteration-level scheduler together with PagedAttention. (docs.vllm.ai has no standalone continuous-batching page; the paper is the closest official resource.)</p>
+<h3 id="5-speculative-decoding-guess-then-verify">5. Speculative Decoding — guess, then verify</h3>
+<p>A small, fast draft model proposes several tokens; the large model checks them all in a single forward pass, accepting the ones it agrees with. Output is identical to the large model alone (the verification is exact), but you skip most of the slow sequential steps. vLLM supports multiple drafting strategies: purpose-built draft models, EAGLE-style heads, even n-gram matching.
+<strong>Resource:</strong> <a href="https://docs.vllm.ai/en/stable/features/speculative_decoding/">vLLM Speculative Decoding guide</a> — all speculation methods, the method-selection table, <code>--speculative-config</code> schema with examples, and the lossless-guarantee notes.</p>
+<h3 id="6-tensor-parallelism-split-layers-across-gpus">6. Tensor Parallelism — split layers across GPUs</h3>
+<p>When a model doesn't fit on one GPU, Megatron-style tensor parallelism splits <em>individual layers</em> — each GPU holds a slice of the weight matrices and they synchronize at layer boundaries. The standard answer for "one giant model, several GPUs, minimum latency."
+<strong>Resource:</strong> <a href="https://docs.pytorch.org/tutorials/intermediate/TP_tutorial.html">PyTorch Tensor Parallel tutorial</a> — how TP works, when to combine it with FSDP, and a worked Llama 2 example with <code>parallelize_module</code> (Colwise/Rowwise/Sequence parallel styles).</p>
+<h3 id="7-pipeline-parallelism-split-stages-across-gpus">7. Pipeline Parallelism — split stages across GPUs</h3>
+<p>Instead of slicing layers, carve the model into sequential stages with one stage per GPU, and keep every stage busy by streaming micro-batches through (GPipe and 1F1B schedules). Less communication per step than tensor parallel, at the cost of pipeline "bubbles" you schedule around.
+<strong>Resource:</strong> <a href="https://docs.pytorch.org/tutorials/intermediate/pipelining_tutorial.html">PyTorch Pipeline Parallel tutorial</a> — partitioning a GPT-style transformer with <code>torch.distributed.pipelining</code>, microbatch schedules, and launching with <code>torchrun</code>.</p>
+</div></details><details class="sec"><summary>How they compose</summary><div class="sec-body">
+<p>The carousel presents seven items; a production system layers them:</p>
+<ol>
+<li><strong>Training time:</strong> distill the frontier teacher into a small student, then quantize the student. (This is also the recipe behind most cheap open-weight releases.)</li>
+<li><strong>Scale-out:</strong> shard the result with tensor parallelism (within a node, latency-sensitive) and pipeline parallelism (across nodes/stages) so it fits the hardware you have.</li>
+<li><strong>Serving:</strong> run continuous batching over a PagedAttention-managed KV cache for throughput and memory efficiency.</li>
+<li><strong>Decode acceleration:</strong> add speculative drafting on top to cut per-token latency without changing outputs.</li>
+</ol>
+<p>Each layer attacks a different line on the bill: model size, memory footprint, GPU utilization, time-to-first-token and per-token latency.</p>
+</div></details><details class="sec"><summary>The tokenomics read</summary><div class="sec-body">
+<p>These seven are the <em>provider-side</em> companion to the playbook's demand-side levers. The tokenomics playbook (and the <a href="../inference-engineering-concepts">inference engineering concepts deep dive</a>, which covers quantization, KV cache, and speculative decoding in more depth) frames cost as tokens × price. These techniques are how the price side moves: every "we cut inference costs 40%" announcement from a lab or provider decomposes into one or more of these seven.</p>
+<p>Two things worth carrying into vendor conversations: first, quantization and distillation are the levers that turn a frontier model into a cheap one — when you see a "mini" or "flash" tier, ask which of the two it is. Second, continuous batching + PagedAttention is why API throughput pricing exists at all — a provider serving you at high QPS is amortizing the same GPU across many of your requests, and the margin between their cost and your price is this scheduler.</p>
+</div></details><details class="sec"><summary>Honest scoring</summary><div class="sec-body">
+<ul>
+<li><strong>A beginner's map, honestly labeled.</strong> One line per technique is the right depth for "every AI engineer should know," and the carousel doesn't pretend otherwise. Nobody learns tensor parallelism from a slide.</li>
+<li><strong>No numbers, no trade-offs.</strong> There's no quality-vs-cost curve for quantization, no latency figure for speculative decoding, no memory math for the KV cache. The linked resources carry the real content — which is why verifying them was the actual work here.</li>
+<li><strong>One resource is a paper, not a guide.</strong> The carousel's "learn more with the vLLM documentation" for continuous batching has no matching docs page; the closest official vLLM-team resource is the research paper. Flagged, not fudged.</li>
+<li><strong>The gate is the business model.</strong> "Comment LLM for the resources" is lead generation, and the resources themselves are all public official docs. Now they're in the playbook instead.</li>
+</ul>
+</div></details><details class="sec"><summary>See also</summary><div class="sec-body">
+<ul>
+<li><a href="../inference-engineering-concepts">Inference engineering concepts</a> — the 20-concept companion: prefill/decode, TTFT/TPOT, FlashAttention, MoE expert parallelism, KV-aware routing, and DeepSeek's $0.30/M cost math, from @jam.with.ai's carousel (Oct 13, 2026).</li>
+</ul></div></details></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

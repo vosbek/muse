@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 860" font-family="system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <style>
+      .card { fill: #ffffff; stroke: #d9d9e3; stroke-width: 1.5; rx: 12; }
+      .num { font-size: 15px; font-weight: 800; fill: #6c5ce7; }
+      .title { font-size: 21px; font-weight: 800; fill: #1a1a2e; }
+      .desc { font-size: 15.5px; fill: #44445c; }
+      .tag { font-size: 12.5px; font-weight: 700; fill: #ffffff; }
+      .layer-label { font-size: 14px; font-weight: 800; fill: #6c5ce7; letter-spacing: 2px; }
+    </style>
+  </defs>
+  <rect width="1200" height="860" fill="#f7f7fc"/>
+  <text x="600" y="48" text-anchor="middle" font-size="32" font-weight="800" fill="#1a1a2e">7 LLM Optimization Techniques</text>
+  <text x="600" y="76" text-anchor="middle" font-size="16" fill="#77778f">Every AI engineer should know - distilled from @ai.with.harika · resources verified Oct 2026</text>
+
+  <!-- Row 1 -->
+  <g>
+    <rect class="card" x="30" y="110" width="360" height="200"/>
+    <rect x="30" y="110" width="64" height="30" fill="#6c5ce7" rx="8"/>
+    <text class="tag" x="46" y="131">TRAIN</text>
+    <text class="num" x="50" y="165">1</text>
+    <text class="title" x="50" y="192">Quantization</text>
+    <text class="desc" x="50" y="220">Fewer bits per weight</text>
+    <text class="desc" x="50" y="242">(FP32 -> INT8/INT4): smaller</text>
+    <text class="desc" x="50" y="264">model, cheaper inference,</text>
+    <text class="desc" x="50" y="286">fits on less VRAM.</text>
+  </g>
+  <g>
+    <rect class="card" x="420" y="110" width="360" height="200"/>
+    <rect x="420" y="110" width="64" height="30" fill="#6c5ce7" rx="8"/>
+    <text class="tag" x="436" y="131">TRAIN</text>
+    <text class="num" x="440" y="165">2</text>
+    <text class="title" x="440" y="192">Knowledge Distillation</text>
+    <text class="desc" x="440" y="220">A small student model learns</text>
+    <text class="desc" x="440" y="242">to mimic a large teacher's</text>
+    <text class="desc" x="440" y="264">outputs - most of the quality,</text>
+    <text class="desc" x="440" y="286">a fraction of the cost.</text>
+  </g>
+  <g>
+    <rect class="card" x="810" y="110" width="360" height="200"/>
+    <rect x="810" y="110" width="64" height="30" fill="#00b894" rx="8"/>
+    <text class="tag" x="826" y="131">SERVE</text>
+    <text class="num" x="830" y="165">3</text>
+    <text class="title" x="830" y="192">KV Caching</text>
+    <text class="desc" x="830" y="220">Save attention keys/values</text>
+    <text class="desc" x="830" y="242">from earlier tokens instead of</text>
+    <text class="desc" x="830" y="264">recomputing them every step.</text>
+    <text class="desc" x="830" y="286">PagedAttention kills the waste.</text>
+  </g>
+
+  <!-- Row 2 -->
+  <g>
+    <rect class="card" x="30" y="340" width="360" height="200"/>
+    <rect x="30" y="340" width="64" height="30" fill="#00b894" rx="8"/>
+    <text class="tag" x="46" y="361">SERVE</text>
+    <text class="num" x="50" y="395">4</text>
+    <text class="title" x="50" y="422">Continuous Batching</text>
+    <text class="desc" x="50" y="450">Slot finished requests out and</text>
+    <text class="desc" x="50" y="472">new ones in mid-batch - the GPU</text>
+    <text class="desc" x="50" y="494">never idles waiting for the</text>
+    <text class="desc" x="50" y="516">slowest request to finish.</text>
+  </g>
+  <g>
+    <rect class="card" x="420" y="340" width="360" height="200"/>
+    <rect x="420" y="340" width="64" height="30" fill="#00b894" rx="8"/>
+    <text class="tag" x="436" y="361">SERVE</text>
+    <text class="num" x="440" y="395">5</text>
+    <text class="title" x="440" y="422">Speculative Decoding</text>
+    <text class="desc" x="440" y="450">A small draft model guesses</text>
+    <text class="desc" x="440" y="472">several tokens; the big model</text>
+    <text class="desc" x="440" y="494">verifies them in one pass.</text>
+    <text class="desc" x="440" y="516">Same output, fewer slow steps.</text>
+  </g>
+  <g>
+    <rect class="card" x="810" y="340" width="360" height="200"/>
+    <rect x="810" y="340" width="64" height="30" fill="#e17055" rx="8"/>
+    <text class="tag" x="826" y="361">SCALE</text>
+    <text class="num" x="830" y="395">6</text>
+    <text class="title" x="830" y="422">Tensor Parallelism</text>
+    <text class="desc" x="830" y="450">Split individual layers across</text>
+    <text class="desc" x="830" y="472">GPUs (Megatron-style) so one</text>
+    <text class="desc" x="830" y="494">giant model fits and runs</text>
+    <text class="desc" x="830" y="516">in parallel.</text>
+  </g>
+
+  <!-- Row 3 -->
+  <g>
+    <rect class="card" x="30" y="570" width="360" height="200"/>
+    <rect x="30" y="570" width="64" height="30" fill="#e17055" rx="8"/>
+    <text class="tag" x="46" y="591">SCALE</text>
+    <text class="num" x="50" y="625">7</text>
+    <text class="title" x="50" y="652">Pipeline Parallelism</text>
+    <text class="desc" x="50" y="680">Split the model into stages,</text>
+    <text class="desc" x="50" y="702">one stage per GPU, with</text>
+    <text class="desc" x="50" y="724">micro-batches flowing through</text>
+    <text class="desc" x="50" y="746">(GPipe / 1F1B schedules).</text>
+  </g>
+  <g>
+    <rect x="420" y="570" width="750" height="200" fill="#1a1a2e" rx="12"/>
+    <text x="450" y="610" font-size="20" font-weight="800" fill="#ffffff">How they stack in a real serving system</text>
+    <text x="450" y="645" font-size="15.5" fill="#c9c9e0">Training time: distill the teacher -> quantize the student.</text>
+    <text x="450" y="672" font-size="15.5" fill="#c9c9e0">Serving time: shard it (tensor / pipeline parallel) -> serve it</text>
+    <text x="450" y="699" font-size="15.5" fill="#c9c9e0">with continuous batching + PagedAttention KV cache -></text>
+    <text x="450" y="726" font-size="15.5" fill="#c9c9e0">accelerate decode with speculative drafting.</text>
+    <text x="450" y="753" font-size="13.5" fill="#8f8fb0">Each layer attacks a different cost: size, memory, throughput, latency.</text>
+  </g>
+
+  <text x="600" y="830" text-anchor="middle" font-size="13" fill="#9999b0">Original diagram · distilled from @ai.with.harika's carousel (Oct 17, 2026) · see the deep-dive page for verified resource links</text>
+</svg>
