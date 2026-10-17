@@ -42,11 +42,12 @@ The collection compounds. That's the whole point.
 
 ## Deep dives
 
-Ten deep-dive dossiers that go beyond the distilled summaries, built from the actual source material (repo READMEs, vendor engineering blogs, official docs):
+Twelve deep-dive dossiers that go beyond the distilled summaries, built from the actual source material (repo READMEs, vendor engineering blogs, official docs):
 
 | Dossier | Source |
 |---|---|
 | [jevgrep](deep-dives/jevgrep.md) — Jev-powered code research CLI, 28.6% measured cost cut | https://github.com/dzhng/jevgrep |
+| [hybrid-search-retrieval](deep-dives/hybrid-search-retrieval.md) — BM25 + vectors + RRF + reranker, scored 12→16/20 on a 20-question scoreboard | https://www.instagram.com/p/DelHm3LmCZT/ |
 | [unreal-agent](deep-dives/unreal-agent.md) — async-first harness, durable operations | https://github.com/unreallabsai/unreal-agent |
 | [jev-thesis](deep-dives/jev-thesis.md) — TypeSafe's System One Models launch post (RLCD, $0.042/MTok) | https://typesafe.ai/blog/introducing-system-one-models-and-jev |
 | [uber-software-factory](deep-dives/uber-software-factory.md) — Uber's cost equation, 34%/52% unit-cost cuts | https://www.uber.com/us/en/blog/efficient-software-factory/ |
