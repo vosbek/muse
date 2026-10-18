@@ -24,6 +24,8 @@ This repo implements the 3-step system from [@stilesai's reel](https://www.insta
 
 Start with [COMBINED.md](COMBINED.md) — the cross-cutting patterns across all 131 items (39 reels + 92 X posts), plus what's highest-leverage for a tokenomics + context-management remit.
 
+Or start with the [90 Gen AI Concepts map](gen-ai-concepts-map.md) — the interview-ordered curriculum (LLM fundamentals → context/RAG → agents/MCP/judges → evals/security/fine-tuning → inference/serving) with playbook articles filed under each section; new pieces land under their section as they come.
+
 ## How to use it
 
 **Adding a skill (Step 1):** copy `templates/skill-card.md`, fill it in, file it under the right topic. One skill per file, always with a source link back to the reel.

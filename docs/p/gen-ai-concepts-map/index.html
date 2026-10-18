@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>90 Gen AI Concepts — the Playbook's Living Index · AI Skills Playbook</title>
+<meta name="description" content="90 Gen AI Concepts — the Playbook&#x27;s Living Index Source: @datasciencebrain (Deepak Jose, ~485K followers), Oct 18, 2026 — a carousel of &quot;90 Concepts Asked…">
+<meta property="og:title" content="90 Gen AI Concepts — the Playbook's Living Index · AI Skills Playbook">
+<meta property="og:description" content="90 Gen AI Concepts — the Playbook&#x27;s Living Index Source: @datasciencebrain (Deepak Jose, ~485K followers), Oct 18, 2026 — a carousel of &quot;90 Concepts Asked…">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../#start">Start here</a><a href="../../#talks">AI Engineer talks</a><a href="../../#deep-dives">Deep dives</a><a href="../../#maps">Storage & memory maps</a><a href="../../#categories">Categories</a><a href="../../#resources">Resources</a><a href="../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../'>Home</a> · <a href='../../#categories'>Categories</a></div><article class='doc'><div class='badge'>Categories</div><div class="hero-visual"><p><img loading="lazy" alt="90 Concepts Asked In 99% of GenAI Interviews — cover" src="gen-ai-concepts-map-assets/slide-01.jpg" /></p></div><h1 id="90-gen-ai-concepts-the-playbooks-living-index">90 Gen AI Concepts — the Playbook's Living Index</h1>
+<p><strong>Source:</strong> <a href="https://www.instagram.com/datasciencebrain/">@datasciencebrain</a> (Deepak Jose, ~485K followers), Oct 18, 2026 — a carousel of "90 Concepts Asked In 99% of GenAI Interviews," arranged in the order interviews tend to go. This page turns his five bands into five permanent sections: each section holds the concepts, the original slide infographics, and the playbook articles that cover them. New pieces get filed under their section as they arrive.</p>
+<p><em>He gates the in-depth book ("Gen AI: Zero to Hero," ₹199) behind a "comment HERO" DM — what's below is the map itself, rebuilt from the public carousel.</em></p>
+
+<details class="sec"><summary>1 · LLM fundamentals &amp; working with models (1–20)</summary><div class="sec-body">
+<p><img loading="lazy" alt="LLM Fundamentals — concepts 1–10" src="gen-ai-concepts-map-assets/slide-02.jpg" /></p>
+<ol>
+<li><strong>Tokenization</strong> — text split into tokens; the unit of cost, speed, and context limits.</li>
+<li><strong>Embeddings</strong> — text as vectors; similar meanings sit close together.</li>
+<li><strong>Attention &amp; Transformers</strong> — every token weighs every other token to decide what matters.</li>
+<li><strong>Context Window</strong> — everything sent in one call. Not memory.</li>
+<li><strong>KV Cache</strong> — cached attention states during generation; caps how many users one GPU serves.</li>
+<li><strong>Temperature &amp; Top-p</strong> — sampling controls for how random the next token is.</li>
+<li><strong>Hallucination</strong> — fluent output with nothing behind it; no internal truth check.</li>
+<li><strong>Reasoning Models</strong> — models that spend extra "thinking" tokens first; better on hard tasks, slower and pricier.</li>
+<li><strong>Mixture of Experts</strong> — each token routes to a few expert sub-networks; huge but cheap to run.</li>
+<li><strong>TTFT</strong> — time to first token; what makes an app feel fast.</li>
+</ol>
+<p><img loading="lazy" alt="Working with Models — concepts 11–20" src="gen-ai-concepts-map-assets/slide-03.jpg" /></p>
+<ol>
+<li><strong>Structured Output</strong> — constrain answers to a schema, then validate.</li>
+<li><strong>Tool Calling</strong> — the model requests a tool, your code runs it, the result goes back in.</li>
+<li><strong>Parallel Tool Calls</strong> — multiple tool calls in one turn, matched by call ID.</li>
+<li><strong>Prompt Caching</strong> — reuse the static prompt prefix at a discount.</li>
+<li><strong>Model Routing</strong> — cheap model for easy requests, strong model for hard ones.</li>
+<li><strong>Batch API</strong> — deferred requests processed later, cheaper.</li>
+<li><strong>Local Models</strong> — open weights running on your own hardware.</li>
+<li><strong>Prompt vs Context Engineering</strong> — how you ask vs. what the model gets to see.</li>
+<li><strong>Few-Shot Prompting</strong> — examples in the prompt to set format and tone.</li>
+<li><strong>Token Budgets</strong> — hard per-section token caps, enforced in code.</li>
+</ol>
+<h3 id="articles-in-the-playbook">Articles in the playbook</h3>
+<ul>
+<li><a href="../deep-dives/jev-myth-vs-reality">Jev: myth vs reality</a> — what a decision model actually is vs an LLM (concepts 1–9), with verified numbers.</li>
+<li><a href="../deep-dives/prompt-caching">Prompt caching</a> — the four cache types, hit/miss mechanics, and a production checklist (#14).</li>
+<li><a href="../02-jev-context-economics">SLM Gauntlet &amp; semantic cache</a> — local models benched for subagent work (#17) and the 53% bill-cutting cache (#14).</li>
+<li><a href="../01-claude-code-agents">Five layers of engineering</a> — prompt vs context vs harness vs loop vs graph (#18).</li>
+</ul>
+</div></details><details class="sec"><summary>2 · Context, backend &amp; RAG (21–40)</summary><div class="sec-body">
+<p><img loading="lazy" alt="Context &amp; Backend — concepts 21–30" src="gen-ai-concepts-map-assets/slide-04.jpg" /></p>
+<ol>
+<li><strong>Lost in the Middle</strong> — models favor the start and end; put key facts at an edge.</li>
+<li><strong>Conversation Compression</strong> — summarize old turns, keep recent ones verbatim.</li>
+<li><strong>Memory Types</strong> — episodic (events), semantic (facts), procedural (how-to).</li>
+<li><strong>Context Rot</strong> — stale context piling up makes answers generic.</li>
+<li><strong>Context Poisoning</strong> — one wrong fact in context, reused forever.</li>
+<li><strong>Multi-Tenancy</strong> — many customers, strict data isolation between them.</li>
+<li><strong>Graceful Degradation</strong> — fall back step by step on provider failure; never invent.</li>
+<li><strong>Idempotency Keys</strong> — retry-safe IDs so repeats don't double-apply.</li>
+<li><strong>Circuit Breakers</strong> — stop calling a service that's repeatedly failing.</li>
+<li><strong>Canary Deploys</strong> — roll out to a slice first, then widen.</li>
+</ol>
+<p><img loading="lazy" alt="RAG Essentials — concepts 31–40" src="gen-ai-concepts-map-assets/slide-05.jpg" /></p>
+<ol>
+<li><strong>Chunking</strong> — split docs into retrievable pieces sized to the questions.</li>
+<li><strong>Vector Databases &amp; HNSW</strong> — fast approximate similarity search.</li>
+<li><strong>Dense vs Sparse Retrieval</strong> — meaning search vs keyword (BM25) search.</li>
+<li><strong>Hybrid Search &amp; RRF</strong> — fuse both rankings by reciprocal rank.</li>
+<li><strong>Reranking</strong> — a slower, sharper model reorders the shortlist.</li>
+<li><strong>Query Rewriting &amp; HyDE</strong> — fix vague queries; search with a hypothetical answer.</li>
+<li><strong>Grounding &amp; Citations</strong> — every claim tied to a retrieved source.</li>
+<li><strong>Refusal Thresholds</strong> — below a relevance floor, answer "I don't know."</li>
+<li><strong>Contextual Retrieval</strong> — embed chunks with their document/section context attached.</li>
+<li><strong>Matryoshka Embeddings</strong> — embeddings that stay useful when truncated.</li>
+</ol>
+<h3 id="articles-in-the-playbook_1">Articles in the playbook</h3>
+<ul>
+<li><a href="../deep-dives/hybrid-search-retrieval">Hybrid search that actually beats vector search</a> — BM25 + MiniLM → RRF → bge-reranker-base, scored on a 20-question board (#33, #34, #35). All 19 original slides saved.</li>
+<li><a href="../deep-dives/openai-data-agent">OpenAI's in-house data agent</a> — six context layers, daily pre-compute, golden-SQL evals (#23, #31, #37).</li>
+<li><a href="../ai-engineer-talks/relational-context-engine-werry">Beyond RAG: a relational context engine</a> — Unblocked's deterministic pipeline cut token burn 33% (#21, #23, #31).</li>
+<li><a href="../02-jev-context-economics">Context engineering infographic</a> — retrieve → select → filter/compress → build within token limits (#21–#25).</li>
+</ul>
+</div></details><details class="sec"><summary>3 · Advanced RAG, agents, MCP &amp; judges (41–60)</summary><div class="sec-body">
+<p><img loading="lazy" alt="Advanced RAG &amp; Agent Basics — concepts 41–50" src="gen-ai-concepts-map-assets/slide-06.jpg" /></p>
+<ol>
+<li><strong>Recall@k &amp; MRR</strong> — did the right chunk make the top k, and how high?</li>
+<li><strong>Golden Sets</strong> — hand-labeled Q&amp;A with known-correct sources.</li>
+<li><strong>Multi-Hop Retrieval</strong> — search again using what the first search found.</li>
+<li><strong>GraphRAG</strong> — retrieval over entity/relationship graphs; usually premature.</li>
+<li><strong>Agentic RAG</strong> — the model drives retrieval: fetch, check, fetch again.</li>
+<li><strong>Multimodal RAG</strong> — retrieve over images and tables, not just text.</li>
+<li><strong>RAG vs Fine-tuning vs Long Context</strong> — changing facts → RAG; behavior → fine-tune; one-off docs → long context.</li>
+<li><strong>Workflow vs Agent</strong> — fixed steps in code vs the model choosing the next step.</li>
+<li><strong>ReAct vs Plan-and-Execute</strong> — think-act-observe loop vs plan-then-execute.</li>
+<li><strong>Compounding Reliability</strong> — 95% per step × 20 steps ≈ 36% end-to-end.</li>
+</ol>
+<p><img loading="lazy" alt="Agents, MCP &amp; Judges — concepts 51–60" src="gen-ai-concepts-map-assets/slide-07.jpg" /></p>
+<ol>
+<li><strong>Agent Failure Modes</strong> — loops, silent tool failures, wandering, context overflow, false "done."</li>
+<li><strong>Loop Detection</strong> — catch repeated no-progress calls and stop them.</li>
+<li><strong>Human-in-the-Loop</strong> — pause for approval before risky actions.</li>
+<li><strong>Multi-Agent Systems</strong> — several agents collaborating; every handoff loses context.</li>
+<li><strong>Orchestrator-Worker</strong> — one planner delegates to specialist workers.</li>
+<li><strong>MCP</strong> — the open protocol connecting AI apps to tools, resources, prompts.</li>
+<li><strong>A2A</strong> — protocol for agents across organizations to delegate work.</li>
+<li><strong>LLM-as-Judge</strong> — one model grading another's answers.</li>
+<li><strong>Judge Calibration</strong> — validate the judge against human labels (Cohen's kappa).</li>
+<li><strong>Statistical Significance</strong> — is the score delta real or noise? (McNemar's test.)</li>
+</ol>
+<h3 id="articles-in-the-playbook_2">Articles in the playbook</h3>
+<ul>
+<li><a href="../deep-dives/cloud-agent-anatomy">Cloud agent anatomy</a> — the eight planes (invocation → observability) behind every cloud agent (#48–#55).</li>
+<li><a href="../deep-dives/pi-harness">The Pi harness</a> — Mario Zechner's sub-1k-prompt harness; Coinbase, Shopify, Stripe's patterns (#48, #49, #51–#53).</li>
+<li><a href="../deep-dives/jev-model-router">Jev as model router</a> — judge-driven routing instead of LLM vibes (#58).</li>
+<li><a href="../ai-engineer-talks/mcp-doesnt-suck">MCP Doesn't Suck. Your Agent Does.</a> — Jan Čurn (Apify): context bloat is a harness bug, not a protocol bug (#56).</li>
+<li><a href="../deep-dives/wikiskill">WikiSkill</a> — Google Research's persistent-memory skill system: skills that transfer across models (#54).</li>
+<li><a href="../01-claude-code-agents">Anatomy of an Agent Harness infographic</a> — the eight boxes between a model and a merged PR (#48, #52, #53).</li>
+</ul>
+</div></details><details class="sec"><summary>4 · Evals, security &amp; fine-tuning (61–80)</summary><div class="sec-body">
+<p><img loading="lazy" alt="Evals &amp; Security — concepts 61–70" src="gen-ai-concepts-map-assets/slide-08.jpg" /></p>
+<ol>
+<li><strong>Traces &amp; Spans</strong> — per-request record of model calls, retrieval, tools.</li>
+<li><strong>Evals in CI</strong> — quality tests that block merges on regression.</li>
+<li><strong>Faithfulness</strong> — does the answer stick to its sources?</li>
+<li><strong>Position Bias</strong> — judges favor whichever answer is shown first.</li>
+<li><strong>Pairwise Comparison</strong> — the judge picks the better of two instead of scoring one.</li>
+<li><strong>Cost per Success</strong> — total spend ÷ successful tasks, not ÷ calls.</li>
+<li><strong>Prompt Injection</strong> — malicious instructions hidden in data.</li>
+<li><strong>Indirect Injection</strong> — injection arriving via documents, email, web pages.</li>
+<li><strong>Lethal Trifecta</strong> — private data + untrusted content + an outbound channel = leak.</li>
+<li><strong>Excessive Agency</strong> — the system can do more than it should.</li>
+</ol>
+<p><img loading="lazy" alt="Security &amp; Fine-tuning — concepts 71–80" src="gen-ai-concepts-map-assets/slide-09.jpg" /></p>
+<ol>
+<li><strong>Exfiltration</strong> — private data leaving through an outbound channel.</li>
+<li><strong>Dual-LLM Pattern</strong> — a tool-less quarantined model reads untrusted text; the main model sees only its output.</li>
+<li><strong>PII in Prompts &amp; Logs</strong> — redact personal data before it lands in traces.</li>
+<li><strong>Red Teaming</strong> — attack your own system deliberately; keep the attacks as CI tests.</li>
+<li><strong>OWASP LLM Top 10</strong> — the standard LLM app risk list.</li>
+<li><strong>When to Fine-tune</strong> — for behavior and format, never for facts.</li>
+<li><strong>LoRA &amp; QLoRA</strong> — train a small adapter on a frozen model; QLoRA shrinks the base to 4-bit.</li>
+<li><strong>DPO</strong> — learn from preferred-vs-rejected answer pairs.</li>
+<li><strong>GRPO</strong> — RL that compares a group of answers to the same prompt.</li>
+<li><strong>Reward Hacking</strong> — the model games the reward instead of doing the task.</li>
+</ol>
+<h3 id="articles-in-the-playbook_3">Articles in the playbook</h3>
+<ul>
+<li><a href="../deep-dives/dark-factory">Dark factory</a> — the hidden-holdout eval pattern: clones make verification compute, not API calls (#62, #63).</li>
+<li><a href="../01-claude-code-agents">Multi-harness RL study</a> — HF + Liquid AI: train inside the harness; the program around the model decides the outcome (#62, #79).</li>
+<li><a href="../ai-engineer-talks/gepa-optimize-anything">Beating RL with reflection (GEPA)</a> — one reflection round beat GRPO's 25,000 rollouts 2x (#62, #79, #80).</li>
+<li><a href="../ai-engineer-talks/death-of-code-review">The Death of the Code Review</a> — Laurie Voss: 741% more code, 30% more shipped — design the review harness (#62).</li>
+</ul>
+</div></details><details class="sec"><summary>5 · Inference &amp; serving (81–90)</summary><div class="sec-body">
+<p><img loading="lazy" alt="Fine-tuning &amp; Inference — concepts 81–90" src="gen-ai-concepts-map-assets/slide-10.jpg" /></p>
+<ol>
+<li><strong>Catastrophic Forgetting</strong> — fine-tuning eroding general ability.</li>
+<li><strong>Quantization &amp; Distillation</strong> — lower-precision weights; small model taught by big one.</li>
+<li><strong>Prefill vs Decode</strong> — reading the prompt vs emitting tokens; decode is memory-bandwidth-bound.</li>
+<li><strong>Continuous Batching</strong> — new requests join as others finish; GPU stays busy.</li>
+<li><strong>PagedAttention</strong> — KV cache in pages, less memory wasted.</li>
+<li><strong>Speculative Decoding</strong> — small model drafts, big model verifies several tokens at once.</li>
+<li><strong>Prefix Caching</strong> — reuse cached compute for shared prompt prefixes.</li>
+<li><strong>Grouped-Query Attention</strong> — attention heads share KV data; smaller cache.</li>
+<li><strong>Self-Hosting vs API</strong> — self-hosting wins only at high, steady usage.</li>
+<li><strong>Voice Agents</strong> — STT → LLM → TTS inside a tight latency budget.</li>
+</ol>
+<h3 id="articles-in-the-playbook_4">Articles in the playbook</h3>
+<ul>
+<li><a href="../deep-dives/llm-optimization-techniques">7 LLM optimization techniques</a> — quantization, distillation, KV caching, continuous batching, speculative decoding, tensor + pipeline parallelism — and how they compose into a serving stack (#82–#86, #88). Original SVG infographic.</li>
+<li><a href="../deep-dives/inference-engineering-concepts">20 inference engineering concepts</a> — prefill/decode, TTFT/TPOT, KV cache, PagedAttention, FlashAttention, MoE expert parallelism, KV-aware routing (#83–#88). All original slides saved.</li>
+<li><a href="../02-jev-context-economics">Mistral Large 4</a> — the MoE cost case study: cost tracks <em>active</em> params (#9, #82, #89).</li>
+</ul>
+<hr />
+<p><em>The carousel's final slide is the creator's promo card — included here for completeness:</em></p>
+<p><img loading="lazy" alt="The book promo card: &quot;Gen AI: Zero to Hero,&quot; 2026 Edition, ₹199, 16 modules / 187 concepts / 16 hands-on builds" src="gen-ai-concepts-map-assets/slide-11.jpg" /></p>
+<p><em>The map above is the public part — the playbook fills in the depth, one article per section at a time.</em></p></div></details></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../";</script><script src="../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>
