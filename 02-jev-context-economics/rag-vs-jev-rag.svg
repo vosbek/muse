@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1420" height="1010" viewBox="0 0 1420 1010">
+<defs><marker id="arr" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#6b7280"/></marker></defs>
+<rect x="0" y="0" width="1420" height="1010" fill="#ffffff"/>
+<text x="600" y="58" text-anchor="middle" font-family="system-ui,sans-serif" font-size="40" font-weight="800" fill="#111827">RAG vs Jev + RAG</text>
+<text x="300" y="104" text-anchor="middle" font-family="system-ui,sans-serif" font-size="26" font-weight="700" fill="#1d4ed8">RAG</text>
+<text x="300" y="130" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" fill="#6b7280">Retrieval Augmented Generation</text>
+<text x="900" y="104" text-anchor="middle" font-family="system-ui,sans-serif" font-size="26" font-weight="700" fill="#b45309">Jev + RAG</text>
+<text x="900" y="130" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" fill="#6b7280">RAG with Jev reranking and gating</text>
+<rect x="150.0" y="168" width="300" height="56" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/><text x="300" y="203.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Query</text>
+<line x1="300" y1="224" x2="300" y2="250" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="150.0" y="250" width="300" height="56" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/><text x="300" y="285.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Data (x3)</text>
+<line x1="300" y1="306" x2="300" y2="332" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="150.0" y="332" width="300" height="56" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/><text x="300" y="367.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Embedding Model</text>
+<line x1="300" y1="388" x2="300" y2="414" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="150.0" y="414" width="300" height="56" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/><text x="300" y="449.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Vectors (x3)</text>
+<line x1="300" y1="470" x2="300" y2="496" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="150.0" y="496" width="300" height="56" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/><text x="300" y="531.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Vector DB</text>
+<line x1="300" y1="552" x2="300" y2="578" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="150.0" y="578" width="300" height="56" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/><text x="300" y="613.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Top-k Context</text>
+<line x1="300" y1="634" x2="300" y2="660" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="150.0" y="660" width="300" height="56" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/><text x="300" y="695.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">LLM</text>
+<line x1="300" y1="716" x2="300" y2="742" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="150.0" y="742" width="300" height="56" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="2.5"/><text x="300" y="777.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Final Response</text>
+<rect x="750.0" y="168" width="300" height="56" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5"/><text x="900" y="203.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Query</text>
+<line x1="900" y1="224" x2="900" y2="250" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="750.0" y="250" width="300" height="56" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5"/><text x="900" y="285.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Data (x3)</text>
+<line x1="900" y1="306" x2="900" y2="332" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="750.0" y="332" width="300" height="56" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5"/><text x="900" y="367.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Embedding Model</text>
+<line x1="900" y1="388" x2="900" y2="414" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="750.0" y="414" width="300" height="56" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5"/><text x="900" y="449.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Vector DB</text>
+<line x1="900" y1="470" x2="900" y2="496" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="750.0" y="496" width="300" height="56" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5"/><text x="900" y="531.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Top-k Candidates</text>
+<line x1="900" y1="552" x2="900" y2="578" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="750.0" y="578" width="300" height="56" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/><text x="900" y="613.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Jev (Rerank + Gate)</text>
+<line x1="900" y1="634" x2="900" y2="660" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="750.0" y="660" width="300" height="56" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5"/><text x="900" y="695.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">LLM</text>
+<line x1="900" y1="716" x2="900" y2="742" stroke="#6b7280" stroke-width="2.5" marker-end="url(#arr)"/>
+<rect x="750.0" y="742" width="300" height="56" rx="10" fill="#f0fdf4" stroke="#16a34a" stroke-width="2.5"/><text x="900" y="777.0" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="bold" fill="#111827">Final Response</text>
+<line x1="1050.0" y1="606.0" x2="1084.0" y2="606.0" stroke="#9ca3af" stroke-width="2.5" stroke-dasharray="7,5"/>
+<line x1="1084.0" y1="606.0" x2="1084.0" y2="542.0" stroke="#9ca3af" stroke-width="2.5" stroke-dasharray="7,5"/>
+<rect x="1084.0" y="514.0" width="236" height="56" rx="10" fill="#fff7ed" stroke="#ea580c" stroke-width="2.5"/><text x="1202.0" y="547.95" text-anchor="middle" font-family="system-ui,sans-serif" font-size="17" font-weight="bold" fill="#111827">Abstain: Not in Docs</text>
+<text x="600" y="844" text-anchor="middle" font-family="system-ui,sans-serif" font-size="17" fill="#374151">Ranking is not answerability. Jev judges each candidate against a typed question -</text>
+<text x="600" y="870" text-anchor="middle" font-family="system-ui,sans-serif" font-size="17" fill="#374151">"Does this passage help answer the query?" Below the threshold, it never reaches the LLM.</text>
+<text x="600" y="896" text-anchor="middle" font-family="system-ui,sans-serif" font-size="15" fill="#9ca3af">Retrieval still sets the cap: Jev cannot recover a passage that never entered the candidate set. Redrawn from @dailydoseofds_.</text>
+</svg>
