@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="2080" viewBox="0 0 1440 2080" font-family="DejaVu Sans, sans-serif">
+  <rect width="1440" height="2080" fill="#0B0E14"/>
+  <!-- Title -->
+  <text x="720" y="72" font-size="46" font-weight="bold" fill="#E6EDF3" text-anchor="middle">Same message. Three very different AI answers.</text>
+  <text x="720" y="118" font-size="24" fill="#8B949E" text-anchor="middle">One customer message, three kinds of model</text>
+  <!-- Message bubble -->
+  <text x="720" y="162" font-size="18" font-weight="bold" fill="#8B949E" text-anchor="middle">SAME MESSAGE</text>
+  <rect x="240" y="178" width="960" height="92" rx="18" fill="#161B22" stroke="#30363D" stroke-width="2"/>
+  <text x="720" y="216" font-size="24" fill="#E6EDF3" text-anchor="middle">I was charged twice for my order and the delivery is delayed.</text>
+  <text x="720" y="250" font-size="24" fill="#E6EDF3" text-anchor="middle">Can you help?</text>
+  <!-- Branch arrows -->
+  <g stroke="#8B949E" stroke-width="3" fill="none">
+    <path d="M 720 270 L 720 296 M 250 296 L 1190 296 M 250 296 L 250 312 M 1190 296 L 1190 312"/>
+  </g>
+  <g fill="#8B949E">
+    <polygon points="250,326 242,312 258,312"/>
+    <polygon points="720,326 712,312 728,312"/>
+    <polygon points="1190,326 1182,312 1198,312"/>
+  </g>
+  <line x1="720" y1="270" x2="720" y2="312" stroke="#8B949E" stroke-width="3"/>
+
+  <!-- ===== LLM column ===== -->
+  <g>
+    <rect x="40" y="336" width="420" height="860" rx="16" fill="#161B22" stroke="#58A6FF" stroke-width="2"/>
+    <text x="250" y="386" font-size="30" font-weight="bold" fill="#58A6FF" text-anchor="middle">LLM</text>
+    <text x="250" y="420" font-size="22" font-weight="bold" fill="#E6EDF3" text-anchor="middle">WRITES the answer</text>
+    <text x="250" y="462" font-size="20" fill="#C9D1D9" text-anchor="middle">Reads the whole message,</text>
+    <text x="250" y="490" font-size="20" fill="#C9D1D9" text-anchor="middle">then writes a reply one</text>
+    <text x="250" y="518" font-size="20" fill="#C9D1D9" text-anchor="middle">word at a time.</text>
+    <text x="70" y="570" font-size="18" font-weight="bold" fill="#8B949E">HOW IT WORKS</text>
+    <text x="70" y="604" font-size="20" fill="#E6EDF3">1. Takes in the whole message.</text>
+    <text x="70" y="640" font-size="20" fill="#E6EDF3">2. Generates the reply sequentially,</text>
+    <text x="70" y="668" font-size="20" fill="#E6EDF3">word by word.</text>
+    <text x="70" y="716" font-size="18" font-weight="bold" fill="#8B949E">EXAMPLE OUTPUT - FREE TEXT</text>
+    <rect x="70" y="734" width="360" height="170" rx="10" fill="#0D1117" stroke="#30363D" stroke-width="1.5"/>
+    <text x="90" y="770" font-size="19" fill="#C9D1D9">Thanks for flagging this -</text>
+    <text x="90" y="798" font-size="19" fill="#C9D1D9">I can see the double charge</text>
+    <text x="90" y="826" font-size="19" fill="#C9D1D9">and the delay, and I will sort</text>
+    <text x="90" y="854" font-size="19" fill="#C9D1D9">both out for you now.</text>
+    <text x="70" y="950" font-size="18" font-weight="bold" fill="#8B949E">BEST FOR</text>
+    <text x="70" y="984" font-size="20" fill="#E6EDF3">Replies, explanations,</text>
+    <text x="70" y="1012" font-size="20" fill="#E6EDF3">reasoning, creative work.</text>
+    <text x="70" y="1060" font-size="19" fill="#8B949E">Slower. You pay for every</text>
+    <text x="70" y="1088" font-size="19" fill="#8B949E">word it writes. Can invent facts.</text>
+  </g>
+
+  <!-- ===== JEV column ===== -->
+  <g>
+    <rect x="510" y="336" width="420" height="860" rx="16" fill="#161B22" stroke="#E3B341" stroke-width="2"/>
+    <text x="720" y="386" font-size="30" font-weight="bold" fill="#E3B341" text-anchor="middle">JEV</text>
+    <text x="720" y="420" font-size="22" font-weight="bold" fill="#E6EDF3" text-anchor="middle">PICKS the answer</text>
+    <text x="720" y="462" font-size="20" fill="#C9D1D9" text-anchor="middle">A decision model. You define</text>
+    <text x="720" y="490" font-size="20" fill="#C9D1D9" text-anchor="middle">the options up front; it</text>
+    <text x="720" y="518" font-size="20" fill="#C9D1D9" text-anchor="middle">scores them in one pass.</text>
+    <text x="540" y="570" font-size="18" font-weight="bold" fill="#8B949E">HOW IT WORKS</text>
+    <text x="540" y="604" font-size="20" fill="#E6EDF3">1. Reads the options you defined:</text>
+    <text x="540" y="632" font-size="20" fill="#E6EDF3">Billing, Shipping, Other.</text>
+    <text x="540" y="668" font-size="20" fill="#E6EDF3">2. Scores all options at once,</text>
+    <text x="540" y="696" font-size="20" fill="#E6EDF3">returns the winner + probability.</text>
+    <text x="540" y="744" font-size="18" font-weight="bold" fill="#8B949E">EXAMPLE OUTPUT - TYPED DECISION</text>
+    <rect x="540" y="762" width="360" height="170" rx="10" fill="#0D1117" stroke="#30363D" stroke-width="1.5"/>
+    <text x="560" y="798" font-size="19" fill="#C9D1D9">route: Billing (0.82)</text>
+    <text x="560" y="826" font-size="19" fill="#C9D1D9">Shipping (0.12) - Other (0.06)</text>
+    <text x="560" y="854" font-size="19" fill="#C9D1D9">urgency: high</text>
+    <text x="540" y="978" font-size="18" font-weight="bold" fill="#8B949E">BEST FOR</text>
+    <text x="540" y="1012" font-size="20" fill="#E6EDF3">Routing, triage, yes/no checks,</text>
+    <text x="540" y="1040" font-size="20" fill="#E6EDF3">guardrails.</text>
+    <text x="540" y="1088" font-size="19" fill="#8B949E">Milliseconds. Input-only pricing.</text>
+    <text x="540" y="1116" font-size="19" fill="#8B949E">Always a valid option - but it</text>
+    <text x="540" y="1144" font-size="19" fill="#8B949E">can still be the wrong one.</text>
+  </g>
+
+  <!-- ===== CDM column ===== -->
+  <g>
+    <rect x="980" y="336" width="420" height="860" rx="16" fill="#161B22" stroke="#3FB950" stroke-width="2"/>
+    <text x="1190" y="386" font-size="30" font-weight="bold" fill="#3FB950" text-anchor="middle">CDMs</text>
+    <text x="1190" y="420" font-size="22" font-weight="bold" fill="#E6EDF3" text-anchor="middle">POINT at the answer</text>
+    <text x="1190" y="462" font-size="20" fill="#C9D1D9" text-anchor="middle">Small models, one job each:</text>
+    <text x="1190" y="490" font-size="20" fill="#C9D1D9" text-anchor="middle">classify, extract, summarize.</text>
+    <text x="1190" y="518" font-size="20" fill="#C9D1D9" text-anchor="middle">They point, not write.</text>
+    <text x="1010" y="570" font-size="18" font-weight="bold" fill="#8B949E">HOW IT WORKS</text>
+    <text x="1010" y="604" font-size="20" fill="#E6EDF3">1. Routes to the single-task</text>
+    <text x="1010" y="632" font-size="20" fill="#E6EDF3">model for the job.</text>
+    <text x="1010" y="668" font-size="20" fill="#E6EDF3">2. Points at spans in the input,</text>
+    <text x="1010" y="696" font-size="20" fill="#E6EDF3">with confidence scores.</text>
+    <text x="1010" y="744" font-size="18" font-weight="bold" fill="#8B949E">EXAMPLE OUTPUT - JSON</text>
+    <rect x="1010" y="762" width="360" height="170" rx="10" fill="#0D1117" stroke="#30363D" stroke-width="1.5"/>
+    <text x="1030" y="798" font-size="18" font-family="DejaVu Sans Mono, monospace" fill="#C9D1D9">{ "billing": "charged twice",</text>
+    <text x="1030" y="826" font-size="18" font-family="DejaVu Sans Mono, monospace" fill="#C9D1D9">  "delay": "delivery delayed",</text>
+    <text x="1030" y="854" font-size="18" font-family="DejaVu Sans Mono, monospace" fill="#C9D1D9">  "order_id": null,</text>
+    <text x="1030" y="882" font-size="18" font-family="DejaVu Sans Mono, monospace" fill="#C9D1D9">  "confidence": 0.94 }</text>
+    <text x="1010" y="978" font-size="18" font-weight="bold" fill="#8B949E">BEST FOR</text>
+    <text x="1010" y="1012" font-size="20" fill="#E6EDF3">Extraction, tagging,</text>
+    <text x="1010" y="1040" font-size="20" fill="#E6EDF3">long-document summaries.</text>
+    <text x="1010" y="1088" font-size="19" fill="#8B949E">Fast. Input-only pricing. No</text>
+    <text x="1010" y="1116" font-size="19" fill="#8B949E">order ID invented: null, not</text>
+    <text x="1010" y="1144" font-size="19" fill="#8B949E">a hallucinated number.</text>
+  </g>
+
+  <!-- Quick rule strip -->
+  <rect x="40" y="1236" width="1360" height="84" rx="14" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <text x="720" y="1288" font-size="24" font-weight="bold" fill="#E6EDF3" text-anchor="middle">Quick rule: Need words -&gt; LLM  |  Need a decision -&gt; Jev  |  Need data pulled out -&gt; CDMs</text>
+
+  <!-- Pipeline strip -->
+  <rect x="40" y="1340" width="1360" height="84" rx="14" fill="#161B22" stroke="#30363D" stroke-width="1.5"/>
+  <text x="720" y="1392" font-size="24" font-weight="bold" fill="#E6EDF3" text-anchor="middle">Smartest setup: Jev routes -&gt; CDMs pull the details -&gt; LLM writes only the real replies</text>
+
+  <!-- Comparison table -->
+  <text x="720" y="1482" font-size="28" font-weight="bold" fill="#E6EDF3" text-anchor="middle">Key differences at a glance</text>
+  <g font-size="19">
+    <rect x="40" y="1502" width="1360" height="56" fill="#161B22"/>
+    <text x="70" y="1538" font-weight="bold" fill="#8B949E"></text>
+    <text x="400" y="1538" font-weight="bold" fill="#58A6FF">LLM</text>
+    <text x="770" y="1538" font-weight="bold" fill="#E3B341">JEV</text>
+    <text x="1140" y="1538" font-weight="bold" fill="#3FB950">CDMs</text>
+    <g fill="#E6EDF3">
+      <text x="70" y="1600" font-weight="bold" fill="#8B949E">Output</text>
+      <text x="400" y="1600">Free text</text>
+      <text x="770" y="1600">Option + probability</text>
+      <text x="1140" y="1600">JSON, labels, summaries</text>
+      <text x="70" y="1664" font-weight="bold" fill="#8B949E">Speed</text>
+      <text x="400" y="1664">Seconds, grows with length</text>
+      <text x="770" y="1664">Milliseconds</text>
+      <text x="1140" y="1664">Fast, single pass</text>
+      <text x="70" y="1728" font-weight="bold" fill="#8B949E">Price</text>
+      <text x="400" y="1728">Input + output tokens</text>
+      <text x="770" y="1728">$0.042/M in, output free</text>
+      <text x="1140" y="1728">$0.05/M in, output free</text>
+      <text x="70" y="1792" font-weight="bold" fill="#8B949E">Flexibility</text>
+      <text x="400" y="1792">Very high</text>
+      <text x="770" y="1792">Only the given options</text>
+      <text x="1140" y="1792">One task per model</text>
+      <text x="70" y="1856" font-weight="bold" fill="#8B949E">Main risk</text>
+      <text x="400" y="1856">Invents facts</text>
+      <text x="770" y="1856">Valid but wrong option</text>
+      <text x="1140" y="1856">New, vendor-tested only</text>
+    </g>
+    <g stroke="#30363D" stroke-width="1">
+      <line x1="40" y1="1558" x2="1400" y2="1558"/>
+      <line x1="40" y1="1622" x2="1400" y2="1622"/>
+      <line x1="40" y1="1686" x2="1400" y2="1686"/>
+      <line x1="40" y1="1750" x2="1400" y2="1750"/>
+      <line x1="40" y1="1814" x2="1400" y2="1814"/>
+      <line x1="40" y1="1878" x2="1400" y2="1878"/>
+    </g>
+  </g>
+
+  <!-- Footer -->
+  <text x="720" y="1950" font-size="18" fill="#8B949E" text-anchor="middle">After @theaiculture.io (Oct 21, 2026) - redrawn in own words. Quick rule and pipeline are from the caption,</text>
+  <text x="720" y="1980" font-size="18" fill="#8B949E" text-anchor="middle">not the poster. CDM "point" framing holds for Classify and Extract; Summarize writes.</text>
+</svg>
