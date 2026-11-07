@@ -16,6 +16,12 @@
 <li><strong>Maturity (0–2):</strong> stars, forks, active development, license.</li>
 <li><strong>Team deploy (0–2):</strong> can a VS Code + Copilot team use it this quarter?</li>
 </ul>
+</div></details><details class="sec"><summary>Nov 7 — @princegupta.ai "Train your own ChatGPT for under $50" (Prince Gupta)</summary><div class="sec-body">
+<p>Day 10/10 finale of his repo series — Karpathy's nanochat. Full deep dive in <a href="../deep-dives/nanochat-karpathy">deep-dives/nanochat-karpathy.md</a>.</p>
+<h3 id="80-karpathynanochat-604k-mit-python">8.0 — <a href="https://github.com/karpathy/nanochat">karpathy/nanochat</a> · 60.4k ⭐ · MIT · Python</h3>
+<p><strong>Value prop:</strong> "The best ChatGPT that $100 can buy" — the simplest experimental harness for training LLMs end to end: tokenizer, pretraining, SFT, RL, chat, in one hackable codebase. One speedrun script (<code>bash runs/speedrun.sh</code>) trains a GPT-2-grade model in ~2 hours on a rented 8xH100 node for ~$48 (~$15 on spot), vs ~$43,000 for GPT-2 in 2019. A single dial, <code>--depth</code>, sets the whole model — width, heads, learning rate, horizons all derived, compute-optimal at every size. Live time-to-GPT-2 leaderboard: best 1.65 hours (Mar 2026, CORE 0.2626 vs GPT-2's 0.2565).
+<strong>Score:</strong> remit 3 + local 2 + maturity 2 + deploy 1. <em>Why it matters for us:</em> the training-time twin of the routing ladder — the ~900x cost collapse made concrete in one runnable script, and the cheapest upskilling artifact on this page: an engineer who has trained a model understands what context and tokens actually cost. Scored honestly: GPT-2-grade means a 1.6B model the README compares to a kindergartener — this is a learning lab, not a production pattern, which is the whole of the deploy point. Star count verified via the GitHub API Nov 7, 2026.
+<strong>Source:</strong> https://www.instagram.com/reel/DfHsY8hE-uf/</p>
 </div></details><details class="sec"><summary>Oct 11 — direct share: dzhng/jevgrep</summary><div class="sec-body">
 <p>Already covered conceptually in <a href="../02-jev-context-economics/README.md">02 — Jev Context Economics</a> (the ~30% cost-cut entry from the @gittrend.io reel); scored here for the repos index.</p>
 <h3 id="60-dzhngjevgrep-26k-mit-typescript">6.0 — <a href="https://github.com/dzhng/jevgrep">dzhng/jevgrep</a> · 2.6k ⭐ · MIT · TypeScript</h3>

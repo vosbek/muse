@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1980" viewBox="0 0 1440 1980">
+  <rect width="1440" height="1980" fill="#0B0F14"/>
+  <!-- header -->
+  <text x="60" y="72" font-family="DejaVu Sans, sans-serif" font-size="26" font-weight="bold" fill="#58A6FF" letter-spacing="3">KARPATHY'S NANOCHAT - DEEP DIVE</text>
+  <text x="60" y="150" font-family="DejaVu Sans, sans-serif" font-size="62" font-weight="bold" fill="#FFFFFF">Train your own ChatGPT</text>
+  <text x="60" y="222" font-family="DejaVu Sans, sans-serif" font-size="62" font-weight="bold" fill="#3FB950">from scratch, for under $50</text>
+  <text x="60" y="272" font-family="DejaVu Sans, sans-serif" font-size="28" fill="#8B949E">One small, hackable codebase. Every stage of building an LLM.</text>
+  <line x1="60" y1="306" x2="1380" y2="306" stroke="#30363D" stroke-width="2"/>
+
+  <!-- cost collapse panel -->
+  <rect x="60" y="340" width="1320" height="250" rx="16" fill="#161B22" stroke="#30363D" stroke-width="2"/>
+  <text x="120" y="400" font-family="DejaVu Sans, sans-serif" font-size="24" fill="#8B949E">GPT-2 TRAINING COST, 2019</text>
+  <text x="120" y="480" font-family="DejaVu Sans, sans-serif" font-size="76" font-weight="bold" fill="#F85149">$43,000</text>
+  <text x="120" y="530" font-family="DejaVu Sans, sans-serif" font-size="24" fill="#8B949E">168 hours, OpenAI's original run</text>
+  <text x="620" y="470" font-family="DejaVu Sans, sans-serif" font-size="64" font-weight="bold" fill="#3FB950">-&gt;</text>
+  <text x="600" y="530" font-family="DejaVu Sans, sans-serif" font-size="26" font-weight="bold" fill="#3FB950">~900x cheaper</text>
+  <text x="980" y="400" font-family="DejaVu Sans, sans-serif" font-size="24" fill="#8B949E">NANOCHAT SPEEDRUN, 2026</text>
+  <text x="980" y="480" font-family="DejaVu Sans, sans-serif" font-size="76" font-weight="bold" fill="#3FB950">$48</text>
+  <text x="980" y="530" font-family="DejaVu Sans, sans-serif" font-size="24" fill="#8B949E">~2 hrs, rented 8xH100 node</text>
+  <text x="60" y="640" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#8B949E">8xH100 node ~$24/hr - spot instances closer to ~$15 - leaderboard best 1.65 hrs</text>
+
+  <!-- pipeline -->
+  <text x="60" y="726" font-family="DejaVu Sans, sans-serif" font-size="36" font-weight="bold" fill="#FFFFFF">THE PIPELINE - 5 STAGES, ONE SCRIPT</text>
+  <text x="60" y="766" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#8B949E">bash runs/speedrun.sh runs the whole thing</text>
+
+  <g font-family="DejaVu Sans, sans-serif">
+    <rect x="60" y="800" width="240" height="270" rx="12" fill="#161B22" stroke="#30363D" stroke-width="2"/>
+    <rect x="60" y="800" width="240" height="10" rx="5" fill="#58A6FF"/>
+    <text x="84" y="862" font-size="44" font-weight="bold" fill="#58A6FF">1</text>
+    <text x="84" y="912" font-size="26" font-weight="bold" fill="#FFFFFF">TOKENIZER</text>
+    <text x="84" y="950" font-size="22" fill="#3FB950">tok_train.py</text>
+    <text x="84" y="992" font-size="22" fill="#8B949E">BPE tokenizer,</text>
+    <text x="84" y="1022" font-size="22" fill="#8B949E">vocab 32,768</text>
+
+    <rect x="330" y="800" width="240" height="270" rx="12" fill="#161B22" stroke="#30363D" stroke-width="2"/>
+    <rect x="330" y="800" width="240" height="10" rx="5" fill="#3FB950"/>
+    <text x="354" y="862" font-size="44" font-weight="bold" fill="#3FB950">2</text>
+    <text x="354" y="912" font-size="26" font-weight="bold" fill="#FFFFFF">PRETRAIN</text>
+    <text x="354" y="950" font-size="22" fill="#3FB950">base_train.py</text>
+    <text x="354" y="992" font-size="22" fill="#8B949E">Base model,</text>
+    <text x="354" y="1022" font-size="22" fill="#8B949E">--depth=24</text>
+
+    <rect x="600" y="800" width="240" height="270" rx="12" fill="#161B22" stroke="#30363D" stroke-width="2"/>
+    <rect x="600" y="800" width="240" height="10" rx="5" fill="#D29922"/>
+    <text x="624" y="862" font-size="44" font-weight="bold" fill="#D29922">3</text>
+    <text x="624" y="912" font-size="26" font-weight="bold" fill="#FFFFFF">FINE-TUNE</text>
+    <text x="624" y="950" font-size="22" fill="#3FB950">chat_sft.py</text>
+    <text x="624" y="992" font-size="22" fill="#8B949E">Supervised tuning,</text>
+    <text x="624" y="1022" font-size="22" fill="#8B949E">small-talk chats</text>
+
+    <rect x="870" y="800" width="240" height="270" rx="12" fill="#161B22" stroke="#30363D" stroke-width="2"/>
+    <rect x="870" y="800" width="240" height="10" rx="5" fill="#BC8CFF"/>
+    <text x="894" y="862" font-size="44" font-weight="bold" fill="#BC8CFF">4</text>
+    <text x="894" y="912" font-size="26" font-weight="bold" fill="#FFFFFF">RL</text>
+    <text x="894" y="950" font-size="22" fill="#3FB950">chat_rl.py</text>
+    <text x="894" y="992" font-size="22" fill="#8B949E">Reinforcement</text>
+    <text x="894" y="1022" font-size="22" fill="#8B949E">learning</text>
+
+    <rect x="1140" y="800" width="240" height="270" rx="12" fill="#161B22" stroke="#30363D" stroke-width="2"/>
+    <rect x="1140" y="800" width="240" height="10" rx="5" fill="#F85149"/>
+    <text x="1164" y="862" font-size="44" font-weight="bold" fill="#F85149">5</text>
+    <text x="1164" y="912" font-size="26" font-weight="bold" fill="#FFFFFF">CHAT</text>
+    <text x="1164" y="950" font-size="22" fill="#3FB950">chat_cli.py</text>
+    <text x="1164" y="992" font-size="22" fill="#8B949E">Talk to the model</text>
+    <text x="1164" y="1022" font-size="22" fill="#8B949E">you trained</text>
+  </g>
+  <text x="300" y="952" font-family="DejaVu Sans, sans-serif" font-size="36" font-weight="bold" fill="#8B949E">&gt;</text>
+  <text x="570" y="952" font-family="DejaVu Sans, sans-serif" font-size="36" font-weight="bold" fill="#8B949E">&gt;</text>
+  <text x="840" y="952" font-family="DejaVu Sans, sans-serif" font-size="36" font-weight="bold" fill="#8B949E">&gt;</text>
+  <text x="1110" y="952" font-family="DejaVu Sans, sans-serif" font-size="36" font-weight="bold" fill="#8B949E">&gt;</text>
+
+  <!-- one dial -->
+  <text x="60" y="1160" font-family="DejaVu Sans, sans-serif" font-size="36" font-weight="bold" fill="#FFFFFF">ONE DIAL RUNS IT ALL</text>
+  <text x="60" y="1206" font-family="DejaVu Sans, sans-serif" font-size="28" fill="#8B949E">--depth = number of transformer layers. Everything else is computed for you:</text>
+  <g font-family="DejaVu Sans, sans-serif" font-size="24" fill="#FFFFFF">
+    <rect x="60" y="1236" width="150" height="60" rx="30" fill="#21262D" stroke="#30363D" stroke-width="2"/>
+    <text x="135" y="1274" text-anchor="middle">width</text>
+    <rect x="230" y="1236" width="150" height="60" rx="30" fill="#21262D" stroke="#30363D" stroke-width="2"/>
+    <text x="305" y="1274" text-anchor="middle">heads</text>
+    <rect x="400" y="1236" width="250" height="60" rx="30" fill="#21262D" stroke="#30363D" stroke-width="2"/>
+    <text x="525" y="1274" text-anchor="middle">learning rate</text>
+    <rect x="670" y="1236" width="180" height="60" rx="30" fill="#21262D" stroke="#30363D" stroke-width="2"/>
+    <text x="760" y="1274" text-anchor="middle">horizons</text>
+    <rect x="870" y="1236" width="230" height="60" rx="30" fill="#21262D" stroke="#30363D" stroke-width="2"/>
+    <text x="985" y="1274" text-anchor="middle">weight decay</text>
+  </g>
+  <text x="60" y="1352" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#8B949E">GPT-2 capability lands around depth 24-26. Sweep --depth for a miniseries</text>
+  <text x="60" y="1388" font-family="DejaVu Sans, sans-serif" font-size="26" fill="#8B949E">of compute-optimal models at every size.</text>
+
+  <!-- leaderboard -->
+  <text x="60" y="1478" font-family="DejaVu Sans, sans-serif" font-size="36" font-weight="bold" fill="#FFFFFF">TIME-TO-GPT-2 LEADERBOARD</text>
+  <g font-family="DejaVu Sans, sans-serif" font-size="26">
+    <text x="60" y="1532" fill="#8B949E">2019</text>
+    <text x="220" y="1532" fill="#FFFFFF">OpenAI GPT-2, original run</text>
+    <text x="900" y="1532" fill="#FFFFFF">168 hours</text>
+    <text x="1160" y="1532" fill="#8B949E">CORE 0.2565</text>
+    <text x="60" y="1582" fill="#8B949E">Jan 2026</text>
+    <text x="220" y="1582" fill="#FFFFFF">d24 baseline, slightly overtrained</text>
+    <text x="900" y="1582" fill="#FFFFFF">3.04 hours</text>
+    <text x="1160" y="1582" fill="#8B949E">CORE 0.2585</text>
+    <text x="60" y="1632" fill="#3FB950">Mar 2026</text>
+    <text x="220" y="1632" fill="#FFFFFF">Best so far, autoresearch round 2</text>
+    <text x="900" y="1632" font-weight="bold" fill="#3FB950">1.65 hours</text>
+    <text x="1160" y="1632" fill="#8B949E">CORE 0.2626</text>
+  </g>
+  <line x1="60" y1="1662" x2="1380" y2="1662" stroke="#30363D" stroke-width="2"/>
+
+  <!-- honest footer -->
+  <text x="60" y="1718" font-family="DejaVu Sans, sans-serif" font-size="30" font-weight="bold" fill="#D29922">KEEP IT HONEST</text>
+  <text x="60" y="1762" font-family="DejaVu Sans, sans-serif" font-size="22" fill="#8B949E">GPT-2-grade means a 1.6B model. The README: talking to it is a bit like talking to a kindergartener.</text>
+  <text x="60" y="1796" font-family="DejaVu Sans, sans-serif" font-size="22" fill="#8B949E">The reel's terminal and chat are animated mockups, not a live run. The numbers are stated, not demonstrated.</text>
+  <text x="60" y="1830" font-family="DejaVu Sans, sans-serif" font-size="22" fill="#8B949E">The repo is public: github.com/karpathy/nanochat - 60.4k stars, MIT. "Comment NANOCHAT" is the creator's</text>
+  <text x="60" y="1864" font-family="DejaVu Sans, sans-serif" font-size="22" fill="#8B949E">DM gate, not the repo's.</text>
+  <text x="60" y="1924" font-family="DejaVu Sans, sans-serif" font-size="20" fill="#6E7681">Source: @princegupta.ai reel, Oct 30 2026 - repo verified live Nov 7 2026</text>
+</svg>

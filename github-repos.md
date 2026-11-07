@@ -9,6 +9,15 @@ Every repo that surfaces in the playbook's intake, with its value prop and a sco
 - **Maturity (0–2):** stars, forks, active development, license.
 - **Team deploy (0–2):** can a VS Code + Copilot team use it this quarter?
 
+## Nov 7 — @princegupta.ai "Train your own ChatGPT for under $50" (Prince Gupta)
+
+Day 10/10 finale of his repo series — Karpathy's nanochat. Full deep dive in [deep-dives/nanochat-karpathy.md](deep-dives/nanochat-karpathy.md).
+
+### 8.0 — [karpathy/nanochat](https://github.com/karpathy/nanochat) · 60.4k ⭐ · MIT · Python
+**Value prop:** "The best ChatGPT that $100 can buy" — the simplest experimental harness for training LLMs end to end: tokenizer, pretraining, SFT, RL, chat, in one hackable codebase. One speedrun script (`bash runs/speedrun.sh`) trains a GPT-2-grade model in ~2 hours on a rented 8xH100 node for ~$48 (~$15 on spot), vs ~$43,000 for GPT-2 in 2019. A single dial, `--depth`, sets the whole model — width, heads, learning rate, horizons all derived, compute-optimal at every size. Live time-to-GPT-2 leaderboard: best 1.65 hours (Mar 2026, CORE 0.2626 vs GPT-2's 0.2565).
+**Score:** remit 3 + local 2 + maturity 2 + deploy 1. *Why it matters for us:* the training-time twin of the routing ladder — the ~900x cost collapse made concrete in one runnable script, and the cheapest upskilling artifact on this page: an engineer who has trained a model understands what context and tokens actually cost. Scored honestly: GPT-2-grade means a 1.6B model the README compares to a kindergartener — this is a learning lab, not a production pattern, which is the whole of the deploy point. Star count verified via the GitHub API Nov 7, 2026.
+**Source:** https://www.instagram.com/reel/DfHsY8hE-uf/
+
 ## Oct 11 — direct share: dzhng/jevgrep
 
 Already covered conceptually in [02 — Jev Context Economics](../02-jev-context-economics/README.md) (the ~30% cost-cut entry from the @gittrend.io reel); scored here for the repos index.

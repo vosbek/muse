@@ -1,0 +1,79 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>nanochat: train your own ChatGPT for under $50 · AI Skills Playbook</title>
+<meta name="description" content="nanochat: train your own ChatGPT for under $50 What this is: a ~30-second reel by @princegupta.ai (Prince Gupta, AI Engineer, Oct 30, 2026) — Day 10/10, the…">
+<meta property="og:title" content="nanochat: train your own ChatGPT for under $50 · AI Skills Playbook">
+<meta property="og:description" content="nanochat: train your own ChatGPT for under $50 What this is: a ~30-second reel by @princegupta.ai (Prince Gupta, AI Engineer, Oct 30, 2026) — Day 10/10, the…">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a><a href="../../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><div class="hero-visual"><p><img loading="lazy" alt="Train your own ChatGPT from scratch for under $50 - the 5-stage pipeline, the $43,000 to $48 cost collapse, the single --depth dial, and the time-to-GPT-2 leaderboard" src="nanochat-speedrun.svg" /></p></div><h1 id="nanochat-train-your-own-chatgpt-for-under-50">nanochat: train your own ChatGPT for under $50</h1>
+<p><strong>What this is:</strong> a ~30-second reel by @princegupta.ai (Prince Gupta, AI Engineer, Oct 30, 2026) — Day 10/10, the finale of his "repositories you should know about" series: Andrej Karpathy's nanochat. One small, hackable codebase that walks you through every stage of building a ChatGPT-style model, from tokenizer to chat, in a single speedrun script on a rented 8xH100 node. Distilled here in my own words; the reel's terminal and chat windows are animated mockups, not a live run.</p>
+<p><strong>Related:</strong> <a href="../../tokenomics-playbook">The Tokenomics Playbook</a> (the training-cost collapse is the training-time twin of the deploy-time routing ladder) · <a href="../../gen-ai-concepts-map">90 GenAI concepts</a> (LLM fundamentals — tokenization, pretraining, SFT, RL) · <a href="../../github-repos">GitHub Repos</a> (nanochat scored 8.0/10, Nov 7 entry)</p>
+<p><strong>Thesis for the playbook:</strong> the cost of training a GPT-2-grade model collapsed roughly 900x in seven years — $43,000 in 2019 to ~$48 in 2026 — and nanochat makes that collapse runnable in one script. For the team, the value isn't a production model (it's GPT-2-grade; the README's own comparison is a kindergartener). The value is upskilling: an engineer who has trained a model end to end understands what the context and token machinery actually costs, and why the routing ladder exists at all.</p>
+
+<details class="sec"><summary>1 · The reel in 30 seconds</summary><div class="sec-body">
+<p>The hook is the whole pitch: a GitHub repo that lets you build your own ChatGPT-style model from scratch for under $50. Then the framing — day 10 of 10, the finale — and a profile card for Karpathy as the author. The middle is the file tree and the five stages (below). The speedrun beat shows a terminal running <code>bash runs/speedrun.sh</code> on an 8xH100 node, a timer at 0h 13m, a progress bar at 9%, and a rack of eight green H100 chips labelled ~$24/hr. The chat demo shows the "Why is the sky blue?" exchange over a CLI, with a "trained by you" sticker. The close is the resume pitch — the reel calls it the best AI project to put on a resume — immediately followed by the reality check, then the call to action: follow for the next series, comment "NANOCHAT" and he'll send the repo to your DMs.</p>
+</div></details><details class="sec"><summary>2 · The five stages</summary><div class="sec-body">
+<p>One script, <code>runs/speedrun.sh</code>, runs the whole pipeline. The stages, with the scripts the reel names:</p>
+<ol>
+<li><strong>Tokenizer</strong> — <code>tok_train.py</code>. Train a BPE tokenizer, vocab 32,768.</li>
+<li><strong>Pretraining</strong> — <code>base_train.py</code>. Train the base model; the reel's command uses <code>--depth=24</code>.</li>
+<li><strong>Fine-tuning</strong> — <code>chat_sft.py</code>. Supervised fine-tuning on small-talk chats — the reel shows the training format, a "Why is the sky blue?" question wrapped in user/assistant markers.</li>
+<li><strong>Reinforcement learning</strong> — <code>chat_rl.py</code>. RL on top of the SFT model.</li>
+<li><strong>Chat</strong> — <code>chat_cli.py</code>. Talk to the model over a simple CLI.</li>
+</ol>
+<p>That order is the whole LLM story in miniature: tokenize, pretrain, align, reinforce, serve. The README's file tree confirms the shape — <code>nanochat/</code> holds the transformer (<code>gpt.py</code>), the tokenizer, the inference engine with KV cache, and the optimizers (AdamW + Muon); <code>scripts/</code> holds one script per stage.</p>
+</div></details><details class="sec"><summary>3 · The speedrun economics</summary><div class="sec-body">
+<table>
+<thead>
+<tr>
+<th></th>
+<th>2019, GPT-2</th>
+<th>2026, nanochat speedrun</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Wall-clock time</td>
+<td>168 hours</td>
+<td>~2 hours (README says ~1.5h for the script; leaderboard best 1.65h)</td>
+</tr>
+<tr>
+<td>Hardware</td>
+<td>(OpenAI's original run)</td>
+<td>Rented 8xH100 node, ~$24/hr</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>~$43,000</td>
+<td>~$48 on-demand; ~$15 on spot</td>
+</tr>
+</tbody>
+</table>
+<p>The arithmetic the README gives: at ~$3/GPU/hr, an 8xH100 node is ~$24/hr, so two hours is ~$48. The ~900x collapse is the whole stack improving at once — hardware, data, optimizers, precision — not any single trick. The leaderboard makes that visible: the same "time to GPT-2" metric, measured by the DCLM CORE score against GPT-2's 0.2565, fell from 3.04 hours (Jan 29, 2026, d24 baseline) to 1.65 hours (Mar 14, 2026, autoresearch round 2, CORE 0.2626) in six weeks of tuning, mostly dataset and batch-size changes. The leaderboard is a live benchmark of the stack's progress, and the repo invites contributions to it.</p>
+</div></details><details class="sec"><summary>4 · The one dial</summary><div class="sec-body">
+<p>The design decision that makes the repo hackable: a single integer, <code>--depth</code>, the number of transformer layers, determines everything else. Width, number of heads, learning-rate adjustments, training horizons, weight decays — all computed automatically so the trained model comes out compute-optimal. GPT-2 capability lands around depth 24–26. Sweep the dial and you get the nanochat miniseries: a family of compute-optimal models at every size, from a 12-layer model you can iterate on in ~5 minutes (the README's recommended experiment loop) up to the full speedrun. For researchers, <code>runs/scaling_laws.sh</code> and <code>runs/miniseries.sh</code> are the scripts of interest. The constraint the README states: any change to the repo has to work at all depths, not just the one you tested.</p>
+</div></details><details class="sec"><summary>5 · The local-first reality</summary><div class="sec-body">
+<ul>
+<li><strong>Rented node is the happy path.</strong> Boot an 8xH100 box (the README names Lambda), run <code>bash runs/speedrun.sh</code> in a screen session, chat with <code>python -m scripts.chat_cli</code>.</li>
+<li><strong>A single GPU works, 8x slower.</strong> Drop <code>torchrun</code> and the code switches to gradient accumulation automatically, with ~identical results. An 8xA100 node works too, a bit slower.</li>
+<li><strong>Under 80GB of VRAM, tune <code>--device-batch-size</code> down</strong> (32 to 16, 8, 4, 2, or 1) or you'll OOM.</li>
+<li><strong>CPU / Apple Silicon is a demo, not a result.</strong> <code>runs/runcpu.sh</code> shrinks the model to fit a few tens of minutes of training; the README is blunt that you won't get strong results that way.</li>
+<li><strong>Precision is explicit, not magic.</strong> No <code>torch.amp.autocast</code> — a single global <code>COMPUTE_DTYPE</code>, auto-detected per hardware (bf16 on A100/H100, fp32 elsewhere), overridable with <code>NANOCHAT_DTYPE</code>. Weights stay fp32 for the optimizer; the custom <code>Linear</code> layer casts on the forward pass.</li>
+</ul>
+</div></details><details class="sec"><summary>6 · Honest scoring</summary><div class="sec-body">
+<ul>
+<li><strong>The numbers check out — against the README, not the reel.</strong> The reel itself never states the $43,000 GPT-2 figure or the ~$48 total; those come from the caption and the README, which I verified live. The reel's "~2 hours" is approximate: the README says ~1.5 hours for the script, and the leaderboard's best is 1.65 hours.</li>
+<li><strong>The demo is staged.</strong> The terminal and the chat exchange are animated mockups. Nothing in the reel is a live training run or a live conversation with a trained model. The figures are stated, not demonstrated.</li>
+<li><strong>The repo is public; the gate is the creator's.</strong> "Comment NANOCHAT and I'll send you the repo in your DMs" is a lead magnet. The repo is at <a href="https://github.com/karpathy/nanochat">github.com/karpathy/nanochat</a> — 60,360 stars, 8,464 forks, MIT, created Oct 13, 2025. (The reel's on-screen card shows 58.0k stars / 8.2k forks — stale by a few weeks, not wrong.)</li>
+<li><strong>The capability caveat is the README's own.</strong> The speedrun model is a 4e19-FLOP capability model — GPT-2-grade, 1.6B parameters. The README says talking to it is a bit like talking to a kindergartener, and the reel repeats that. As a resume project the story is "I trained an LLM end to end," not "I built a useful chatbot."</li>
+<li><strong>What the reel doesn't say:</strong> the speedrun needs a rented GPU node and a couple of hours of wall-clock time — this is a weekend project, not a 30-second trick — and the $48 assumes on-demand pricing at ~$3/GPU/hr, which moves with the market.</li>
+</ul>
+</div></details><details class="sec"><summary>7 · Why it matters for us</summary><div class="sec-body">
+<p>The tokenomics read is the cost curve itself: a capability that cost $43,000 to train in 2019 now costs $48, and the leaderboard shows the curve still falling. That is the same force behind the routing ladder — cheap models absorb bulk work because the stack keeps getting cheaper to run — measured here at training time instead of inference time. For the team, nanochat is the cheapest way to make that abstract curve concrete: one engineer, one weekend, one rented node, and the whole LLM pipeline stops being a black box. The miniseries design is also a pattern worth stealing: one complexity dial, everything else derived — the same shape as a good routing policy, where one decision (which model) derives the rest (cost, latency, quality bar).</p>
+<p><strong>Source:</strong> <a href="https://www.instagram.com/reel/DfHsY8hE-uf/">instagram.com/reel/DfHsY8hE-uf</a> (@princegupta.ai, Oct 30, 2026) · <a href="https://github.com/karpathy/nanochat">github.com/karpathy/nanochat</a> (README and leaderboard verified live Nov 7, 2026)</p></div></details></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>
