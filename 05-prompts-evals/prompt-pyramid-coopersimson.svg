@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="1800" viewBox="0 0 1440 1800">
+  <rect width="1440" height="1800" fill="#0B0F14"/>
+  <!-- header -->
+  <text x="60" y="120" font-family="DejaVu Sans, sans-serif" font-size="62" font-weight="bold" fill="#FFFFFF">The Prompt Pyramid</text>
+  <text x="60" y="176" font-family="DejaVu Sans, sans-serif" font-size="30" fill="#8B949E">Stop telling the model what to do.</text>
+  <text x="60" y="222" font-family="DejaVu Sans, sans-serif" font-size="30" font-weight="bold" fill="#3FB950">Give it the outcome. Let it make the plan.</text>
+  <line x1="60" y1="262" x2="1380" y2="262" stroke="#30363D" stroke-width="2"/>
+
+  <!-- pyramid label -->
+  <text x="60" y="330" font-family="DejaVu Sans, sans-serif" font-size="26" font-weight="bold" fill="#58A6FF" letter-spacing="3">THE FOUR-PART SHAPE</text>
+
+  <!-- step pyramid bars (left) -->
+  <g font-family="DejaVu Sans, sans-serif">
+    <rect x="270" y="360" width="280" height="180" rx="12" fill="#58A6FF"/>
+    <text x="410" y="466" font-size="36" font-weight="bold" fill="#0B0F14" text-anchor="middle">1 GOAL</text>
+    <rect x="190" y="560" width="440" height="180" rx="12" fill="#3FB950"/>
+    <text x="410" y="666" font-size="36" font-weight="bold" fill="#0B0F14" text-anchor="middle">2 RESEARCH</text>
+    <rect x="110" y="760" width="600" height="180" rx="12" fill="#D29922"/>
+    <text x="410" y="866" font-size="36" font-weight="bold" fill="#0B0F14" text-anchor="middle">3 INTERVIEW</text>
+    <rect x="60" y="960" width="700" height="180" rx="12" fill="#BC8CFF"/>
+    <text x="410" y="1066" font-size="36" font-weight="bold" fill="#0B0F14" text-anchor="middle">4 EXAMPLE</text>
+  </g>
+
+  <!-- descriptions (right) -->
+  <g font-family="DejaVu Sans, sans-serif" font-size="27" fill="#FFFFFF">
+    <text x="800" y="440">Say what the finished thing is.</text>
+    <text x="800" y="480" fill="#8B949E">Not the steps to get there.</text>
+    <text x="800" y="640">Let it research the best way</text>
+    <text x="800" y="680" fill="#8B949E">before it starts building.</text>
+    <text x="800" y="840">It asks you questions, one at a time,</text>
+    <text x="800" y="880" fill="#8B949E">until it understands what you want.</text>
+    <text x="800" y="1040">Paste in one real example you loved,</text>
+    <text x="800" y="1080" fill="#8B949E">so it knows the bar.</text>
+  </g>
+
+  <!-- the flip panel -->
+  <rect x="60" y="1220" width="1320" height="230" rx="16" fill="#161B22" stroke="#30363D" stroke-width="2"/>
+  <text x="120" y="1280" font-family="DejaVu Sans, sans-serif" font-size="28" font-weight="bold" fill="#FFFFFF">THE FLIP</text>
+  <text x="120" y="1330" font-family="DejaVu Sans, sans-serif" font-size="27" fill="#8B949E">Long detailed prompt: the model follows your plan, even a dumb one.</text>
+  <text x="120" y="1370" font-family="DejaVu Sans, sans-serif" font-size="27" fill="#8B949E">Best you get back is your own idea, written up nicer.</text>
+  <text x="120" y="1420" font-family="DejaVu Sans, sans-serif" font-size="27" font-weight="bold" fill="#3FB950">Outcome first: the model makes the plan.</text>
+
+  <!-- honest footer -->
+  <text x="60" y="1520" font-family="DejaVu Sans, sans-serif" font-size="30" font-weight="bold" fill="#D29922">KEEP IT HONEST</text>
+  <text x="60" y="1570" font-family="DejaVu Sans, sans-serif" font-size="23" fill="#8B949E">The "Anthropic engineers do the opposite" line is the creator's claim - unsourced.</text>
+  <text x="60" y="1606" font-family="DejaVu Sans, sans-serif" font-size="23" fill="#8B949E">No pyramid diagram in the carousel itself; this one is drawn from the four steps.</text>
+  <text x="60" y="1642" font-family="DejaVu Sans, sans-serif" font-size="23" fill="#8B949E">"Ahead of 99% of people" is a boast, not a measurement.</text>
+  <text x="60" y="1678" font-family="DejaVu Sans, sans-serif" font-size="23" fill="#8B949E">The copy-paste template is DM-gated: comment PYRAMID on the post.</text>
+  <text x="60" y="1740" font-family="DejaVu Sans, sans-serif" font-size="20" fill="#6E7681">Source: @cooper.simson carousel, Nov 8 2026 - slides verified Nov 10 2026</text>
+</svg>
