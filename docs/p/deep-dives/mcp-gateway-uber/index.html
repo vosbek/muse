@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Build an MCP Gateway Like Uber's — in 50 Minutes · AI Skills Playbook</title>
+<meta name="description" content="Build an MCP Gateway Like Uber&#x27;s — in 50 Minutes Source: Instagram carousel by @datasciencebrain (Deepak Jose | Data Science &amp;amp; Gen AI, ~492k followers)…">
+<meta property="og:title" content="Build an MCP Gateway Like Uber's — in 50 Minutes · AI Skills Playbook">
+<meta property="og:description" content="Build an MCP Gateway Like Uber&#x27;s — in 50 Minutes Source: Instagram carousel by @datasciencebrain (Deepak Jose | Data Science &amp;amp; Gen AI, ~492k followers)…">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="../../../assets/style.css"></head>
+<body><header class="top"><div class="wrap"><a class="brand" href="../../../"><b>AI</b> Skills Playbook</a>
+<nav class="main"><a href="../../../#start">Start here</a><a href="../../../#talks">AI Engineer talks</a><a href="../../../#deep-dives">Deep dives</a><a href="../../../#maps">Storage & memory maps</a><a href="../../../#categories">Categories</a><a href="../../../#resources">Resources</a><a href="../../../#repos">GitHub Repos</a></nav></div></header><div class="wrap"><div class='crumb'><a href='../../../'>Home</a> · <a href='../../../#deep-dives'>Deep dives</a></div><article class='doc'><div class='badge'>Deep dives</div><div class="hero-visual"><p><img loading="lazy" alt="Cover: Build an MCP Gateway Like Uber's in 50 Minutes" src="mcp-gateway-uber/slide-01.jpg" /></p></div><h1 id="build-an-mcp-gateway-like-ubers-in-50-minutes">Build an MCP Gateway Like Uber's — in 50 Minutes</h1>
+<p><strong>Source:</strong> Instagram carousel by <a href="https://www.instagram.com/datasciencebrain/">@datasciencebrain</a> (Deepak Jose | Data Science &amp; Gen AI, ~492k followers) — <a href="https://www.instagram.com/p/DfoFU_rmOMT/">the post</a> (published Nov 11, 2026, 20 slides: cover + 18 pages of a hands-on guide + subscriber promo). This is the same creator and the same "build it in under an hour" series as the <a href="../hybrid-search-retrieval">hybrid search deep dive</a> — same stack shape (Python, uv, free tier), same cost story. That one was the retrieval side; this one is the tooling side.</p>
+
+<blockquote>
+<p>Note on method: this is a deep-dive <em>distillation</em>, not a transcript — the guide's architecture, the numbers, and the build steps, rewritten in original prose. The slide images are reproduced for reference; code is described, not copied. Slide 20 is the subscriber promo for the complete PDF and is not reproduced.</p>
+</blockquote>
+<details class="sec"><summary>TL;DR</summary><div class="sec-body">
+<ol>
+<li><strong>The prompt is the bottleneck, not the model.</strong> Load 19 small tool descriptions into an agent and the prompt costs 762 tokens before the first question. Load four gateway tools instead and it costs 281 — 63% fewer, measured by the creator on a small demo with tiny descriptions. Real descriptions are longer and companies have thousands of tools, so the gap grows with scale.</li>
+<li><strong>The fix is four meta-tools, not a bigger context window.</strong> The agent starts with four tools and nothing else: find a server, list its tools, get one schema, call it. Only the tool it actually picks ever gets described. The agent carries a menu of four, not thousands.</li>
+<li><strong>Uber already runs this shape in production.</strong> Their Oct 1, 2026 post describes 800+ MCP servers and 5,000+ tools behind two halves: a catalog (registry) that lists every server and tool, and a runner (gateway) that checks the caller, the policy, and the rate limit before running anything. Their rule: discovery doesn't imply exposure — a tool is visible only when its owning team switches it on.</li>
+<li><strong>The local rebuild is five small servers, 19 tools, two agents, one SQLite file.</strong> FastMCP for the servers, SQLite for the catalog, Groq's free tier for the model (gpt-oss-120b). The worked example is a double charge: rider R-102 charged twice for one trip, found and confirmed in four calls taking 2, 2, 1 and 8 milliseconds.</li>
+<li><strong>The governance is the point, not the plumbing.</strong> Grants decide which servers each agent may even <em>see</em> — permissions apply to discovery, not only to calls — and rate limits are per agent (support-bot 30 calls per 60 seconds, intern-bot 3). The money-moving tool, <code>issue_refund</code>, is deny-listed for the support bot even though it may use the payments server.</li>
+</ol>
+</div></details><details class="sec"><summary>The problem: why direct connections break at scale</summary><div class="sec-body">
+<p>Connecting agents straight to tool servers works with one agent and three servers. It breaks at company scale in three ways, and the guide names all three before offering the fix.</p>
+<p><strong>1. The prompt fills up.</strong> Every tool definition costs tokens, and it costs them on every request. In the demo, 19 small tools take 762 prompt tokens and four take 281. Real descriptions are longer, and a company can have thousands of tools. The prompt is full before the user asks anything.</p>
+<p><strong>2. Everyone connects to everyone.</strong> Each agent needs the address and credentials of every server it uses. Ten agents and 800 servers is 8,000 connections, each with its own login to set up and rotate.</p>
+<p><strong>3. Nobody is in charge of the rules.</strong> Which agents may issue a refund? How many calls per minute is too many? Who called what yesterday? If every server answers those questions separately, or not at all, you cannot answer them for the company.</p>
+<p>One idea fixes all three: put a single door in front of every tool. Agents connect to the door. The door knows the tools, checks who is asking, and writes down what happened.</p>
+</div></details><details class="sec"><summary>The four steps: how an agent finds a tool it has never seen</summary><div class="sec-body">
+<p>The agent starts with four tool definitions and nothing else. It never asks for a tool by name — it asks for what it needs in plain words, and each call teaches it one more thing. Steps 1–3 only read the gateway's catalog; only step 4 reaches the backend tools, and it goes through the gateway and is logged.</p>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>The agent calls</th>
+<th>The agent learns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1. Find a server</td>
+<td><code>discover_server("billing charges rider")</code></td>
+<td>Which servers fit: <code>payments</code>, <code>rides</code></td>
+</tr>
+<tr>
+<td>2. List its tools</td>
+<td><code>discover_tools("payments")</code></td>
+<td>Tool names, one line each: <code>get_charge</code>, <code>list_charges</code>, and more</td>
+</tr>
+<tr>
+<td>3. Get one definition</td>
+<td><code>get_tool_schema("payments", "list_charges")</code></td>
+<td>The full definition: it needs a <code>rider_id</code> string</td>
+</tr>
+<tr>
+<td>4. Call it</td>
+<td><code>invoke_tool("payments", "list_charges", {"rider_id": "R-102"})</code></td>
+<td>The result: two charges of INR 240</td>
+</tr>
+</tbody>
+</table>
+<p>Each answer comes back as plain text in the conversation. The model reads the schema in step 3 and uses it to fill in the arguments in step 4. The definition is loaded when it is needed, for one tool only.</p>
+<p><img loading="lazy" alt="Guide p.1: how an agent finds a tool it has never seen — the four-step diagram and table of contents" src="mcp-gateway-uber/slide-02.jpg" /></p>
+<p><img loading="lazy" alt="Guide p.2: table of contents 11–16, what you're building, and the problem in plain words" src="mcp-gateway-uber/slide-03.jpg" /></p>
+</div></details><details class="sec"><summary>How it works in production: Uber's two halves</summary><div class="sec-body">
+<p>Uber published how they built theirs on Oct 1, 2026. It serves over 800 MCP servers and over 5,000 tools, and it has two halves: a catalog and a runner. (These numbers match the playbook's own <a href="../uber-ai-infra-inside">Uber AI infra deep dive</a> from Oct 15, which distilled the same engineering post.)</p>
+<p><strong>The catalog (the registry)</strong> lists every server and tool. Uber does not ask teams to write MCP servers by hand. A crawler reads the definitions of services the company already runs and generates MCP servers and tools from them. An LLM writes clearer, agent-friendly descriptions for the generated tools, and owners can edit them. Servers that already speak MCP are found another way: each one sends a heartbeat signal, the crawler watches for it, asks the server for its tool list, and puts a proxy for it in the catalog.</p>
+<p>Everything the crawler finds starts disabled. A tool becomes visible only when the team that owns it switches it on. Uber's phrase for this is "discovery doesn't imply exposure."</p>
+<p><strong>The runner (the gateway)</strong> handles each call. It works out who is calling — a person, a service, or an agent — and checks the policy for that caller. Policies are set per server, with optional overrides for single tools. Then it runs the tool and returns the answer, with sensitive data such as personal information removed from the response. For third-party MCP servers the gateway also enforces rate limits; the post names rate limiting but does not say how it works.</p>
+<p><strong>Omni MCP</strong> is how agents use all of this without loading all of it. It is one proxy with four tools, and the post says it gives agents incremental discovery:</p>
+<ol>
+<li><code>discover_server</code> — find servers that match what you need</li>
+<li><code>discover_tools</code> — list a server's tools</li>
+<li><code>get_tool_schema</code> — get one tool's definition</li>
+<li><code>invoke_tool</code> — run it</li>
+</ol>
+<p><img loading="lazy" alt="Guide p.3: the three ways direct connections break, and Uber's production setup" src="mcp-gateway-uber/slide-04.jpg" /></p>
+<p><img loading="lazy" alt="Guide p.4: meta-tools 2–4, Response Projection and Code Mode, and the local build's production-vs-local table" src="mcp-gateway-uber/slide-05.jpg" /></p>
+</div></details><details class="sec"><summary>What you build locally</summary><div class="sec-body">
+<p>The local version rebuilds Uber's idea at demo scale: five backend servers, 19 tools, two agents, one SQLite audit log. Free tools throughout: FastMCP for the servers, SQLite for the registry, Groq's free tier for the model. Versions verified by the creator on Nov 12, 2026: fastmcp 4.1.8, groq 1.7.0, python-dotenv 1.2.4, Python 3.13.</p>
+<p>The guide is explicit about what the local version leaves out on purpose: generating servers and descriptions from service definitions, removing sensitive data from responses, approving description changes, Response Projection, Code Mode, and passing user tokens to third-party servers. Rate limits and observability get the guide's own design instead of Uber's (Uber's post gives little detail there).</p>
+</div></details><details class="sec"><summary>Architecture overview: one line every call travels</summary><div class="sec-body">
+<p>Agent → token check → four meta-tools → audit log → registry.db → grant check → rate limit → backend MCP server. Every call goes through the same line: who are you, are you allowed, have you called too much, then run it. The registry file feeds the grant check, and the audit log writes into the same file.</p>
+<p>The split that matters: the three discovery tools stop at the grant check and read the catalog. Only <code>invoke_tool</code> goes on to the rate limit and the backend. And <code>discover_server</code> drops every server the agent has no grant for, so an agent never sees what it was not given.</p>
+<p><img loading="lazy" alt="Guide p.5: architecture overview — the call line and the four-step worked example" src="mcp-gateway-uber/slide-06.jpg" /></p>
+<p><img loading="lazy" alt="Guide p.6: who understands what, and what lives where" src="mcp-gateway-uber/slide-07.jpg" /></p>
+</div></details><details class="sec"><summary>The worked example: one question, four calls, 13 milliseconds</summary><div class="sec-body">
+<p>Take the question "Rider R-102 says they were charged twice for yesterday's trip" from <code>support-bot</code>. <code>sync</code> already ran, so the catalog holds 19 tools across 5 servers. The agent starts with four tool definitions, not 19. Groq counted 762 prompt tokens with all 19 tools loaded and 281 with the four meta-tools — 63% fewer, on a demo with tiny tool descriptions.</p>
+<ul>
+<li><code>discover_server</code> — the gateway reads the token, gets the name <code>support-bot</code>, searches the catalog, returns the servers it may use. 2 ms.</li>
+<li><code>discover_tools</code> on <code>payments</code> (2 ms) lists tool names. <code>get_tool_schema</code> for <code>list_charges</code> (1 ms) returns that one tool's input schema. <code>invoke_tool</code> (8 ms) checks the grant and the limit, calls the backend, and returns two charges of INR 240 for the same trip.</li>
+</ul>
+<p>Nothing persists between questions except the audit rows. Each <code>ask</code> starts a fresh conversation, and the backend servers are rebuilt whenever the gateway restarts. A real deployment keeps the gateway running as a long-lived service, stores the registry in a shared database, and connects to backend servers over the network instead of in the same process.</p>
+<p><img loading="lazy" alt="Guide p.7: how each piece works on one question, plus prerequisites and setup" src="mcp-gateway-uber/slide-08.jpg" /></p>
+</div></details><details class="sec"><summary>Setup and config: everything in one file</summary><div class="sec-body">
+<p>Prerequisites: Python 3.13, <code>uv</code>, and a free Groq API key (no credit card). The project starts with <code>uv init mcp-gateway</code> and <code>uv add fastmcp==4.1.8 groq==1.7.0 python-dotenv==1.2.4</code>, code in <code>src/</code>, the key in <code>.env</code> behind <code>.gitignore</code>.</p>
+<p>All settings live in <code>config.py</code>: the registry path (<code>registry.db</code>), the model (<code>openai/gpt-oss-120b</code> on Groq, with 5 retries on the free tier — the guide notes the free plan's tight tokens-per-minute limits, and that a paid key can keep the same model and drop the retry count), the gateway URL (<code>http://127.0.0.1:8000/mcp</code>), and a 10-step cap per agent run.</p>
+<p>Two tables in that one file carry the whole governance model. First, <strong>agent tokens</strong>: demo bearer tokens per agent (<code>support-bot</code>, <code>intern-bot</code>). The guide flags this itself — a real gateway gets identity from your login system (OAuth/SSO); static tokens are for local demos only.</p>
+<p>Second, <strong>grants</strong>: which backend servers each agent may use, plus an optional deny-list of tools blocked inside a granted server. That is Uber's shape — policy per server, tool-level overrides on top. <code>support-bot</code> may use <code>rides</code>, <code>payments</code>, and <code>support</code>, but not <code>issue_refund</code> inside payments. <code>intern-bot</code> may use only <code>eats</code>.</p>
+<p>Third, <strong>rate limits</strong>: <code>invoke_tool</code> calls allowed per agent in the last 60 seconds — 30 for <code>support-bot</code>, 3 for <code>intern-bot</code>. The guide's line on this is worth quoting in spirit: the rate limits are not a workaround, they are the feature.</p>
+<p><img loading="lazy" alt="Guide p.8: .env setup and config" src="mcp-gateway-uber/slide-09.jpg" /></p>
+<p><img loading="lazy" alt="Guide p.9: config continued — model, tokens, grants, rate limits" src="mcp-gateway-uber/slide-10.jpg" /></p>
+<p><img loading="lazy" alt="Guide p.10: free tier vs paid Groq key, and the backend servers" src="mcp-gateway-uber/slide-11.jpg" /></p>
+</div></details><details class="sec"><summary>The backend servers: five small FastMCP servers, one deliberate double charge</summary><div class="sec-body">
+<p>The demo is a fictional city mobility app with five small FastMCP servers and 19 tools between them. Rider R-102 has a deliberate double charge for trip T-9001 baked into the data, so the worked example always finds something.</p>
+<ul>
+<li><strong>Rides</strong> — <code>get_trip</code>, <code>list_rider_trips</code>, <code>estimate_fare</code>, plus <code>cancel_trip</code>.</li>
+<li><strong>Payments</strong> — <code>list_charges</code>, <code>get_charge</code>, <code>issue_refund</code> (moves real money, and the support bot is blocked from it), <code>list_payment_methods</code>.</li>
+<li><strong>Eats</strong> — <code>search_restaurants</code> ("Dosa Corner", 25-minute ETA), <code>get_menu</code>, <code>track_order</code>, <code>apply_coupon</code>.</li>
+<li><strong>Support</strong> — <code>open_ticket</code>, <code>get_policy</code> ("Duplicate charges are refunded in full within 3 working days after support review"), <code>list_tickets</code>.</li>
+<li><strong>Drivers</strong> — <code>get_driver</code> ("Asha", rating 4.9), <code>driver_earnings</code>, <code>set_driver_status</code>, <code>list_active_drivers</code>.</li>
+</ul>
+<p>A <code>BACKENDS</code> map names each server, and <code>SERVER_DESCRIPTIONS</code> holds the short descriptions that <code>discover_server</code> searches against — the descriptions are the search index, which is why the guide spends a section on writing them well.</p>
+<p><img loading="lazy" alt="Guide p.11: rides data and the five FastMCP servers" src="mcp-gateway-uber/slide-12.jpg" /></p>
+<p><img loading="lazy" alt="Guide p.12: payments tools and food delivery" src="mcp-gateway-uber/slide-13.jpg" /></p>
+<p><img loading="lazy" alt="Guide p.13: eats, support, and drivers tools" src="mcp-gateway-uber/slide-14.jpg" /></p>
+<p><img loading="lazy" alt="Guide p.14: drivers tools, the BACKENDS map, and server descriptions" src="mcp-gateway-uber/slide-15.jpg" /></p>
+</div></details><details class="sec"><summary>The registry: catalog, grants, audit — one SQLite file, five tables</summary><div class="sec-body">
+<p>The registry is one SQLite file with five tables, built by <code>registry.py</code>. <code>sync()</code> lists each backend's tools into it. Search is SQLite full-text search (FTS5, with stemming and BM25 ranking, plus a stopwords list) over server names and descriptions.</p>
+<p>Two design decisions carry the whole pattern:</p>
+<ol>
+<li><strong>Permissions apply to discovery, not only to calls.</strong> <code>granted_servers()</code> and <code>search_servers()</code> run the keyword search with BM25, then drop servers without a grant. <code>list_tools()</code> hides denied tools the same way. An agent never sees a server or tool it cannot use — which is what makes the 63% token saving real at scale, not just a call-time check.</li>
+<li><strong>Uber's crawler vs this guide's grants table.</strong> Uber generates servers and enables tools per tool, with the owning team switching each one on. The guide grants a whole server and exposes all its tools except the deny-listed ones — simpler, and the right shape for a demo, but coarser than production. The guide notes embeddings would help too: a keyword search for "double billing" may miss the <code>payments</code> server, where embeddings would find it.</li>
+</ol>
+<p><img loading="lazy" alt="Guide p.15: the registry — catalog, grants, audit, and full-text search" src="mcp-gateway-uber/slide-16.jpg" /></p>
+<p><img loading="lazy" alt="Guide p.16: the schema — servers, tools, grants, audit, and the FTS5 table" src="mcp-gateway-uber/slide-17.jpg" /></p>
+<p><img loading="lazy" alt="Guide p.17: sync(), Uber's crawler vs the grants table, and seed_grants()" src="mcp-gateway-uber/slide-18.jpg" /></p>
+<p><img loading="lazy" alt="Guide p.18: granted_servers(), search_servers(), and list_tools()" src="mcp-gateway-uber/slide-19.jpg" /></p>
+</div></details><details class="sec"><summary>Tokenomics angle</summary><div class="sec-body">
+<p>This is the context-economics thesis in its purest form: <strong>the cheapest token is the one never loaded.</strong> A gateway is context compression at the tool layer — it turns a flat list of thousands of tool definitions into a four-tool menu plus one definition fetched on demand. The 63% saving is measured on 19 tools with tiny descriptions; the saving grows with the tool count and the description length, which is exactly the direction enterprise catalogs go.</p>
+<p>Three enterprise reads fall out of the build:</p>
+<ul>
+<li><strong>Discovery-time permissions are a cost control, not just a security control.</strong> Hiding ungranted servers from search keeps them out of the prompt entirely. A call-time deny-list still pays the tokens to describe the tool it refuses to run.</li>
+<li><strong>Rate limits are the spend gate.</strong> Per-agent limits (30 vs 3 per 60 seconds) are the same shape as the Copilot credit caps and the Cohere North 2 quotas in this collection: token spend as IT governance, enforced where the call happens.</li>
+<li><strong>The deny-list is where the money lives.</strong> <code>issue_refund</code> moves real money. The grant that blocks it for the support bot is one line in <code>config.py</code> — and it is the only thing standing between an agent that found a double charge and an agent that refunded it without asking.</li>
+</ul>
+</div></details><details class="sec"><summary>Honest scoring</summary><div class="sec-body">
+<ul>
+<li><strong>The 63% is a small-demo number, honestly labeled.</strong> The guide says so itself: "on a demo with tiny tool descriptions." The direction is right and the mechanism is sound, but 762 vs 281 is one demo run on one machine, not a benchmark. At Uber scale the absolute saving is larger (longer descriptions, thousands of tools); the percentage depends on the catalog.</li>
+<li><strong>"50 minutes" is the creator's claim, not a timed build.</strong> The carousel is 16 sections of guide text in slide form; nobody timed the build here.</li>
+<li><strong>The complete PDF is subscriber-gated.</strong> Slide 20 is a promo: the full notes go to the creator's exclusive Instagram subscribers (Rs. 45/month). Everything distilled above comes from the 19 public slides, which are complete as a guide — the PDF is a convenience format, not missing content I can identify. But I have not seen it, so I cannot say what else is in it.</li>
+<li><strong>Tokens as plain strings are flagged by the guide itself</strong> as demo-only; production gets identity from OAuth/SSO. Do not ship the demo config.</li>
+<li><strong>Uber's numbers cross-check.</strong> The 800+ servers / 5,000+ tools figure and the Oct 1, 2026 post date match the playbook's own Uber deep dive, distilled from the same engineering post. The crawler, the heartbeat discovery, "discovery doesn't imply exposure," and the per-server policy shape are all from that post as the guide reports it.</li>
+<li><strong>Versions are pinned and dated.</strong> fastmcp 4.1.8, groq 1.7.0, python-dotenv 1.2.4, Python 3.13 — verified by the creator on Nov 12, 2026, per the slide footer. Pin them; the free-tier Groq limits the guide warns about may have moved since.</li>
+</ul></div></details></article></div>
+<footer><div class="wrap"><span>Distilled from public talks, posts & docs. For learning — verify before deploying.</span><span>ai-skills-playbook</span></div></footer>
+<script>var ROOT="../../../";</script><script src="../../../assets/search.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>mermaid.initialize({startOnLoad:true,theme:"dark",securityLevel:"loose"});</script></body></html>

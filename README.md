@@ -44,10 +44,11 @@ The collection compounds. That's the whole point.
 
 ## Deep dives
 
-Fourteen deep-dive dossiers that go beyond the distilled summaries, built from the actual source material (repo READMEs, vendor engineering blogs, official docs):
+Fifteen deep-dive dossiers that go beyond the distilled summaries, built from the actual source material (repo READMEs, vendor engineering blogs, official docs):
 
 | Dossier | Source |
 |---|---|
+| [mcp-gateway-uber](deep-dives/mcp-gateway-uber.md) — Build an MCP gateway like Uber's: 4 meta-tools instead of 5,000, 63% fewer prompt tokens | https://www.instagram.com/p/DfoFU_rmOMT/ |
 | [nanochat-karpathy](deep-dives/nanochat-karpathy.md) — Karpathy's nanochat: train your own GPT-2 for ~$48, the 5-stage pipeline + time-to-GPT-2 leaderboard | https://www.instagram.com/reel/DfHsY8hE-uf/ |
 | [jevgrep](deep-dives/jevgrep.md) — Jev-powered code research CLI, 28.6% measured cost cut | https://github.com/dzhng/jevgrep |
 | [hybrid-search-retrieval](deep-dives/hybrid-search-retrieval.md) — BM25 + vectors + RRF + reranker, scored 12→16/20 on a 20-question scoreboard | https://www.instagram.com/p/DelHm3LmCZT/ |
