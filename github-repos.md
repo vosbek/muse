@@ -20,7 +20,7 @@ A 7-slide carousel of circular city maps drawn at 1 km radius from OpenStreetMap
 
 ### 5.5 — [marceloprates/prettymaps](https://github.com/marceloprates/prettymaps) · 14.4k ⭐ · AGPL-3.0 · Python
 **Value prop:** "Draw pretty maps from OpenStreetMap data!" — the original minimal Python library (osmnx + matplotlib + shapely + vsketch). `pip install prettymaps`, `prettymaps.plot('place')`, with presets, multiplot, hillshade, and a Streamlit front-end (`streamlit run app.py`). Tutorial in marimo and Colab.
-**Score:** remit 1 + local 2 + maturity 1.5 + deploy 1. *Why it matters for us:* the bigger, older, more configurable library — and the one the carousel actually used. **AGPL-3.0 is copyleft; get legal review before any enterprise deployment or modification** — same flag as firecrawl and VoiceStudio on this page. The author also asks that figures keep the printed credit to his repo and OpenStreetMap, and is explicit that he does not authorize NFT use of the work.
+**Score:** remit 1 + local 2 + maturity 1.5 + deploy 1. *Why it matters for us:* the bigger, older, more configurable library — the original that the carousel's tool, prettymapp, was based on (the caption says the maps themselves were made with prettymapp). **AGPL-3.0 is copyleft; get legal review before any enterprise deployment or modification** — same flag as firecrawl and VoiceStudio on this page. The author also asks that figures keep the printed credit to his repo and OpenStreetMap, and is explicit that he does not authorize NFT use of the work.
 **Source:** https://www.instagram.com/p/Dfs2GHjj-3g/
 
 ![Pretty Maps in Python — circular city maps from OpenStreetMap (cover: Tokyo, Venice, Barcelona, Manhattan)](github-repos-prettymaps/prettymaps-cover.jpg)
