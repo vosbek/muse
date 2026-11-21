@@ -9,6 +9,22 @@ Every repo that surfaces in the playbook's intake, with its value prop and a sco
 - **Maturity (0–2):** stars, forks, active development, license.
 - **Team deploy (0–2):** can a VS Code + Copilot team use it this quarter?
 
+## Nov 20 — @geospatial.bff "Making Pretty Maps in Python" (GeoSpatial AI)
+
+A 7-slide carousel of circular city maps drawn at 1 km radius from OpenStreetMap data — cover collage (Tokyo, Venice, Barcelona, Manhattan) plus single-city maps: Venice, Tokyo, Barcelona, Manhattan, Marrakech, and Venice again in a second palette. Two repos behind it: the original prettymaps library and the prettymapp rewrite with a Streamlit webapp. Neither is agent infrastructure — they're deterministic rendering tools — but the transferable lesson is one this playbook keeps coming back to: a deterministic generator beats a generative model for repeatable visual output, at $0 marginal token cost. Star counts verified Nov 20, 2026.
+
+### 6.0 — [chrieke/prettymapp](https://github.com/chrieke/prettymapp) · 2.8k ⭐ · MIT · Python
+**Value prop:** "Create beautiful maps from OpenStreetMap data" — a rewrite of prettymaps tuned for speed, plus a Streamlit webapp (hosted demo at prettymapp.streamlit.app) and a Python package. Four preset styles (Peach, Auburn, Citrus, Flannel); `pip install prettymapp`, pick an address + radius, get a circular map. Docker image available.
+**Score:** remit 1 + local 2 + maturity 1.5 + deploy 1.5. *Why it matters for us:* the more deployable of the pair — MIT license, Docker, hosted demo, and a package API clean enough to call from a script. Off-remit for tokenomics, but the pattern is the point: deterministic rendering (geocode → fetch OSM → draw) as the alternative to asking a model to draw a map. Scored honestly: 2.8k stars vs the original's 14.4k, and the rewrite drops the more complex prettymaps configuration options in favour of speed.
+**Source:** https://www.instagram.com/p/Dfs2GHjj-3g/
+
+### 5.5 — [marceloprates/prettymaps](https://github.com/marceloprates/prettymaps) · 14.4k ⭐ · AGPL-3.0 · Python
+**Value prop:** "Draw pretty maps from OpenStreetMap data!" — the original minimal Python library (osmnx + matplotlib + shapely + vsketch). `pip install prettymaps`, `prettymaps.plot('place')`, with presets, multiplot, hillshade, and a Streamlit front-end (`streamlit run app.py`). Tutorial in marimo and Colab.
+**Score:** remit 1 + local 2 + maturity 1.5 + deploy 1. *Why it matters for us:* the bigger, older, more configurable library — and the one the carousel actually used. **AGPL-3.0 is copyleft; get legal review before any enterprise deployment or modification** — same flag as firecrawl and VoiceStudio on this page. The author also asks that figures keep the printed credit to his repo and OpenStreetMap, and is explicit that he does not authorize NFT use of the work.
+**Source:** https://www.instagram.com/p/Dfs2GHjj-3g/
+
+![Pretty Maps in Python — circular city maps from OpenStreetMap (cover: Tokyo, Venice, Barcelona, Manhattan)](github-repos-prettymaps/prettymaps-cover.jpg)
+
 ## Nov 7 — @princegupta.ai "Train your own ChatGPT for under $50" (Prince Gupta)
 
 Day 10/10 finale of his repo series — Karpathy's nanochat. Full deep dive in [deep-dives/nanochat-karpathy.md](deep-dives/nanochat-karpathy.md).
