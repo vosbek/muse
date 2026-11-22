@@ -44,10 +44,11 @@ The collection compounds. That's the whole point.
 
 ## Deep dives
 
-Fifteen deep-dive dossiers that go beyond the distilled summaries, built from the actual source material (repo READMEs, vendor engineering blogs, official docs):
+Sixteen deep-dive dossiers that go beyond the distilled summaries, built from the actual source material (repo READMEs, vendor engineering blogs, official docs):
 
 | Dossier | Source |
 |---|---|
+| [agentic-ai-roadmap-2026](deep-dives/agentic-ai-roadmap-2026.md) — @decode_leox's Agentic AI Roadmap 2026: 19 sections, 16 projects, 380 h from first API call to production agent service | https://www.instagram.com/p/DfMTlJRjUPP/ |
 | [mcp-gateway-uber](deep-dives/mcp-gateway-uber.md) — Build an MCP gateway like Uber's: 4 meta-tools instead of 5,000, 63% fewer prompt tokens | https://www.instagram.com/p/DfoFU_rmOMT/ |
 | [nanochat-karpathy](deep-dives/nanochat-karpathy.md) — Karpathy's nanochat: train your own GPT-2 for ~$48, the 5-stage pipeline + time-to-GPT-2 leaderboard | https://www.instagram.com/reel/DfHsY8hE-uf/ |
 | [jevgrep](deep-dives/jevgrep.md) — Jev-powered code research CLI, 28.6% measured cost cut | https://github.com/dzhng/jevgrep |
